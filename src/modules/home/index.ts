@@ -1,0 +1,6 @@
+export { HeroSection } from "./components/HeroSection"
+export { StatsCounter } from "./components/StatsCounter"
+export { RecentRescue } from "./components/RecentRescue"
+export { SupportCards } from "./components/SupportCards"
+export { TestimonialSlider } from "./components/TestimonialSlider"
+export { VideoSection } from "./components/VideoSection"
