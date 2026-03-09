@@ -1,7 +1,0 @@
-export { Header } from "./components/Header"
-export { Footer } from "./components/Footer"
-export { MobileMenu } from "./components/MobileMenu"
-export { LanguageSwitcher } from "./components/LanguageSwitcher"
-export { DonateButton } from "./components/DonateButton"
-export { FooterIBAN } from "./components/FooterIBAN"
-export { navigationItems } from "./lib/navigation"
