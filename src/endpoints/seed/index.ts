@@ -18,9 +18,14 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  'animals',
+  'emergency-cases',
+  'needs-list',
+  'transparency-reports',
+  'supporter-comments',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+const _globals: GlobalSlug[] = ['header', 'footer', 'site-settings']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
@@ -44,8 +49,8 @@ export const seed = async ({
   payload.logger.info(`— Clearing collections and globals...`)
 
   // clear the database
-  await Promise.all(
-    globals.map((global) =>
+  await Promise.all([
+    ...(['header', 'footer'] as const).map((global) =>
       payload.updateGlobal({
         slug: global,
         data: {
@@ -57,7 +62,15 @@ export const seed = async ({
         },
       }),
     ),
-  )
+    payload.updateGlobal({
+      slug: 'site-settings',
+      data: {},
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+  ])
 
   await Promise.all(
     collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
@@ -273,6 +286,224 @@ export const seed = async ({
       },
     }),
   ])
+
+  // --- M4: Seed new collections ---
+  payload.logger.info(`— Seeding animals...`)
+
+  const _animal1 = await payload.create({
+    collection: 'animals',
+    depth: 0,
+    context: { disableRevalidate: true },
+    data: {
+      name: 'Pamuk',
+      type: 'kedi',
+      age: '2 yas',
+      gender: 'disi',
+      status: 'kalici-bakim',
+      featured: true,
+      slug: 'pamuk',
+      _status: 'published',
+      publishedAt: new Date().toISOString(),
+    },
+  })
+
+  const animal2 = await payload.create({
+    collection: 'animals',
+    depth: 0,
+    context: { disableRevalidate: true },
+    data: {
+      name: 'Karamel',
+      type: 'kedi',
+      age: '1 yas',
+      gender: 'erkek',
+      status: 'tedavide',
+      featured: false,
+      slug: 'karamel',
+      _status: 'published',
+      publishedAt: new Date().toISOString(),
+    },
+  })
+
+  const _animal3 = await payload.create({
+    collection: 'animals',
+    depth: 0,
+    context: { disableRevalidate: true },
+    data: {
+      name: 'Boncuk',
+      type: 'kopek',
+      age: '3 yas',
+      gender: 'disi',
+      status: 'kalici-bakim',
+      featured: true,
+      slug: 'boncuk',
+      _status: 'published',
+      publishedAt: new Date().toISOString(),
+    },
+  })
+
+  const animal4 = await payload.create({
+    collection: 'animals',
+    depth: 0,
+    context: { disableRevalidate: true },
+    data: {
+      name: 'Karabas',
+      type: 'kopek',
+      age: '5 yas',
+      gender: 'erkek',
+      status: 'acil',
+      featured: false,
+      slug: 'karabas',
+      _status: 'published',
+      publishedAt: new Date().toISOString(),
+    },
+  })
+
+  payload.logger.info(`— Seeding emergency cases...`)
+
+  await payload.create({
+    collection: 'emergency-cases',
+    depth: 0,
+    context: { disableRevalidate: true },
+    data: {
+      title: 'Karabas Acil Ameliyat',
+      animal: animal4.id,
+      targetAmount: 5000,
+      collectedAmount: 1200,
+      caseStatus: 'aktif',
+      slug: 'karabas-acil-ameliyat',
+      _status: 'published',
+      publishedAt: new Date().toISOString(),
+    },
+  })
+
+  await payload.create({
+    collection: 'emergency-cases',
+    depth: 0,
+    context: { disableRevalidate: true },
+    data: {
+      title: 'Karamel Goz Tedavisi',
+      animal: animal2.id,
+      targetAmount: 2000,
+      collectedAmount: 2000,
+      caseStatus: 'tamamlandi',
+      slug: 'karamel-goz-tedavisi',
+      _status: 'published',
+      publishedAt: new Date().toISOString(),
+    },
+  })
+
+  payload.logger.info(`— Seeding needs list...`)
+
+  await Promise.all([
+    payload.create({
+      collection: 'needs-list',
+      data: {
+        productName: 'Kuru Mama (Kedi)',
+        brandDetail: 'ProPlan / Royal Canin',
+        urgency: 'acil',
+        stockStatus: 'Tukenmek uzere',
+        order: 1,
+      },
+    }),
+    payload.create({
+      collection: 'needs-list',
+      data: {
+        productName: 'Kuru Mama (Kopek)',
+        brandDetail: 'ProPlan Adult',
+        urgency: 'acil',
+        stockStatus: '2 torba kaldi',
+        order: 2,
+      },
+    }),
+    payload.create({
+      collection: 'needs-list',
+      data: {
+        productName: 'Kedi Kumu',
+        brandDetail: 'Ever Clean',
+        urgency: 'orta',
+        stockStatus: '5 kutu mevcut',
+        order: 3,
+      },
+    }),
+    payload.create({
+      collection: 'needs-list',
+      data: {
+        productName: 'Veteriner Malzemesi',
+        brandDetail: 'Bandaj, antiseptik',
+        urgency: 'yeterli',
+        stockStatus: 'Stokta yeterli',
+        order: 4,
+      },
+    }),
+  ])
+
+  payload.logger.info(`— Seeding transparency report...`)
+
+  await payload.create({
+    collection: 'transparency-reports',
+    data: {
+      title: 'Subat 2026 Raporu',
+      month: '2026-02-01T00:00:00.000Z',
+      expenses: [
+        { category: 'Veteriner', amount: 8500 },
+        { category: 'Mama', amount: 4200 },
+        { category: 'Barinma', amount: 2000 },
+      ],
+      totalExpense: 14700,
+      totalDonation: 16000,
+      donorList: [
+        { name: 'Ayse Y.', amount: 5000 },
+        { name: 'Mehmet K.', amount: 3000 },
+        { name: 'Anonim', amount: 8000 },
+      ],
+    },
+  })
+
+  payload.logger.info(`— Seeding supporter comments...`)
+
+  await Promise.all([
+    payload.create({
+      collection: 'supporter-comments',
+      data: {
+        name: 'Zeynep A.',
+        comment: 'Harika bir is yapiyorsunuz, desteklerimiz sizinle!',
+        date: '2026-02-15T00:00:00.000Z',
+        approved: true,
+      },
+    }),
+    payload.create({
+      collection: 'supporter-comments',
+      data: {
+        name: 'Ali B.',
+        comment: 'Pamuk cok tatli, onu ziyaret etmek istiyorum.',
+        date: '2026-03-01T00:00:00.000Z',
+        approved: false,
+      },
+    }),
+  ])
+
+  payload.logger.info(`— Seeding site settings...`)
+
+  await payload.updateGlobal({
+    slug: 'site-settings',
+    data: {
+      bankName: 'Ziraat Bankasi',
+      accountHolder: 'Paws of Hope Dernegi',
+      iban: 'TR00 0000 0000 0000 0000 0000 00',
+      phone: '+90 555 123 4567',
+      email: 'info@pawsofhope.org',
+      whatsapp: '+905551234567',
+      instagram: 'pawsofhope',
+      paypalLink: 'https://paypal.me/pawsofhope',
+      wiseLink: 'https://wise.com/pay/pawsofhope',
+      catsCount: 45,
+      dogsCount: 30,
+      treatedCount: 120,
+      spayedCount: 85,
+      vaccinatedCount: 200,
+    },
+    context: { disableRevalidate: true },
+  })
 
   payload.logger.info('Seeded database successfully!')
 }

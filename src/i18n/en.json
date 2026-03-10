@@ -1,0 +1,58 @@
+{
+  "common": {
+    "siteName": "Paws of Hope",
+    "search": "Search",
+    "loading": "Loading...",
+    "goHome": "Go Home",
+    "notFound": "Page not found",
+    "backToHome": "Back to Home"
+  },
+  "layout": {
+    "header": {
+      "home": "Home",
+      "posts": "Posts",
+      "search": "Search",
+      "animals": "Animals",
+      "emergency": "Emergency",
+      "blog": "Blog",
+      "donate": "Donate",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "languageSwitcher": {
+      "label": "Language selection"
+    },
+    "mobileMenu": {
+      "title": "Menu"
+    },
+    "footer": {
+      "copyright": "All rights reserved.",
+      "bankInfo": "Bank Information",
+      "contactUs": "Contact Us",
+      "quickLinks": "Quick Links",
+      "international": "International Support",
+      "copyIban": "Copy IBAN",
+      "followUs": "Follow Us",
+      "description": "Bringing hope to stray animals."
+    },
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "mobileDonate": {
+      "cta": "Donate Now"
+    },
+    "skipToContent": "Skip to content",
+    "siteTitle": "Paws of Hope — Stray Animal Care",
+    "siteDescription": "Helping stray animals find care, treatment, and loving homes."
+  },
+  "posts": {
+    "title": "Posts",
+    "readMore": "Read More",
+    "noPosts": "No posts found."
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search...",
+    "noResults": "No results found."
+  }
+}

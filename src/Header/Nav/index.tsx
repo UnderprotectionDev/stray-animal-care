@@ -1,25 +1,40 @@
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl'
+import { Link, usePathname } from '@/i18n/navigation'
+import { cn } from '@/utilities/ui'
 
-import type { Header as HeaderType } from '@/payload-types'
+const NAV_ITEMS = [
+  { href: '/canlarimiz', labelKey: 'animals' },
+  { href: '/acil-durumlar', labelKey: 'emergency' },
+  { href: '/posts', labelKey: 'blog' },
+] as const
 
-import { CMSLink } from '@/components/Link'
-import Link from 'next/link'
-import { SearchIcon } from 'lucide-react'
-
-export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
-  const navItems = data?.navItems || []
+export function HeaderNav() {
+  const t = useTranslations('layout.header')
+  const pathname = usePathname()
 
   return (
-    <nav className="flex gap-3 items-center">
-      {navItems.map(({ link }, i) => {
-        return <CMSLink key={i} {...link} appearance="link" />
+    <nav className="hidden items-center gap-1 md:flex">
+      {NAV_ITEMS.map(({ href, labelKey }) => {
+        const isActive = pathname === href || pathname.startsWith(`${href}/`)
+
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={cn(
+              'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              isActive
+                ? 'text-primary'
+                : 'text-muted-foreground hover:text-foreground',
+            )}
+          >
+            {t(labelKey)}
+          </Link>
+        )
       })}
-      <Link href="/search">
-        <span className="sr-only">Search</span>
-        <SearchIcon className="w-5 text-primary" />
-      </Link>
     </nav>
   )
 }
