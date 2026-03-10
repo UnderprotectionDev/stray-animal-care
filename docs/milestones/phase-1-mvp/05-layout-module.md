@@ -32,13 +32,13 @@ Build the site-wide layout components: Header (navigation, language switcher, se
 - `src/modules/layout/components/Logo.tsx`
 
 **Acceptance Criteria:**
-- [ ] Logo links to home page (`/[locale]`)
-- [ ] Navigation includes all main pages from PRD routing table
-- [ ] "Donate" CTA button is prominently styled (Terracotta)
-- [ ] Header is sticky on scroll
-- [ ] Desktop: full horizontal navigation visible
-- [ ] Mobile (< 768px): navigation collapses to hamburger icon
-- [ ] All nav text is translated via next-intl
+- [x] Logo links to home page (`/[locale]`)
+- [x] Navigation includes all main pages from PRD routing table
+- [x] "Donate" CTA button is prominently styled (Terracotta)
+- [x] Header is sticky on scroll
+- [x] Desktop: full horizontal navigation visible
+- [x] Mobile (< 768px): navigation collapses to hamburger icon
+- [x] All nav text is translated via next-intl
 
 ---
 
@@ -50,13 +50,13 @@ Build the site-wide layout components: Header (navigation, language switcher, se
 - `src/modules/layout/components/MobileMenu.tsx`
 
 **Acceptance Criteria:**
-- [ ] Menu slides in from right with smooth animation
-- [ ] All navigation links are present
-- [ ] Language switcher is included
-- [ ] "Donate" CTA is prominently displayed
-- [ ] Close button or outside-click dismisses the menu
-- [ ] Body scroll is locked when menu is open
-- [ ] Menu is accessible (focus trap, Escape key closes)
+- [x] Menu slides in from right with smooth animation
+- [x] All navigation links are present
+- [x] Language switcher is included
+- [x] "Donate" CTA is prominently displayed
+- [x] Close button or outside-click dismisses the menu
+- [x] Body scroll is locked when menu is open
+- [x] Menu is accessible (focus trap, Escape key closes)
 
 ---
 
@@ -68,10 +68,10 @@ Build the site-wide layout components: Header (navigation, language switcher, se
 - `src/modules/layout/components/LanguageSwitcher.tsx`
 
 **Acceptance Criteria:**
-- [ ] Clicking TR/EN switches the locale prefix in the URL
-- [ ] Current page path is preserved (e.g., `/tr/canlarimiz` → `/en/canlarimiz`)
-- [ ] Current locale is visually indicated (active state)
-- [ ] Works in both Header and MobileMenu
+- [x] Clicking TR/EN switches the locale prefix in the URL
+- [x] Current page path is preserved (e.g., `/tr/canlarimiz` → `/en/canlarimiz`)
+- [x] Current locale is visually indicated (active state)
+- [x] Works in both Header and MobileMenu
 
 ---
 
@@ -83,14 +83,14 @@ Build the site-wide layout components: Header (navigation, language switcher, se
 - `src/modules/layout/components/Footer.tsx`
 
 **Acceptance Criteria:**
-- [ ] IBAN is displayed with a copy button (uses CopyButton from shared)
-- [ ] Bank name and account holder are shown
-- [ ] PayPal/Wise links are displayed for international donors
-- [ ] WhatsApp, Instagram, phone, email links are present
-- [ ] Quick links section with key page navigation
-- [ ] Footer content is fetched from SiteSettings global
-- [ ] All text is translated via next-intl
-- [ ] IBAN is visible on every page (PRD requirement)
+- [x] IBAN is displayed with a copy button (uses CopyButton from shared)
+- [x] Bank name and account holder are shown
+- [x] PayPal/Wise links are displayed for international donors
+- [x] WhatsApp, Instagram, phone, email links are present
+- [x] Quick links section with key page navigation
+- [x] Footer content is fetched from SiteSettings global
+- [x] All text is translated via next-intl
+- [x] IBAN is visible on every page (PRD requirement)
 
 ---
 
@@ -102,10 +102,10 @@ Build the site-wide layout components: Header (navigation, language switcher, se
 - `src/modules/layout/components/Breadcrumb.tsx`
 
 **Acceptance Criteria:**
-- [ ] Shows hierarchy: Home > Section > Current Page
-- [ ] Links are functional and locale-aware
-- [ ] Structured data (BreadcrumbList JSON-LD) is included
-- [ ] Visually consistent with design system
+- [x] Shows hierarchy: Home > Section > Current Page
+- [x] Links are functional and locale-aware
+- [x] Structured data (BreadcrumbList JSON-LD) is included
+- [x] Visually consistent with design system
 
 ---
 
@@ -117,12 +117,12 @@ Build the site-wide layout components: Header (navigation, language switcher, se
 - `src/modules/layout/components/MobileDonateBar.tsx`
 
 **Acceptance Criteria:**
-- [ ] Visible only on mobile (< 768px)
-- [ ] Fixed at the bottom of the viewport
-- [ ] Styled with Terracotta CTA color
-- [ ] Links to `/[locale]/destek-ol`
-- [ ] Does not overlap with page content (proper spacing)
-- [ ] Text is translated
+- [x] Visible only on mobile (< 768px)
+- [x] Fixed at the bottom of the viewport
+- [x] Styled with Terracotta CTA color
+- [x] Links to `/[locale]/destek-ol`
+- [x] Does not overlap with page content (proper spacing)
+- [x] Text is translated
 
 ---
 
@@ -135,24 +135,24 @@ Build the site-wide layout components: Header (navigation, language switcher, se
 - `src/modules/layout/index.ts` (barrel exports)
 
 **Acceptance Criteria:**
-- [ ] Header renders at the top of every frontend page
-- [ ] Footer renders at the bottom of every frontend page
-- [ ] MobileDonateBar renders on mobile
-- [ ] SiteSettings data is fetched once in the layout (not per-page)
-- [ ] Layout passes locale context to all children
+- [x] Header renders at the top of every frontend page
+- [x] Footer renders at the bottom of every frontend page
+- [x] MobileDonateBar renders on mobile
+- [x] SiteSettings data is fetched once in the layout (not per-page)
+- [x] Layout passes locale context to all children
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] Header displays correctly on desktop and mobile
-- [ ] Mobile menu opens/closes smoothly with all links
-- [ ] Language switcher toggles locale and preserves current path
-- [ ] Footer IBAN copy button works and shows toast
-- [ ] Breadcrumb renders correct hierarchy on detail pages
-- [ ] Mobile donate CTA is visible only on mobile
-- [ ] All text is translated in both TR and EN
-- [ ] Footer data comes from SiteSettings (IBAN, contact, social links)
+- [x] Header displays correctly on desktop and mobile
+- [x] Mobile menu opens/closes smoothly with all links
+- [x] Language switcher toggles locale and preserves current path
+- [x] Footer IBAN copy button works and shows toast
+- [x] Breadcrumb renders correct hierarchy on detail pages
+- [x] Mobile donate CTA is visible only on mobile
+- [x] All text is translated in both TR and EN
+- [x] Footer data comes from SiteSettings (IBAN, contact, social links)
 
 ## Verification
 

@@ -33,9 +33,9 @@ None — this is the starting milestone.
 - `src/app/page.tsx`
 
 **Acceptance Criteria:**
-- [ ] `pnpm dev` starts the development server successfully
-- [ ] TypeScript strict mode is enabled
-- [ ] App Router is configured (not Pages Router)
+- [x] `pnpm dev` starts the development server successfully
+- [x] TypeScript strict mode is enabled
+- [x] App Router is configured (not Pages Router)
 
 ---
 
@@ -51,9 +51,9 @@ None — this is the starting milestone.
 - `src/app/(payload)/layout.tsx`
 
 **Acceptance Criteria:**
-- [ ] PayloadCMS admin panel is accessible at `/admin`
-- [ ] Payload API routes respond at `/api`
-- [ ] `payload.config.ts` has basic configuration (empty collections array)
+- [x] PayloadCMS admin panel is accessible at `/admin`
+- [x] Payload API routes respond at `/api`
+- [x] `payload.config.ts` has basic configuration (empty collections array)
 
 ---
 
@@ -66,9 +66,9 @@ None — this is the starting milestone.
 - `src/payload.config.ts` (db adapter config)
 
 **Acceptance Criteria:**
-- [ ] PayloadCMS connects to Neon PostgreSQL on startup
-- [ ] Database tables are auto-created by Payload migrations
-- [ ] `.env.local` is in `.gitignore`
+- [x] PayloadCMS connects to Neon PostgreSQL on startup
+- [x] Database tables are auto-created by Payload migrations
+- [x] `.env.local` is in `.gitignore`
 
 ---
 
@@ -81,8 +81,8 @@ None — this is the starting milestone.
 - `tailwind.config.ts` (if needed for v4)
 
 **Acceptance Criteria:**
-- [ ] Tailwind utility classes work in components
-- [ ] CSS file imports Tailwind layers (`@tailwind base`, `@tailwind components`, `@tailwind utilities` or v4 equivalent)
+- [x] Tailwind utility classes work in components
+- [x] CSS file imports Tailwind layers (`@tailwind base`, `@tailwind components`, `@tailwind utilities` or v4 equivalent)
 
 ---
 
@@ -95,10 +95,10 @@ None — this is the starting milestone.
 - `package.json` (scripts: `lint`, `format`, `check`)
 
 **Acceptance Criteria:**
-- [ ] `pnpm run lint` runs Biome linting
-- [ ] `pnpm run format` runs Biome formatting
-- [ ] `pnpm run check` runs both lint + format check
-- [ ] No ESLint or Prettier config files exist
+- [x] `pnpm run lint` runs Biome linting
+- [x] `pnpm run format` runs Biome formatting
+- [x] `pnpm run check` runs both lint + format check
+- [x] No ESLint or Prettier config files exist
 
 ---
 
@@ -133,9 +133,9 @@ None — this is the starting milestone.
 - `src/types/payload-types.ts`
 
 **Acceptance Criteria:**
-- [ ] All 18 module directories exist with `index.ts` barrel exports
-- [ ] `src/components/ui/` directory exists
-- [ ] `src/lib/` and `src/types/` directories exist with placeholder files
+- [x] All 18 module directories exist with `index.ts` barrel exports
+- [x] `src/components/ui/` directory exists
+- [x] `src/lib/` and `src/types/` directories exist with placeholder files
 
 ---
 
@@ -151,10 +151,10 @@ None — this is the starting milestone.
 - `src/app/global-error.tsx`
 
 **Acceptance Criteria:**
-- [ ] `(frontend)` route group serves the public site
-- [ ] `(payload)` route group serves the admin panel
-- [ ] `[locale]` dynamic segment exists for i18n routing
-- [ ] Error boundary pages render correctly
+- [x] `(frontend)` route group serves the public site
+- [x] `(payload)` route group serves the admin panel
+- [x] `[locale]` dynamic segment exists for i18n routing
+- [x] Error boundary pages render correctly
 
 ---
 
@@ -167,20 +167,20 @@ None — this is the starting milestone.
 - `package.json` (build script)
 
 **Acceptance Criteria:**
-- [ ] `pnpm run build` completes without errors
-- [ ] Project is deployable to Vercel
+- [x] `pnpm run build` completes without errors
+- [x] Project is deployable to Vercel
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] `pnpm dev` starts the app with no errors
-- [ ] PayloadCMS admin is accessible at `/admin`
-- [ ] Frontend renders at `/tr` (or default locale)
-- [ ] All 18 module directories exist
-- [ ] Biome linting passes with no errors
-- [ ] `pnpm run build` succeeds
-- [ ] `.env.local` is gitignored and documented in `.env.example`
+- [x] `pnpm dev` starts the app with no errors
+- [x] PayloadCMS admin is accessible at `/admin`
+- [x] Frontend renders at `/tr` (or default locale)
+- [x] All 18 module directories exist
+- [x] Biome linting passes with no errors
+- [x] `pnpm run build` succeeds
+- [x] `.env.local` is gitignored and documented in `.env.example`
 
 ## Verification
 

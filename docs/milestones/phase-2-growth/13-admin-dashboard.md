@@ -75,9 +75,9 @@ Enhance the PayloadCMS admin panel with custom dashboard widgets, quick actions,
 - `src/payload.config.ts` (collection versioning config)
 
 **Acceptance Criteria:**
-- [ ] BlogPosts support draft/published status (versions)
-- [ ] Animals support draft/published status
-- [ ] Admin can preview unpublished content
+- [x] BlogPosts support draft/published status (versions)
+- [x] Animals support draft/published status
+- [x] Admin can preview unpublished content
 
 ---
 

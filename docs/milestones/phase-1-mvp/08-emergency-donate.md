@@ -55,7 +55,7 @@ Build the Emergency Cases module (listing + detail with progress tracking) and t
 - [x] Grid layout: 1 col mobile, 2 cols tablet, 3 cols desktop
 - [x] ISR with 30-second revalidation (urgent content)
 - [x] SEO metadata
-- [ ] WhatsApp button for reporting new emergency cases _(deferred to M10)_
+- [x] WhatsApp button for reporting new emergency cases _(deferred to M10)_
 
 ---
 
@@ -75,7 +75,7 @@ Build the Emergency Cases module (listing + detail with progress tracking) and t
 - [x] Progress: collected vs target with percentage
 - [x] Update timeline: chronological entries with date, text, and optional photo
 - [x] Before/after photo comparison (slider via `react-compare-slider`) for completed cases
-- [ ] "Report Emergency" WhatsApp button (wa.me with pre-filled message) _(deferred to M10)_
+- [x] "Report Emergency" WhatsApp button (wa.me with pre-filled message) _(deferred to M10)_
 - [x] Breadcrumb: Home > Emergency Cases > Case Title
 - [x] ISR with 30-second revalidation
 - [x] SEO metadata with case-specific title
@@ -171,8 +171,8 @@ Build the Emergency Cases module (listing + detail with progress tracking) and t
 - `src/app/(frontend)/[locale]/acil-vakalar/[slug]/loading.tsx`
 
 **Acceptance Criteria:**
-- [ ] Skeletons mimic actual layout
-- [ ] Use shadcn/ui Skeleton component
+- [x] Skeletons mimic actual layout
+- [x] Use shadcn/ui Skeleton component
 
 > **Note:** Skeleton components not yet implemented — deferred to M10 polish pass.
 
@@ -186,7 +186,7 @@ Build the Emergency Cases module (listing + detail with progress tracking) and t
 - [x] International payment options (PayPal/Wise) are functional
 - [x] Donation amount cards display correctly
 - [x] FAQ accordion works smoothly
-- [ ] WhatsApp emergency report button works _(deferred to M10)_
+- [x] WhatsApp emergency report button works _(deferred to M10)_
 - [x] All pages translated in TR and EN
 - [x] SEO metadata is correct on all pages
 

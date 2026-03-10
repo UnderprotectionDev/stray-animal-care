@@ -29,11 +29,11 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 - `public/fonts/` (if local font files needed)
 
 **Acceptance Criteria:**
-- [ ] Plus Jakarta Sans renders for headings
-- [ ] Inter renders for body text
-- [ ] Caveat renders for accent/handwritten text
-- [ ] Fonts load without layout shift (CLS < 0.1)
-- [ ] `next/font` handles optimization automatically
+- [x] Plus Jakarta Sans renders for headings
+- [x] Inter renders for body text
+- [x] Caveat renders for accent/handwritten text
+- [x] Fonts load without layout shift (CLS < 0.1)
+- [x] `next/font` handles optimization automatically
 
 ---
 
@@ -46,10 +46,10 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 - `tailwind.config.ts` (theme extension, if needed for v4)
 
 **Acceptance Criteria:**
-- [ ] `bg-primary`, `text-primary`, `bg-secondary`, `bg-cta` classes work
-- [ ] Amber, Sage Green, Terracotta, and neutral shades are available (50–950)
-- [ ] Semantic colors (success, warning, error, info) are defined
-- [ ] Colors meet WCAG 2.1 AA contrast ratios for text
+- [x] `bg-primary`, `text-primary`, `bg-secondary`, `bg-cta` classes work
+- [x] Amber, Sage Green, Terracotta, and neutral shades are available (50–950)
+- [x] Semantic colors (success, warning, error, info) are defined
+- [x] Colors meet WCAG 2.1 AA contrast ratios for text
 
 ---
 
@@ -72,10 +72,10 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 - `src/lib/utils.ts` (cn helper)
 
 **Acceptance Criteria:**
-- [ ] `components.json` is configured with project's theme
-- [ ] All listed base components are installed and importable
-- [ ] `cn()` utility function works for className merging
-- [ ] Components render with the custom color tokens
+- [x] `components.json` is configured with project's theme
+- [x] All listed base components are installed and importable
+- [x] `cn()` utility function works for className merging
+- [x] Components render with the custom color tokens
 
 ---
 
@@ -94,11 +94,11 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 - `src/modules/shared/index.ts` (barrel exports)
 
 **Acceptance Criteria:**
-- [ ] All shared components are importable from `@/modules/shared`
-- [ ] Components use the design system tokens (fonts, colors, spacing)
-- [ ] CopyButton copies text and shows a toast notification
-- [ ] WhatsAppButton generates correct `wa.me` URLs
-- [ ] StatusBadge renders different colors per status
+- [x] All shared components are importable from `@/modules/shared`
+- [x] Components use the design system tokens (fonts, colors, spacing)
+- [x] CopyButton copies text and shows a toast notification
+- [x] WhatsAppButton generates correct `wa.me` URLs
+- [x] StatusBadge renders different colors per status
 
 ---
 
@@ -110,21 +110,21 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 - `src/app/globals.css` (CSS custom properties for spacing, radius, shadows)
 
 **Acceptance Criteria:**
-- [ ] Consistent spacing scale is used across components
-- [ ] Border-radius tokens match design (rounded-sm, rounded-md, rounded-lg, rounded-full)
-- [ ] Shadow tokens are defined for cards, modals, and dropdowns
-- [ ] Responsive breakpoints match target: 320px–1920px
+- [x] Consistent spacing scale is used across components
+- [x] Border-radius tokens match design (rounded-sm, rounded-md, rounded-lg, rounded-full)
+- [x] Shadow tokens are defined for cards, modals, and dropdowns
+- [x] Responsive breakpoints match target: 320px–1920px
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] All three fonts render correctly on a test page
-- [ ] Color tokens are available as Tailwind classes
-- [ ] shadcn/ui components render with custom theme
-- [ ] Shared components are importable and functional
-- [ ] No Tailwind CSS build warnings
-- [ ] WCAG 2.1 AA color contrast is met for all text/background combinations
+- [x] All three fonts render correctly on a test page
+- [x] Color tokens are available as Tailwind classes
+- [x] shadcn/ui components render with custom theme
+- [x] Shared components are importable and functional
+- [x] No Tailwind CSS build warnings
+- [x] WCAG 2.1 AA color contrast is met for all text/background combinations
 
 ## Verification
 

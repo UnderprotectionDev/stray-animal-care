@@ -29,11 +29,11 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/modules/media/index.ts`
 
 **Acceptance Criteria:**
-- [ ] Upload accepts PNG, JPEG, WebP, SVG, and PDF
-- [ ] Three image sizes generated: thumbnail (300x300), card (600x400), hero (1920x1080)
-- [ ] `alt` field is required and localized (TR/EN)
-- [ ] Max file size is enforced (5MB)
-- [ ] Media appears in admin panel under appropriate group
+- [x] Upload accepts PNG, JPEG, WebP, SVG, and PDF
+- [x] Three image sizes generated: thumbnail (300x300), card (600x400), hero (1920x1080)
+- [x] `alt` field is required and localized (TR/EN)
+- [x] Max file size is enforced (5MB)
+- [x] Media appears in admin panel under appropriate group
 
 ---
 
@@ -46,13 +46,13 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/modules/animals/index.ts`
 
 **Acceptance Criteria:**
-- [ ] All fields match PRD schema (name, slug, type, age, gender, status, photos, story, needs, featured)
-- [ ] `name`, `age`, `story`, `needs` fields are localized
-- [ ] `slug` is unique and required
-- [ ] `type` select: `kedi`, `kopek`
-- [ ] `status` select: `tedavide`, `kalici-bakim`, `acil`
-- [ ] `photos` is a hasMany upload relationship to Media
-- [ ] SEO plugin fields are included
+- [x] All fields match PRD schema (name, slug, type, age, gender, status, photos, story, needs, featured)
+- [x] `name`, `age`, `story`, `needs` fields are localized
+- [x] `slug` is unique and required
+- [x] `type` select: `kedi`, `kopek`
+- [x] `status` select: `tedavide`, `kalici-bakim`, `acil`
+- [x] `photos` is a hasMany upload relationship to Media
+- [x] SEO plugin fields are included
 
 ---
 
@@ -65,12 +65,12 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/modules/blog/index.ts`
 
 **Acceptance Criteria:**
-- [ ] All fields match PRD schema (title, slug, category, tags, date, content, coverImage, excerpt, published)
-- [ ] `title`, `content`, `excerpt` fields are localized
-- [ ] `tags` is an array of text fields
-- [ ] `category` options: `kurtarma`, `tedavi`, `gunluk`, `duyuru`, `etkinlik`
-- [ ] `published` checkbox defaults to `false`
-- [ ] SEO plugin fields are included
+- [x] All fields match PRD schema (title, slug, category, tags, date, content, coverImage, excerpt, published)
+- [x] `title`, `content`, `excerpt` fields are localized
+- [x] `tags` is an array of text fields
+- [x] `category` options: `kurtarma`, `tedavi`, `gunluk`, `duyuru`, `etkinlik`
+- [x] `published` checkbox defaults to `false`
+- [x] SEO plugin fields are included
 
 ---
 
@@ -83,12 +83,12 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/modules/emergency/index.ts`
 
 **Acceptance Criteria:**
-- [ ] All fields match PRD schema (title, animal, slug, description, targetAmount, collectedAmount, status, updates, photos, beforePhoto, afterPhoto)
-- [ ] `title`, `description` fields are localized
-- [ ] `updates` array has date, text (localized richText), and photo fields
-- [ ] `animal` is a relationship to the Animals collection
-- [ ] `status` options: `aktif`, `tamamlandi`
-- [ ] `collectedAmount` defaults to 0
+- [x] All fields match PRD schema (title, animal, slug, description, targetAmount, collectedAmount, status, updates, photos, beforePhoto, afterPhoto)
+- [x] `title`, `description` fields are localized
+- [x] `updates` array has date, text (localized richText), and photo fields
+- [x] `animal` is a relationship to the Animals collection
+- [x] `status` options: `aktif`, `tamamlandi`
+- [x] `collectedAmount` defaults to 0
 
 ---
 
@@ -101,10 +101,10 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/modules/supplies/index.ts`
 
 **Acceptance Criteria:**
-- [ ] All fields match PRD schema (productName, brandDetail, urgency, stockStatus, order)
-- [ ] `productName`, `brandDetail`, `stockStatus` fields are localized
-- [ ] `urgency` options: `acil`, `orta`, `yeterli`
-- [ ] `order` field allows manual sorting
+- [x] All fields match PRD schema (productName, brandDetail, urgency, stockStatus, order)
+- [x] `productName`, `brandDetail`, `stockStatus` fields are localized
+- [x] `urgency` options: `acil`, `orta`, `yeterli`
+- [x] `order` field allows manual sorting
 
 ---
 
@@ -117,10 +117,10 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/modules/transparency/index.ts`
 
 **Acceptance Criteria:**
-- [ ] All fields match PRD schema (month, title, expenses array, totalExpense, totalDonation, documents, donorList)
-- [ ] `title`, `expenses.category` fields are localized
-- [ ] `documents` is a hasMany upload relationship to Media
-- [ ] `expenses` is an array with category and amount
+- [x] All fields match PRD schema (month, title, expenses array, totalExpense, totalDonation, documents, donorList)
+- [x] `title`, `expenses.category` fields are localized
+- [x] `documents` is a hasMany upload relationship to Media
+- [x] `expenses` is an array with category and amount
 
 ---
 
@@ -133,9 +133,9 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/modules/settings/index.ts`
 
 **Acceptance Criteria:**
-- [ ] All fields match PRD schema (bankName, accountHolder, iban, phone, email, whatsapp, instagram, paypalLink, wiseLink, stats group)
-- [ ] Stats group includes: catsCount, dogsCount, treatedCount, spayedCount, vaccinatedCount
-- [ ] Global is accessible in admin panel under "Settings" group
+- [x] All fields match PRD schema (bankName, accountHolder, iban, phone, email, whatsapp, instagram, paypalLink, wiseLink, stats group)
+- [x] Stats group includes: catsCount, dogsCount, treatedCount, spayedCount, vaccinatedCount
+- [x] Global is accessible in admin panel under "Settings" group
 
 ---
 
@@ -147,10 +147,10 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/payload.config.ts`
 
 **Acceptance Criteria:**
-- [ ] All 6 collections are registered in the config
-- [ ] SiteSettings global is registered
-- [ ] Admin navigation groups: Content (Animals, Blog Posts, Emergency Cases), Support (Needs List), Reports (Transparency Reports), Settings (Site Settings)
-- [ ] PayloadCMS SEO plugin is installed and configured
+- [x] All 6 collections are registered in the config
+- [x] SiteSettings global is registered
+- [x] Admin navigation groups: Content (Animals, Blog Posts, Emergency Cases), Support (Needs List), Reports (Transparency Reports), Settings (Site Settings)
+- [x] PayloadCMS SEO plugin is installed and configured
 
 ---
 
@@ -162,9 +162,9 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/payload.config.ts` (plugin config)
 
 **Acceptance Criteria:**
-- [ ] SEO plugin is installed
-- [ ] SEO fields (title, description, image) appear in Animals, BlogPosts, EmergencyCases collections
-- [ ] Generated types include SEO fields
+- [x] SEO plugin is installed
+- [x] SEO fields (title, description, image) appear in Animals, BlogPosts, EmergencyCases collections
+- [x] Generated types include SEO fields
 
 ---
 
@@ -176,9 +176,9 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `src/types/payload-types.ts` (auto-generated)
 
 **Acceptance Criteria:**
-- [ ] `pnpm run generate:types` produces `payload-types.ts`
-- [ ] All collections and globals have corresponding TypeScript interfaces
-- [ ] Types are importable throughout the project
+- [x] `pnpm run generate:types` produces `payload-types.ts`
+- [x] All collections and globals have corresponding TypeScript interfaces
+- [x] Types are importable throughout the project
 
 ---
 
@@ -196,24 +196,24 @@ Define all 6 PayloadCMS collections and the SiteSettings global with full field 
 - `package.json` (add `seed` script)
 
 **Acceptance Criteria:**
-- [ ] `pnpm run seed` populates the database with sample data
-- [ ] At least 4 animals (2 cats, 2 dogs) with both TR and EN content
-- [ ] At least 2 blog posts with both locales
-- [ ] At least 2 emergency cases (1 active, 1 completed)
-- [ ] At least 4 needs list items with varying urgency
-- [ ] SiteSettings populated with placeholder IBAN, contact, and stats
+- [x] `pnpm run seed` populates the database with sample data
+- [x] At least 4 animals (2 cats, 2 dogs) with both TR and EN content
+- [x] At least 2 blog posts with both locales
+- [x] At least 2 emergency cases (1 active, 1 completed)
+- [x] At least 4 needs list items with varying urgency
+- [x] SiteSettings populated with placeholder IBAN, contact, and stats
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] All 6 collections are visible in the admin panel
-- [ ] SiteSettings global is editable in the admin panel
-- [ ] Localized fields show TR/EN tabs in admin
-- [ ] Seed data is loaded and visible
-- [ ] TypeScript types are generated and match the schemas
-- [ ] Media uploads work (image upload, resize, alt text)
-- [ ] Admin navigation groups are correctly organized
+- [x] All 6 collections are visible in the admin panel
+- [x] SiteSettings global is editable in the admin panel
+- [x] Localized fields show TR/EN tabs in admin
+- [x] Seed data is loaded and visible
+- [x] TypeScript types are generated and match the schemas
+- [x] Media uploads work (image upload, resize, alt text)
+- [x] Admin navigation groups are correctly organized
 
 ## Verification
 

@@ -189,15 +189,15 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 - `.env.example` (document all env vars)
 
 **Acceptance Criteria:**
-- [ ] `pnpm run build` succeeds with no errors or warnings
-- [ ] Vercel deployment succeeds
-- [ ] All environment variables are configured in Vercel
-- [ ] PostgreSQL (Neon) connection works in production
-- [ ] All pages render correctly in production
-- [ ] Admin panel is accessible at `/admin`
-- [ ] ISR revalidation works in production
-- [ ] Vercel Analytics is active
-- [ ] Preview deployments work for future PRs
+- [x] `pnpm run build` succeeds with no errors or warnings
+- [x] Vercel deployment succeeds
+- [x] All environment variables are configured in Vercel
+- [x] PostgreSQL (Neon) connection works in production
+- [x] All pages render correctly in production
+- [x] Admin panel is accessible at `/admin`
+- [x] ISR revalidation works in production
+- [x] Vercel Analytics is active
+- [x] Preview deployments work for future PRs
 
 ---
 

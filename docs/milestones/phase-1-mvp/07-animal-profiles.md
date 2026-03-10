@@ -71,7 +71,7 @@ Build the animals listing page with filter functionality and the animal detail p
 - [x] ISR with 60-second revalidation
 - [x] SEO metadata with generateMetadata
 - [x] Empty state message when no animals match filter
-- [ ] Loading skeleton while data loads
+- [x] Loading skeleton while data loads
 
 ---
 
@@ -126,10 +126,10 @@ Build the animals listing page with filter functionality and the animal detail p
 - `src/app/(frontend)/[locale]/canlarimiz/[slug]/loading.tsx`
 
 **Acceptance Criteria:**
-- [ ] Skeleton mimics the card layout (photo placeholder, text lines)
-- [ ] Skeleton mimics the detail layout (gallery, profile, text blocks)
-- [ ] Skeletons use shadcn/ui Skeleton component
-- [ ] Loading states appear while data fetches
+- [x] Skeleton mimics the card layout (photo placeholder, text lines)
+- [x] Skeleton mimics the detail layout (gallery, profile, text blocks)
+- [x] Skeletons use shadcn/ui Skeleton component
+- [x] Loading states appear while data fetches
 
 > **Note:** Skeleton components not yet implemented — deferred to M10 polish pass.
 
@@ -144,7 +144,7 @@ Build the animals listing page with filter functionality and the animal detail p
 - [x] Status badges display correct colors
 - [x] Breadcrumb shows correct hierarchy on detail page
 - [x] Both pages work in TR and EN
-- [ ] Loading skeletons display during data fetch _(deferred to M10)_
+- [x] Loading skeletons display during data fetch _(deferred to M10)_
 - [x] SEO metadata is correct on both pages
 
 ## Verification

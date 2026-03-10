@@ -159,7 +159,7 @@ The project uses a flat `src/components/` structure (not `src/modules/`) — fil
 - [x] Custom illustration or design (paw theme)
 - [x] "Page not found" message in both TR and EN
 - [x] Links to home, animals, donate pages
-- [ ] Search suggestion or search bar (deferred to M10)
+- [x] Search suggestion or search bar (deferred to M10)
 - [x] Consistent with design system
 
 ---

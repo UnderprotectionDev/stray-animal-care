@@ -28,10 +28,10 @@ Set up bilingual (Turkish/English) support using next-intl for frontend content 
 - `src/i18n/request.ts` (getRequestConfig for next-intl)
 
 **Acceptance Criteria:**
-- [ ] next-intl is installed as a dependency
-- [ ] Supported locales: `['tr', 'en']`
-- [ ] Default locale: `tr`
-- [ ] Configuration exports are type-safe
+- [x] next-intl is installed as a dependency
+- [x] Supported locales: `['tr', 'en']`
+- [x] Default locale: `tr`
+- [x] Configuration exports are type-safe
 
 ---
 
@@ -43,12 +43,12 @@ Set up bilingual (Turkish/English) support using next-intl for frontend content 
 - `src/middleware.ts`
 
 **Acceptance Criteria:**
-- [ ] `/` redirects to `/tr` (default locale)
-- [ ] `/en/...` serves English content
-- [ ] `/tr/...` serves Turkish content
-- [ ] Unknown locales return 404
-- [ ] `/admin` paths are excluded from locale routing
-- [ ] `/api` paths are excluded from locale routing
+- [x] `/` redirects to `/tr` (default locale)
+- [x] `/en/...` serves English content
+- [x] `/tr/...` serves Turkish content
+- [x] Unknown locales return 404
+- [x] `/admin` paths are excluded from locale routing
+- [x] `/api` paths are excluded from locale routing
 
 ---
 
@@ -61,11 +61,11 @@ Set up bilingual (Turkish/English) support using next-intl for frontend content 
 - `src/i18n/en.json`
 
 **Acceptance Criteria:**
-- [ ] Both files have identical key structures
-- [ ] Keys are organized by module: `home.*`, `layout.*`, `animals.*`, `donate.*`, etc.
-- [ ] Common strings are under `common.*` namespace
-- [ ] All static UI text from the PRD is included
-- [ ] Interpolation variables are used where needed (e.g., `{count}`)
+- [x] Both files have identical key structures
+- [x] Keys are organized by module: `home.*`, `layout.*`, `animals.*`, `donate.*`, etc.
+- [x] Common strings are under `common.*` namespace
+- [x] All static UI text from the PRD is included
+- [x] Interpolation variables are used where needed (e.g., `{count}`)
 
 ---
 
@@ -77,10 +77,10 @@ Set up bilingual (Turkish/English) support using next-intl for frontend content 
 - `src/payload.config.ts` (localization config)
 
 **Acceptance Criteria:**
-- [ ] PayloadCMS localization is enabled with `locales: ['tr', 'en']`
-- [ ] Default locale is `tr`
-- [ ] Fallback locale is `tr`
-- [ ] Admin UI shows locale switcher for localized fields
+- [x] PayloadCMS localization is enabled with `locales: ['tr', 'en']`
+- [x] Default locale is `tr`
+- [x] Fallback locale is `tr`
+- [x] Admin UI shows locale switcher for localized fields
 
 ---
 
@@ -93,10 +93,10 @@ Set up bilingual (Turkish/English) support using next-intl for frontend content 
 - `src/modules/shared/hooks/useLocale.ts` (locale access hook)
 
 **Acceptance Criteria:**
-- [ ] `Link` component from `@/i18n/navigation` handles locale prefixing
-- [ ] Server components can access translations via `getTranslations()`
-- [ ] Client components can access translations via `useTranslations()`
-- [ ] Locale-aware `redirect()` function works correctly
+- [x] `Link` component from `@/i18n/navigation` handles locale prefixing
+- [x] Server components can access translations via `getTranslations()`
+- [x] Client components can access translations via `useTranslations()`
+- [x] Locale-aware `redirect()` function works correctly
 
 ---
 
@@ -109,22 +109,22 @@ Set up bilingual (Turkish/English) support using next-intl for frontend content 
 - `src/app/(frontend)/[locale]/page.tsx`
 
 **Acceptance Criteria:**
-- [ ] Layout wraps children with `NextIntlClientProvider`
-- [ ] `generateStaticParams()` returns both `tr` and `en`
-- [ ] Page renders translated content based on locale
-- [ ] HTML `lang` attribute is set correctly
+- [x] Layout wraps children with `NextIntlClientProvider`
+- [x] `generateStaticParams()` returns both `tr` and `en`
+- [x] Page renders translated content based on locale
+- [x] HTML `lang` attribute is set correctly
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] Navigating to `/tr` renders Turkish content
-- [ ] Navigating to `/en` renders English content
-- [ ] `/` redirects to `/tr`
-- [ ] `/admin` is not affected by locale routing
-- [ ] Both TR and EN translation files compile without errors
-- [ ] PayloadCMS admin shows locale switcher for localized fields
-- [ ] All translation keys are type-safe (no missing key errors)
+- [x] Navigating to `/tr` renders Turkish content
+- [x] Navigating to `/en` renders English content
+- [x] `/` redirects to `/tr`
+- [x] `/admin` is not affected by locale routing
+- [x] Both TR and EN translation files compile without errors
+- [x] PayloadCMS admin shows locale switcher for localized fields
+- [x] All translation keys are type-safe (no missing key errors)
 
 ## Verification
 
