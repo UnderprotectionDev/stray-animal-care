@@ -54,5 +54,92 @@
     "title": "Search",
     "placeholder": "Search...",
     "noResults": "No results found."
+  },
+  "home": {
+    "meta": {
+      "title": "Paws of Hope — Hope for Stray Animals",
+      "description": "Helping stray animals find care, treatment, and loving homes."
+    },
+    "hero": {
+      "headline": "Hope for Every Soul",
+      "subtitle": "Together, we provide treatment, care, and a loving life for stray animals.",
+      "ctaDonate": "Donate",
+      "ctaEmergency": "Emergencies"
+    },
+    "stats": {
+      "title": "By the Numbers",
+      "cats": "Cats",
+      "dogs": "Dogs",
+      "treated": "Treated",
+      "spayed": "Spayed/Neutered",
+      "vaccinated": "Vaccinated"
+    },
+    "featured": {
+      "animalsTitle": "Our Animals",
+      "animalsViewAll": "View All",
+      "emergenciesTitle": "Active Emergencies",
+      "emergenciesViewAll": "View All",
+      "animalType": {
+        "kedi": "Cat",
+        "kopek": "Dog"
+      },
+      "animalStatus": {
+        "tedavide": "In Treatment",
+        "kalici-bakim": "In Permanent Care",
+        "acil": "Emergency"
+      }
+    },
+    "support": {
+      "title": "How Can You Help?",
+      "iban": "Donate via IBAN",
+      "international": "International Support",
+      "supplies": "Supply Donations",
+      "suppliesPlaceholder": "Coming soon — check back for needed supplies.",
+      "volunteer": "Volunteer"
+    },
+    "supporters": {
+      "title": "What Our Supporters Say"
+    },
+    "posts": {
+      "title": "Recent Posts",
+      "viewAll": "All Posts",
+      "readMore": "Read More"
+    },
+    "instagram": {
+      "title": "Follow Us on Instagram",
+      "followUs": "Follow Us"
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact — Paws of Hope",
+      "description": "Get in touch with us via WhatsApp, phone, email, or Instagram."
+    },
+    "title": "Contact",
+    "subtitle": "Don't hesitate to reach out to us.",
+    "whatsapp": {
+      "label": "WhatsApp",
+      "description": "Send us a message on WhatsApp.",
+      "message": "Hello, I'd like to learn more about Paws of Hope."
+    },
+    "phone": {
+      "label": "Phone",
+      "description": "Give us a call."
+    },
+    "email": {
+      "label": "Email",
+      "description": "Send us an email."
+    },
+    "instagram": {
+      "label": "Instagram",
+      "description": "Follow us on Instagram."
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist or may have been moved.",
+    "goHome": "Go Home",
+    "viewAnimals": "Our Animals",
+    "donate": "Donate"
   }
 }

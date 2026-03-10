@@ -48,13 +48,13 @@
 
 **Weeks 3-4: Layout & Core Pages**
 
-- [ ] Header (navigation, language switcher, search, "Bagis Yap" (Donate) CTA)
-- [ ] Footer (IBAN, social media, quick links)
-- [ ] Home Page (hero, statistics, sections)
-- [ ] Hikayem (My Story) page
+- [x] Header (navigation, language switcher, search, "Bagis Yap" (Donate) CTA)
+- [x] Footer (IBAN, social media, quick links)
+- [x] Home Page (hero, statistics, sections)
+- [x] Hikayem (My Story) page
 - [ ] Destek Ol (Donate) page (IBAN copy, donation cards)
-- [ ] Iletisim (Contact) page
-- [ ] Custom 404 & error pages
+- [x] Iletisim (Contact) page
+- [x] Custom 404 & error pages
 
 **Weeks 5-6: Content Pages**
 

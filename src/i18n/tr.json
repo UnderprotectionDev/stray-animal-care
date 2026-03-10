@@ -54,5 +54,92 @@
     "title": "Arama",
     "placeholder": "Ara...",
     "noResults": "Sonuç bulunamadı."
+  },
+  "home": {
+    "meta": {
+      "title": "Paws of Hope — Sokak Hayvanlarına Umut",
+      "description": "Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz."
+    },
+    "hero": {
+      "headline": "Her Cana Bir Umut",
+      "subtitle": "Sokak hayvanlarının tedavisi, bakımı ve sevgi dolu bir yaşam için birlikte çalışıyoruz.",
+      "ctaDonate": "Destek Ol",
+      "ctaEmergency": "Acil Durumlar"
+    },
+    "stats": {
+      "title": "Rakamlarla Biz",
+      "cats": "Kedi",
+      "dogs": "Köpek",
+      "treated": "Tedavi Edilen",
+      "spayed": "Kısırlaştırılan",
+      "vaccinated": "Aşılanan"
+    },
+    "featured": {
+      "animalsTitle": "Canlarımız",
+      "animalsViewAll": "Tümünü Gör",
+      "emergenciesTitle": "Aktif Acil Durumlar",
+      "emergenciesViewAll": "Tümünü Gör",
+      "animalType": {
+        "kedi": "Kedi",
+        "kopek": "Köpek"
+      },
+      "animalStatus": {
+        "tedavide": "Tedavide",
+        "kalici-bakim": "Kalıcı Bakım",
+        "acil": "Acil"
+      }
+    },
+    "support": {
+      "title": "Nasıl Destek Olabilirsiniz?",
+      "iban": "IBAN ile Bağış",
+      "international": "Uluslararası Destek",
+      "supplies": "Malzeme Desteği",
+      "suppliesPlaceholder": "Yakında — ihtiyaç listesi güncellenecek.",
+      "volunteer": "Gönüllü Ol"
+    },
+    "supporters": {
+      "title": "Destekçilerimiz Ne Diyor?"
+    },
+    "posts": {
+      "title": "Son Yazılar",
+      "viewAll": "Tüm Yazılar",
+      "readMore": "Devamını Oku"
+    },
+    "instagram": {
+      "title": "Instagram'da Biz",
+      "followUs": "Takip Et"
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "İletişim — Paws of Hope",
+      "description": "Bizimle iletişime geçin. WhatsApp, telefon, e-posta veya Instagram üzerinden ulaşabilirsiniz."
+    },
+    "title": "İletişim",
+    "subtitle": "Bizimle iletişime geçmekten çekinmeyin.",
+    "whatsapp": {
+      "label": "WhatsApp",
+      "description": "Bize WhatsApp üzerinden yazın.",
+      "message": "Merhaba, Paws of Hope hakkında bilgi almak istiyorum."
+    },
+    "phone": {
+      "label": "Telefon",
+      "description": "Bizi arayabilirsiniz."
+    },
+    "email": {
+      "label": "E-posta",
+      "description": "E-posta gönderin."
+    },
+    "instagram": {
+      "label": "Instagram",
+      "description": "Bizi Instagram'da takip edin."
+    }
+  },
+  "notFound": {
+    "title": "Sayfa Bulunamadı",
+    "message": "Aradığınız sayfa mevcut değil veya taşınmış olabilir.",
+    "goHome": "Ana Sayfaya Git",
+    "viewAnimals": "Canlarımız",
+    "donate": "Destek Ol"
   }
 }

@@ -1,5 +1,7 @@
 # M6: Core Pages (Home, Story, Contact)
 
+> **Status: Done ✅** — Completed 2026-03-10
+
 ## Description
 
 Build the three core pages — Home (hero, stats, sections), Story (personal narrative), and Contact (WhatsApp, phone, email) — plus the custom 404 page. These are the essential entry points for visitors.
@@ -16,6 +18,10 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 - Custom 404 page ("lost paw" design)
 - WhatsApp integration for contact and volunteer
 
+## Implementation Notes
+
+The project uses a flat `src/components/` structure (not `src/modules/`) — file paths below reflect the actual implementation. The Story page is built via CMS page builder using TimelineBlock and MissionBlock rather than a dedicated route, allowing content editors to manage it through the admin panel.
+
 ## Tasks
 
 ### T6.1: Build Home page — Hero section
@@ -23,15 +29,15 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 **What:** Create the hero section with a large emotional image, headline, subtitle, and two CTA buttons ("Donate" and "Emergency Cases").
 
 **Files:**
-- `src/modules/home/components/Hero.tsx`
+- `src/components/home/HomeHero.tsx`
 - `src/app/(frontend)/[locale]/page.tsx`
 
 **Acceptance Criteria:**
-- [ ] Full-width hero with background image
-- [ ] Headline and subtitle text are translated
-- [ ] Two CTA buttons link to donate and emergency pages
-- [ ] Responsive: stacks vertically on mobile
-- [ ] Image is optimized with Next.js Image component
+- [x] Full-width hero with background image
+- [x] Headline and subtitle text are translated
+- [x] Two CTA buttons link to donate and emergency pages
+- [x] Responsive: stacks vertically on mobile
+- [x] Image is optimized with Next.js Image component
 
 ---
 
@@ -40,13 +46,13 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 **What:** Create animated stat counters showing cats, dogs, treated, spayed, and vaccinated counts from SiteSettings.
 
 **Files:**
-- `src/modules/home/components/StatsSection.tsx`
+- `src/components/home/StatsSection.tsx`
 
 **Acceptance Criteria:**
-- [ ] Displays catsCount, dogsCount, treatedCount, spayedCount, vaccinatedCount
-- [ ] Numbers animate (count-up) when scrolled into view
-- [ ] Data comes from SiteSettings global
-- [ ] Responsive grid layout (2 cols mobile, 5 cols desktop)
+- [x] Displays catsCount, dogsCount, treatedCount, spayedCount, vaccinatedCount
+- [x] Numbers animate (count-up) when scrolled into view
+- [x] Data comes from SiteSettings global
+- [x] Responsive grid layout (2 cols mobile, 5 cols desktop)
 
 ---
 
@@ -55,18 +61,18 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 **What:** Create sections for featured animals, active emergency cases, recent blog posts, and support method cards. Each section links to its full page.
 
 **Files:**
-- `src/modules/home/components/FeaturedAnimals.tsx`
-- `src/modules/home/components/ActiveEmergencies.tsx`
-- `src/modules/home/components/RecentPosts.tsx`
-- `src/modules/home/components/SupportCards.tsx`
+- `src/components/home/FeaturedAnimals.tsx`
+- `src/components/home/ActiveEmergencies.tsx`
+- `src/components/home/RecentPosts.tsx`
+- `src/components/home/SupportCards.tsx`
 
 **Acceptance Criteria:**
-- [ ] Featured animals shows up to 4 animals marked as `featured`
-- [ ] Active emergencies shows up to 3 cases with status `aktif`
-- [ ] Recent posts shows latest 3 published blog posts
-- [ ] Support cards show donation methods (IBAN, PayPal/Wise, supplies, volunteer)
-- [ ] Each section has a "View All" link to the full page
-- [ ] Data fetched from PayloadCMS local API
+- [x] Featured animals shows up to 4 animals marked as `featured`
+- [x] Active emergencies shows up to 3 cases with status `aktif`
+- [x] Recent posts shows latest 3 published blog posts
+- [x] Support cards show donation methods (IBAN, PayPal/Wise, supplies, volunteer)
+- [x] Each section has a "View All" link to the full page
+- [x] Data fetched from PayloadCMS local API
 
 ---
 
@@ -75,13 +81,14 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 **What:** Display approved supporter testimonials in a carousel or grid.
 
 **Files:**
-- `src/modules/home/components/SupporterComments.tsx`
+- `src/components/home/SupporterCommentsSection.tsx`
+- `src/components/home/SupporterCommentsCarousel.tsx`
 
 **Acceptance Criteria:**
-- [ ] Only shows comments where `approved: true`
-- [ ] Displays name, date, and comment text
-- [ ] Carousel on mobile, grid on desktop
-- [ ] Data from SupporterComments collection
+- [x] Only shows comments where `approved: true`
+- [x] Displays name, date, and comment text
+- [x] Carousel on mobile, grid on desktop
+- [x] Data from SupporterComments collection
 
 ---
 
@@ -90,13 +97,13 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 **What:** Create a placeholder section for the Instagram feed (actual API integration in M10). Shows static placeholder images for now.
 
 **Files:**
-- `src/modules/home/components/InstagramFeed.tsx`
+- `src/components/home/InstagramFeedPlaceholder.tsx`
 
 **Acceptance Criteria:**
-- [ ] Grid layout for 6–9 posts
-- [ ] Placeholder images with Instagram icon overlay
-- [ ] "Follow us" link to Instagram profile
-- [ ] Ready for API integration in M10
+- [x] Grid layout for 6–9 posts
+- [x] Placeholder images with Instagram icon overlay
+- [x] "Follow us" link to Instagram profile
+- [x] Ready for API integration in M10
 
 ---
 
@@ -106,36 +113,35 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 
 **Files:**
 - `src/app/(frontend)/[locale]/page.tsx`
-- `src/modules/home/index.ts`
 
 **Acceptance Criteria:**
-- [ ] All sections render in correct order
-- [ ] ISR with 60-second revalidation
-- [ ] SEO metadata (generateMetadata) is set
-- [ ] Page is thin — all UI in module components
+- [x] All sections render in correct order
+- [x] ISR with 60-second revalidation
+- [x] SEO metadata (generateMetadata) is set
+- [x] Page is thin — all UI in module components
 
 ---
 
 ### T6.7: Build Story page
 
-**What:** Create the "Hikayem" (My Story) page with personal narrative, earthquake story, daily routine timeline, and mission statement.
+**What:** Create the "Hikayem" (My Story) page with personal narrative, earthquake story, daily routine timeline, and mission statement. Implemented via CMS page builder using TimelineBlock and MissionBlock.
 
 **Files:**
-- `src/modules/story/components/StoryHero.tsx`
-- `src/modules/story/components/Timeline.tsx`
-- `src/modules/story/components/Mission.tsx`
-- `src/app/(frontend)/[locale]/hikayem/page.tsx`
-- `src/modules/story/index.ts`
+- `src/blocks/Timeline/Component.tsx`
+- `src/blocks/Timeline/config.ts`
+- `src/blocks/Mission/Component.tsx`
+- `src/blocks/Mission/config.ts`
+- `src/blocks/RenderBlocks.tsx` (updated to include new blocks)
 
 **Acceptance Criteria:**
-- [ ] Personal introduction section with photo
-- [ ] Earthquake story section
-- [ ] Daily routine as a visual timeline
-- [ ] "Why I started this" section
-- [ ] Goals/mission section
-- [ ] Static page (build-time generation)
-- [ ] All content translated (TR/EN)
-- [ ] SEO metadata is set
+- [x] Personal introduction section with photo
+- [x] Earthquake story section
+- [x] Daily routine as a visual timeline
+- [x] "Why I started this" section
+- [x] Goals/mission section
+- [x] Static page (build-time generation)
+- [x] All content translated (TR/EN)
+- [x] SEO metadata is set
 
 ---
 
@@ -144,19 +150,17 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 **What:** Create the contact page with WhatsApp link, phone number, email, and social media links.
 
 **Files:**
-- `src/modules/contact/components/ContactInfo.tsx`
-- `src/modules/contact/components/ContactCard.tsx`
+- `src/components/contact/ContactCard.tsx`
 - `src/app/(frontend)/[locale]/iletisim/page.tsx`
-- `src/modules/contact/index.ts`
 
 **Acceptance Criteria:**
-- [ ] WhatsApp button with pre-filled message
-- [ ] Phone number with click-to-call
-- [ ] Email with mailto link
-- [ ] Social media links (Instagram)
-- [ ] Contact info comes from SiteSettings global
-- [ ] All text translated
-- [ ] SEO metadata is set
+- [x] WhatsApp button with pre-filled message
+- [x] Phone number with click-to-call
+- [x] Email with mailto link
+- [x] Social media links (Instagram)
+- [x] Contact info comes from SiteSettings global
+- [x] All text translated
+- [x] SEO metadata is set
 
 ---
 
@@ -168,23 +172,23 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 - `src/app/(frontend)/[locale]/not-found.tsx`
 
 **Acceptance Criteria:**
-- [ ] Custom illustration or design (paw theme)
-- [ ] "Page not found" message in both TR and EN
-- [ ] Links to home, animals, donate pages
-- [ ] Search suggestion or search bar
-- [ ] Consistent with design system
+- [x] Custom illustration or design (paw theme)
+- [x] "Page not found" message in both TR and EN
+- [x] Links to home, animals, donate pages
+- [ ] Search suggestion or search bar (deferred to M10)
+- [x] Consistent with design system
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] Home page renders all sections with real CMS data
-- [ ] Story page renders with full translated content
-- [ ] Contact page displays working WhatsApp, phone, email links
-- [ ] 404 page renders for unknown routes
-- [ ] All pages have correct SEO metadata
-- [ ] All content is available in both TR and EN
-- [ ] Pages are responsive (320px–1920px)
+- [x] Home page renders all sections with real CMS data
+- [x] Story page renders with full translated content
+- [x] Contact page displays working WhatsApp, phone, email links
+- [x] 404 page renders for unknown routes
+- [x] All pages have correct SEO metadata
+- [x] All content is available in both TR and EN
+- [x] Pages are responsive (320px–1920px)
 
 ## Verification
 
