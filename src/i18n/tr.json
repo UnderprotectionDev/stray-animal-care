@@ -141,5 +141,119 @@
     "goHome": "Ana Sayfaya Git",
     "viewAnimals": "Canlarımız",
     "donate": "Destek Ol"
+  },
+  "animals": {
+    "meta": {
+      "title": "Canlarımız — Paws of Hope",
+      "description": "Sokak hayvanlarımızı tanıyın. Tedavi, bakım ve yuva arayan kediler ve köpekler."
+    },
+    "title": "Canlarımız",
+    "subtitle": "Tedavi ve bakımımız altındaki tüm dostlarımızla tanışın.",
+    "filter": {
+      "all": "Tümü",
+      "kedi": "Kediler",
+      "kopek": "Köpekler",
+      "noResults": "Bu filtreyle eşleşen hayvan bulunamadı.",
+      "tedavide": "Tedavide",
+      "kalici-bakim": "Kalıcı Bakım",
+      "acil": "Acil"
+    },
+    "detail": {
+      "story": "Hikayesi",
+      "needs": "İhtiyaçları",
+      "photos": "Fotoğraflar",
+      "type": "Tür",
+      "age": "Yaş",
+      "gender": "Cinsiyet",
+      "status": "Durum",
+      "erkek": "Erkek",
+      "disi": "Dişi",
+      "bilinmiyor": "Bilinmiyor",
+      "back": "Canlarımıza Dön",
+      "donate": "Destek Ol",
+      "noPhotos": "Fotoğraf bulunmuyor.",
+      "whatsappMessage": "{name} hakkında bilgi almak istiyorum."
+    },
+    "lightbox": {
+      "close": "Kapat",
+      "prev": "Önceki",
+      "next": "Sonraki",
+      "imageOf": "{current} / {total}"
+    }
+  },
+  "emergency": {
+    "meta": {
+      "title": "Acil Vakalar — Paws of Hope",
+      "description": "Acil yardıma ihtiyaç duyan hayvanlar. Tedavi masraflarına destek olun."
+    },
+    "title": "Acil Vakalar",
+    "activeCases": "Aktif Vakalar",
+    "collected": "Toplanan",
+    "target": "Hedef",
+    "progress": "İlerleme",
+    "noActive": "Şu anda aktif acil vaka bulunmuyor.",
+    "completedCases": "Tamamlanan Vakalar",
+    "detail": {
+      "description": "Açıklama",
+      "updates": "Güncellemeler",
+      "beforeAfter": "Önce / Sonra",
+      "before": "Önce",
+      "after": "Sonra",
+      "relatedAnimal": "İlgili Hayvan",
+      "noUpdates": "Henüz güncelleme bulunmuyor."
+    }
+  },
+  "donate": {
+    "meta": {
+      "title": "Destek Ol — Paws of Hope",
+      "description": "Sokak hayvanlarına destek olmak için bağış yapın. IBAN, PayPal ve Wise ile bağış kabul ediyoruz."
+    },
+    "title": "Destek Ol",
+    "subtitle": "Her katkınız bir cana umut olur.",
+    "iban": {
+      "title": "Banka Havalesi ile Bağış",
+      "bank": "Banka",
+      "accountHolder": "Hesap Sahibi",
+      "iban": "IBAN",
+      "copy": "IBAN'ı Kopyala"
+    },
+    "international": {
+      "title": "Uluslararası Destek",
+      "paypal": "PayPal ile Bağış Yap",
+      "wise": "Wise ile Bağış Yap"
+    },
+    "cards": {
+      "title": "Bağışınız Neye Yarar?",
+      "food": {
+        "title": "Mama Desteği",
+        "description": "1 aylık mama masrafını karşılar."
+      },
+      "vet": {
+        "title": "Veteriner Ziyareti",
+        "description": "Rutin muayene ve aşı masrafını karşılar."
+      },
+      "surgery": {
+        "title": "Cerrahi Destek",
+        "description": "Küçük bir operasyon masrafını karşılar."
+      }
+    },
+    "faq": {
+      "title": "Sık Sorulan Sorular",
+      "q1": "Bağışım nereye gidiyor?",
+      "a1": "Tüm bağışlar doğrudan hayvan bakım, tedavi ve mama masraflarına harcanmaktadır. Şeffaflık raporlarımızda detaylı harcama bilgisini görebilirsiniz.",
+      "q2": "Bağış makbuzu alabilir miyim?",
+      "a2": "Vergi makbuzu için lütfen e-posta veya WhatsApp üzerinden bizimle iletişime geçin.",
+      "q3": "Düzenli bağış yapabilir miyim?",
+      "a3": "Evet! Aylık sabit bağış yapmak için banka otomatik ödeme talimatı verebilirsiniz.",
+      "q4": "Yurt dışından bağış kabul ediyor musunuz?",
+      "a4": "Evet, PayPal ve Wise üzerinden uluslararası bağış kabul ediyoruz.",
+      "q5": "Bağış yerine malzeme gönderebilir miyim?",
+      "a5": "Evet! İhtiyaç listesi için bize ulaşın. Mama, kedi kumu, ilaç ve battaniye gibi malzemeler kabul ediyoruz."
+    },
+    "transparency": {
+      "title": "Şeffaf Yönetim",
+      "description": "Tüm gelir ve giderleri düzenli olarak yayınlıyoruz. Bağışlarınızın nereye gittiğini her zaman görebilirsiniz.",
+      "reports": "Şeffaflık Raporları"
+    }
   }
 }

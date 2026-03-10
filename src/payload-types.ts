@@ -897,7 +897,7 @@ export interface Animal {
   type: 'kedi' | 'kopek';
   age?: string | null;
   gender: 'erkek' | 'disi' | 'bilinmiyor';
-  status: 'tedavide' | 'kalici-bakim' | 'acil';
+  animalStatus: 'tedavide' | 'kalici-bakim' | 'acil';
   featured?: boolean | null;
   meta?: {
     title?: string | null;
@@ -1707,7 +1707,7 @@ export interface AnimalsSelect<T extends boolean = true> {
   type?: T;
   age?: T;
   gender?: T;
-  status?: T;
+  animalStatus?: T;
   featured?: T;
   meta?:
     | T

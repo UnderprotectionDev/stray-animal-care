@@ -29,7 +29,7 @@ export const Animals: CollectionConfig<'animals'> = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'type', 'status', 'updatedAt'],
+    defaultColumns: ['name', 'type', 'animalStatus', 'updatedAt'],
     group: 'Content',
     useAsTitle: 'name',
   },
@@ -108,7 +108,7 @@ export const Animals: CollectionConfig<'animals'> = {
               ],
             },
             {
-              name: 'status',
+              name: 'animalStatus',
               type: 'select',
               required: true,
               options: [
@@ -169,7 +169,7 @@ export const Animals: CollectionConfig<'animals'> = {
         ],
       },
     },
-    slugField(),
+    slugField({ useAsSlug: 'name' }),
   ],
   hooks: {
     afterChange: [revalidateAnimal],
@@ -178,7 +178,7 @@ export const Animals: CollectionConfig<'animals'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 500,
+        interval: 3000,
       },
       schedulePublish: true,
     },

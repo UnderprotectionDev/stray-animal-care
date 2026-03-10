@@ -39,6 +39,7 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import type { SiteSetting } from '@/payload-types'
 
@@ -82,6 +83,7 @@ export default async function RootLayout({ children, params }: Props) {
       <body>
         <Providers>
           <NextIntlClientProvider messages={messages}>
+            <NuqsAdapter>
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
@@ -99,6 +101,7 @@ export default async function RootLayout({ children, params }: Props) {
             </main>
             <Footer siteSettings={siteSettings} />
             <MobileDonateBar />
+            </NuqsAdapter>
           </NextIntlClientProvider>
         </Providers>
       </body>

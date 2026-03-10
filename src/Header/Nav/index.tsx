@@ -7,7 +7,7 @@ import { cn } from '@/utilities/ui'
 
 const NAV_ITEMS = [
   { href: '/canlarimiz', labelKey: 'animals' },
-  { href: '/acil-durumlar', labelKey: 'emergency' },
+  { href: '/acil-vakalar', labelKey: 'emergency' },
   { href: '/posts', labelKey: 'blog' },
 ] as const
 

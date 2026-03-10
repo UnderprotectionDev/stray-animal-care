@@ -16,7 +16,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 
 const NAV_ITEMS = [
   { href: '/canlarimiz', labelKey: 'animals' },
-  { href: '/acil-durumlar', labelKey: 'emergency' },
+  { href: '/acil-vakalar', labelKey: 'emergency' },
   { href: '/posts', labelKey: 'blog' },
 ] as const
 
@@ -64,7 +64,7 @@ export function MobileMenu({ open, onOpenChange }: MobileMenuProps) {
         <div className="px-6 py-4">
           <Button
             className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-            render={<Link href="/donate" onClick={() => onOpenChange(false)} />}
+            render={<Link href="/destek-ol" onClick={() => onOpenChange(false)} />}
           >
             <Heart className="size-4" />
             {t('donate')}

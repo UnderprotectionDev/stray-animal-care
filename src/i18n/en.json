@@ -141,5 +141,119 @@
     "goHome": "Go Home",
     "viewAnimals": "Our Animals",
     "donate": "Donate"
+  },
+  "animals": {
+    "meta": {
+      "title": "Our Animals — Paws of Hope",
+      "description": "Meet our animals. Cats and dogs in treatment, permanent care, or emergency situations."
+    },
+    "title": "Our Animals",
+    "subtitle": "Meet all our friends under treatment and care.",
+    "filter": {
+      "all": "All",
+      "kedi": "Cats",
+      "kopek": "Dogs",
+      "noResults": "No animals found for this filter.",
+      "tedavide": "In Treatment",
+      "kalici-bakim": "Permanent Care",
+      "acil": "Emergency"
+    },
+    "detail": {
+      "story": "Story",
+      "needs": "Needs",
+      "photos": "Photos",
+      "type": "Type",
+      "age": "Age",
+      "gender": "Gender",
+      "status": "Status",
+      "erkek": "Male",
+      "disi": "Female",
+      "bilinmiyor": "Unknown",
+      "back": "Back to Animals",
+      "donate": "Donate",
+      "noPhotos": "No photos available.",
+      "whatsappMessage": "I would like to get information about {name}."
+    },
+    "lightbox": {
+      "close": "Close",
+      "prev": "Previous",
+      "next": "Next",
+      "imageOf": "{current} of {total}"
+    }
+  },
+  "emergency": {
+    "meta": {
+      "title": "Emergency Cases — Paws of Hope",
+      "description": "Animals in urgent need of help. Support treatment costs."
+    },
+    "title": "Emergency Cases",
+    "activeCases": "Active Cases",
+    "collected": "Collected",
+    "target": "Target",
+    "progress": "Progress",
+    "noActive": "No active emergency cases at the moment.",
+    "completedCases": "Completed Cases",
+    "detail": {
+      "description": "Description",
+      "updates": "Updates",
+      "beforeAfter": "Before / After",
+      "before": "Before",
+      "after": "After",
+      "relatedAnimal": "Related Animal",
+      "noUpdates": "No updates yet."
+    }
+  },
+  "donate": {
+    "meta": {
+      "title": "Donate — Paws of Hope",
+      "description": "Support stray animals with a donation. We accept donations via IBAN, PayPal, and Wise."
+    },
+    "title": "Donate",
+    "subtitle": "Every contribution brings hope to an animal in need.",
+    "iban": {
+      "title": "Bank Transfer Donation",
+      "bank": "Bank",
+      "accountHolder": "Account Holder",
+      "iban": "IBAN",
+      "copy": "Copy IBAN"
+    },
+    "international": {
+      "title": "International Support",
+      "paypal": "Donate via PayPal",
+      "wise": "Donate via Wise"
+    },
+    "cards": {
+      "title": "What Does Your Donation Cover?",
+      "food": {
+        "title": "Food Support",
+        "description": "Covers 1 month of food costs."
+      },
+      "vet": {
+        "title": "Vet Visit",
+        "description": "Covers a routine checkup and vaccination."
+      },
+      "surgery": {
+        "title": "Surgery Support",
+        "description": "Covers a minor surgical procedure."
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Where does my donation go?",
+      "a1": "All donations go directly to animal care, treatment, and food costs. You can see detailed spending in our transparency reports.",
+      "q2": "Can I get a donation receipt?",
+      "a2": "For a receipt, please contact us via email or WhatsApp.",
+      "q3": "Can I make a recurring donation?",
+      "a3": "Yes! You can set up a standing bank order for monthly donations.",
+      "q4": "Do you accept international donations?",
+      "a4": "Yes, we accept international donations via PayPal and Wise.",
+      "q5": "Can I donate supplies instead of money?",
+      "a5": "Yes! Contact us for our needs list. We accept food, litter, medicine, and blankets."
+    },
+    "transparency": {
+      "title": "Transparent Management",
+      "description": "We regularly publish all income and expenses. You can always see where your donations go.",
+      "reports": "Transparency Reports"
+    }
   }
 }

@@ -10,22 +10,34 @@ export const revalidateEmergencyCase: CollectionAfterChangeHook<EmergencyCase> =
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    if (doc._status === 'published') {
-      const path = `/emergency/${doc.slug}`
+    if (doc._status === 'published' && doc.slug) {
+      payload.logger.info(`Revalidating emergency case: ${doc.slug}`)
 
-      payload.logger.info(`Revalidating emergency case at path: ${path}`)
-
-      revalidatePath(path)
-      revalidateTag('emergency-sitemap')
+      try {
+        revalidatePath(`/tr/acil-vakalar/${doc.slug}`)
+        revalidatePath(`/en/acil-vakalar/${doc.slug}`)
+        revalidatePath('/tr/acil-vakalar')
+        revalidatePath('/en/acil-vakalar')
+        revalidateTag('emergency-list')
+        revalidateTag('emergency-sitemap')
+      } catch (err) {
+        payload.logger.error({ msg: 'Failed to revalidate emergency case paths', err })
+      }
     }
 
-    if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/emergency/${previousDoc.slug}`
+    if (previousDoc?._status === 'published' && doc._status !== 'published' && previousDoc?.slug) {
+      payload.logger.info(`Revalidating old emergency case: ${previousDoc.slug}`)
 
-      payload.logger.info(`Revalidating old emergency case at path: ${oldPath}`)
-
-      revalidatePath(oldPath)
-      revalidateTag('emergency-sitemap')
+      try {
+        revalidatePath(`/tr/acil-vakalar/${previousDoc.slug}`)
+        revalidatePath(`/en/acil-vakalar/${previousDoc.slug}`)
+        revalidatePath('/tr/acil-vakalar')
+        revalidatePath('/en/acil-vakalar')
+        revalidateTag('emergency-list')
+        revalidateTag('emergency-sitemap')
+      } catch (err) {
+        payload.logger.error({ msg: 'Failed to revalidate old emergency case paths', err })
+      }
     }
   }
   return doc
@@ -33,13 +45,19 @@ export const revalidateEmergencyCase: CollectionAfterChangeHook<EmergencyCase> =
 
 export const revalidateEmergencyCaseDelete: CollectionAfterDeleteHook<EmergencyCase> = ({
   doc,
-  req: { context },
+  req: { payload, context },
 }) => {
-  if (!context.disableRevalidate) {
-    const path = `/emergency/${doc?.slug}`
-
-    revalidatePath(path)
-    revalidateTag('emergency-sitemap')
+  if (!context.disableRevalidate && doc?.slug) {
+    try {
+      revalidatePath(`/tr/acil-vakalar/${doc.slug}`)
+      revalidatePath(`/en/acil-vakalar/${doc.slug}`)
+      revalidatePath('/tr/acil-vakalar')
+      revalidatePath('/en/acil-vakalar')
+      revalidateTag('emergency-list')
+      revalidateTag('emergency-sitemap')
+    } catch (err) {
+      payload.logger.error({ msg: 'Failed to revalidate deleted emergency case paths', err })
+    }
   }
 
   return doc

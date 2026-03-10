@@ -1,0 +1,5 @@
+export { IBANCopy } from './components/IBANCopy'
+export { InternationalPayment } from './components/InternationalPayment'
+export { DonationCards } from './components/DonationCards'
+export { DonateFAQ } from './components/DonateFAQ'
+export { TransparencyNote } from './components/TransparencyNote'
