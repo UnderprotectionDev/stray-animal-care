@@ -65,7 +65,7 @@ export default buildConfig({
 3. Regenerate types:
 
 ```bash
-bun run payload:generate-types
+pnpm run payload:generate-types
 ```
 
 4. Restart the dev server. PayloadCMS will auto-create the database table.
@@ -300,13 +300,13 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 
 ### PayloadCMS type generation fails
 
-**Symptom:** `bun run payload:generate-types` throws an error.
+**Symptom:** `pnpm run payload:generate-types` throws an error.
 
 **Solutions:**
 
 1. Ensure the database is running and `DATABASE_URL` is correct
 2. Check for syntax errors in collection definitions
-3. Run `bun run dev` first to verify PayloadCMS initializes, then run type generation in a separate terminal
+3. Run `pnpm run dev` first to verify PayloadCMS initializes, then run type generation in a separate terminal
 4. Clear the `.next` cache: `rm -rf .next`
 
 ---
@@ -319,7 +319,7 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 
 1. **Check environment variables** — all required vars must be set in Vercel project settings. Missing `DATABASE_URL` or `PAYLOAD_SECRET` will cause build failure.
 2. **Check build logs** — Vercel dashboard shows the full build output.
-3. **Test locally:** `bun run build` — if it builds locally but not on Vercel, the issue is likely environment variables.
+3. **Test locally:** `pnpm run build` — if it builds locally but not on Vercel, the issue is likely environment variables.
 4. **Memory issues** — if the build runs out of memory, check for circular imports or excessive static generation.
 
 ---
@@ -357,7 +357,7 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 **Solutions:**
 
 1. Check the terminal for compilation errors
-2. Clear the `.next` cache: `rm -rf .next && bun run dev`
+2. Clear the `.next` cache: `rm -rf .next && pnpm run dev`
 3. Hard refresh the browser: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R` (Windows/Linux)
 4. Check that the file is saved and inside the `src/` directory
 
@@ -385,7 +385,7 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 1. Check the browser console for JavaScript errors
 2. Ensure `PAYLOAD_SECRET` is set and at least 32 characters
 3. Clear browser cache and cookies for localhost
-4. Delete `.next` and rebuild: `rm -rf .next && bun run dev`
+4. Delete `.next` and rebuild: `rm -rf .next && pnpm run dev`
 5. Check that `payload.config.ts` has no syntax or import errors
 
 ---
