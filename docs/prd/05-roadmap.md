@@ -38,7 +38,7 @@
 
 **Weeks 1-2: Core Infrastructure**
 
-- [ ] Next.js + PayloadCMS 3.x project setup (Bun)
+- [ ] Next.js + PayloadCMS 3.x project setup (pnpm)
 - [ ] PostgreSQL connection (Neon)
 - [ ] Tailwind CSS + shadcn/ui configuration
 - [ ] Biome configuration (lint + format)

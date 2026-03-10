@@ -19,7 +19,7 @@
 | i18n (CMS)          | PayloadCMS i18n (collection field localization)                |
 | SEO                 | Next.js Metadata API + PayloadCMS SEO Plugin                   |
 | Form Validation     | Zod + TanStack Form                                            |
-| Package Manager     | Bun                                                            |
+| Package Manager     | pnpm                                                           |
 | Linting/Formatting  | Biome (single tool replacing ESLint + Prettier)                |
 | Search              | PayloadCMS fullText search + Nuqs (URL state)                  |
 | State Management    | Nuqs (search/filter URL state), global state added later if needed |
@@ -431,7 +431,7 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 | Image Upload        | MIME type validation, file size limit (max 5MB)              |
 | HTTPS               | Automatic SSL/TLS on Vercel                                  |
 | Supporter Comments  | Moderation system — only approved comments are displayed     |
-| Dependency Security | Regular `bun audit` and Dependabot                           |
+| Dependency Security | Regular `pnpm audit` and Dependabot                           |
 
 ---
 

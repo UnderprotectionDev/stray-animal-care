@@ -9,7 +9,7 @@
 | Tool          | Version | Installation                              |
 | ------------- | ------- | ----------------------------------------- |
 | Node.js       | 20+     | [nodejs.org](https://nodejs.org)          |
-| Bun           | Latest  | `curl -fsSL https://bun.sh/install \| bash` |
+| pnpm          | Latest  | `npm i -g pnpm`                             |
 | PostgreSQL    | 15+     | Local install or [Neon](https://neon.tech) account |
 | Git           | 2.40+   | [git-scm.com](https://git-scm.com)       |
 
@@ -27,7 +27,7 @@ cd paws-of-hope
 ### 2. Install Dependencies
 
 ```bash
-bun install
+pnpm install
 ```
 
 ### 3. Configure Environment
@@ -65,7 +65,7 @@ PayloadCMS creates all tables automatically on first run.
 ### 5. Start the Development Server
 
 ```bash
-bun run dev
+pnpm run dev
 ```
 
 The application starts at `http://localhost:3000`. The PayloadCMS admin panel is available at `http://localhost:3000/admin`.
@@ -78,20 +78,20 @@ On first visit to `/admin`, you will be prompted to create an admin user.
 
 | Command                        | Description                            |
 | ------------------------------ | -------------------------------------- |
-| `bun run dev`                  | Start development server               |
-| `bun run build`                | Production build                       |
-| `bun run start`                | Start production server                |
-| `bun run lint`                 | Run Biome linter                       |
-| `bun run format`               | Run Biome formatter                    |
-| `bun run biome:check`          | Lint + format check (CI mode)          |
-| `bun run typecheck`            | TypeScript type checking               |
-| `bun run test`                 | Run unit tests (Vitest)                |
-| `bun run test:watch`           | Run tests in watch mode                |
-| `bun run test:integration`     | Run integration tests                  |
-| `bun run test:e2e`             | Run Playwright E2E tests               |
-| `bun run test:coverage`        | Run tests with coverage report         |
-| `bun run payload:generate-types` | Generate TypeScript types from collections |
-| `bun run payload:migrate`      | Run database migrations                |
+| `pnpm run dev`                  | Start development server               |
+| `pnpm run build`                | Production build                       |
+| `pnpm run start`                | Start production server                |
+| `pnpm run lint`                 | Run Biome linter                       |
+| `pnpm run format`               | Run Biome formatter                    |
+| `pnpm run biome:check`          | Lint + format check (CI mode)          |
+| `pnpm run typecheck`            | TypeScript type checking               |
+| `pnpm run test`                 | Run unit tests (Vitest)                |
+| `pnpm run test:watch`           | Run tests in watch mode                |
+| `pnpm run test:integration`     | Run integration tests                  |
+| `pnpm run test:e2e`             | Run Playwright E2E tests               |
+| `pnpm run test:coverage`        | Run tests with coverage report         |
+| `pnpm run payload:generate-types` | Generate TypeScript types from collections |
+| `pnpm run payload:migrate`      | Run database migrations                |
 
 ---
 
@@ -235,7 +235,7 @@ export { MyComponent } from "./components/my-component";
 7. **Generate types (if collection was added):**
 
 ```bash
-bun run payload:generate-types
+pnpm run payload:generate-types
 ```
 
 ---

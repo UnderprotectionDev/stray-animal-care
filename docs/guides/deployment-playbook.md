@@ -19,8 +19,8 @@ Complete these steps in order for the initial production deployment.
 
 - [ ] Import repository from GitHub in the Vercel dashboard
 - [ ] Set framework preset to **Next.js**
-- [ ] Set build command to `bun run build`
-- [ ] Set install command to `bun install`
+- [ ] Set build command to `pnpm run build`
+- [ ] Set install command to `pnpm install`
 - [ ] Leave output directory as default (`.next`)
 - [ ] Set Node.js version to **20.x**
 
@@ -91,16 +91,16 @@ PayloadCMS 3.x handles migrations automatically.
 
 ```bash
 # Generate migration file from schema changes
-bun run payload migrate:create
+pnpm run payload migrate:create
 
 # Run pending migrations
-bun run payload migrate
+pnpm run payload migrate
 
 # Check migration status
-bun run payload migrate:status
+pnpm run payload migrate:status
 
 # Reset database (DESTRUCTIVE — development only)
-bun run payload migrate:reset
+pnpm run payload migrate:reset
 ```
 
 ### Migration Safety
@@ -118,8 +118,8 @@ bun run payload migrate:reset
 | Setting            | Value              |
 | ------------------ | ------------------ |
 | Framework Preset   | Next.js            |
-| Build Command      | `bun run build`    |
-| Install Command    | `bun install`      |
+| Build Command      | `pnpm run build`    |
+| Install Command    | `pnpm install`      |
 | Output Directory   | (default)          |
 | Node.js Version    | 20.x              |
 | Root Directory     | (default)          |

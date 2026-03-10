@@ -131,5 +131,5 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 1. Create a test page that renders all fonts, colors, and base components
 2. Run Lighthouse accessibility audit — score should be 90+
 3. Verify color contrast with a contrast checker tool
-4. Confirm `bun run build` succeeds with no Tailwind warnings
+4. Confirm `pnpm run build` succeeds with no Tailwind warnings
 5. Import shared components in a test module to confirm barrel exports work
