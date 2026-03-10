@@ -255,5 +255,119 @@
       "description": "Tüm gelir ve giderleri düzenli olarak yayınlıyoruz. Bağışlarınızın nereye gittiğini her zaman görebilirsiniz.",
       "reports": "Şeffaflık Raporları"
     }
+  },
+  "supplies": {
+    "meta": {
+      "title": "Mama & Malzeme — Paws of Hope",
+      "description": "İhtiyaç listemizi inceleyin. Mama, ilaç, kedi kumu ve diğer malzemelere desteğinizi bekliyoruz."
+    },
+    "title": "Mama & Malzeme İhtiyaçları",
+    "subtitle": "Hayvanlarımızın güncel ihtiyaç listesini burada bulabilirsiniz.",
+    "table": {
+      "product": "Ürün",
+      "brand": "Marka / Detay",
+      "urgency": "Aciliyet",
+      "stock": "Stok Durumu"
+    },
+    "urgency": {
+      "acil": "Acil",
+      "orta": "Orta",
+      "yeterli": "Yeterli"
+    },
+    "shipping": {
+      "title": "Nasıl Gönderebilirsiniz?",
+      "description": "Aşağıdaki yöntemlerle malzeme desteğinde bulunabilirsiniz.",
+      "cargo": "Kargo ile gönderim yapabilirsiniz.",
+      "inPerson": "Elden teslim için bizimle iletişime geçin.",
+      "online": "Online sipariş vererek adresimize gönderebilirsiniz."
+    },
+    "sponsor": {
+      "title": "Mama Sponsoru Ol",
+      "description": "Aylık düzenli mama desteği sağlayarak hayvanlarımızın beslenmesine katkıda bulunun.",
+      "cta": "Destek Ol"
+    },
+    "empty": "Şu anda ihtiyaç listesi bulunmuyor."
+  },
+  "transparency": {
+    "meta": {
+      "title": "Şeffaflık Raporları — Paws of Hope",
+      "description": "Gelir ve gider raporlarımızı inceleyin. Bağışlarınızın nereye gittiğini şeffaf olarak paylaşıyoruz."
+    },
+    "title": "Şeffaflık Raporları",
+    "subtitle": "Tüm gelir ve giderleri düzenli olarak yayınlıyoruz.",
+    "report": {
+      "expenses": "Giderler",
+      "totalExpense": "Toplam Gider",
+      "donations": "Bağışlar",
+      "totalDonation": "Toplam Bağış",
+      "category": "Kategori",
+      "amount": "Miktar",
+      "comparison": "Bağış / Gider Oranı",
+      "documents": "Belgeler"
+    },
+    "empty": "Henüz şeffaflık raporu yayınlanmadı.",
+    "currency": "₺"
+  },
+  "ourWork": {
+    "meta": {
+      "title": "Çalışmalarımız — Paws of Hope",
+      "description": "Besleme, tedavi, kısırlaştırma, acil müdahale, aşılama ve barınma çalışmalarımızı keşfedin."
+    },
+    "title": "Çalışmalarımız",
+    "subtitle": "Sokak hayvanları için yaptığımız çalışmaları keşfedin.",
+    "activities": {
+      "feeding": {
+        "title": "Besleme",
+        "description": "Her gün düzenli besleme noktalarında sokak hayvanlarını besliyoruz."
+      },
+      "treatment": {
+        "title": "Tedavi",
+        "description": "Hasta ve yaralı hayvanların veteriner tedavilerini karşılıyoruz."
+      },
+      "spaying": {
+        "title": "Kısırlaştırma",
+        "description": "Popülasyon kontrolü için kısırlaştırma kampanyaları düzenliyoruz."
+      },
+      "emergency": {
+        "title": "Acil Müdahale",
+        "description": "Acil durumlarda 7/24 müdahale ediyoruz."
+      },
+      "vaccination": {
+        "title": "Aşılama",
+        "description": "Sokak hayvanlarının düzenli aşılamalarını yapıyoruz."
+      },
+      "shelter": {
+        "title": "Barınma",
+        "description": "Tedavi sürecindeki hayvanlara geçici barınma sağlıyoruz."
+      }
+    }
+  },
+  "blog": {
+    "meta": {
+      "title": "Günlük — Paws of Hope",
+      "description": "Kurtarma hikayeleri, tedavi süreçleri, duyurular ve etkinliklerimizi takip edin."
+    },
+    "title": "Günlük",
+    "subtitle": "Hikayelerimizi, duyurularımızı ve güncel gelişmeleri takip edin.",
+    "filter": {
+      "all": "Tümü",
+      "kurtarma": "Kurtarma",
+      "tedavi": "Tedavi",
+      "gunluk": "Günlük",
+      "duyuru": "Duyuru",
+      "etkinlik": "Etkinlik"
+    },
+    "readMore": "Devamını Oku",
+    "share": {
+      "title": "Paylaş",
+      "twitter": "Twitter'da Paylaş",
+      "facebook": "Facebook'ta Paylaş",
+      "whatsapp": "WhatsApp'ta Paylaş",
+      "copy": "Bağlantıyı Kopyala",
+      "copied": "Kopyalandı!"
+    },
+    "tags": "Etiketler",
+    "empty": "Henüz yazı bulunmuyor.",
+    "back": "Günlüğe Dön"
   }
 }
