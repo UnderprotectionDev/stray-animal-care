@@ -1,5 +1,4 @@
 import React from 'react'
-import dynamic from 'next/dynamic'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
@@ -8,14 +7,10 @@ import { ProgressBar } from '@/components/shared/ProgressBar'
 import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
 import { UpdateTimeline } from './UpdateTimeline'
+import { BeforeAfterWrapper } from './BeforeAfterWrapper'
 import RichText from '@/components/RichText'
 import { Heart } from 'lucide-react'
 import type { EmergencyCase, Animal, Media as MediaType } from '@/payload-types'
-
-const BeforeAfter = dynamic(
-  () => import('./BeforeAfter').then((m) => m.BeforeAfter),
-  { ssr: false },
-)
 
 const caseStatusVariantMap = {
   aktif: 'urgent' as const,
@@ -83,7 +78,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
                 {t('detail.beforeAfter')}
               </h2>
               <div className="aspect-video">
-                <BeforeAfter
+                <BeforeAfterWrapper
                   before={beforePhoto}
                   after={afterPhoto}
                   labels={{

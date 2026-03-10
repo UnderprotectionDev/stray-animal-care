@@ -78,6 +78,41 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: 'Çalışmalarımız',
+          fields: [
+            {
+              name: 'ourWorkActivities',
+              label: 'Aktiviteler',
+              type: 'array',
+              minRows: 0,
+              maxRows: 10,
+              fields: [
+                {
+                  name: 'key',
+                  label: 'Anahtar',
+                  type: 'select',
+                  required: true,
+                  options: [
+                    { label: 'Besleme', value: 'feeding' },
+                    { label: 'Tedavi', value: 'treatment' },
+                    { label: 'Kısırlaştırma', value: 'spaying' },
+                    { label: 'Acil Müdahale', value: 'emergency' },
+                    { label: 'Aşılama', value: 'vaccination' },
+                    { label: 'Barınma', value: 'shelter' },
+                  ],
+                },
+                {
+                  name: 'images',
+                  label: 'Fotoğraflar',
+                  type: 'upload',
+                  relationTo: 'media',
+                  hasMany: true,
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: 'İstatistikler',
           fields: [
             {

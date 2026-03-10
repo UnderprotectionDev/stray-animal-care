@@ -255,5 +255,119 @@
       "description": "We regularly publish all income and expenses. You can always see where your donations go.",
       "reports": "Transparency Reports"
     }
+  },
+  "supplies": {
+    "meta": {
+      "title": "Supplies — Paws of Hope",
+      "description": "Check our needs list. We need food, medicine, cat litter, and other supplies for our animals."
+    },
+    "title": "Supplies & Needs",
+    "subtitle": "Here you can find the current needs list for our animals.",
+    "table": {
+      "product": "Product",
+      "brand": "Brand / Detail",
+      "urgency": "Urgency",
+      "stock": "Stock Status"
+    },
+    "urgency": {
+      "acil": "Urgent",
+      "orta": "Medium",
+      "yeterli": "Sufficient"
+    },
+    "shipping": {
+      "title": "How Can You Send Supplies?",
+      "description": "You can support us with supplies through the following methods.",
+      "cargo": "You can send via cargo delivery.",
+      "inPerson": "Contact us for in-person delivery.",
+      "online": "You can order online and ship to our address."
+    },
+    "sponsor": {
+      "title": "Become a Food Sponsor",
+      "description": "Support the nutrition of our animals by providing regular monthly food donations.",
+      "cta": "Donate"
+    },
+    "empty": "No items in the needs list at this time."
+  },
+  "transparency": {
+    "meta": {
+      "title": "Transparency Reports — Paws of Hope",
+      "description": "Review our income and expense reports. We transparently share where your donations go."
+    },
+    "title": "Transparency Reports",
+    "subtitle": "We regularly publish all income and expenses.",
+    "report": {
+      "expenses": "Expenses",
+      "totalExpense": "Total Expenses",
+      "donations": "Donations",
+      "totalDonation": "Total Donations",
+      "category": "Category",
+      "amount": "Amount",
+      "comparison": "Donation / Expense Ratio",
+      "documents": "Documents"
+    },
+    "empty": "No transparency reports published yet.",
+    "currency": "₺"
+  },
+  "ourWork": {
+    "meta": {
+      "title": "Our Work — Paws of Hope",
+      "description": "Discover our feeding, treatment, spaying, emergency response, vaccination, and shelter programs."
+    },
+    "title": "Our Work",
+    "subtitle": "Discover what we do for stray animals.",
+    "activities": {
+      "feeding": {
+        "title": "Feeding",
+        "description": "We feed stray animals at regular feeding stations every day."
+      },
+      "treatment": {
+        "title": "Treatment",
+        "description": "We cover veterinary treatment for sick and injured animals."
+      },
+      "spaying": {
+        "title": "Spaying/Neutering",
+        "description": "We organize spaying campaigns for population control."
+      },
+      "emergency": {
+        "title": "Emergency Response",
+        "description": "We respond to emergencies 24/7."
+      },
+      "vaccination": {
+        "title": "Vaccination",
+        "description": "We provide regular vaccinations for stray animals."
+      },
+      "shelter": {
+        "title": "Shelter",
+        "description": "We provide temporary shelter for animals during treatment."
+      }
+    }
+  },
+  "blog": {
+    "meta": {
+      "title": "Blog — Paws of Hope",
+      "description": "Follow rescue stories, treatment processes, announcements, and our events."
+    },
+    "title": "Blog",
+    "subtitle": "Follow our stories, announcements, and latest updates.",
+    "filter": {
+      "all": "All",
+      "kurtarma": "Rescue",
+      "tedavi": "Treatment",
+      "gunluk": "Daily",
+      "duyuru": "Announcement",
+      "etkinlik": "Event"
+    },
+    "readMore": "Read More",
+    "share": {
+      "title": "Share",
+      "twitter": "Share on Twitter",
+      "facebook": "Share on Facebook",
+      "whatsapp": "Share on WhatsApp",
+      "copy": "Copy Link",
+      "copied": "Copied!"
+    },
+    "tags": "Tags",
+    "empty": "No posts found.",
+    "back": "Back to Blog"
   }
 }

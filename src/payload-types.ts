@@ -2159,6 +2159,13 @@ export interface SiteSetting {
   instagram?: string | null;
   paypalLink?: string | null;
   wiseLink?: string | null;
+  ourWorkActivities?:
+    | {
+        key: 'feeding' | 'treatment' | 'spaying' | 'emergency' | 'vaccination' | 'shelter';
+        images?: (number | Media)[] | null;
+        id?: string | null;
+      }[]
+    | null;
   catsCount?: number | null;
   dogsCount?: number | null;
   treatedCount?: number | null;
@@ -2227,6 +2234,13 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   instagram?: T;
   paypalLink?: T;
   wiseLink?: T;
+  ourWorkActivities?:
+    | T
+    | {
+        key?: T;
+        images?: T;
+        id?: T;
+      };
   catsCount?: T;
   dogsCount?: T;
   treatedCount?: T;
