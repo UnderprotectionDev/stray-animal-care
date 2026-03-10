@@ -20,12 +20,12 @@
 
 | # | Milestone | Dependencies | Status |
 |---|-----------|-------------|--------|
-| 1 | [Project Scaffolding & Infrastructure](phase-1-mvp/01-project-scaffolding.md) | — | Not Started |
-| 2 | [Design System & shadcn/ui](phase-1-mvp/02-design-system.md) | M1 | Not Started |
-| 3 | [Internationalization (i18n)](phase-1-mvp/03-internationalization.md) | M1 | Not Started |
-| 4 | [CMS Collections & Global](phase-1-mvp/04-cms-collections.md) | M1, M3 | Not Started |
-| 5 | [Layout Module](phase-1-mvp/05-layout-module.md) | M2, M3, M4 | Not Started |
-| 6 | [Core Pages (Home, Story, Contact)](phase-1-mvp/06-core-pages.md) | M5 | Not Started |
+| 1 | [Project Scaffolding & Infrastructure](phase-1-mvp/01-project-scaffolding.md) | — | Done ✅ |
+| 2 | [Design System & shadcn/ui](phase-1-mvp/02-design-system.md) | M1 | Done ✅ |
+| 3 | [Internationalization (i18n)](phase-1-mvp/03-internationalization.md) | M1 | Done ✅ |
+| 4 | [CMS Collections & Global](phase-1-mvp/04-cms-collections.md) | M1, M3 | Done ✅ |
+| 5 | [Layout Module](phase-1-mvp/05-layout-module.md) | M2, M3, M4 | Done ✅ |
+| 6 | [Core Pages (Home, Story, Contact)](phase-1-mvp/06-core-pages.md) | M5 | Done ✅ |
 | 7 | [Animal Profiles](phase-1-mvp/07-animal-profiles.md) | M4, M5 | Not Started |
 | 8 | [Emergency & Donate](phase-1-mvp/08-emergency-donate.md) | M4, M5 | Not Started |
 | 9 | [Content Pages](phase-1-mvp/09-content-pages.md) | M4, M5 | Not Started |

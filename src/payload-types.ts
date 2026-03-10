@@ -224,6 +224,8 @@ export interface Page {
       }
     | ArchiveBlock
     | FormBlock
+    | TimelineBlock
+    | MissionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -804,6 +806,58 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  title: string;
+  items?:
+    | {
+        time?: string | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock".
+ */
+export interface MissionBlock {
+  title: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  image?: (number | null) | Media;
+  goals?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaLabel?: string | null;
+  ctaLink?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mission';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "animals".
  */
 export interface Animal {
@@ -1328,6 +1382,8 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
+        mission?: T | MissionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1424,6 +1480,42 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock_select".
+ */
+export interface TimelineBlockSelect<T extends boolean = true> {
+  title?: T;
+  items?:
+    | T
+    | {
+        time?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock_select".
+ */
+export interface MissionBlockSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  image?: T;
+  goals?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaLabel?: T;
+  ctaLink?: T;
   id?: T;
   blockName?: T;
 }
