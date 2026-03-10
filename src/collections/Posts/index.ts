@@ -29,6 +29,7 @@ import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: { singular: 'Yazı', plural: 'Yazılar' },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -68,6 +69,7 @@ export const Posts: CollectionConfig<'posts'> = {
   fields: [
     {
       name: 'title',
+      label: 'Başlık',
       type: 'text',
       required: true,
       localized: true,
@@ -79,12 +81,14 @@ export const Posts: CollectionConfig<'posts'> = {
           fields: [
             {
               name: 'excerpt',
+              label: 'Özet',
               type: 'textarea',
               localized: true,
               maxLength: 300,
             },
             {
               name: 'heroImage',
+              label: 'Ana Görsel',
               type: 'upload',
               relationTo: 'media',
             },
@@ -107,12 +111,13 @@ export const Posts: CollectionConfig<'posts'> = {
               required: true,
             },
           ],
-          label: 'Content',
+          label: 'İçerik',
         },
         {
           fields: [
             {
               name: 'relatedPosts',
+              label: 'İlgili Yazılar',
               type: 'relationship',
               admin: {
                 position: 'sidebar',
@@ -129,6 +134,7 @@ export const Posts: CollectionConfig<'posts'> = {
             },
             {
               name: 'categories',
+              label: 'Kategoriler',
               type: 'relationship',
               admin: {
                 position: 'sidebar',
@@ -138,10 +144,12 @@ export const Posts: CollectionConfig<'posts'> = {
             },
             {
               name: 'tags',
+              label: 'Etiketler',
               type: 'array',
               fields: [
                 {
                   name: 'tag',
+                  label: 'Etiket',
                   type: 'text',
                 },
               ],
@@ -180,6 +188,7 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     {
       name: 'postCategory',
+      label: 'Yazı Kategorisi',
       type: 'select',
       admin: {
         position: 'sidebar',
@@ -194,6 +203,7 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     {
       name: 'publishedAt',
+      label: 'Yayınlanma Tarihi',
       type: 'date',
       admin: {
         date: {
@@ -214,6 +224,7 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     {
       name: 'authors',
+      label: 'Yazarlar',
       type: 'relationship',
       admin: {
         position: 'sidebar',

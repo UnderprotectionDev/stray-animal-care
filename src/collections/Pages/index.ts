@@ -25,6 +25,7 @@ import {
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: { singular: 'Sayfa', plural: 'Sayfalar' },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -59,6 +60,7 @@ export const Pages: CollectionConfig<'pages'> = {
   fields: [
     {
       name: 'title',
+      label: 'Başlık',
       type: 'text',
       required: true,
     },
@@ -73,6 +75,7 @@ export const Pages: CollectionConfig<'pages'> = {
           fields: [
             {
               name: 'layout',
+              label: 'İçerik Blokları',
               type: 'blocks',
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, TimelineBlock, MissionBlock],
               required: true,
@@ -81,7 +84,7 @@ export const Pages: CollectionConfig<'pages'> = {
               },
             },
           ],
-          label: 'Content',
+          label: 'İçerik',
         },
         {
           name: 'meta',
@@ -114,6 +117,7 @@ export const Pages: CollectionConfig<'pages'> = {
     },
     {
       name: 'publishedAt',
+      label: 'Yayınlanma Tarihi',
       type: 'date',
       admin: {
         position: 'sidebar',

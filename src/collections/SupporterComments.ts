@@ -11,30 +11,35 @@ export const SupporterComments: CollectionConfig<'supporter-comments'> = {
     read: approvedOrAuthenticated,
     update: authenticated,
   },
+  labels: { singular: 'Destekçi Yorumu', plural: 'Destekçi Yorumları' },
   admin: {
     defaultColumns: ['name', 'approved', 'date', 'updatedAt'],
-    group: 'Support',
+    group: 'Destek',
     useAsTitle: 'name',
   },
   fields: [
     {
       name: 'name',
+      label: 'İsim',
       type: 'text',
       required: true,
     },
     {
       name: 'comment',
+      label: 'Yorum',
       type: 'textarea',
       required: true,
       localized: true,
     },
     {
       name: 'date',
+      label: 'Tarih',
       type: 'date',
       required: true,
     },
     {
       name: 'approved',
+      label: 'Onaylı',
       type: 'checkbox',
       defaultValue: false,
       admin: {

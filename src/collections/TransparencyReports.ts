@@ -10,20 +10,23 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
     read: () => true,
     update: authenticated,
   },
+  labels: { singular: 'Şeffaflık Raporu', plural: 'Şeffaflık Raporları' },
   admin: {
     defaultColumns: ['title', 'month', 'totalExpense', 'totalDonation'],
-    group: 'Reports',
+    group: 'Raporlar',
     useAsTitle: 'title',
   },
   fields: [
     {
       name: 'title',
+      label: 'Başlık',
       type: 'text',
       required: true,
       localized: true,
     },
     {
       name: 'month',
+      label: 'Ay',
       type: 'date',
       required: true,
       admin: {
@@ -36,46 +39,54 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Expenses',
+          label: 'Giderler',
           fields: [
             {
               name: 'expenses',
+              label: 'Giderler',
               type: 'array',
               fields: [
                 {
                   name: 'category',
+                  label: 'Kategori',
                   type: 'text',
                   localized: true,
                 },
                 {
                   name: 'amount',
+                  label: 'Miktar',
                   type: 'number',
                 },
               ],
             },
             {
               name: 'totalExpense',
+              label: 'Toplam Gider',
               type: 'number',
             },
           ],
         },
         {
-          label: 'Donations',
+          label: 'Bağışlar',
           fields: [
             {
               name: 'totalDonation',
+              label: 'Toplam Bağış',
               type: 'number',
             },
             {
               name: 'donorList',
+              label: 'Bağışçı Listesi',
               type: 'array',
               fields: [
                 {
                   name: 'name',
+                  label: 'İsim',
                   type: 'text',
                 },
                 {
                   name: 'amount',
+                  label: 'Miktar',
                   type: 'number',
                 },
               ],
@@ -83,10 +94,11 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
           ],
         },
         {
-          label: 'Documents',
+          label: 'Belgeler',
           fields: [
             {
               name: 'documents',
+              label: 'Belgeler',
               type: 'upload',
               relationTo: 'media',
               hasMany: true,

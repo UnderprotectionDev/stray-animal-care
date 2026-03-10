@@ -5,12 +5,14 @@ import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
   slug: 'header',
+  label: 'Başlık Menüsü',
   access: {
     read: () => true,
   },
   fields: [
     {
       name: 'navItems',
+      label: 'Navigasyon Öğeleri',
       type: 'array',
       fields: [
         link({

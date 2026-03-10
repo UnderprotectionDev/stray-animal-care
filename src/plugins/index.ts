@@ -45,7 +45,7 @@ export const plugins: Plugin[] = [
             return {
               ...field,
               admin: {
-                description: 'You will need to rebuild the website when changing this field.',
+                description: 'Bu alanı değiştirdiğinizde web sitesini yeniden derlemeniz gerekecektir.',
               },
             }
           }
