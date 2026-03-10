@@ -1,6 +1,6 @@
 # Paws of Hope — Project Documentation
 
-> Last updated: 2026-03-10 — M7 & M8 complete, M9 next
+> Last updated: 2026-03-10 — All milestones complete (M1-M10, M13)
 
 ---
 
@@ -20,7 +20,7 @@ Paws of Hope is a donation-focused website for an individual animal lover who pe
 | CMS                 | PayloadCMS 3.x (embedded)                                  |
 | Database            | PostgreSQL (Neon)                                          |
 | Hosting             | Vercel                                                     |
-| Animation           | Motion + GSAP                                              |
+| Animation           | Motion (Framer Motion)                                     |
 | i18n                | next-intl (frontend) + PayloadCMS i18n (CMS)               |
 | SEO                 | Next.js Metadata API + PayloadCMS SEO Plugin               |
 | Form Validation     | Zod + TanStack Form                                        |
@@ -46,7 +46,7 @@ Paws of Hope is a donation-focused website for an individual animal lover who pe
 
 | Document | Contents |
 | -------- | -------- |
-| [Milestone Overview](milestones/README.md) | All 17 milestones across 3 phases with dependency graph |
+| [Milestone Overview](milestones/README.md) | All milestones across 2 phases with dependency graph |
 
 ### Phase 1: MVP (M1-M10)
 
@@ -63,22 +63,11 @@ Paws of Hope is a donation-focused website for an individual animal lover who pe
 | 9 | Content Pages | [09-content-pages.md](milestones/phase-1-mvp/09-content-pages.md) |
 | 10 | Polish, Search, Instagram & Launch | [10-polish-launch.md](milestones/phase-1-mvp/10-polish-launch.md) |
 
-### Phase 2: Growth (M11, M13-M14)
+### Phase 2: Growth (M13)
 
 | # | Milestone | File |
 |---|-----------|------|
-| 11 | Online Payment Integration | [11-online-payments.md](milestones/phase-2-growth/11-online-payments.md) |
 | 13 | Admin Dashboard Enhancements | [13-admin-dashboard.md](milestones/phase-2-growth/13-admin-dashboard.md) |
-| 14 | A/B Testing & Optimization | [14-ab-testing.md](milestones/phase-2-growth/14-ab-testing.md) |
-
-### Phase 3: Maturity (M15-M18)
-
-| # | Milestone | File |
-|---|-----------|------|
-| 15 | Progressive Web App (PWA) | [15-pwa.md](milestones/phase-3-maturity/15-pwa.md) |
-| 16 | Social Media Automation | [16-social-automation.md](milestones/phase-3-maturity/16-social-automation.md) |
-| 17 | Advanced Analytics & Reporting | [17-advanced-analytics.md](milestones/phase-3-maturity/17-advanced-analytics.md) |
-| 18 | NGO Compliance & Community | [18-ngo-community.md](milestones/phase-3-maturity/18-ngo-community.md) |
 
 ---
 

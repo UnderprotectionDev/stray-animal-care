@@ -53,7 +53,12 @@
   "search": {
     "title": "Arama",
     "placeholder": "Ara...",
-    "noResults": "Sonuç bulunamadı."
+    "noResults": "Sonuç bulunamadı.",
+    "modal": {
+      "placeholder": "Sayfa, yazı veya hayvan ara...",
+      "noResults": "Sonuç bulunamadı.",
+      "shortcut": "Aramayı aç"
+    }
   },
   "home": {
     "meta": {
@@ -369,5 +374,114 @@
     "tags": "Etiketler",
     "empty": "Henüz yazı bulunmuyor.",
     "back": "Günlüğe Dön"
+  },
+  "volunteer": {
+    "meta": {
+      "title": "Gönüllü Ol — Paws of Hope",
+      "description": "Sokak hayvanları için gönüllü olun. Geçici bakım, sağlık desteği, besleme ve daha fazlası."
+    },
+    "title": "Gönüllü Ol",
+    "subtitle": "Sokak hayvanlarına yardım etmek için aramıza katılın.",
+    "areas": {
+      "title": "Gönüllülük Alanları",
+      "foster": {
+        "title": "Geçici Bakım",
+        "description": "Tedavi sürecindeki hayvanlara evinizde geçici bakım sağlayın."
+      },
+      "health": {
+        "title": "Sağlık Desteği",
+        "description": "Veteriner ziyaretlerinde ve tedavi süreçlerinde yardımcı olun."
+      },
+      "feeding": {
+        "title": "Besleme",
+        "description": "Günlük besleme turlarına katılın ve besleme noktalarını yönetin."
+      },
+      "shelter": {
+        "title": "Barınak Yapımı",
+        "description": "Sokak hayvanları için barınak ve kulübe yapımına katkıda bulunun."
+      }
+    },
+    "stats": {
+      "title": "Gönüllü Ailemiz",
+      "volunteers": "Aktif Gönüllü",
+      "animalsHelped": "Yardım Edilen Hayvan",
+      "feedingPoints": "Besleme Noktası"
+    },
+    "faq": {
+      "title": "Sık Sorulan Sorular",
+      "q1": "Gönüllü olmak için ne yapmalıyım?",
+      "a1": "WhatsApp üzerinden bizimle iletişime geçmeniz yeterli. Size uygun alanları birlikte belirleyelim.",
+      "q2": "Gönüllülük için deneyim gerekli mi?",
+      "a2": "Hayır, herhangi bir deneyim gerekmez. Hayvanseverliğiniz yeterli! Gerekli eğitimi biz sağlıyoruz.",
+      "q3": "Ne kadar zaman ayırmalıyım?",
+      "a3": "Tamamen size bağlı. Haftada birkaç saat bile büyük fark yaratır.",
+      "q4": "Geçici bakım için evimde ne gerekli?",
+      "a4": "Temel ihtiyaçları (mama, kum, ilaç) biz karşılıyoruz. Sizden sadece sevgi ve ilgi bekliyoruz."
+    },
+    "cta": {
+      "title": "Aramıza Katılın!",
+      "description": "Gönüllü olmak için WhatsApp üzerinden bizimle iletişime geçin.",
+      "whatsappMessage": "Merhaba, gönüllü olmak istiyorum."
+    }
+  },
+  "vision": {
+    "meta": {
+      "title": "Gelecek Vizyonu — Paws of Hope",
+      "description": "Sokak hayvanları için geleceğe dair hedeflerimizi ve vizyonumuzu keşfedin."
+    },
+    "title": "Gelecek Vizyonu",
+    "subtitle": "Her adımda daha güzel bir gelecek inşa ediyoruz.",
+    "association": {
+      "title": "Dernek Kurma Hedefimiz",
+      "description": "Resmi bir dernek kurarak çalışmalarımızı yasal bir çatı altında sürdürmeyi, bağış toplama kapasitemizi artırmayı ve daha fazla hayvana ulaşmayı hedefliyoruz."
+    },
+    "shortTerm": {
+      "title": "Kısa Vadeli Hedefler (1 Yıl)",
+      "shelter": {
+        "title": "Tam Donanımlı Barınak",
+        "description": "Tedavi sürecindeki hayvanlar için güvenli ve donanımlı bir barınak kurmak."
+      },
+      "spay": {
+        "title": "200+ Kısırlaştırma",
+        "description": "Popülasyon kontrolü için yılda en az 200 hayvanı kısırlaştırmak."
+      },
+      "volunteers": {
+        "title": "50 Aktif Gönüllü",
+        "description": "Gönüllü ağımızı genişleterek 50 aktif gönüllüye ulaşmak."
+      },
+      "clinic": {
+        "title": "Veteriner Kliniği Ortaklığı",
+        "description": "İndirimli tedavi için veteriner klinikleriyle kalıcı ortaklıklar kurmak."
+      }
+    },
+    "longTerm": {
+      "title": "Uzun Vadeli Hedefler (3-5 Yıl)",
+      "ngo": {
+        "title": "Resmi Dernek Statüsü",
+        "description": "Yasal bir dernek kurarak şeffaf ve sürdürülebilir bir yapı oluşturmak."
+      },
+      "vetClinic": {
+        "title": "Toplum Destekli Klinik",
+        "description": "Bağışçılarımızın desteğiyle sokak hayvanlarına özel bir veteriner kliniği açmak."
+      },
+      "foster": {
+        "title": "Şehir Genelinde Geçici Bakım Ağı",
+        "description": "Her mahallede geçici bakım gönüllüleri ile kapsamlı bir ağ oluşturmak."
+      },
+      "awareness": {
+        "title": "Ulusal Farkındalık Kampanyası",
+        "description": "Sokak hayvanları hakları için ulusal çapta farkındalık kampanyaları düzenlemek."
+      }
+    },
+    "network": {
+      "title": "Büyüyen Gönüllü Ağımız",
+      "description": "Her gün büyüyen gönüllü ailemizle daha fazla hayvana ulaşıyoruz. Siz de bu değişimin parçası olun."
+    },
+    "cta": {
+      "title": "Bu Vizyonu Birlikte Gerçekleştirelim",
+      "description": "Geleceği birlikte inşa etmek için bağış yapın veya gönüllü olun.",
+      "donate": "Destek Ol",
+      "volunteer": "Gönüllü Ol"
+    }
   }
 }

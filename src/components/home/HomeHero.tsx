@@ -22,7 +22,7 @@ export async function HomeHero() {
               <Heart className="size-4" data-icon="inline-start" />
               {t('ctaDonate')}
             </Button>
-            <Button size="lg" variant="outline" render={<Link href="/acil-durumlar" />}>
+            <Button size="lg" variant="outline" render={<Link href="/acil-vakalar" />}>
               <AlertTriangle className="size-4" data-icon="inline-start" />
               {t('ctaEmergency')}
             </Button>

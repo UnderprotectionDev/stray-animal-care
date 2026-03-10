@@ -17,9 +17,10 @@ type FooterProps = {
 const NAV_ITEMS = [
   { href: '/', labelKey: 'home' },
   { href: '/canlarimiz', labelKey: 'animals' },
-  { href: '/acil-durumlar', labelKey: 'emergency' },
-  { href: '/posts', labelKey: 'blog' },
-  { href: '/donate', labelKey: 'donate' },
+  { href: '/acil-vakalar', labelKey: 'emergency' },
+  { href: '/gonullu-ol', labelKey: 'volunteer' },
+  { href: '/gunluk', labelKey: 'blog' },
+  { href: '/destek-ol', labelKey: 'donate' },
 ] as const
 
 export async function Footer({ siteSettings }: FooterProps) {

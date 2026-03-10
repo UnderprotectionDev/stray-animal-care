@@ -238,6 +238,18 @@ html {
   opacity: 0;
 }
 
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  html,
+  html * {
+    cursor: none !important;
+  }
+  html a:hover,
+  html button:hover,
+  html [role='button']:hover {
+    cursor: none !important;
+  }
+}
+
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;

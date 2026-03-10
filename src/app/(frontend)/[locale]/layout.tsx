@@ -34,6 +34,7 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { MobileDonateBar } from '@/components/shared/MobileDonateBar'
+import { PawCursor } from '@/components/shared/PawCursor'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -101,6 +102,7 @@ export default async function RootLayout({ children, params }: Props) {
             </main>
             <Footer siteSettings={siteSettings} />
             <MobileDonateBar />
+            <PawCursor />
             </NuqsAdapter>
           </NextIntlClientProvider>
         </Providers>

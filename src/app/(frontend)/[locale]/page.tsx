@@ -15,6 +15,7 @@ import { SupportCards } from '@/components/home/SupportCards'
 import { SupporterCommentsSection } from '@/components/home/SupporterCommentsSection'
 import { RecentPosts } from '@/components/home/RecentPosts'
 import { InstagramFeedPlaceholder } from '@/components/home/InstagramFeedPlaceholder'
+import { ScrollReveal } from '@/components/shared/ScrollReveal'
 
 export const revalidate = 60
 
@@ -76,13 +77,27 @@ export default async function HomePage({ params }: Args) {
   return (
     <>
       <HomeHero />
-      <StatsSection siteSettings={siteSettings} />
-      <FeaturedAnimals animals={animals.docs} />
-      <ActiveEmergencies cases={cases.docs} />
-      <SupportCards siteSettings={siteSettings} />
-      <SupporterCommentsSection comments={comments.docs} />
-      <RecentPosts posts={posts.docs} />
-      <InstagramFeedPlaceholder siteSettings={siteSettings} />
+      <ScrollReveal>
+        <StatsSection siteSettings={siteSettings} />
+      </ScrollReveal>
+      <ScrollReveal delay={0.1}>
+        <FeaturedAnimals animals={animals.docs} />
+      </ScrollReveal>
+      <ScrollReveal delay={0.1}>
+        <ActiveEmergencies cases={cases.docs} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SupportCards siteSettings={siteSettings} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SupporterCommentsSection comments={comments.docs} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <RecentPosts posts={posts.docs} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <InstagramFeedPlaceholder siteSettings={siteSettings} />
+      </ScrollReveal>
     </>
   )
 }
