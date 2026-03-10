@@ -30,7 +30,6 @@ Enhance the PayloadCMS admin panel with custom dashboard widgets, quick actions,
 **Acceptance Criteria:**
 - [x] Active emergency case count
 - [x] Total animals count
-- [x] Pending (unapproved) supporter comments count
 - [x] Total posts count
 - [x] Widgets update on dashboard load (async Server Component)
 
@@ -79,7 +78,6 @@ Enhance the PayloadCMS admin panel with custom dashboard widgets, quick actions,
 - [ ] BlogPosts support draft/published status (versions)
 - [ ] Animals support draft/published status
 - [ ] Admin can preview unpublished content
-- [ ] Bulk approve/reject for SupporterComments
 
 ---
 

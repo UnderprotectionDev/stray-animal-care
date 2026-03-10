@@ -68,7 +68,6 @@
 - [x] Gonullu Ol (Volunteer)
 - [x] Gelecek Vizyonu (Future Vision)
 - [x] Instagram placeholder (no API token)
-- [x] Supporter comments (moderated)
 - [x] Custom cursor (paw print, desktop only)
 - [x] Scroll animations (Motion / Framer Motion)
 - [x] SEO (dynamic sitemap, robots.ts, JSON-LD helpers)
@@ -92,7 +91,7 @@
 
 ### Page 1 — Home Page
 
-**Sections:** Hero (large image, heading, 2 CTAs), Introduction text, Statistics counters, Current work summary, Emergency cases (from CMS), Latest rescue story (before/after), Support redirect cards, Instagram feed (live API), Photo gallery/slider, Introduction video, Supporter comments (moderated, from CMS)
+**Sections:** Hero (large image, heading, 2 CTAs), Introduction text, Statistics counters, Current work summary, Emergency cases (from CMS), Latest rescue story (before/after), Support redirect cards, Instagram feed (live API), Photo gallery/slider, Introduction video
 
 ### Page 2 — Hikayem (My Story)
 

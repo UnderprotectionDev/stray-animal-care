@@ -12,7 +12,7 @@ Build the three core pages — Home (hero, stats, sections), Story (personal nar
 
 ## Scope
 
-- Home page with all sections (hero, stats, featured content, CTA cards, supporter comments)
+- Home page with all sections (hero, stats, featured content, CTA cards)
 - Story page (personal narrative with timeline)
 - Contact page (WhatsApp, phone, email, social links)
 - Custom 404 page ("lost paw" design)
@@ -76,23 +76,7 @@ The project uses a flat `src/components/` structure (not `src/modules/`) — fil
 
 ---
 
-### T6.4: Build Home page — Supporter Comments
-
-**What:** Display approved supporter testimonials in a carousel or grid.
-
-**Files:**
-- `src/components/home/SupporterCommentsSection.tsx`
-- `src/components/home/SupporterCommentsCarousel.tsx`
-
-**Acceptance Criteria:**
-- [x] Only shows comments where `approved: true`
-- [x] Displays name, date, and comment text
-- [x] Carousel on mobile, grid on desktop
-- [x] Data from SupporterComments collection
-
----
-
-### T6.5: Build Home page — Instagram feed section
+### T6.4: Build Home page — Instagram feed section
 
 **What:** Create a placeholder section for the Instagram feed (actual API integration in M10). Shows static placeholder images for now.
 
@@ -107,7 +91,7 @@ The project uses a flat `src/components/` structure (not `src/modules/`) — fil
 
 ---
 
-### T6.6: Assemble Home page
+### T6.5: Assemble Home page
 
 **What:** Combine all home sections into the page component with proper data fetching.
 
@@ -122,7 +106,7 @@ The project uses a flat `src/components/` structure (not `src/modules/`) — fil
 
 ---
 
-### T6.7: Build Story page
+### T6.6: Build Story page
 
 **What:** Create the "Hikayem" (My Story) page with personal narrative, earthquake story, daily routine timeline, and mission statement. Implemented via CMS page builder using TimelineBlock and MissionBlock.
 
@@ -145,7 +129,7 @@ The project uses a flat `src/components/` structure (not `src/modules/`) — fil
 
 ---
 
-### T6.8: Build Contact page
+### T6.7: Build Contact page
 
 **What:** Create the contact page with WhatsApp link, phone number, email, and social media links.
 
@@ -164,7 +148,7 @@ The project uses a flat `src/components/` structure (not `src/modules/`) — fil
 
 ---
 
-### T6.9: Build Custom 404 page
+### T6.8: Build Custom 404 page
 
 **What:** Create a custom "page not found" page with a "lost paw" themed design and links to popular pages.
 

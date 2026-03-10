@@ -228,15 +228,6 @@ Changes are reflected on the site after ISR revalidation.
 
 ---
 
-### How do I moderate supporter comments?
-
-1. Go to `/admin` and click **Destek Yorumlari** (Supporter Comments)
-2. New comments appear with a **Pending** status
-3. Review each comment and set status to **Approved** or **Rejected**
-4. Approved comments appear on the donation page
-
----
-
 ## Architecture Decision Rationale
 
 ### Why PayloadCMS embedded (not headless)?

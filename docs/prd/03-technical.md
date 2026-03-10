@@ -76,7 +76,6 @@ stray-animal-care/
 │   │   ├── animals/            # Our Animals
 │   │   │   └── collection.ts   #   → Animals collection
 │   │   ├── donate/             # Support Us
-│   │   │   └── collection.ts   #   → SupporterComments collection
 │   │   ├── supplies/           # Food & Supplies
 │   │   │   └── collection.ts   #   → NeedsList collection
 │   │   ├── emergency/          # Emergency Cases
@@ -277,22 +276,7 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 }
 ```
 
-### Collection 6: Supporter Comments
-
-```typescript
-{
-  slug: 'supporter-comments',
-  labels: { singular: 'Destekci Yorumu', plural: 'Destekci Yorumlari' },
-  fields: [
-    { name: 'name', type: 'text', required: true },
-    { name: 'comment', type: 'textarea', required: true, localized: true },
-    { name: 'date', type: 'date', required: true },
-    { name: 'approved', type: 'checkbox', defaultValue: false },
-  ]
-}
-```
-
-### Collection 7: Media
+### Collection 6: Media
 
 ```typescript
 {
@@ -430,7 +414,6 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 | SQL Injection       | PayloadCMS ORM layer used (no direct SQL)                    |
 | Image Upload        | MIME type validation, file size limit (max 5MB)              |
 | HTTPS               | Automatic SSL/TLS on Vercel                                  |
-| Supporter Comments  | Moderation system — only approved comments are displayed     |
 | Dependency Security | Regular `pnpm audit` and Dependabot                           |
 
 ---
@@ -466,7 +449,6 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 - Active emergency case count
 - Total animal count (cat/dog breakdown)
 - Latest published blog post
-- Pending supporter comments count
 
 ### Rich Text Editor Configuration
 
@@ -477,7 +459,7 @@ Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List 
 | Group     | Collections                           |
 | --------- | ------------------------------------- |
 | Content   | Animals, Blog Posts, Emergency Cases  |
-| Support   | Needs List, Supporter Comments        |
+| Support   | Needs List                            |
 | Reports   | Transparency Reports                  |
 | Settings  | Site Settings                         |
 

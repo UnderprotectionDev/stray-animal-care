@@ -11,7 +11,7 @@ Implement skeleton versions of the core pages: Home, Story (via CMS blocks), Con
 ### Home Page
 - **Custom code sections** (hardcoded structure in code, not CMS blocks)
 - **Monolithic data fetching**: Single fetch point using `Promise.all` for all collections
-- **Section order**: Hero > Stats > Featured Animals > Active Emergencies > Support Methods > Supporter Comments > Blog > Instagram
+- **Section order**: Hero > Stats > Featured Animals > Active Emergencies > Support Methods > Blog > Instagram
 - **ISR**: `revalidate = 60`
 
 ### Story Page
@@ -40,8 +40,6 @@ Implement skeleton versions of the core pages: Home, Story (via CMS blocks), Con
 | FeaturedAnimals | Server | animals collection prop |
 | ActiveEmergencies | Server | emergency-cases collection prop |
 | SupportCards | Server | SiteSettings + i18n |
-| SupporterCommentsSection | Server | supporter-comments prop |
-| SupporterCommentsCarousel | Client | props (embla carousel) |
 | RecentPosts | Server | posts collection prop |
 | InstagramFeedPlaceholder | Server | SiteSettings prop |
 

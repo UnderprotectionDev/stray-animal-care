@@ -13,6 +13,7 @@ import {
   revalidateEmergencyCase,
   revalidateEmergencyCaseDelete,
 } from './hooks/revalidateEmergencyCase'
+import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 
 import {
   MetaDescriptionField,
@@ -36,6 +37,12 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
     defaultColumns: ['title', 'caseStatus', 'collectedAmount', 'targetAmount', 'updatedAt'],
     group: 'İçerik',
     useAsTitle: 'title',
+    livePreview: {
+      url: ({ data, req }) =>
+        generatePreviewPath({ slug: data?.slug as string, collection: 'emergency-cases', req }),
+    },
+    preview: (data, { req }) =>
+      generatePreviewPath({ slug: data?.slug as string, collection: 'emergency-cases', req }),
   },
   fields: [
     {

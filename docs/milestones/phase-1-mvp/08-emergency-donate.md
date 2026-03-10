@@ -6,7 +6,7 @@ Build the Emergency Cases module (listing + detail with progress tracking) and t
 
 ## Dependencies
 
-- **M4** — CMS Collections & Global (EmergencyCases, SupporterComments, SiteSettings)
+- **M4** — CMS Collections & Global (EmergencyCases, SiteSettings)
 - **M5** — Layout Module (Header, Footer, Breadcrumb)
 
 ## Scope

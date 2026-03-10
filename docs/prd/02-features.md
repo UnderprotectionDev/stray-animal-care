@@ -115,11 +115,10 @@
 | ------ | -------------------------------------------------------------------------------------------------------------- | -------- |
 | US-8.1 | As a site admin, I want to add and update animal profiles through the CMS                                      | P0       |
 | US-8.2 | As a site admin, I want to update emergency case information and progress status                                | P0       |
-| US-8.3 | As a site admin, I want to approve and publish supporter comments                                               | P0       |
-| US-8.4 | As a site admin, I want to upload monthly transparency reports                                                  | P0       |
-| US-8.5 | As a site admin, I want to update the needs list                                                                | P0       |
-| US-8.6 | As a site admin, I want to write and publish blog posts                                                         | P0       |
-| US-8.7 | As a site admin, I want to change general site settings (IBAN, contact info, statistics)                        | P0       |
+| US-8.3 | As a site admin, I want to upload monthly transparency reports                                                  | P0       |
+| US-8.4 | As a site admin, I want to update the needs list                                                                | P0       |
+| US-8.5 | As a site admin, I want to write and publish blog posts                                                         | P0       |
+| US-8.6 | As a site admin, I want to change general site settings (IBAN, contact info, statistics)                        | P0       |
 
 ### Epic 9: Multilingual Support
 

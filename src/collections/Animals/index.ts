@@ -10,6 +10,7 @@ import {
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { revalidateAnimal, revalidateAnimalDelete } from './hooks/revalidateAnimal'
+import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 
 import {
   MetaDescriptionField,
@@ -33,6 +34,12 @@ export const Animals: CollectionConfig<'animals'> = {
     defaultColumns: ['name', 'type', 'animalStatus', 'updatedAt'],
     group: 'İçerik',
     useAsTitle: 'name',
+    livePreview: {
+      url: ({ data, req }) =>
+        generatePreviewPath({ slug: data?.slug as string, collection: 'animals', req }),
+    },
+    preview: (data, { req }) =>
+      generatePreviewPath({ slug: data?.slug as string, collection: 'animals', req }),
   },
   fields: [
     {

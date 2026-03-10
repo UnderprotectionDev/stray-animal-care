@@ -22,7 +22,6 @@ const collections: CollectionSlug[] = [
   'emergency-cases',
   'needs-list',
   'transparency-reports',
-  'supporter-comments',
 ]
 
 const _globals: GlobalSlug[] = ['header', 'footer', 'site-settings']
@@ -458,29 +457,6 @@ export const seed = async ({
       ],
     },
   })
-
-  payload.logger.info(`— Seeding supporter comments...`)
-
-  await Promise.all([
-    payload.create({
-      collection: 'supporter-comments',
-      data: {
-        name: 'Zeynep A.',
-        comment: 'Harika bir is yapiyorsunuz, desteklerimiz sizinle!',
-        date: '2026-02-15T00:00:00.000Z',
-        approved: true,
-      },
-    }),
-    payload.create({
-      collection: 'supporter-comments',
-      data: {
-        name: 'Ali B.',
-        comment: 'Pamuk cok tatli, onu ziyaret etmek istiyorum.',
-        date: '2026-03-01T00:00:00.000Z',
-        approved: false,
-      },
-    }),
-  ])
 
   payload.logger.info(`— Seeding site settings...`)
 

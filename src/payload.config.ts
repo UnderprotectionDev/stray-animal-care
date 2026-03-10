@@ -12,7 +12,6 @@ import { Media } from './collections/Media'
 import { NeedsList } from './collections/NeedsList'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
-import { SupporterComments } from './collections/SupporterComments'
 import { TransparencyReports } from './collections/TransparencyReports'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
@@ -79,7 +78,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, NeedsList, TransparencyReports, SupporterComments],
+  collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, NeedsList, TransparencyReports],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, SiteSettings],
   plugins,

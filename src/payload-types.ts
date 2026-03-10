@@ -76,7 +76,6 @@ export interface Config {
     'emergency-cases': EmergencyCase;
     'needs-list': NeedsList;
     'transparency-reports': TransparencyReport;
-    'supporter-comments': SupporterComment;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -103,7 +102,6 @@ export interface Config {
     'emergency-cases': EmergencyCasesSelect<false> | EmergencyCasesSelect<true>;
     'needs-list': NeedsListSelect<false> | NeedsListSelect<true>;
     'transparency-reports': TransparencyReportsSelect<false> | TransparencyReportsSelect<true>;
-    'supporter-comments': SupporterCommentsSelect<false> | SupporterCommentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1030,19 +1028,6 @@ export interface TransparencyReport {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "supporter-comments".
- */
-export interface SupporterComment {
-  id: number;
-  name: string;
-  comment: string;
-  date: string;
-  approved?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1279,10 +1264,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'transparency-reports';
         value: number | TransparencyReport;
-      } | null)
-    | ({
-        relationTo: 'supporter-comments';
-        value: number | SupporterComment;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1796,18 +1777,6 @@ export interface TransparencyReportsSelect<T extends boolean = true> {
         id?: T;
       };
   documents?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "supporter-comments_select".
- */
-export interface SupporterCommentsSelect<T extends boolean = true> {
-  name?: T;
-  comment?: T;
-  date?: T;
-  approved?: T;
   updatedAt?: T;
   createdAt?: T;
 }

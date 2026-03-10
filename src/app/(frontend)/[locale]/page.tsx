@@ -12,7 +12,6 @@ import { StatsSection } from '@/components/home/StatsSection'
 import { FeaturedAnimals } from '@/components/home/FeaturedAnimals'
 import { ActiveEmergencies } from '@/components/home/ActiveEmergencies'
 import { SupportCards } from '@/components/home/SupportCards'
-import { SupporterCommentsSection } from '@/components/home/SupporterCommentsSection'
 import { RecentPosts } from '@/components/home/RecentPosts'
 import { InstagramFeedPlaceholder } from '@/components/home/InstagramFeedPlaceholder'
 import { ScrollReveal } from '@/components/shared/ScrollReveal'
@@ -32,7 +31,7 @@ export default async function HomePage({ params }: Args) {
 
   const payloadLocale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
 
-  const [animals, cases, posts, comments] = await Promise.all([
+  const [animals, cases, posts] = await Promise.all([
     payload.find({
       collection: 'animals',
       where: {
@@ -63,15 +62,6 @@ export default async function HomePage({ params }: Args) {
       locale: payloadLocale,
       depth: 1,
     }),
-    payload.find({
-      collection: 'supporter-comments',
-      where: {
-        approved: { equals: true },
-      },
-      limit: 12,
-      sort: '-date',
-      locale: payloadLocale,
-    }),
   ])
 
   return (
@@ -88,9 +78,6 @@ export default async function HomePage({ params }: Args) {
       </ScrollReveal>
       <ScrollReveal>
         <SupportCards siteSettings={siteSettings} />
-      </ScrollReveal>
-      <ScrollReveal>
-        <SupporterCommentsSection comments={comments.docs} />
       </ScrollReveal>
       <ScrollReveal>
         <RecentPosts posts={posts.docs} />

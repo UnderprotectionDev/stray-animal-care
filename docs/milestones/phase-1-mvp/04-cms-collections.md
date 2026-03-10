@@ -2,7 +2,7 @@
 
 ## Description
 
-Define all 7 PayloadCMS collections and the SiteSettings global with full field schemas, localization, and seed data. This milestone makes CMS content manageable through the admin panel.
+Define all 6 PayloadCMS collections and the SiteSettings global with full field schemas, localization, and seed data. This milestone makes CMS content manageable through the admin panel.
 
 ## Dependencies
 
@@ -11,7 +11,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 
 ## Scope
 
-- 7 Collections: Animals, BlogPosts, EmergencyCases, NeedsList, TransparencyReports, SupporterComments, Media
+- 6 Collections: Animals, BlogPosts, EmergencyCases, NeedsList, TransparencyReports, Media
 - 1 Global: SiteSettings
 - PayloadCMS SEO Plugin integration
 - Admin panel navigation grouping
@@ -124,22 +124,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 
 ---
 
-### T4.7: Create SupporterComments collection
-
-**What:** Define the SupporterComments collection with moderation (approved checkbox) for displaying testimonials.
-
-**Files:**
-- `src/modules/donate/collection.ts`
-- `src/modules/donate/index.ts`
-
-**Acceptance Criteria:**
-- [ ] All fields match PRD schema (name, comment, date, approved)
-- [ ] `comment` field is localized
-- [ ] `approved` defaults to `false` (moderation workflow)
-
----
-
-### T4.8: Create SiteSettings global
+### T4.7: Create SiteSettings global
 
 **What:** Define the SiteSettings global for IBAN info, contact details, international payment links, and statistics.
 
@@ -154,7 +139,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 
 ---
 
-### T4.9: Register collections and global in Payload config
+### T4.8: Register collections and global in Payload config
 
 **What:** Import all collections and the global into `payload.config.ts` and configure admin panel navigation groups.
 
@@ -162,14 +147,14 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 - `src/payload.config.ts`
 
 **Acceptance Criteria:**
-- [ ] All 7 collections are registered in the config
+- [ ] All 6 collections are registered in the config
 - [ ] SiteSettings global is registered
-- [ ] Admin navigation groups: Content (Animals, Blog Posts, Emergency Cases), Support (Needs List, Supporter Comments), Reports (Transparency Reports), Settings (Site Settings)
+- [ ] Admin navigation groups: Content (Animals, Blog Posts, Emergency Cases), Support (Needs List), Reports (Transparency Reports), Settings (Site Settings)
 - [ ] PayloadCMS SEO plugin is installed and configured
 
 ---
 
-### T4.10: Install PayloadCMS SEO plugin
+### T4.9: Install PayloadCMS SEO plugin
 
 **What:** Add the `@payloadcms/plugin-seo` package and configure it for collections that need SEO metadata.
 
@@ -183,7 +168,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 
 ---
 
-### T4.11: Generate TypeScript types
+### T4.10: Generate TypeScript types
 
 **What:** Run PayloadCMS type generation to create the auto-generated types file.
 
@@ -197,7 +182,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 
 ---
 
-### T4.12: Create seed data script
+### T4.11: Create seed data script
 
 **What:** Build a seed script that populates the database with sample data for development — sample animals, blog posts, emergency cases, etc.
 
@@ -222,7 +207,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 
 ## Milestone Acceptance Criteria
 
-- [ ] All 7 collections are visible in the admin panel
+- [ ] All 6 collections are visible in the admin panel
 - [ ] SiteSettings global is editable in the admin panel
 - [ ] Localized fields show TR/EN tabs in admin
 - [ ] Seed data is loaded and visible

@@ -9,7 +9,7 @@ const baseClass = 'paws-dashboard'
 const Dashboard: React.FC = async () => {
   const payload = await getPayload({ config: configPromise })
 
-  const [animals, emergencies, pendingComments, posts, recentAnimals, recentEmergencies] =
+  const [animals, emergencies, posts, recentAnimals, recentEmergencies] =
     await Promise.all([
       payload.count({
         collection: 'animals',
@@ -18,10 +18,6 @@ const Dashboard: React.FC = async () => {
       payload.count({
         collection: 'emergency-cases',
         where: { caseStatus: { equals: 'aktif' }, _status: { equals: 'published' } },
-      }),
-      payload.count({
-        collection: 'supporter-comments',
-        where: { approved: { equals: false } },
       }),
       payload.count({
         collection: 'posts',
@@ -63,7 +59,6 @@ const Dashboard: React.FC = async () => {
     { label: 'Acil Vaka Oluştur', href: '/admin/collections/emergency-cases/create', icon: '🚨' },
     { label: 'Yazı Yaz', href: '/admin/collections/posts/create', icon: '✏️' },
     { label: 'İhtiyaç Listesi', href: '/admin/collections/needs-list', icon: '📋' },
-    { label: 'Yorumları İncele', href: '/admin/collections/supporter-comments', icon: '💬' },
   ]
 
   const formatDate = (dateStr: string) => {
@@ -96,14 +91,6 @@ const Dashboard: React.FC = async () => {
           <div className={`${baseClass}__stat-info`}>
             <span className={`${baseClass}__stat-number`}>{emergencies.totalDocs}</span>
             <span className={`${baseClass}__stat-label`}>Aktif Acil Vakalar</span>
-          </div>
-        </div>
-
-        <div className={`${baseClass}__stat-card ${baseClass}__stat-card--comments`}>
-          <div className={`${baseClass}__stat-icon`}>💬</div>
-          <div className={`${baseClass}__stat-info`}>
-            <span className={`${baseClass}__stat-number`}>{pendingComments.totalDocs}</span>
-            <span className={`${baseClass}__stat-label`}>Bekleyen Yorumlar</span>
           </div>
         </div>
 

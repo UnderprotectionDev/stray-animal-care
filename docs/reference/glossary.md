@@ -80,7 +80,6 @@ These appear in the PayloadCMS admin sidebar and throughout the admin UI.
 | Acil Vaka        | Acil Vakalar     | Emergency Case      | Emergency Cases      | `emergency-cases`       |
 | Ihtiyac          | Ihtiyac Listesi  | Need                | Needs List           | `needs-list`            |
 | Seffaflik Raporu | Seffaflik Raporlari | Transparency Report | Transparency Reports | `transparency-reports` |
-| Destek Yorumu    | Destek Yorumlari | Supporter Comment   | Supporter Comments   | `supporter-comments`    |
 | Medya            | Medyalar         | Media               | Media                | `media`                 |
 
 ### Global Label
