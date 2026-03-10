@@ -204,7 +204,7 @@ export interface Page {
             url?: string | null;
             label: string;
             /**
-             * Choose how the link should be rendered.
+             * Linkin nasıl görüneceğini seçin.
              */
             appearance?: ('default' | 'outline') | null;
           };
@@ -509,7 +509,7 @@ export interface CallToActionBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Linkin nasıl görüneceğini seçin.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -559,7 +559,7 @@ export interface ContentBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Linkin nasıl görüneceğini seçin.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -1048,7 +1048,7 @@ export interface SupporterComment {
 export interface Redirect {
   id: number;
   /**
-   * You will need to rebuild the website when changing this field.
+   * Bu alanı değiştirdiğinizde web sitesini yeniden derlemeniz gerekecektir.
    */
   from: string;
   to?: {

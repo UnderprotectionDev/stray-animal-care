@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { tr } from '@payloadcms/translations/languages/tr'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -25,6 +26,10 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  i18n: {
+    fallbackLanguage: 'tr',
+    supportedLanguages: { tr },
+  },
   localization: {
     locales: [
       { label: 'Türkçe', code: 'tr' },

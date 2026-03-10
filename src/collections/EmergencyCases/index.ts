@@ -31,14 +31,16 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
     read: authenticatedOrPublished,
     update: authenticated,
   },
+  labels: { singular: 'Acil Vaka', plural: 'Acil Vakalar' },
   admin: {
     defaultColumns: ['title', 'caseStatus', 'collectedAmount', 'targetAmount', 'updatedAt'],
-    group: 'Content',
+    group: 'İçerik',
     useAsTitle: 'title',
   },
   fields: [
     {
       name: 'title',
+      label: 'Başlık',
       type: 'text',
       required: true,
       localized: true,
@@ -47,15 +49,17 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Content',
+          label: 'İçerik',
           fields: [
             {
               name: 'animal',
+              label: 'Hayvan',
               type: 'relationship',
               relationTo: 'animals',
             },
             {
               name: 'description',
+              label: 'Açıklama',
               type: 'richText',
               localized: true,
               editor: lexicalEditor({
@@ -69,65 +73,75 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
             },
             {
               name: 'photos',
+              label: 'Fotoğraflar',
               type: 'upload',
               relationTo: 'media',
               hasMany: true,
             },
             {
               name: 'beforePhoto',
+              label: 'Önce Fotoğrafı',
               type: 'upload',
               relationTo: 'media',
             },
             {
               name: 'afterPhoto',
+              label: 'Sonra Fotoğrafı',
               type: 'upload',
               relationTo: 'media',
             },
           ],
         },
         {
-          label: 'Progress',
+          label: 'İlerleme',
           fields: [
             {
               name: 'targetAmount',
+              label: 'Hedef Miktar',
               type: 'number',
               required: true,
             },
             {
               name: 'collectedAmount',
+              label: 'Toplanan Miktar',
               type: 'number',
               defaultValue: 0,
             },
             {
               name: 'caseStatus',
+              label: 'Vaka Durumu',
               type: 'select',
               required: true,
               defaultValue: 'aktif',
               options: [
                 { label: 'Aktif', value: 'aktif' },
-                { label: 'Tamamlandi', value: 'tamamlandi' },
+                { label: 'Tamamlandı', value: 'tamamlandi' },
               ],
             },
           ],
         },
         {
-          label: 'Updates',
+          label: 'Güncellemeler',
           fields: [
             {
               name: 'updates',
+              label: 'Güncellemeler',
               type: 'array',
               fields: [
                 {
                   name: 'date',
+                  label: 'Tarih',
                   type: 'date',
                 },
                 {
                   name: 'text',
+                  label: 'Metin',
                   type: 'richText',
                   localized: true,
                 },
                 {
                   name: 'photo',
+                  label: 'Fotoğraf',
                   type: 'upload',
                   relationTo: 'media',
                 },
@@ -159,6 +173,7 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
     },
     {
       name: 'publishedAt',
+      label: 'Yayınlanma Tarihi',
       type: 'date',
       admin: {
         date: {

@@ -28,14 +28,16 @@ export const Animals: CollectionConfig<'animals'> = {
     read: authenticatedOrPublished,
     update: authenticated,
   },
+  labels: { singular: 'Hayvan', plural: 'Hayvanlar' },
   admin: {
     defaultColumns: ['name', 'type', 'animalStatus', 'updatedAt'],
-    group: 'Content',
+    group: 'İçerik',
     useAsTitle: 'name',
   },
   fields: [
     {
       name: 'name',
+      label: 'İsim',
       type: 'text',
       required: true,
       localized: true,
@@ -44,16 +46,18 @@ export const Animals: CollectionConfig<'animals'> = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Content',
+          label: 'İçerik',
           fields: [
             {
               name: 'photos',
+              label: 'Fotoğraflar',
               type: 'upload',
               relationTo: 'media',
               hasMany: true,
             },
             {
               name: 'story',
+              label: 'Hikaye',
               type: 'richText',
               localized: true,
               editor: lexicalEditor({
@@ -67,6 +71,7 @@ export const Animals: CollectionConfig<'animals'> = {
             },
             {
               name: 'needs',
+              label: 'İhtiyaçlar',
               type: 'richText',
               localized: true,
               editor: lexicalEditor({
@@ -81,44 +86,49 @@ export const Animals: CollectionConfig<'animals'> = {
           ],
         },
         {
-          label: 'Details',
+          label: 'Detaylar',
           fields: [
             {
               name: 'type',
+              label: 'Tür',
               type: 'select',
               required: true,
               options: [
                 { label: 'Kedi', value: 'kedi' },
-                { label: 'Kopek', value: 'kopek' },
+                { label: 'Köpek', value: 'kopek' },
               ],
             },
             {
               name: 'age',
+              label: 'Yaş',
               type: 'text',
               localized: true,
             },
             {
               name: 'gender',
+              label: 'Cinsiyet',
               type: 'select',
               required: true,
               options: [
                 { label: 'Erkek', value: 'erkek' },
-                { label: 'Disi', value: 'disi' },
+                { label: 'Dişi', value: 'disi' },
                 { label: 'Bilinmiyor', value: 'bilinmiyor' },
               ],
             },
             {
               name: 'animalStatus',
+              label: 'Hayvan Durumu',
               type: 'select',
               required: true,
               options: [
                 { label: 'Tedavide', value: 'tedavide' },
-                { label: 'Kalici Bakim', value: 'kalici-bakim' },
+                { label: 'Kalıcı Bakım', value: 'kalici-bakim' },
                 { label: 'Acil', value: 'acil' },
               ],
             },
             {
               name: 'featured',
+              label: 'Öne Çıkan',
               type: 'checkbox',
               defaultValue: false,
               admin: {
@@ -151,6 +161,7 @@ export const Animals: CollectionConfig<'animals'> = {
     },
     {
       name: 'publishedAt',
+      label: 'Yayınlanma Tarihi',
       type: 'date',
       admin: {
         date: {

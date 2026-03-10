@@ -24,7 +24,7 @@ export const Archive: Block = {
           ]
         },
       }),
-      label: 'Intro Content',
+      label: 'Giriş İçeriği',
     },
     {
       name: 'populateBy',
@@ -32,11 +32,11 @@ export const Archive: Block = {
       defaultValue: 'collection',
       options: [
         {
-          label: 'Collection',
+          label: 'Koleksiyon',
           value: 'collection',
         },
         {
-          label: 'Individual Selection',
+          label: 'Bireysel Seçim',
           value: 'selection',
         },
       ],
@@ -48,10 +48,10 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       defaultValue: 'posts',
-      label: 'Collections To Show',
+      label: 'Gösterilecek Koleksiyonlar',
       options: [
         {
-          label: 'Posts',
+          label: 'Yazılar',
           value: 'posts',
         },
       ],
@@ -63,7 +63,7 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       hasMany: true,
-      label: 'Categories To Show',
+      label: 'Gösterilecek Kategoriler',
       relationTo: 'categories',
     },
     {
@@ -83,12 +83,12 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'selection',
       },
       hasMany: true,
-      label: 'Selection',
+      label: 'Seçim',
       relationTo: ['posts'],
     },
   ],
   labels: {
-    plural: 'Archives',
-    singular: 'Archive',
+    plural: 'Arşivler',
+    singular: 'Arşiv',
   },
 }

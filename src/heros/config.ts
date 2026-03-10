@@ -17,22 +17,22 @@ export const hero: Field = {
       name: 'type',
       type: 'select',
       defaultValue: 'lowImpact',
-      label: 'Type',
+      label: 'Tür',
       options: [
         {
-          label: 'None',
+          label: 'Yok',
           value: 'none',
         },
         {
-          label: 'High Impact',
+          label: 'Yüksek Etki',
           value: 'highImpact',
         },
         {
-          label: 'Medium Impact',
+          label: 'Orta Etki',
           value: 'mediumImpact',
         },
         {
-          label: 'Low Impact',
+          label: 'Düşük Etki',
           value: 'lowImpact',
         },
       ],

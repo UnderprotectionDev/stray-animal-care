@@ -10,26 +10,30 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
     read: () => true,
     update: authenticated,
   },
+  labels: { singular: 'İhtiyaç Listesi', plural: 'İhtiyaç Listeleri' },
   admin: {
     defaultColumns: ['productName', 'urgency', 'stockStatus', 'order'],
-    group: 'Support',
+    group: 'Destek',
     useAsTitle: 'productName',
   },
   defaultSort: 'order',
   fields: [
     {
       name: 'productName',
+      label: 'Ürün Adı',
       type: 'text',
       required: true,
       localized: true,
     },
     {
       name: 'brandDetail',
+      label: 'Marka / Detay',
       type: 'text',
       localized: true,
     },
     {
       name: 'urgency',
+      label: 'Aciliyet',
       type: 'select',
       required: true,
       options: [
@@ -40,11 +44,13 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
     },
     {
       name: 'stockStatus',
+      label: 'Stok Durumu',
       type: 'text',
       localized: true,
     },
     {
       name: 'order',
+      label: 'Sıralama',
       type: 'number',
       required: true,
       defaultValue: 0,
