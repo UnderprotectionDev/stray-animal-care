@@ -72,6 +72,11 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    animals: Animal;
+    'emergency-cases': EmergencyCase;
+    'needs-list': NeedsList;
+    'transparency-reports': TransparencyReport;
+    'supporter-comments': SupporterComment;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,6 +99,11 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    animals: AnimalsSelect<false> | AnimalsSelect<true>;
+    'emergency-cases': EmergencyCasesSelect<false> | EmergencyCasesSelect<true>;
+    'needs-list': NeedsListSelect<false> | NeedsListSelect<true>;
+    'transparency-reports': TransparencyReportsSelect<false> | TransparencyReportsSelect<true>;
+    'supporter-comments': SupporterCommentsSelect<false> | SupporterCommentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -108,16 +118,18 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('tr' | 'en') | ('tr' | 'en')[];
   globals: {
     header: Header;
     footer: Footer;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: null;
+  locale: 'tr' | 'en';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -238,6 +250,7 @@ export interface Page {
 export interface Post {
   id: number;
   title: string;
+  excerpt?: string | null;
   heroImage?: (number | null) | Media;
   content: {
     root: {
@@ -256,6 +269,12 @@ export interface Post {
   };
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   meta?: {
     title?: string | null;
     /**
@@ -264,6 +283,7 @@ export interface Post {
     image?: (number | null) | Media;
     description?: string | null;
   };
+  postCategory?: ('kurtarma' | 'tedavi' | 'gunluk' | 'duyuru' | 'etkinlik') | null;
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
   populatedAuthors?:
@@ -784,6 +804,191 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "animals".
+ */
+export interface Animal {
+  id: number;
+  name: string;
+  photos?: (number | Media)[] | null;
+  story?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  needs?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  type: 'kedi' | 'kopek';
+  age?: string | null;
+  gender: 'erkek' | 'disi' | 'bilinmiyor';
+  status: 'tedavide' | 'kalici-bakim' | 'acil';
+  featured?: boolean | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-cases".
+ */
+export interface EmergencyCase {
+  id: number;
+  title: string;
+  animal?: (number | null) | Animal;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  photos?: (number | Media)[] | null;
+  beforePhoto?: (number | null) | Media;
+  afterPhoto?: (number | null) | Media;
+  targetAmount: number;
+  collectedAmount?: number | null;
+  caseStatus: 'aktif' | 'tamamlandi';
+  updates?:
+    | {
+        date?: string | null;
+        text?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "needs-list".
+ */
+export interface NeedsList {
+  id: number;
+  productName: string;
+  brandDetail?: string | null;
+  urgency: 'acil' | 'orta' | 'yeterli';
+  stockStatus?: string | null;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transparency-reports".
+ */
+export interface TransparencyReport {
+  id: number;
+  title: string;
+  month: string;
+  expenses?:
+    | {
+        category?: string | null;
+        amount?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  totalExpense?: number | null;
+  totalDonation?: number | null;
+  donorList?:
+    | {
+        name?: string | null;
+        amount?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  documents?: (number | Media)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supporter-comments".
+ */
+export interface SupporterComment {
+  id: number;
+  name: string;
+  comment: string;
+  date: string;
+  approved?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -802,6 +1007,14 @@ export interface Redirect {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'animals';
+          value: number | Animal;
+        } | null)
+      | ({
+          relationTo: 'emergency-cases';
+          value: number | EmergencyCase;
         } | null);
     url?: string | null;
   };
@@ -835,10 +1048,15 @@ export interface Search {
   id: number;
   title?: string | null;
   priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: number | Post;
-  };
+  doc:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }
+    | {
+        relationTo: 'animals';
+        value: number | Animal;
+      };
   slug?: string | null;
   meta?: {
     title?: string | null;
@@ -991,6 +1209,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'animals';
+        value: number | Animal;
+      } | null)
+    | ({
+        relationTo: 'emergency-cases';
+        value: number | EmergencyCase;
+      } | null)
+    | ({
+        relationTo: 'needs-list';
+        value: number | NeedsList;
+      } | null)
+    | ({
+        relationTo: 'transparency-reports';
+        value: number | TransparencyReport;
+      } | null)
+    | ({
+        relationTo: 'supporter-comments';
+        value: number | SupporterComment;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1195,10 +1433,17 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  excerpt?: T;
   heroImage?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
   meta?:
     | T
     | {
@@ -1206,6 +1451,7 @@ export interface PostsSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
+  postCategory?: T;
   publishedAt?: T;
   authors?: T;
   populatedAuthors?:
@@ -1356,6 +1602,122 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "animals_select".
+ */
+export interface AnimalsSelect<T extends boolean = true> {
+  name?: T;
+  photos?: T;
+  story?: T;
+  needs?: T;
+  type?: T;
+  age?: T;
+  gender?: T;
+  status?: T;
+  featured?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-cases_select".
+ */
+export interface EmergencyCasesSelect<T extends boolean = true> {
+  title?: T;
+  animal?: T;
+  description?: T;
+  photos?: T;
+  beforePhoto?: T;
+  afterPhoto?: T;
+  targetAmount?: T;
+  collectedAmount?: T;
+  caseStatus?: T;
+  updates?:
+    | T
+    | {
+        date?: T;
+        text?: T;
+        photo?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "needs-list_select".
+ */
+export interface NeedsListSelect<T extends boolean = true> {
+  productName?: T;
+  brandDetail?: T;
+  urgency?: T;
+  stockStatus?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transparency-reports_select".
+ */
+export interface TransparencyReportsSelect<T extends boolean = true> {
+  title?: T;
+  month?: T;
+  expenses?:
+    | T
+    | {
+        category?: T;
+        amount?: T;
+        id?: T;
+      };
+  totalExpense?: T;
+  totalDonation?: T;
+  donorList?:
+    | T
+    | {
+        name?: T;
+        amount?: T;
+        id?: T;
+      };
+  documents?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supporter-comments_select".
+ */
+export interface SupporterCommentsSelect<T extends boolean = true> {
+  name?: T;
+  comment?: T;
+  date?: T;
+  approved?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1692,6 +2054,29 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  bankName?: string | null;
+  accountHolder?: string | null;
+  iban?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  whatsapp?: string | null;
+  instagram?: string | null;
+  paypalLink?: string | null;
+  wiseLink?: string | null;
+  catsCount?: number | null;
+  dogsCount?: number | null;
+  treatedCount?: number | null;
+  spayedCount?: number | null;
+  vaccinatedCount?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1738,6 +2123,29 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  bankName?: T;
+  accountHolder?: T;
+  iban?: T;
+  phone?: T;
+  email?: T;
+  whatsapp?: T;
+  instagram?: T;
+  paypalLink?: T;
+  wiseLink?: T;
+  catsCount?: T;
+  dogsCount?: T;
+  treatedCount?: T;
+  spayedCount?: T;
+  vaccinatedCount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1762,6 +2170,14 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'animals';
+          value: number | Animal;
+        } | null)
+      | ({
+          relationTo: 'emergency-cases';
+          value: number | EmergencyCase;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

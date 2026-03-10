@@ -1,12 +1,15 @@
-import { Button, type ButtonProps } from '@/components/ui/button'
+import { Button, type buttonVariants } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import React from 'react'
+import type { VariantProps } from 'class-variance-authority'
 
 import type { Page, Post } from '@/payload-types'
 
+type ButtonVariantProps = VariantProps<typeof buttonVariants>
+
 type CMSLinkType = {
-  appearance?: 'inline' | ButtonProps['variant']
+  appearance?: 'inline' | ButtonVariantProps['variant']
   children?: React.ReactNode
   className?: string
   label?: string | null
@@ -15,7 +18,7 @@ type CMSLinkType = {
     relationTo: 'pages' | 'posts'
     value: Page | Post | string | number
   } | null
-  size?: ButtonProps['size'] | null
+  size?: ButtonVariantProps['size'] | null
   type?: 'custom' | 'reference' | null
   url?: string | null
 }
@@ -42,25 +45,28 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   if (!href) return null
 
-  const size = appearance === 'link' ? 'clear' : sizeFromProps
+  const size = appearance === 'link' ? undefined : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
+      <Link className={cn(className)} href={href} {...newTabProps}>
+        {label}
+        {children}
       </Link>
     )
   }
 
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
-      </Link>
+    <Button
+      render={<Link href={href} {...newTabProps} />}
+      className={cn(className)}
+      size={size}
+      variant={appearance}
+    >
+      {label}
+      {children}
     </Button>
   )
 }

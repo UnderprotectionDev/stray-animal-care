@@ -4,13 +4,19 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import { Animals } from './collections/Animals'
 import { Categories } from './collections/Categories'
+import { EmergencyCases } from './collections/EmergencyCases'
 import { Media } from './collections/Media'
+import { NeedsList } from './collections/NeedsList'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { SupporterComments } from './collections/SupporterComments'
+import { TransparencyReports } from './collections/TransparencyReports'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { SiteSettings } from './SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -19,6 +25,14 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  localization: {
+    locales: [
+      { label: 'Türkçe', code: 'tr' },
+      { label: 'English', code: 'en' },
+    ],
+    defaultLocale: 'tr',
+    fallback: true,
+  },
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -62,9 +76,9 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, NeedsList, TransparencyReports, SupporterComments],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, SiteSettings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

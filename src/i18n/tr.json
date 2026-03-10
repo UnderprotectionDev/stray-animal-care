@@ -1,0 +1,58 @@
+{
+  "common": {
+    "siteName": "Paws of Hope",
+    "search": "Ara",
+    "loading": "Yükleniyor...",
+    "goHome": "Ana Sayfaya Git",
+    "notFound": "Sayfa bulunamadı",
+    "backToHome": "Ana Sayfaya Dön"
+  },
+  "layout": {
+    "header": {
+      "home": "Ana Sayfa",
+      "posts": "Yazılar",
+      "search": "Ara",
+      "animals": "Canlarımız",
+      "emergency": "Acil Durumlar",
+      "blog": "Blog",
+      "donate": "Destek Ol",
+      "openMenu": "Menüyü aç",
+      "closeMenu": "Menüyü kapat"
+    },
+    "languageSwitcher": {
+      "label": "Dil seçimi"
+    },
+    "mobileMenu": {
+      "title": "Menü"
+    },
+    "footer": {
+      "copyright": "Tüm hakları saklıdır.",
+      "bankInfo": "Banka Bilgileri",
+      "contactUs": "İletişim",
+      "quickLinks": "Hızlı Bağlantılar",
+      "international": "Uluslararası Destek",
+      "copyIban": "IBAN'ı Kopyala",
+      "followUs": "Bizi Takip Edin",
+      "description": "Sokak hayvanlarına umut oluyoruz."
+    },
+    "breadcrumb": {
+      "home": "Ana Sayfa"
+    },
+    "mobileDonate": {
+      "cta": "Destek Ol"
+    },
+    "skipToContent": "İçeriğe geç",
+    "siteTitle": "Paws of Hope — Sokak Hayvanları Bakımı",
+    "siteDescription": "Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz."
+  },
+  "posts": {
+    "title": "Yazılar",
+    "readMore": "Devamını Oku",
+    "noPosts": "Henüz yazı bulunmuyor."
+  },
+  "search": {
+    "title": "Arama",
+    "placeholder": "Ara...",
+    "noResults": "Sonuç bulunamadı."
+  }
+}

@@ -70,12 +70,19 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       type: 'tabs',
       tabs: [
         {
           fields: [
+            {
+              name: 'excerpt',
+              type: 'textarea',
+              localized: true,
+              maxLength: 300,
+            },
             {
               name: 'heroImage',
               type: 'upload',
@@ -129,6 +136,16 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'categories',
             },
+            {
+              name: 'tags',
+              type: 'array',
+              fields: [
+                {
+                  name: 'tag',
+                  type: 'text',
+                },
+              ],
+            },
           ],
           label: 'Meta',
         },
@@ -159,6 +176,20 @@ export const Posts: CollectionConfig<'posts'> = {
             }),
           ],
         },
+      ],
+    },
+    {
+      name: 'postCategory',
+      type: 'select',
+      admin: {
+        position: 'sidebar',
+      },
+      options: [
+        { label: 'Kurtarma', value: 'kurtarma' },
+        { label: 'Tedavi', value: 'tedavi' },
+        { label: 'Gunluk', value: 'gunluk' },
+        { label: 'Duyuru', value: 'duyuru' },
+        { label: 'Etkinlik', value: 'etkinlik' },
       ],
     },
     {
