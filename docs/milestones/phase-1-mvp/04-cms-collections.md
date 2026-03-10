@@ -191,7 +191,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 - `src/types/payload-types.ts` (auto-generated)
 
 **Acceptance Criteria:**
-- [ ] `bun run generate:types` produces `payload-types.ts`
+- [ ] `pnpm run generate:types` produces `payload-types.ts`
 - [ ] All collections and globals have corresponding TypeScript interfaces
 - [ ] Types are importable throughout the project
 
@@ -211,7 +211,7 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 - `package.json` (add `seed` script)
 
 **Acceptance Criteria:**
-- [ ] `bun run seed` populates the database with sample data
+- [ ] `pnpm run seed` populates the database with sample data
 - [ ] At least 4 animals (2 cats, 2 dogs) with both TR and EN content
 - [ ] At least 2 blog posts with both locales
 - [ ] At least 2 emergency cases (1 active, 1 completed)
@@ -236,6 +236,6 @@ Define all 7 PayloadCMS collections and the SiteSettings global with full field 
 2. Create a new Animal via admin — confirm all fields are present including locale tabs
 3. Upload an image — confirm thumbnail, card, and hero sizes are generated
 4. Edit SiteSettings — confirm all fields are editable
-5. Run `bun run seed` — confirm sample data appears in collections
-6. Run `bun run generate:types` — confirm types file is created
+5. Run `pnpm run seed` — confirm sample data appears in collections
+6. Run `pnpm run generate:types` — confirm types file is created
 7. Verify admin navigation groups match the specification

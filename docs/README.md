@@ -24,7 +24,7 @@ Paws of Hope is a donation-focused website for an individual animal lover who pe
 | i18n                | next-intl (frontend) + PayloadCMS i18n (CMS)               |
 | SEO                 | Next.js Metadata API + PayloadCMS SEO Plugin               |
 | Form Validation     | Zod + TanStack Form                                        |
-| Package Manager     | Bun                                                        |
+| Package Manager     | pnpm                                                       |
 | Linting/Formatting  | Biome                                                      |
 | Search/State        | PayloadCMS fullText search + Nuqs                          |
 

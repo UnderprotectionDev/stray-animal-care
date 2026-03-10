@@ -2,7 +2,7 @@
 
 ## Description
 
-Set up the foundational project structure with Next.js 15, PayloadCMS 3.x, PostgreSQL, Tailwind CSS 4, Biome, and Bun. This milestone produces a working dev environment with all tooling configured and the modular directory structure in place.
+Set up the foundational project structure with Next.js 15, PayloadCMS 3.x, PostgreSQL, Tailwind CSS 4, Biome, and pnpm. This milestone produces a working dev environment with all tooling configured and the modular directory structure in place.
 
 ## Dependencies
 
@@ -10,7 +10,7 @@ None — this is the starting milestone.
 
 ## Scope
 
-- Next.js 15 App Router project initialization with Bun
+- Next.js 15 App Router project initialization with pnpm
 - PayloadCMS 3.x embedded in Next.js (not separate server)
 - PostgreSQL connection via Neon (serverless)
 - Tailwind CSS 4 configuration
@@ -21,9 +21,9 @@ None — this is the starting milestone.
 
 ## Tasks
 
-### T1.1: Initialize Next.js 15 project with Bun
+### T1.1: Initialize Next.js 15 project with pnpm
 
-**What:** Create the Next.js 15 project using `bunx create-next-app` with App Router, TypeScript, and Tailwind CSS enabled.
+**What:** Create the Next.js 15 project using `pnpm create next-app` with App Router, TypeScript, and Tailwind CSS enabled.
 
 **Files:**
 - `package.json`
@@ -33,7 +33,7 @@ None — this is the starting milestone.
 - `src/app/page.tsx`
 
 **Acceptance Criteria:**
-- [ ] `bun dev` starts the development server successfully
+- [ ] `pnpm dev` starts the development server successfully
 - [ ] TypeScript strict mode is enabled
 - [ ] App Router is configured (not Pages Router)
 
@@ -95,9 +95,9 @@ None — this is the starting milestone.
 - `package.json` (scripts: `lint`, `format`, `check`)
 
 **Acceptance Criteria:**
-- [ ] `bun run lint` runs Biome linting
-- [ ] `bun run format` runs Biome formatting
-- [ ] `bun run check` runs both lint + format check
+- [ ] `pnpm run lint` runs Biome linting
+- [ ] `pnpm run format` runs Biome formatting
+- [ ] `pnpm run check` runs both lint + format check
 - [ ] No ESLint or Prettier config files exist
 
 ---
@@ -167,26 +167,26 @@ None — this is the starting milestone.
 - `package.json` (build script)
 
 **Acceptance Criteria:**
-- [ ] `bun run build` completes without errors
+- [ ] `pnpm run build` completes without errors
 - [ ] Project is deployable to Vercel
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] `bun dev` starts the app with no errors
+- [ ] `pnpm dev` starts the app with no errors
 - [ ] PayloadCMS admin is accessible at `/admin`
 - [ ] Frontend renders at `/tr` (or default locale)
 - [ ] All 18 module directories exist
 - [ ] Biome linting passes with no errors
-- [ ] `bun run build` succeeds
+- [ ] `pnpm run build` succeeds
 - [ ] `.env.local` is gitignored and documented in `.env.example`
 
 ## Verification
 
-1. Run `bun dev` and verify the app starts
+1. Run `pnpm dev` and verify the app starts
 2. Navigate to `/admin` and confirm PayloadCMS loads
 3. Navigate to `/` and confirm the frontend renders
-4. Run `bun run lint` and confirm no errors
-5. Run `bun run build` and confirm successful build
+4. Run `pnpm run lint` and confirm no errors
+5. Run `pnpm run build` and confirm successful build
 6. Verify all directories exist with `ls -R src/modules/`

@@ -95,7 +95,7 @@ Critical paths that require 100% coverage:
 2. Type check          — tsc --noEmit
 3. Unit tests          — vitest run
 4. Integration tests   — vitest run --config vitest.integration.config.ts
-5. Build               — bun run build
+5. Build               — pnpm run build
 ```
 
 ### Nightly + Pre-Release
@@ -115,12 +115,12 @@ on: [pull_request]
 jobs:
   quality:
     steps:
-      - bun install --frozen-lockfile
-      - bun run biome:check
-      - bun run typecheck
-      - bun run test
-      - bun run test:integration
-      - bun run build
+      - pnpm install --frozen-lockfile
+      - pnpm run biome:check
+      - pnpm run typecheck
+      - pnpm run test
+      - pnpm run test:integration
+      - pnpm run build
 ```
 
 ---
@@ -188,7 +188,7 @@ Located in `tests/seed/`:
 - `seed-emergency.ts` — emergency cases
 - `seed-settings.ts` — site settings (IBAN, contact info)
 
-Run with: `bun run test:seed`
+Run with: `pnpm run test:seed`
 
 ### What to Test in Collections
 
@@ -255,14 +255,14 @@ vi.mock("nuqs", () => ({
 
 | Command                      | Description                         |
 | ---------------------------- | ----------------------------------- |
-| `bun run test`               | Run all unit tests                  |
-| `bun run test:watch`         | Run unit tests in watch mode        |
-| `bun run test:integration`   | Run integration tests               |
-| `bun run test:e2e`           | Run Playwright E2E tests            |
-| `bun run test:e2e:ui`        | Run Playwright with UI mode         |
-| `bun run test:coverage`      | Run tests with coverage report      |
-| `bun run test:seed`          | Seed the test database              |
-| `bun run test:a11y`          | Run accessibility audit             |
+| `pnpm run test`               | Run all unit tests                  |
+| `pnpm run test:watch`         | Run unit tests in watch mode        |
+| `pnpm run test:integration`   | Run integration tests               |
+| `pnpm run test:e2e`           | Run Playwright E2E tests            |
+| `pnpm run test:e2e:ui`        | Run Playwright with UI mode         |
+| `pnpm run test:coverage`      | Run tests with coverage report      |
+| `pnpm run test:seed`          | Seed the test database              |
+| `pnpm run test:a11y`          | Run accessibility audit             |
 
 ---
 

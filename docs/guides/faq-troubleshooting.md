@@ -264,12 +264,13 @@ The 18 modules cover all pages plus cross-cutting concerns (layout, shared, medi
 
 ---
 
-### Why Bun?
+### Why pnpm?
 
-- **Speed** — significantly faster package installation and script execution than npm/yarn
-- **Built-in test runner compatibility** — works with Vitest
+- **Speed** — significantly faster package installation than npm/yarn
+- **Disk efficiency** — content-addressable storage avoids duplicate packages
+- **Strict dependency resolution** — prevents phantom dependency issues
 - **Drop-in replacement** — compatible with npm packages and `node_modules`
-- **Vercel support** — Vercel natively supports Bun as a package manager
+- **Vercel support** — Vercel natively supports pnpm as a package manager
 
 ---
 

@@ -218,7 +218,7 @@ Final MVP milestone — implement site-wide search, Instagram API integration, r
 - `.env.example` (document all env vars)
 
 **Acceptance Criteria:**
-- [ ] `bun run build` succeeds with no errors or warnings
+- [ ] `pnpm run build` succeeds with no errors or warnings
 - [ ] Vercel deployment succeeds
 - [ ] All environment variables are configured in Vercel
 - [ ] PostgreSQL (Neon) connection works in production
