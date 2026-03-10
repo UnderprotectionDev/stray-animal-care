@@ -17,7 +17,8 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 const NAV_ITEMS = [
   { href: '/canlarimiz', labelKey: 'animals' },
   { href: '/acil-vakalar', labelKey: 'emergency' },
-  { href: '/posts', labelKey: 'blog' },
+  { href: '/gonullu-ol', labelKey: 'volunteer' },
+  { href: '/gunluk', labelKey: 'blog' },
 ] as const
 
 type MobileMenuProps = {

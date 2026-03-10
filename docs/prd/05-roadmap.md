@@ -23,10 +23,7 @@
 
 | Feature                                                    | Priority | Timeframe |
 | ---------------------------------------------------------- | -------- | --------- |
-| Online payment integration (iyzico/Stripe)                 | High     | Phase 2   |
-| PWA (Progressive Web App)                                  | Low      | Phase 3   |
-| Admin dashboard (analytics, summary statistics)            | Medium   | Phase 2   |
-| Automatic social media posting (blog → Instagram/Twitter)  | Low      | Phase 3   |
+| ~~Admin dashboard (analytics, summary statistics)~~        | ~~Medium~~ | Done ✅ |
 | Animal adoption module                                     | Low      | Phase 3+  |
 | Post-association legal compliance transition               | High     | Phase 3   |
 
@@ -38,66 +35,56 @@
 
 **Weeks 1-2: Core Infrastructure**
 
-- [ ] Next.js + PayloadCMS 3.x project setup (pnpm)
-- [ ] PostgreSQL connection (Neon)
-- [ ] Tailwind CSS + shadcn/ui configuration
-- [ ] Biome configuration (lint + format)
-- [ ] PayloadCMS collection and global definitions
-- [ ] next-intl configuration (TR/EN)
-- [ ] Modular directory structure creation
+- [x] Next.js + PayloadCMS 3.x project setup (pnpm)
+- [x] PostgreSQL connection (Neon)
+- [x] Tailwind CSS + shadcn/ui configuration
+- [x] ESLint configuration
+- [x] PayloadCMS collection and global definitions
+- [x] next-intl configuration (TR/EN)
+- [x] Modular directory structure creation
 
 **Weeks 3-4: Layout & Core Pages**
 
-- [x] Header (navigation, language switcher, search, "Bagis Yap" (Donate) CTA)
+- [x] Header (navigation, language switcher, search modal, Donate CTA)
 - [x] Footer (IBAN, social media, quick links)
-- [x] Home Page (hero, statistics, sections)
+- [x] Home Page (hero, statistics, sections, scroll animations)
 - [x] Hikayem (My Story) page
-- [ ] Destek Ol (Donate) page (IBAN copy, donation cards)
+- [x] Destek Ol (Donate) page (IBAN copy, donation cards)
 - [x] Iletisim (Contact) page
 - [x] Custom 404 & error pages
 
 **Weeks 5-6: Content Pages**
 
-- [ ] Canlarimiz (Our Animals) — animal cards, filter, detail, breadcrumb
-- [ ] Acil Vakalar (Emergency Cases) — case cards, progress bar, update history
-- [ ] Calismalarimiz (Our Work)
-- [ ] Mama & Malzeme Yardimi (Food & Supplies Aid)
-- [ ] Seffaflik Kosesi (Transparency Corner)
-- [ ] Gunluk / Blog (Journal) — list + detail, tag filter
-- [ ] Site-wide search (SearchBar, SearchResults, SearchModal)
+- [x] Canlarimiz (Our Animals) — animal cards, filter, detail, breadcrumb
+- [x] Acil Vakalar (Emergency Cases) — case cards, progress bar, update history
+- [x] Calismalarimiz (Our Work)
+- [x] Mama & Malzeme Yardimi (Food & Supplies Aid)
+- [x] Seffaflik Kosesi (Transparency Corner)
+- [x] Gunluk / Blog (Journal) — list + detail, tag filter
+- [x] Site-wide search (SearchModal with Cmd+K)
 
 **Weeks 7-8: Final Pages & Polish**
 
-- [ ] Gonullu Ol (Volunteer)
-- [ ] Gelecek Vizyonu (Future Vision)
-- [ ] Instagram API integration
-- [ ] Supporter comments (moderated)
-- [ ] Custom cursor (paw print)
-- [ ] Animations (Motion + GSAP)
-- [ ] SEO (Next.js Metadata API, sitemap, JSON-LD, Open Graph)
-- [ ] Breadcrumb navigation (animal, case, blog detail pages)
-- [ ] Skeleton/loading UI on all dynamic pages
-- [ ] Responsive testing (mobile, tablet, desktop)
-- [ ] Accessibility testing (WCAG 2.1 AA)
-- [ ] Adding placeholder images
-- [ ] Performance optimization
-- [ ] Vercel deployment
+- [x] Gonullu Ol (Volunteer)
+- [x] Gelecek Vizyonu (Future Vision)
+- [x] Instagram placeholder (no API token)
+- [x] Supporter comments (moderated)
+- [x] Custom cursor (paw print, desktop only)
+- [x] Scroll animations (Motion / Framer Motion)
+- [x] SEO (dynamic sitemap, robots.ts, JSON-LD helpers)
+- [x] Breadcrumb navigation (animal, case, blog detail pages)
+- [x] Accessibility improvements (skip nav, focus, ARIA)
+- [x] Performance optimization (font preloading, CSS purge)
 
 ### Phase 2: Growth — 1-3 Months After Launch
 
-- [ ] Online payment integration (iyzico/Stripe)
-- [ ] Admin dashboard enhancements
-- [ ] A/B testing for CTA optimization
+- [x] Admin dashboard enhancements (custom widgets, quick actions, recent activity)
 - [ ] Uploading real images to CMS
 - [ ] UI improvements based on user feedback
 
 ### Phase 3: Maturity — 3-6 Months After Launch
 
-- [ ] PWA implementation
-- [ ] Automatic social media integration
-- [ ] Advanced analytics and reporting
 - [ ] Post-association (dernek) legal compliance
-- [ ] Community features (forum, event calendar)
 
 ---
 

@@ -1,0 +1,177 @@
+'use client'
+
+import React, { useCallback, useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { FileTextIcon } from 'lucide-react'
+
+import {
+  CommandDialog,
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from '@/components/ui/command'
+import { useDebounce } from '@/utilities/useDebounce'
+import { useRouter } from '@/i18n/navigation'
+
+interface SearchResult {
+  id: string
+  title: string
+  slug: string
+  doc?: {
+    relationTo: string
+    value: string
+  }
+}
+
+interface SearchModalProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export function SearchModal({ open, onOpenChange }: SearchModalProps) {
+  const t = useTranslations('search')
+  const router = useRouter()
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState<SearchResult[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  const debouncedQuery = useDebounce(query, 300)
+
+  // Keyboard shortcut: Cmd+K / Ctrl+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        onOpenChange(!open)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [open, onOpenChange])
+
+  // Fetch search results
+  useEffect(() => {
+    if (!debouncedQuery || debouncedQuery.length < 2) {
+      setResults([])
+      return
+    }
+
+    const controller = new AbortController()
+
+    async function fetchResults() {
+      setIsLoading(true)
+      try {
+        const params = new URLSearchParams({
+          'where[or][0][title][like]': debouncedQuery,
+          'where[or][1][slug][like]': debouncedQuery,
+          limit: '10',
+          depth: '0',
+        })
+
+        const res = await fetch(`/api/search?${params.toString()}`, {
+          signal: controller.signal,
+        })
+
+        if (!res.ok) throw new Error('Search failed')
+
+        const data = await res.json()
+        setResults(data.docs ?? [])
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') return
+        setResults([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchResults()
+
+    return () => controller.abort()
+  }, [debouncedQuery])
+
+  // Reset state when modal closes
+  useEffect(() => {
+    if (!open) {
+      setQuery('')
+      setResults([])
+    }
+  }, [open])
+
+  const handleSelect = useCallback(
+    (result: SearchResult) => {
+      onOpenChange(false)
+
+      if (result.doc?.relationTo && result.slug) {
+        const routeMap: Record<string, string> = {
+          pages: '',
+          posts: '/posts',
+          animals: '/canlarimiz',
+          'emergency-cases': '/acil-vakalar',
+        }
+
+        const prefix = routeMap[result.doc.relationTo] ?? ''
+        const slug =
+          result.doc.relationTo === 'pages' && result.slug === 'home'
+            ? '/'
+            : `${prefix}/${result.slug}`
+        router.push(slug)
+      } else if (result.slug) {
+        router.push(`/${result.slug}`)
+      }
+    },
+    [onOpenChange, router],
+  )
+
+  return (
+    <CommandDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title={t('modal.shortcut')}
+      description={t('modal.placeholder')}
+    >
+      <Command shouldFilter={false}>
+        <CommandInput
+          placeholder={`${t('modal.placeholder')} (⌘K)`}
+          value={query}
+          onValueChange={setQuery}
+        />
+        <CommandList>
+          {debouncedQuery.length >= 2 && !isLoading && results.length === 0 && (
+            <CommandEmpty>{t('modal.noResults')}</CommandEmpty>
+          )}
+
+          {isLoading && (
+            <div className="py-6 text-center text-sm text-muted-foreground">
+              {t('modal.placeholder')}...
+            </div>
+          )}
+
+          {results.length > 0 && (
+            <CommandGroup>
+              {results.map((result) => (
+                <CommandItem
+                  key={result.id}
+                  value={result.id}
+                  onSelect={() => handleSelect(result)}
+                  className="cursor-pointer"
+                >
+                  <FileTextIcon className="mr-2 size-4 shrink-0 text-muted-foreground" />
+                  <span>{result.title}</span>
+                  {result.doc?.relationTo && (
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      {result.doc.relationTo}
+                    </span>
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+        </CommandList>
+      </Command>
+    </CommandDialog>
+  )
+}

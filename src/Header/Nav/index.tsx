@@ -8,7 +8,8 @@ import { cn } from '@/utilities/ui'
 const NAV_ITEMS = [
   { href: '/canlarimiz', labelKey: 'animals' },
   { href: '/acil-vakalar', labelKey: 'emergency' },
-  { href: '/posts', labelKey: 'blog' },
+  { href: '/gonullu-ol', labelKey: 'volunteer' },
+  { href: '/gunluk', labelKey: 'blog' },
 ] as const
 
 export function HeaderNav() {

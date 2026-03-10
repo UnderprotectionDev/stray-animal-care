@@ -12,6 +12,7 @@ import { cn } from '@/utilities/ui'
 import { HeaderNav } from './Nav'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { MobileMenu } from './MobileMenu'
+import { SearchModal } from '@/components/shared/SearchModal'
 
 export const HeaderClient: React.FC = () => {
   const [theme, setTheme] = useState<string | null>(null)
@@ -21,6 +22,7 @@ export const HeaderClient: React.FC = () => {
 
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -62,10 +64,13 @@ export const HeaderClient: React.FC = () => {
 
         {/* Desktop Right */}
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/search" className="rounded-md p-2 text-muted-foreground hover:text-foreground">
-            <span className="sr-only">{t('search')}</span>
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="rounded-md p-2 text-muted-foreground hover:text-foreground"
+            aria-label={t('search')}
+          >
             <SearchIcon className="size-5" />
-          </Link>
+          </button>
           <LanguageSwitcher />
           <Button
             className="bg-accent text-accent-foreground hover:bg-accent/90"
@@ -78,10 +83,13 @@ export const HeaderClient: React.FC = () => {
 
         {/* Mobile Right */}
         <div className="flex items-center gap-1 md:hidden">
-          <Link href="/search" className="rounded-md p-2 text-muted-foreground hover:text-foreground">
-            <span className="sr-only">{t('search')}</span>
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="rounded-md p-2 text-muted-foreground hover:text-foreground"
+            aria-label={t('search')}
+          >
             <SearchIcon className="size-5" />
-          </Link>
+          </button>
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="rounded-md p-2 text-muted-foreground hover:text-foreground"
@@ -93,6 +101,7 @@ export const HeaderClient: React.FC = () => {
       </div>
 
       <MobileMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
+      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   )
 }

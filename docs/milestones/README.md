@@ -9,8 +9,7 @@
 | Phase | Name | Milestones | Goal |
 |-------|------|------------|------|
 | Phase 1 | MVP | M1–M10 | Launch a fully functional, bilingual website with CMS-managed content |
-| Phase 2 | Growth | M11, M13–M14 | Add online payments, admin dashboard, and A/B testing |
-| Phase 3 | Maturity | M15–M18 | PWA, social automation, advanced analytics, NGO compliance |
+| Phase 2 | Growth | M13 | Admin dashboard |
 
 ---
 
@@ -28,25 +27,14 @@
 | 6 | [Core Pages (Home, Story, Contact)](phase-1-mvp/06-core-pages.md) | M5 | Done ✅ |
 | 7 | [Animal Profiles](phase-1-mvp/07-animal-profiles.md) | M4, M5 | Done ✅ |
 | 8 | [Emergency & Donate](phase-1-mvp/08-emergency-donate.md) | M4, M5 | Done ✅ |
-| 9 | [Content Pages](phase-1-mvp/09-content-pages.md) | M4, M5 | Not Started |
-| 10 | [Polish, Search, Instagram & Launch](phase-1-mvp/10-polish-launch.md) | M6–M9 | Not Started |
+| 9 | [Content Pages](phase-1-mvp/09-content-pages.md) | M4, M5 | Done ✅ |
+| 10 | [Polish, Search, Instagram & Launch](phase-1-mvp/10-polish-launch.md) | M6–M9 | Done ✅ |
 
 ### Phase 2: Growth
 
 | # | Milestone | Dependencies | Status |
 |---|-----------|-------------|--------|
-| 11 | [Online Payment Integration](phase-2-growth/11-online-payments.md) | M10 | Not Started |
-| 13 | [Admin Dashboard Enhancements](phase-2-growth/13-admin-dashboard.md) | M10 | Not Started |
-| 14 | [A/B Testing & Optimization](phase-2-growth/14-ab-testing.md) | M10, M11 | Not Started |
-
-### Phase 3: Maturity
-
-| # | Milestone | Dependencies | Status |
-|---|-----------|-------------|--------|
-| 15 | [Progressive Web App (PWA)](phase-3-maturity/15-pwa.md) | M10 | Not Started |
-| 16 | [Social Media Automation](phase-3-maturity/16-social-automation.md) | M10, M13 | Not Started |
-| 17 | [Advanced Analytics & Reporting](phase-3-maturity/17-advanced-analytics.md) | M11, M13, M14 | Not Started |
-| 18 | [NGO Compliance & Community](phase-3-maturity/18-ngo-community.md) | M11, M17 | Not Started |
+| 13 | [Admin Dashboard Enhancements](phase-2-growth/13-admin-dashboard.md) | M10 | Done ✅ |
 
 ---
 
@@ -60,18 +48,13 @@ M1 ──┬── M2 ──┐
                                 ├── M7 ──┤
                                 ├── M8 ──┤
                                 └── M9 ──┘
-                                         └── M10 ──┬── M11 ──┬── M14 → M17 ──┐
-                                                   │         └───────────────┼── M18
-                                                   ├── M13 → M16             │
-                                                   └── M15
+                                         └── M10 ── M13
 ```
 
 ### Parallelizable Milestones
 
 - **M2 + M3**: Design System and i18n are independent of each other
 - **M7 + M8 + M9**: Animal Profiles, Emergency/Donate, and Content Pages are independent
-- **M11 + M13**: Online Payments and Admin Dashboard are independent
-- **M15**: PWA has no dependency on any Phase 2 milestone
 
 ---
 

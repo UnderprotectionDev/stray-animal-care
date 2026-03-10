@@ -53,7 +53,12 @@
   "search": {
     "title": "Search",
     "placeholder": "Search...",
-    "noResults": "No results found."
+    "noResults": "No results found.",
+    "modal": {
+      "placeholder": "Search pages, posts, or animals...",
+      "noResults": "No results found.",
+      "shortcut": "Open search"
+    }
   },
   "home": {
     "meta": {
@@ -369,5 +374,114 @@
     "tags": "Tags",
     "empty": "No posts found.",
     "back": "Back to Blog"
+  },
+  "volunteer": {
+    "meta": {
+      "title": "Volunteer — Paws of Hope",
+      "description": "Volunteer for stray animals. Foster care, health support, feeding, and more."
+    },
+    "title": "Volunteer",
+    "subtitle": "Join us in helping stray animals.",
+    "areas": {
+      "title": "Volunteer Areas",
+      "foster": {
+        "title": "Foster Care",
+        "description": "Provide temporary foster care for animals during their treatment."
+      },
+      "health": {
+        "title": "Health Support",
+        "description": "Help with vet visits and treatment processes."
+      },
+      "feeding": {
+        "title": "Feeding",
+        "description": "Join daily feeding rounds and manage feeding stations."
+      },
+      "shelter": {
+        "title": "Shelter Building",
+        "description": "Help build shelters and kennels for stray animals."
+      }
+    },
+    "stats": {
+      "title": "Our Volunteer Family",
+      "volunteers": "Active Volunteers",
+      "animalsHelped": "Animals Helped",
+      "feedingPoints": "Feeding Points"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "How do I become a volunteer?",
+      "a1": "Simply contact us via WhatsApp. We'll find the right area for you together.",
+      "q2": "Do I need experience to volunteer?",
+      "a2": "No experience needed. Your love for animals is enough! We provide the necessary training.",
+      "q3": "How much time do I need to commit?",
+      "a3": "It's entirely up to you. Even a few hours a week makes a big difference.",
+      "q4": "What do I need at home for foster care?",
+      "a4": "We cover the essentials (food, litter, medicine). All we ask for is your love and attention."
+    },
+    "cta": {
+      "title": "Join Us!",
+      "description": "Contact us via WhatsApp to become a volunteer.",
+      "whatsappMessage": "Hello, I'd like to volunteer."
+    }
+  },
+  "vision": {
+    "meta": {
+      "title": "Future Vision — Paws of Hope",
+      "description": "Discover our goals and vision for the future of stray animal care."
+    },
+    "title": "Future Vision",
+    "subtitle": "Building a better future with every step.",
+    "association": {
+      "title": "Our Goal: Official NGO Status",
+      "description": "We aim to establish an official association to operate under a legal framework, increase our fundraising capacity, and reach more animals in need."
+    },
+    "shortTerm": {
+      "title": "Short-Term Goals (1 Year)",
+      "shelter": {
+        "title": "Fully Equipped Shelter",
+        "description": "Build a safe and equipped shelter for animals during treatment."
+      },
+      "spay": {
+        "title": "200+ Spay/Neuter",
+        "description": "Spay/neuter at least 200 animals per year for population control."
+      },
+      "volunteers": {
+        "title": "50 Active Volunteers",
+        "description": "Expand our volunteer network to reach 50 active volunteers."
+      },
+      "clinic": {
+        "title": "Veterinary Clinic Partnership",
+        "description": "Establish permanent partnerships with vet clinics for discounted treatments."
+      }
+    },
+    "longTerm": {
+      "title": "Long-Term Goals (3-5 Years)",
+      "ngo": {
+        "title": "Official NGO Status",
+        "description": "Establish a legal association for a transparent and sustainable structure."
+      },
+      "vetClinic": {
+        "title": "Community-Funded Clinic",
+        "description": "Open a veterinary clinic dedicated to stray animals, funded by our donors."
+      },
+      "foster": {
+        "title": "City-Wide Foster Network",
+        "description": "Create a comprehensive foster care network with volunteers in every neighborhood."
+      },
+      "awareness": {
+        "title": "National Awareness Campaign",
+        "description": "Organize national awareness campaigns for stray animal rights."
+      }
+    },
+    "network": {
+      "title": "Our Growing Volunteer Network",
+      "description": "With our growing volunteer family, we reach more animals every day. Be part of this change."
+    },
+    "cta": {
+      "title": "Let's Build This Vision Together",
+      "description": "Donate or volunteer to build the future together.",
+      "donate": "Donate",
+      "volunteer": "Volunteer"
+    }
   }
 }
