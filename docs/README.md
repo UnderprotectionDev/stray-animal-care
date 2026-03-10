@@ -1,6 +1,6 @@
 # Paws of Hope — Project Documentation
 
-> Last updated: 2026-03-10
+> Last updated: 2026-03-10 — M7 & M8 complete, M9 next
 
 ---
 

@@ -69,7 +69,7 @@ export const HeaderClient: React.FC = () => {
           <LanguageSwitcher />
           <Button
             className="bg-accent text-accent-foreground hover:bg-accent/90"
-            render={<Link href="/donate" />}
+            render={<Link href="/destek-ol" />}
           >
             <Heart className="size-4" />
             {t('donate')}

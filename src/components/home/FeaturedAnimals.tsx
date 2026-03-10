@@ -44,6 +44,7 @@ export async function FeaturedAnimals({ animals }: FeaturedAnimalsProps) {
             const firstPhoto =
               animal.photos && animal.photos.length > 0 ? animal.photos[0] : null
 
+            const animalStatus = animal.animalStatus ?? 'tedavide'
             return (
               <Card key={animal.id}>
                 {firstPhoto && typeof firstPhoto !== 'number' && (
@@ -54,8 +55,8 @@ export async function FeaturedAnimals({ animals }: FeaturedAnimalsProps) {
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>{animal.name}</span>
-                    <StatusBadge status={statusMap[animal.status] ?? 'active'}>
-                      {t(`animalStatus.${animal.status}` as Parameters<typeof t>[0])}
+                    <StatusBadge status={statusMap[animalStatus] ?? 'active'}>
+                      {t(`animalStatus.${animalStatus}` as Parameters<typeof t>[0])}
                     </StatusBadge>
                   </CardTitle>
                 </CardHeader>

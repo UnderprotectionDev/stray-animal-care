@@ -30,11 +30,11 @@ Build the animals listing page with filter functionality and the animal detail p
 - `src/modules/animals/components/AnimalCard.tsx`
 
 **Acceptance Criteria:**
-- [ ] Displays photo (card-sized image from Media), name, type icon, age, gender, status badge
-- [ ] Status badge colors: `tedavide` (yellow), `kalici-bakim` (green), `acil` (red)
-- [ ] Card links to `/[locale]/canlarimiz/[slug]`
-- [ ] Hover effect on desktop
-- [ ] Responsive: card width adjusts to grid
+- [x] Displays photo (card-sized image from Media), name, type icon, age, gender, status badge
+- [x] Status badge colors: `tedavide` (yellow), `kalici-bakim` (green), `acil` (red)
+- [x] Card links to `/[locale]/canlarimiz/[slug]`
+- [x] Hover effect on desktop
+- [x] Responsive: card width adjusts to grid
 
 ---
 
@@ -46,11 +46,11 @@ Build the animals listing page with filter functionality and the animal detail p
 - `src/modules/animals/components/AnimalFilter.tsx`
 
 **Acceptance Criteria:**
-- [ ] Three options: All, Cats (kedi), Dogs (kopek)
-- [ ] Filter state synced to URL via Nuqs (`?type=kedi`)
-- [ ] Filter updates the displayed animal list without full page reload
-- [ ] Active filter is visually indicated
-- [ ] Labels are translated (TR/EN)
+- [x] Three options: All, Cats (kedi), Dogs (kopek)
+- [x] Filter state synced to URL via Nuqs (`?type=kedi`)
+- [x] Filter updates the displayed animal list without full page reload
+- [x] Active filter is visually indicated
+- [x] Labels are translated (TR/EN)
 
 ---
 
@@ -65,12 +65,12 @@ Build the animals listing page with filter functionality and the animal detail p
 - `src/modules/animals/index.ts`
 
 **Acceptance Criteria:**
-- [ ] Grid layout: 1 col mobile, 2 cols tablet, 3-4 cols desktop
-- [ ] Filter component above grid
-- [ ] Animals fetched from CMS local API with locale
-- [ ] ISR with 60-second revalidation
-- [ ] SEO metadata with generateMetadata
-- [ ] Empty state message when no animals match filter
+- [x] Grid layout: 1 col mobile, 2 cols tablet, 3-4 cols desktop
+- [x] Filter component above grid
+- [x] Animals fetched from CMS local API with locale
+- [x] ISR with 60-second revalidation
+- [x] SEO metadata with generateMetadata
+- [x] Empty state message when no animals match filter
 - [ ] Loading skeleton while data loads
 
 ---
@@ -84,12 +84,12 @@ Build the animals listing page with filter functionality and the animal detail p
 - `src/modules/animals/components/Lightbox.tsx`
 
 **Acceptance Criteria:**
-- [ ] Displays all photos from the animal's `photos` field
-- [ ] Main photo is hero-sized, thumbnails below
-- [ ] Clicking a photo opens a lightbox overlay
-- [ ] Lightbox supports prev/next navigation and close (Escape key)
-- [ ] Images use Next.js Image with proper sizing
-- [ ] Accessible: focus management, keyboard navigation
+- [x] Displays all photos from the animal's `photos` field
+- [x] Main photo is hero-sized, thumbnails below
+- [x] Clicking a photo opens a lightbox overlay
+- [x] Lightbox supports prev/next navigation and close (Escape key)
+- [x] Images use Next.js Image with proper sizing
+- [x] Accessible: focus management, keyboard navigation
 
 ---
 
@@ -103,15 +103,15 @@ Build the animals listing page with filter functionality and the animal detail p
 - `src/app/(frontend)/[locale]/canlarimiz/[slug]/page.tsx`
 
 **Acceptance Criteria:**
-- [ ] Photo gallery at top (T7.4)
-- [ ] Profile section: name, type, age, gender, status badge
-- [ ] Story section: rich text content
-- [ ] Needs section: rich text content
-- [ ] Breadcrumb: Home > Animals > Animal Name
-- [ ] ISR with 300-second revalidation
-- [ ] SEO metadata with animal-specific title and description
-- [ ] `generateStaticParams` for static generation of all animal pages
-- [ ] 404 if slug doesn't match any animal
+- [x] Photo gallery at top (T7.4)
+- [x] Profile section: name, type, age, gender, status badge
+- [x] Story section: rich text content
+- [x] Needs section: rich text content
+- [x] Breadcrumb: Home > Animals > Animal Name
+- [x] ISR with 300-second revalidation
+- [x] SEO metadata with animal-specific title and description
+- [x] `generateStaticParams` for static generation of all animal pages
+- [x] 404 if slug doesn't match any animal
 
 ---
 
@@ -131,19 +131,21 @@ Build the animals listing page with filter functionality and the animal detail p
 - [ ] Skeletons use shadcn/ui Skeleton component
 - [ ] Loading states appear while data fetches
 
+> **Note:** Skeleton components not yet implemented — deferred to M10 polish pass.
+
 ---
 
 ## Milestone Acceptance Criteria
 
-- [ ] Animals listing page shows all animals from CMS
-- [ ] Cat/Dog filter works and syncs to URL
-- [ ] Animal detail page shows complete profile with gallery
-- [ ] Lightbox opens, navigates, and closes correctly
-- [ ] Status badges display correct colors
-- [ ] Breadcrumb shows correct hierarchy on detail page
-- [ ] Both pages work in TR and EN
-- [ ] Loading skeletons display during data fetch
-- [ ] SEO metadata is correct on both pages
+- [x] Animals listing page shows all animals from CMS
+- [x] Cat/Dog filter works and syncs to URL
+- [x] Animal detail page shows complete profile with gallery
+- [x] Lightbox opens, navigates, and closes correctly
+- [x] Status badges display correct colors
+- [x] Breadcrumb shows correct hierarchy on detail page
+- [x] Both pages work in TR and EN
+- [ ] Loading skeletons display during data fetch _(deferred to M10)_
+- [x] SEO metadata is correct on both pages
 
 ## Verification
 
@@ -155,3 +157,18 @@ Build the animals listing page with filter functionality and the animal detail p
 6. Switch to English — verify all labels and content switch
 7. Navigate to `/tr/canlarimiz/nonexistent` — verify 404
 8. View page source — verify SEO metadata
+
+---
+
+## Post-Implementation: Code Review Fixes (2026-03-10)
+
+CodeRabbit automated review identified and fixed the following issues in this milestone's components:
+
+| File | Fix |
+|------|-----|
+| `AnimalFilter.tsx` | Added `type="button"` and `aria-pressed` to filter buttons for accessibility |
+| `AnimalList.tsx` | Removed non-null assertion on `animalStatus`; safe lookup with `''` fallback |
+| `AnimalCard.tsx` | Guarded `StatusBadge` render; `statusVariantMap` lookup uses `?? 'pending'` fallback |
+| `AnimalDetail.tsx` | Added `p !== null` check in photo filter; extracted `const status` to guard `StatusBadge` and `statusLabel`; replaced hardcoded Turkish WhatsApp message with `t('detail.whatsappMessage', { name })` |
+| `PhotoGallery.tsx` | Added `type="button"` to hero and thumbnail buttons; removed redundant `sm:grid-cols-4`; improved hero `aria-label` |
+| `canlarimiz/page.tsx` | Replaced unsafe `locale as Locale` cast with validated check against `locales` array |

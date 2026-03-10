@@ -10,23 +10,34 @@ export const revalidateAnimal: CollectionAfterChangeHook<Animal> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    if (doc._status === 'published') {
-      const path = `/animals/${doc.slug}`
+    if (doc._status === 'published' && doc.slug) {
+      payload.logger.info(`Revalidating animal: ${doc.slug}`)
 
-      payload.logger.info(`Revalidating animal at path: ${path}`)
-
-      revalidatePath(path)
-      revalidateTag('animals-sitemap')
+      try {
+        revalidatePath(`/tr/canlarimiz/${doc.slug}`)
+        revalidatePath(`/en/canlarimiz/${doc.slug}`)
+        revalidatePath('/tr/canlarimiz')
+        revalidatePath('/en/canlarimiz')
+        revalidateTag('animals-list')
+        revalidateTag('animals-sitemap')
+      } catch (err) {
+        payload.logger.error({ msg: 'Failed to revalidate animal paths', err })
+      }
     }
 
-    // If the animal was previously published, we need to revalidate the old path
-    if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/animals/${previousDoc.slug}`
+    if (previousDoc?._status === 'published' && doc._status !== 'published' && previousDoc?.slug) {
+      payload.logger.info(`Revalidating old animal: ${previousDoc.slug}`)
 
-      payload.logger.info(`Revalidating old animal at path: ${oldPath}`)
-
-      revalidatePath(oldPath)
-      revalidateTag('animals-sitemap')
+      try {
+        revalidatePath(`/tr/canlarimiz/${previousDoc.slug}`)
+        revalidatePath(`/en/canlarimiz/${previousDoc.slug}`)
+        revalidatePath('/tr/canlarimiz')
+        revalidatePath('/en/canlarimiz')
+        revalidateTag('animals-list')
+        revalidateTag('animals-sitemap')
+      } catch (err) {
+        payload.logger.error({ msg: 'Failed to revalidate old animal paths', err })
+      }
     }
   }
   return doc
@@ -34,13 +45,19 @@ export const revalidateAnimal: CollectionAfterChangeHook<Animal> = ({
 
 export const revalidateAnimalDelete: CollectionAfterDeleteHook<Animal> = ({
   doc,
-  req: { context },
+  req: { payload, context },
 }) => {
-  if (!context.disableRevalidate) {
-    const path = `/animals/${doc?.slug}`
-
-    revalidatePath(path)
-    revalidateTag('animals-sitemap')
+  if (!context.disableRevalidate && doc?.slug) {
+    try {
+      revalidatePath(`/tr/canlarimiz/${doc.slug}`)
+      revalidatePath(`/en/canlarimiz/${doc.slug}`)
+      revalidatePath('/tr/canlarimiz')
+      revalidatePath('/en/canlarimiz')
+      revalidateTag('animals-list')
+      revalidateTag('animals-sitemap')
+    } catch (err) {
+      payload.logger.error({ msg: 'Failed to revalidate deleted animal paths', err })
+    }
   }
 
   return doc
