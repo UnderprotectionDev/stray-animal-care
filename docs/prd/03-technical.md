@@ -4,33 +4,33 @@
 
 ## 3.1 Tech Stack
 
-| Katman              | Teknoloji                                                      |
+| Layer               | Technology                                                     |
 | ------------------- | -------------------------------------------------------------- |
 | Framework           | Next.js 15 (App Router)                                        |
-| Dil                 | TypeScript                                                     |
+| Language            | TypeScript                                                     |
 | Styling             | Tailwind CSS 4                                                 |
-| UI Kutuphanesi      | shadcn/ui                                                      |
-| CMS                 | PayloadCMS 3.x (Next.js icine gomulu)                          |
-| Veritabani          | PostgreSQL (Neon — serverless, @payloadcms/db-postgres)        |
+| UI Library          | shadcn/ui                                                      |
+| CMS                 | PayloadCMS 3.x (embedded in Next.js)                           |
+| Database            | PostgreSQL (Neon — serverless, @payloadcms/db-postgres)        |
 | Hosting             | Vercel                                                         |
-| Analitik            | Vercel Analytics                                               |
-| Animasyon           | Motion (genel animasyonlar) + GSAP (scroll/timeline)           |
+| Analytics           | Vercel Analytics                                               |
+| Animation           | Motion (general animations) + GSAP (scroll/timeline)           |
 | i18n (Frontend)     | next-intl (middleware, server/client component, type-safe)     |
 | i18n (CMS)          | PayloadCMS i18n (collection field localization)                |
 | SEO                 | Next.js Metadata API + PayloadCMS SEO Plugin                   |
 | Form Validation     | Zod + TanStack Form                                            |
 | Package Manager     | Bun                                                            |
-| Linting/Formatting  | Biome (ESLint + Prettier yerine tek arac)                      |
+| Linting/Formatting  | Biome (single tool replacing ESLint + Prettier)                |
 | Search              | PayloadCMS fullText search + Nuqs (URL state)                  |
-| State Management    | Nuqs (search/filter URL state), global state gerekirse sonra   |
+| State Management    | Nuqs (search/filter URL state), global state added later if needed |
 
 ---
 
-## 3.2 Mimari
+## 3.2 Architecture
 
-### Moduler Dosya Yapisi
+### Modular File Structure
 
-Proje sayfa bazli modul mimarisi kullanir. Her sayfa 1:1 bir module eslesir. CMS collection tanimlari PayloadCMS convention'a uygun olarak `src/collections/` altinda tutulur.
+The project uses a page-based module architecture. Each page maps 1:1 to a module. CMS collection definitions are co-located inside the relevant module as a `collection.ts` file. Global definitions are kept in the `settings` module as a `global.ts` file.
 
 ```
 stray-animal-care/
@@ -69,49 +69,47 @@ stray-animal-care/
 │   │   ├── global-error.tsx                      # Global error boundary
 │   │   └── globals.css
 │   │
-│   ├── collections/            # PayloadCMS collection tanimlari
-│   │   ├── Animals.ts
-│   │   ├── BlogPosts.ts
-│   │   ├── EmergencyCases.ts
-│   │   ├── NeedsList.ts
-│   │   ├── TransparencyReports.ts
-│   │   ├── SupporterComments.ts
-│   │   └── Media.ts
-│   │
-│   ├── globals/                # PayloadCMS global tanimlari
-│   │   └── SiteSettings.ts
-│   │
-│   ├── modules/                # Feature modulleri (sayfa bazli 1:1)
-│   │   ├── home/               # Ana Sayfa
-│   │   ├── story/              # Hikayem
-│   │   ├── our-work/           # Calismalarimiz
-│   │   ├── animals/            # Canlarimiz
-│   │   ├── donate/             # Destek Ol
-│   │   ├── supplies/           # Mama & Malzeme
-│   │   ├── emergency/          # Acil Vakalar
-│   │   ├── transparency/       # Seffaflik Kosesi
-│   │   ├── blog/               # Gunluk (Blog)
-│   │   ├── volunteer/          # Gonullu Ol
-│   │   ├── vision/             # Gelecek Vizyonu
-│   │   ├── contact/            # Iletisim
+│   ├── modules/                # Feature modules (page-based 1:1)
+│   │   ├── home/               # Home Page
+│   │   ├── story/              # My Story
+│   │   ├── our-work/           # Our Work
+│   │   ├── animals/            # Our Animals
+│   │   │   └── collection.ts   #   → Animals collection
+│   │   ├── donate/             # Support Us
+│   │   │   └── collection.ts   #   → SupporterComments collection
+│   │   ├── supplies/           # Food & Supplies
+│   │   │   └── collection.ts   #   → NeedsList collection
+│   │   ├── emergency/          # Emergency Cases
+│   │   │   └── collection.ts   #   → EmergencyCases collection
+│   │   ├── transparency/       # Transparency Corner
+│   │   │   └── collection.ts   #   → TransparencyReports collection
+│   │   ├── blog/               # Blog
+│   │   │   └── collection.ts   #   → BlogPosts collection
+│   │   ├── volunteer/          # Volunteer
+│   │   ├── vision/             # Future Vision
+│   │   ├── contact/            # Contact
 │   │   ├── layout/             # Header + Footer
-│   │   ├── instagram/          # Instagram API entegrasyonu
-│   │   ├── search/             # Site geneli arama
-│   │   └── shared/             # Ortak componentler
+│   │   ├── instagram/          # Instagram API integration
+│   │   ├── search/             # Site-wide search
+│   │   ├── media/              # Media management
+│   │   │   └── collection.ts   #   → Media collection
+│   │   ├── settings/           # Site settings
+│   │   │   └── global.ts       #   → SiteSettings global
+│   │   └── shared/             # Shared components
 │   │
 │   ├── components/
-│   │   └── ui/                 # shadcn/ui componentleri
+│   │   └── ui/                 # shadcn/ui components
 │   │
-│   ├── i18n/                   # Ceviriler
+│   ├── i18n/                   # Translations
 │   │   ├── tr.json
 │   │   ├── en.json
 │   │   └── config.ts
 │   │
-│   ├── lib/                    # Genel yardimcilar
-│   │   └── utils.ts            # cn() vb.
+│   ├── lib/                    # General utilities
+│   │   └── utils.ts            # cn() etc.
 │   │
 │   ├── payload.config.ts
-│   └── payload-types.ts        # Otomatik uretilen tipler
+│   └── payload-types.ts        # Auto-generated types
 │
 ├── public/
 │   ├── images/
@@ -119,7 +117,7 @@ stray-animal-care/
 │   └── favicon.ico
 ├── docs/
 │   ├── PRD.md                  # Index
-│   └── prd/                    # Moduler PRD dosyalari
+│   └── prd/                    # Modular PRD files
 ├── next.config.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
@@ -128,46 +126,50 @@ stray-animal-care/
 └── .env.local
 ```
 
-Her modul su yapiya sahiptir (ihtiyac kadar):
+Each module has the following structure (as needed):
 ```
 modules/<module-name>/
-├── components/           # React componentleri
-│   └── skeletons/       # Loading state componentleri (opsiyonel)
-├── hooks/               # Custom React hooks (opsiyonel)
-├── lib/                 # Utility fonksiyonlar, queries, constants (opsiyonel)
-└── index.ts             # Barrel exports (ZORUNLU)
+├── components/           # React components
+│   └── skeletons/       # Loading state components (optional)
+├── hooks/               # Custom React hooks (optional)
+├── lib/                 # Utility functions, queries, constants (optional)
+├── collection.ts        # PayloadCMS collection definition (optional, CMS modules only)
+├── global.ts            # PayloadCMS global definition (optional, settings module only)
+└── index.ts             # Barrel exports (REQUIRED)
 ```
 
-page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
+> **Note:** Collection definitions are co-located inside the relevant module, not in a separate `src/collections/` directory. This approach ensures modules are self-contained units. All collections and globals are imported and registered in the `payload.config.ts` file.
 
-### Routing Yapisi
+page.tsx files are kept thin — import + data fetch only, UI lives in the module.
 
-| URL                             | Sayfa            | Dinamik |
-| ------------------------------- | ---------------- | ------- |
-| `/[locale]`                     | Ana Sayfa        | Hayir   |
-| `/[locale]/hikayem`             | Hikayem          | Hayir   |
-| `/[locale]/calismalarimiz`      | Calismalarimiz   | Hayir   |
-| `/[locale]/canlarimiz`          | Canlarimiz       | Hayir   |
-| `/[locale]/canlarimiz/[slug]`   | Hayvan Detay     | Evet    |
-| `/[locale]/destek-ol`           | Destek Ol        | Hayir   |
-| `/[locale]/mama-malzeme`        | Mama & Malzeme   | Hayir   |
-| `/[locale]/acil-vakalar`        | Acil Vakalar     | Hayir   |
-| `/[locale]/acil-vakalar/[slug]` | Vaka Detay       | Evet    |
-| `/[locale]/seffaflik`           | Seffaflik Kosesi | Hayir   |
-| `/[locale]/gunluk`              | Blog Listesi     | Hayir   |
-| `/[locale]/gunluk/[slug]`       | Blog Detay       | Evet    |
-| `/[locale]/gonullu-ol`          | Gonullu Ol       | Hayir   |
-| `/[locale]/gelecek-vizyonu`     | Gelecek Vizyonu  | Hayir   |
-| `/[locale]/iletisim`            | Iletisim         | Hayir   |
-| `/admin`                        | CMS Admin Panel  | —       |
+### Routing Structure
+
+| URL                             | Page               | Dynamic |
+| ------------------------------- | ------------------ | ------- |
+| `/[locale]`                     | Home Page          | No      |
+| `/[locale]/hikayem`             | My Story           | No      |
+| `/[locale]/calismalarimiz`      | Our Work           | No      |
+| `/[locale]/canlarimiz`          | Our Animals        | No      |
+| `/[locale]/canlarimiz/[slug]`   | Animal Detail      | Yes     |
+| `/[locale]/destek-ol`           | Support Us         | No      |
+| `/[locale]/mama-malzeme`        | Food & Supplies    | No      |
+| `/[locale]/acil-vakalar`        | Emergency Cases    | No      |
+| `/[locale]/acil-vakalar/[slug]` | Case Detail        | Yes     |
+| `/[locale]/seffaflik`           | Transparency       | No      |
+| `/[locale]/gunluk`              | Blog List          | No      |
+| `/[locale]/gunluk/[slug]`       | Blog Detail        | Yes     |
+| `/[locale]/gonullu-ol`          | Volunteer          | No      |
+| `/[locale]/gelecek-vizyonu`     | Future Vision      | No      |
+| `/[locale]/iletisim`            | Contact            | No      |
+| `/admin`                        | CMS Admin Panel    | —       |
 
 ---
 
-## 3.3 PayloadCMS Collection Semalari
+## 3.3 PayloadCMS Collection Schemas
 
-> **Not:** Tum collection'larda `createdAt` ve `updatedAt` alanlari PayloadCMS tarafindan otomatik eklenir.
+> **Note:** All collections automatically include `createdAt` and `updatedAt` fields added by PayloadCMS.
 
-### Collection 1: Hayvanlar (Animals)
+### Collection 1: Animals
 
 ```typescript
 {
@@ -188,7 +190,7 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 }
 ```
 
-### Collection 2: Blog Yazilari (Blog Posts)
+### Collection 2: Blog Posts
 
 ```typescript
 {
@@ -210,7 +212,7 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 }
 ```
 
-### Collection 3: Acil Vakalar (Emergency Cases)
+### Collection 3: Emergency Cases
 
 ```typescript
 {
@@ -236,7 +238,7 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 }
 ```
 
-### Collection 4: Ihtiyac Listesi (Needs List)
+### Collection 4: Needs List
 
 ```typescript
 {
@@ -252,7 +254,7 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 }
 ```
 
-### Collection 5: Seffaflik Raporlari (Transparency Reports)
+### Collection 5: Transparency Reports
 
 ```typescript
 {
@@ -275,7 +277,7 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 }
 ```
 
-### Collection 6: Destekci Yorumlari (Supporter Comments)
+### Collection 6: Supporter Comments
 
 ```typescript
 {
@@ -310,26 +312,26 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 }
 ```
 
-### Global: Genel Ayarlar (Site Settings)
+### Global: Site Settings
 
 ```typescript
 {
   slug: 'site-settings',
   label: 'Genel Ayarlar',
   fields: [
-    // IBAN Bilgileri
+    // IBAN Details
     { name: 'bankName', type: 'text' },
     { name: 'accountHolder', type: 'text' },
     { name: 'iban', type: 'text' },
-    // Iletisim
+    // Contact
     { name: 'phone', type: 'text' },
     { name: 'email', type: 'email' },
     { name: 'whatsapp', type: 'text' },
     { name: 'instagram', type: 'text' },
-    // Yurtdisi Odeme
+    // International Payment
     { name: 'paypalLink', type: 'text' },
     { name: 'wiseLink', type: 'text' },
-    // Istatistikler
+    // Statistics
     { name: 'stats', type: 'group', fields: [
       { name: 'catsCount', type: 'number' },
       { name: 'dogsCount', type: 'number' },
@@ -343,99 +345,99 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 
 ---
 
-## 3.4 Entegrasyon Detaylari
+## 3.4 Integration Details
 
 ### Instagram Basic Display API
 
-- **Amac:** Ana sayfada ve ilgili sayfalarda Instagram postlarini canli gostermek
+- **Purpose:** Display live Instagram posts on the home page and relevant pages
 - **Endpoint:** `https://graph.instagram.com/me/media`
-- **Alanlar:** `id, caption, media_type, media_url, permalink, timestamp`
-- **Token Yenileme:** Long-lived token (60 gun), otomatik yenileme mekanizmasi
-- **Cache:** ISR (Incremental Static Regeneration) ile 1 saat cache
-- **Fallback:** API hatasi durumunda statik placeholder gorseller gosterilir
-- **Gosterim:** 6-9 post, grid layout, tiklandiginda Instagram'a yonlendirme
+- **Fields:** `id, caption, media_type, media_url, permalink, timestamp`
+- **Token Renewal:** Long-lived token (60 days), automatic renewal mechanism
+- **Cache:** ISR (Incremental Static Regeneration) with 1-hour cache
+- **Fallback:** Static placeholder images displayed if API fails
+- **Display:** 6-9 posts, grid layout, clicking redirects to Instagram
 
-### WhatsApp Entegrasyonu
+### WhatsApp Integration
 
-- **Amac:** Gonullu basvuru ve acil vaka bildirimi icin WhatsApp'a yonlendirme
-- **Yontem:** `wa.me/{phone}?text={encoded_message}` URL formati
-- **Kullanim Alanlari:**
-  - Gonullu Ol sayfasi: "Merhaba, gonullu olmak istiyorum..."
-  - Acil Vaka Bildirimi: "Merhaba, acil bir vaka bildirmek istiyorum..."
-  - Iletisim sayfasi: Genel iletisim
-- **Davranis:** Mobilde WhatsApp uygulamasini, desktop'ta WhatsApp Web'i acar
+- **Purpose:** Redirect to WhatsApp for volunteer applications and emergency case reports
+- **Method:** `wa.me/{phone}?text={encoded_message}` URL format
+- **Usage Areas:**
+  - Volunteer page: "Hello, I would like to volunteer..."
+  - Emergency Case Report: "Hello, I would like to report an emergency case..."
+  - Contact page: General communication
+- **Behavior:** Opens WhatsApp app on mobile, WhatsApp Web on desktop
 
 ### SEO
 
-- **Next.js Metadata API:** Her sayfa icin `generateMetadata()` ile dinamik meta taglar
-- **PayloadCMS SEO Plugin:** Collection bazli SEO meta verileri yonetimi (title, description, OG image)
-- **Sitemap:** `next-sitemap` veya Next.js App Router sitemap.ts ile otomatik uretim
+- **Next.js Metadata API:** Dynamic meta tags via `generateMetadata()` for each page
+- **PayloadCMS SEO Plugin:** Collection-level SEO metadata management (title, description, OG image)
+- **Sitemap:** Auto-generated via `next-sitemap` or Next.js App Router sitemap.ts
 - **Structured Data:** JSON-LD (Organization, Article, BreadcrumbList)
-- **robots.txt:** Next.js App Router robots.ts ile uretim
+- **robots.txt:** Generated via Next.js App Router robots.ts
 
 ### Vercel Analytics
 
-- **Amac:** Sayfa goruntulenme, ziyaretci sayisi, performans takibi
-- **Entegrasyon:** `@vercel/analytics` paketi, otomatik Next.js entegrasyonu
+- **Purpose:** Page view tracking, visitor counts, performance monitoring
+- **Integration:** `@vercel/analytics` package, automatic Next.js integration
 
 ---
 
-## 3.5 Caching Stratejisi
+## 3.5 Caching Strategy
 
-| Sayfa Tipi                       | Strateji | Revalidation                 |
-| -------------------------------- | -------- | ---------------------------- |
-| Ana Sayfa                        | ISR      | 60 saniye                    |
-| Hayvan listesi                   | ISR      | 60 saniye                    |
-| Hayvan detay                     | ISR      | 300 saniye                   |
-| Blog listesi                     | ISR      | 60 saniye                    |
-| Blog detay                       | ISR      | 300 saniye                   |
-| Acil vakalar                     | ISR      | 30 saniye (acil guncelleme)  |
-| Seffaflik                        | ISR      | 3600 saniye (nadiren degisir)|
-| Statik sayfalar (hikayem, vizyon)| Static   | Build time                   |
-| Instagram feed                   | ISR      | 3600 saniye (1 saat)         |
+| Page Type                            | Strategy | Revalidation                    |
+| ------------------------------------ | -------- | ------------------------------- |
+| Home Page                            | ISR      | 60 seconds                      |
+| Animal list                          | ISR      | 60 seconds                      |
+| Animal detail                        | ISR      | 300 seconds                     |
+| Blog list                            | ISR      | 60 seconds                      |
+| Blog detail                          | ISR      | 300 seconds                     |
+| Emergency cases                      | ISR      | 30 seconds (urgent updates)     |
+| Transparency                         | ISR      | 3600 seconds (rarely changes)   |
+| Static pages (my story, vision)      | Static   | Build time                      |
+| Instagram feed                       | ISR      | 3600 seconds (1 hour)           |
 
 ---
 
-## 3.6 Error Handling Stratejisi
+## 3.6 Error Handling Strategy
 
-| Senaryo                   | Davranis                                              |
+| Scenario                  | Behavior                                              |
 | ------------------------- | ----------------------------------------------------- |
-| PayloadCMS API hatasi     | Error boundary + kullanici dostu mesaj                 |
-| Instagram API down        | Placeholder gorsel grid fallback                       |
-| Network error             | Retry butonu + offline mesaji                          |
-| 404 Not Found             | Ozel tasarimli "kayip pati" sayfasi                    |
-| 500 Server Error          | Ozel tasarimli hata sayfasi + iletisim yonlendirmesi  |
-| Form submission hatasi    | Inline hata mesajlari (Zod validation)                |
+| PayloadCMS API error      | Error boundary + user-friendly message                |
+| Instagram API down        | Placeholder image grid fallback                       |
+| Network error             | Retry button + offline message                        |
+| 404 Not Found             | Custom-designed "lost paw" page                       |
+| 500 Server Error          | Custom-designed error page + contact redirect         |
+| Form submission error     | Inline error messages (Zod validation)                |
 
-### Error Boundary Yapisi
+### Error Boundary Structure
 
 - `src/app/error.tsx` — Route segment error boundary
-- `src/app/global-error.tsx` — Root layout error boundary (tum uygulamayi sarar)
-- `src/app/(frontend)/[locale]/not-found.tsx` — Custom 404 sayfasi
+- `src/app/global-error.tsx` — Root layout error boundary (wraps the entire application)
+- `src/app/(frontend)/[locale]/not-found.tsx` — Custom 404 page
 
 ---
 
-## 3.7 Guvenlik
+## 3.7 Security
 
-| Alan                | Onlem                                                        |
+| Area                | Measure                                                      |
 | ------------------- | ------------------------------------------------------------ |
-| CMS Erisim          | PayloadCMS admin panel e-posta/sifre ile korunur             |
-| Ortam Degiskenleri  | Tum API anahtarlari ve DB baglantisi `.env.local` dosyasinda |
-| CSRF                | PayloadCMS dahili CSRF korumasi                              |
-| Icerik Guvenlik     | CSP (Content Security Policy) header'lari                    |
-| Rate Limiting       | Instagram API ve form submission'larda rate limit            |
-| XSS                 | Rich text icerik sanitize edilir (PayloadCMS dahili)         |
-| SQL Injection       | PayloadCMS ORM katmani kullanilir (dogrudan SQL yok)         |
-| Gorsel Upload       | MIME type dogrulama, dosya boyutu sinirlamasi (max 5MB)      |
-| HTTPS               | Vercel uzerinde otomatik SSL/TLS                             |
-| Destekci Yorumlari  | Moderasyon sistemi — sadece onaylanan yorumlar gorunur       |
-| Dependency Guvenlik | Duzenli `bun audit` ve Dependabot                            |
+| CMS Access          | PayloadCMS admin panel protected by email/password           |
+| Environment Vars    | All API keys and DB connection in `.env.local` file          |
+| CSRF                | PayloadCMS built-in CSRF protection                          |
+| Content Security    | CSP (Content Security Policy) headers                        |
+| Rate Limiting       | Rate limits on Instagram API and form submissions            |
+| XSS                 | Rich text content is sanitized (PayloadCMS built-in)         |
+| SQL Injection       | PayloadCMS ORM layer used (no direct SQL)                    |
+| Image Upload        | MIME type validation, file size limit (max 5MB)              |
+| HTTPS               | Automatic SSL/TLS on Vercel                                  |
+| Supporter Comments  | Moderation system — only approved comments are displayed     |
+| Dependency Security | Regular `bun audit` and Dependabot                           |
 
 ---
 
-## 3.8 Performans Hedefleri
+## 3.8 Performance Targets
 
-| Metrik                         | Hedef   |
+| Metric                         | Target  |
 | ------------------------------ | ------- |
 | Largest Contentful Paint (LCP) | < 2.5s  |
 | First Input Delay (FID)        | < 100ms |
@@ -446,35 +448,127 @@ page.tsx dosyalari ince tutulur — sadece import + data fetch, UI moduldedir.
 | Lighthouse SEO                 | 90+     |
 | Bundle Size (First Load JS)    | < 150KB |
 
-### Performans Stratejileri
+### Performance Strategies
 
 - Next.js Image Optimization (WebP, lazy loading)
-- ISR (Incremental Static Regeneration) dinamik sayfalar icin
-- Font optimization (next/font ile self-hosted)
+- ISR (Incremental Static Regeneration) for dynamic pages
+- Font optimization (self-hosted via next/font)
 - Critical CSS inlining (Tailwind purge)
-- Instagram API sonuclarini cache'leme (1 saat)
-- PayloadCMS local API kullanimi (HTTP istegi yok, dogrudan DB sorgusu)
+- Instagram API result caching (1 hour)
+- PayloadCMS local API usage (no HTTP request, direct DB query)
 
 ---
 
-## 3.9 PayloadCMS Admin Panel Ozellestirmesi
+## 3.9 PayloadCMS Admin Panel Customization
 
-### Dashboard Widgetlari
+### Dashboard Widgets
 
-- Aktif acil vaka sayisi
-- Toplam hayvan sayisi (kedi/kopek ayrimi)
-- Son yayinlanan blog yazisi
-- Bekleyen destekci yorumlari sayisi
+- Active emergency case count
+- Total animal count (cat/dog breakdown)
+- Latest published blog post
+- Pending supporter comments count
 
-### Rich Text Editor Yapilandirmasi
+### Rich Text Editor Configuration
 
-Desteklenen formatlar: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List (ordered/unordered)
+Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List (ordered/unordered)
 
-### Admin Navigation Gruplama
+### Admin Navigation Grouping
 
-| Grup      | Collection'lar                        |
+| Group     | Collections                           |
 | --------- | ------------------------------------- |
-| Icerik    | Animals, Blog Posts, Emergency Cases  |
-| Destek    | Needs List, Supporter Comments        |
-| Raporlar  | Transparency Reports                  |
-| Ayarlar   | Site Settings                         |
+| Content   | Animals, Blog Posts, Emergency Cases  |
+| Support   | Needs List, Supporter Comments        |
+| Reports   | Transparency Reports                  |
+| Settings  | Site Settings                         |
+
+---
+
+## 3.10 Testing Strategy
+
+- **Unit tests**: Vitest + Testing Library for components and utilities
+- **Integration tests**: Testing Library for module-level flows
+- **E2E tests**: Playwright for critical user journeys (donation flow, animal browsing, emergency case view)
+- **Coverage targets**: 80% for utilities/lib, 60% for components, critical paths 100%
+- **CI config**: Run unit/integration on every PR, E2E nightly + before release
+- **Accessibility testing**: axe-core integration in Vitest, Lighthouse CI for accessibility score
+- Include a test directory structure: `__tests__/` co-located in each module
+
+---
+
+## 3.11 Deployment & DevOps
+
+- **Platform**: Vercel (automatic deployments from main branch)
+- **Preview deployments**: Every PR gets a preview URL
+- **Environment variables**: Managed via Vercel dashboard (DATABASE_URL, PAYLOAD_SECRET, INSTAGRAM_TOKEN, etc.)
+- **Database migrations**: PayloadCMS handles migrations automatically on deployment
+- **Monitoring**: Vercel Analytics + Vercel Speed Insights
+- **Rollback**: Vercel instant rollback to previous deployment
+- **Branch strategy**: main (production), feature branches → PR → merge
+- **CI pipeline**: Biome lint/format check → Type check → Unit tests → Build → Deploy
+
+---
+
+## 3.12 API Endpoint Specifications
+
+- **PayloadCMS REST API**: Auto-generated at `/api/{collection-slug}` (GET list, GET by ID, POST create, PATCH update, DELETE)
+- **PayloadCMS Local API**: Used in server components for direct DB access (no HTTP overhead) — `payload.find()`, `payload.findByID()`, `payload.create()`
+- **Custom API routes**:
+  - `POST /api/contact` — Contact form submission (rate limited: 5/min per IP)
+  - `GET /api/instagram/feed` — Cached Instagram feed proxy (1hr cache)
+  - Future: `POST /api/payment/create`, `POST /api/payment/webhook` (M11)
+- **Rate limiting**: Apply to all public-facing custom endpoints
+- **Authentication**: PayloadCMS admin routes require JWT auth; public API is read-only
+
+---
+
+## 3.13 UI State Patterns
+
+- **Loading states**: Skeleton components co-located in each module's `components/skeletons/` dir. Use Next.js `loading.tsx` for route-level loading.
+  - Animal cards: Gray shimmer boxes matching card layout
+  - Blog list: Title + excerpt placeholder lines
+  - Emergency cases: Progress bar skeleton
+- **Error states**: Module-level error boundaries with friendly messages + retry button + link to home. Use the project's warm design language.
+- **Empty states**: Custom illustrations (paw-themed) with helpful messages:
+  - No animals found: "No animals match your filter. Try adjusting your search."
+  - No emergency cases: "Great news! No active emergency cases right now."
+  - No blog posts: "New stories coming soon. Follow us on Instagram!"
+- **Toast notifications**: For IBAN copy success, form submissions, errors. Use shadcn/ui Toast component.
+
+---
+
+## 3.14 SEO Strategy (Expanded)
+
+- **Target keywords (TR)**: sokak hayvanları, sokak kedisi yardım, hayvan bağışı, hayvan koruma, deprem hayvanları, mama bağışı
+- **Target keywords (EN)**: stray animal donation turkey, animal rescue hatay, stray cat help turkey
+- **Structured data** (JSON-LD):
+  - Organization: site-wide (name, logo, contact, social profiles)
+  - Article: blog posts (headline, datePublished, author, image)
+  - BreadcrumbList: all detail pages (animals, blog, emergency)
+  - WebSite: with SearchAction for site search
+- **Open Graph**: Every page gets og:title, og:description, og:image (default + per-page)
+- **hreflang**: `<link rel="alternate" hreflang="tr" />` and `hreflang="en"` on all pages
+- **Sitemap**: Auto-generated via Next.js App Router `sitemap.ts`, includes all dynamic pages
+- **robots.txt**: Allow all crawlers, disallow `/admin`, reference sitemap
+- **Image SEO**: All images have alt text (enforced by Media collection), WebP format, descriptive filenames
+
+---
+
+## 3.15 Responsive Breakpoints & Layout Behavior
+
+| Component | Mobile (<640px) | Tablet (640-1024px) | Desktop (>1024px) |
+|-----------|----------------|--------------------|--------------------|
+| Navigation | Hamburger menu | Hamburger or compact | Full horizontal nav |
+| Hero section | Stacked (image top, text bottom) | Side-by-side | Side-by-side with parallax |
+| Animal cards | 1 column | 2 columns | 3-4 columns |
+| Emergency cards | 1 column, full width | 2 columns | 3 columns |
+| Blog grid | 1 column | 2 columns | 3 columns |
+| Footer | Stacked sections | 2-column grid | 4-column grid |
+| IBAN display | Full width, large tap target | Inline with copy button | Inline with copy button |
+| Stats counters | 2x2 grid | 4 inline | 4 inline with animations |
+| Donate CTA | Sticky bottom bar | Sticky bottom bar | Header button + in-page |
+| Image galleries | Swipe carousel | 2-col grid | 3-col grid with lightbox |
+
+- Tailwind CSS 4 breakpoints: `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px), `2xl` (1536px)
+- Mobile-first approach: base styles target mobile, breakpoints add complexity
+- Touch targets: minimum 44x44px on mobile (WCAG 2.1 AA)
+- Container max-width: 1280px with responsive padding (16px mobile, 24px tablet, 32px desktop)
