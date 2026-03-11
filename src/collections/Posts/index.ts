@@ -29,6 +29,7 @@ import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  enableQueryPresets: true,
   labels: { singular: 'Yazı', plural: 'Yazılar' },
   access: {
     create: authenticated,
@@ -50,6 +51,7 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: 'İçerik Yönetimi',
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({

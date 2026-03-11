@@ -9,11 +9,7 @@ import {
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import {
-  revalidateEmergencyCase,
-  revalidateEmergencyCaseDelete,
-} from './hooks/revalidateEmergencyCase'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { revalidateEvent, revalidateEventDelete } from './hooks/revalidateEvent'
 
 import {
   MetaDescriptionField,
@@ -24,8 +20,8 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from 'payload'
 
-export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
-  slug: 'emergency-cases',
+export const Events: CollectionConfig<'events'> = {
+  slug: 'events',
   enableQueryPresets: true,
   access: {
     create: authenticated,
@@ -33,17 +29,11 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
     read: authenticatedOrPublished,
     update: authenticated,
   },
-  labels: { singular: 'Acil Vaka', plural: 'Acil Vakalar' },
+  labels: { singular: 'Etkinlik', plural: 'Etkinlikler' },
   admin: {
-    defaultColumns: ['title', 'caseStatus', 'collectedAmount', 'targetAmount', 'updatedAt'],
-    group: 'Hayvan Bakım',
+    defaultColumns: ['title', 'eventDate', 'eventType', 'eventStatus', 'updatedAt'],
+    group: 'Topluluk',
     useAsTitle: 'title',
-    livePreview: {
-      url: ({ data, req }) =>
-        generatePreviewPath({ slug: data?.slug as string, collection: 'emergency-cases', req }),
-    },
-    preview: (data, { req }) =>
-      generatePreviewPath({ slug: data?.slug as string, collection: 'emergency-cases', req }),
   },
   fields: [
     {
@@ -60,12 +50,6 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
           label: 'İçerik',
           fields: [
             {
-              name: 'animal',
-              label: 'Hayvan',
-              type: 'relationship',
-              relationTo: 'animals',
-            },
-            {
               name: 'description',
               label: 'Açıklama',
               type: 'richText',
@@ -80,80 +64,74 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
               }),
             },
             {
-              name: 'photos',
-              label: 'Fotoğraflar',
-              type: 'upload',
-              relationTo: 'media',
-              hasMany: true,
-            },
-            {
-              name: 'beforePhoto',
-              label: 'Önce Fotoğrafı',
+              name: 'coverImage',
+              label: 'Kapak Görseli',
               type: 'upload',
               relationTo: 'media',
             },
             {
-              name: 'afterPhoto',
-              label: 'Sonra Fotoğrafı',
-              type: 'upload',
-              relationTo: 'media',
+              name: 'location',
+              label: 'Konum',
+              type: 'text',
+              localized: true,
             },
           ],
         },
         {
-          label: 'İlerleme',
+          label: 'Detaylar',
           fields: [
             {
-              name: 'targetAmount',
-              label: 'Hedef Miktar',
-              type: 'number',
+              name: 'eventDate',
+              label: 'Başlangıç Tarihi',
+              type: 'date',
               required: true,
+              admin: {
+                date: {
+                  pickerAppearance: 'dayAndTime',
+                },
+              },
             },
             {
-              name: 'collectedAmount',
-              label: 'Toplanan Miktar',
-              type: 'number',
-              defaultValue: 0,
+              name: 'endDate',
+              label: 'Bitiş Tarihi',
+              type: 'date',
+              admin: {
+                date: {
+                  pickerAppearance: 'dayAndTime',
+                },
+              },
+              validate: (value, { siblingData }) => {
+                const data = siblingData as Record<string, unknown>
+                if (value && data?.eventDate && new Date(String(value)) < new Date(String(data.eventDate))) {
+                  return 'Bitiş tarihi, başlangıç tarihinden sonra olmalıdır'
+                }
+                return true
+              },
             },
             {
-              name: 'caseStatus',
-              label: 'Vaka Durumu',
+              name: 'eventType',
+              label: 'Etkinlik Türü',
               type: 'select',
-              required: true,
               index: true,
-              defaultValue: 'aktif',
               options: [
-                { label: 'Aktif', value: 'aktif' },
-                { label: 'Tamamlandı', value: 'tamamlandi' },
+                { label: 'Sahiplendirme', value: 'sahiplendirme' },
+                { label: 'Mama Toplama', value: 'mama-toplama' },
+                { label: 'Bakım Günü', value: 'bakim-gunu' },
+                { label: 'Eğitim', value: 'egitim' },
+                { label: 'Diğer', value: 'diger' },
               ],
             },
-          ],
-        },
-        {
-          label: 'Güncellemeler',
-          fields: [
             {
-              name: 'updates',
-              label: 'Güncellemeler',
-              type: 'array',
-              fields: [
-                {
-                  name: 'date',
-                  label: 'Tarih',
-                  type: 'date',
-                },
-                {
-                  name: 'text',
-                  label: 'Metin',
-                  type: 'richText',
-                  localized: true,
-                },
-                {
-                  name: 'photo',
-                  label: 'Fotoğraf',
-                  type: 'upload',
-                  relationTo: 'media',
-                },
+              name: 'eventStatus',
+              label: 'Etkinlik Durumu',
+              type: 'select',
+              index: true,
+              defaultValue: 'yaklasan',
+              options: [
+                { label: 'Yaklaşan', value: 'yaklasan' },
+                { label: 'Devam Ediyor', value: 'devam-ediyor' },
+                { label: 'Tamamlandı', value: 'tamamlandi' },
+                { label: 'İptal', value: 'iptal' },
               ],
             },
           ],
@@ -201,11 +179,11 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
         ],
       },
     },
-    slugField(),
+    slugField({ useAsSlug: 'title' }),
   ],
   hooks: {
-    afterChange: [revalidateEmergencyCase],
-    afterDelete: [revalidateEmergencyCaseDelete],
+    afterChange: [revalidateEvent],
+    afterDelete: [revalidateEventDelete],
   },
   trash: true,
   versions: {

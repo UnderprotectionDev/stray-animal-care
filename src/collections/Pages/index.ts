@@ -5,7 +5,6 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
-import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { TimelineBlock } from '../../blocks/Timeline/config'
 import { MissionBlock } from '../../blocks/Mission/config'
@@ -41,6 +40,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: 'İçerik Yönetimi',
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
@@ -77,7 +77,7 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               label: 'İçerik Blokları',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, TimelineBlock, MissionBlock],
+              blocks: [CallToAction, Content, MediaBlock, Archive, TimelineBlock, MissionBlock],
               required: true,
               admin: {
                 initCollapsed: true,

@@ -5,20 +5,24 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
     doc: { relationTo: collection },
   } = searchDoc
 
-  const { slug, id, categories, title, meta } = originalDoc
+  const { slug, id, categories, title, name, meta } = originalDoc
+
+  // Animals use 'name' as title field, Posts use 'title'
+  const docTitle = title || name
 
   const modifiedDoc: DocToSync = {
     ...searchDoc,
     slug,
     meta: {
       ...meta,
-      title: meta?.title || title,
+      title: meta?.title || docTitle,
       image: meta?.image?.id || meta?.image,
       description: meta?.description,
     },
     categories: [],
   }
 
+  // Only posts have categories — skip for animals and other collections
   if (categories && Array.isArray(categories) && categories.length > 0) {
     const populatedCategories: { id: string | number; title: string }[] = []
     for (const category of categories) {

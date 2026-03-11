@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { FileTextIcon } from 'lucide-react'
 
@@ -15,16 +15,7 @@ import {
 } from '@/components/ui/command'
 import { useDebounce } from '@/utilities/useDebounce'
 import { useRouter } from '@/i18n/navigation'
-
-interface SearchResult {
-  id: string
-  title: string
-  slug: string
-  doc?: {
-    relationTo: string
-    value: string
-  }
-}
+import { searchAction, type SearchResult } from '@/actions/searchAction'
 
 interface SearchModalProps {
   open: boolean
@@ -37,6 +28,7 @@ export function SearchModal({ open, onOpenChange }: SearchModalProps) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const requestIdRef = useRef(0)
 
   const debouncedQuery = useDebounce(query, 300)
 
@@ -53,44 +45,33 @@ export function SearchModal({ open, onOpenChange }: SearchModalProps) {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [open, onOpenChange])
 
-  // Fetch search results
+  // Fetch search results via Server Action
   useEffect(() => {
     if (!debouncedQuery || debouncedQuery.length < 2) {
       setResults([])
+      setIsLoading(false)
       return
     }
 
-    const controller = new AbortController()
+    const currentRequestId = ++requestIdRef.current
 
     async function fetchResults() {
       setIsLoading(true)
       try {
-        const params = new URLSearchParams({
-          'where[or][0][title][like]': debouncedQuery,
-          'where[or][1][slug][like]': debouncedQuery,
-          limit: '10',
-          depth: '0',
-        })
-
-        const res = await fetch(`/api/search?${params.toString()}`, {
-          signal: controller.signal,
-        })
-
-        if (!res.ok) throw new Error('Search failed')
-
-        const data = await res.json()
-        setResults(data.docs ?? [])
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') return
+        const data = await searchAction(debouncedQuery)
+        if (currentRequestId !== requestIdRef.current) return
+        setResults(data)
+      } catch {
+        if (currentRequestId !== requestIdRef.current) return
         setResults([])
       } finally {
-        setIsLoading(false)
+        if (currentRequestId === requestIdRef.current) {
+          setIsLoading(false)
+        }
       }
     }
 
     fetchResults()
-
-    return () => controller.abort()
   }, [debouncedQuery])
 
   // Reset state when modal closes
@@ -155,7 +136,7 @@ export function SearchModal({ open, onOpenChange }: SearchModalProps) {
               {results.map((result) => (
                 <CommandItem
                   key={result.id}
-                  value={result.id}
+                  value={String(result.id)}
                   onSelect={() => handleSelect(result)}
                   className="cursor-pointer"
                 >

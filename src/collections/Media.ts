@@ -18,6 +18,9 @@ export const Media: CollectionConfig = {
   slug: 'media',
   labels: { singular: 'Medya', plural: 'Medya' },
   folders: true,
+  admin: {
+    group: 'Sistem',
+  },
   access: {
     create: authenticated,
     delete: authenticated,

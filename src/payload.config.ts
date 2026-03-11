@@ -8,12 +8,15 @@ import { fileURLToPath } from 'url'
 import { Animals } from './collections/Animals'
 import { Categories } from './collections/Categories'
 import { EmergencyCases } from './collections/EmergencyCases'
+import { Events } from './collections/Events'
 import { Media } from './collections/Media'
 import { NeedsList } from './collections/NeedsList'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { TransparencyReports } from './collections/TransparencyReports'
 import { Users } from './collections/Users'
+import { VetRecords } from './collections/VetRecords'
+import { Volunteers } from './collections/Volunteers'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { SiteSettings } from './SiteSettings/config'
@@ -39,8 +42,6 @@ export default buildConfig({
   },
   admin: {
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/admin/Dashboard'],
     },
@@ -77,8 +78,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    push: process.env.DB_PUSH === 'true',
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, NeedsList, TransparencyReports],
+  collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, VetRecords, Events, Volunteers, NeedsList, TransparencyReports],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, SiteSettings],
   plugins,

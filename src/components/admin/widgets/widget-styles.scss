@@ -1,0 +1,342 @@
+@import '~@payloadcms/ui/scss';
+
+.paws-dashboard {
+  margin-bottom: base(2);
+
+  &__header {
+    margin-bottom: base(1.5);
+  }
+
+  &__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 base(0.25) 0;
+    color: var(--theme-text);
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--theme-elevation-600);
+  }
+
+  // --- Stats Grid ---
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: base(1);
+    margin-bottom: base(1.5);
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__stat-card {
+    display: flex;
+    align-items: center;
+    gap: base(0.75);
+    padding: base(1) base(1.25);
+    border-radius: 12px;
+    background: var(--theme-elevation-50);
+    border: 1px solid var(--theme-elevation-150);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    &--animals {
+      border-left: 4px solid #d97706;
+    }
+
+    &--emergencies {
+      border-left: 4px solid #dc2626;
+    }
+
+    &--posts {
+      border-left: 4px solid #059669;
+    }
+
+    &--volunteers {
+      border-left: 4px solid #7c3aed;
+    }
+
+    &--events {
+      border-left: 4px solid #0ea5e9;
+    }
+  }
+
+  &__stat-icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  &__stat-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__stat-number {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--theme-text);
+  }
+
+  &__stat-label {
+    font-size: 0.85rem;
+    color: var(--theme-elevation-600);
+    white-space: nowrap;
+  }
+
+  // --- Chart Sections ---
+  &__chart-section {
+    margin-bottom: base(1.5);
+  }
+
+  &__chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: base(1);
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+
+    &--triple {
+      grid-template-columns: repeat(3, 1fr);
+
+      @media (max-width: 1200px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &--quad {
+      grid-template-columns: repeat(2, 1fr);
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &--full {
+      margin-bottom: base(1);
+    }
+  }
+
+  &__chart-card {
+    background: var(--theme-elevation-50);
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: 12px;
+    padding: base(1.25);
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__chart-card-header {
+    margin-bottom: base(0.75);
+  }
+
+  &__chart-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 base(0.15) 0;
+    color: var(--theme-text);
+  }
+
+  &__chart-card-desc {
+    font-size: 0.8rem;
+    color: var(--theme-elevation-500);
+    margin: 0;
+  }
+
+  &__chart-card-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  &__chart-empty {
+    color: var(--theme-elevation-400);
+    font-size: 0.9rem;
+    font-style: italic;
+    text-align: center;
+    padding: base(2) 0;
+  }
+
+  // --- Section titles ---
+  &__section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 base(0.75) 0;
+    color: var(--theme-text);
+  }
+
+  // --- Recent Activity ---
+  &__recent {
+    background: var(--theme-elevation-50);
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: 12px;
+    padding: base(1.25);
+  }
+
+  &__empty {
+    color: var(--theme-elevation-500);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  &__recent-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__recent-item {
+    border-bottom: 1px solid var(--theme-elevation-150);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__recent-link {
+    display: flex;
+    align-items: center;
+    gap: base(0.5);
+    padding: base(0.5) 0;
+    text-decoration: none;
+    color: var(--theme-text);
+    transition: background 0.15s ease;
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--theme-elevation-100);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--theme-elevation-500);
+      outline-offset: 2px;
+    }
+  }
+
+  &__recent-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 2px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+
+    &--animal {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    &--emergency {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+  }
+
+  &__recent-label {
+    flex: 1;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__recent-date {
+    font-size: 0.8rem;
+    color: var(--theme-elevation-500);
+    flex-shrink: 0;
+  }
+
+  // --- Quick Actions ---
+  &__actions {
+    background: var(--theme-elevation-50);
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: 12px;
+    padding: base(1.25);
+  }
+
+  &__actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: base(0.5);
+
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__action-btn {
+    display: flex;
+    align-items: center;
+    gap: base(0.5);
+    padding: base(0.6) base(0.75);
+    border-radius: 8px;
+    background: var(--theme-elevation-100);
+    border: 1px solid var(--theme-elevation-200);
+    text-decoration: none;
+    color: var(--theme-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.15s ease, transform 0.15s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--theme-elevation-200);
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--theme-elevation-500);
+      outline-offset: 2px;
+    }
+  }
+
+  &__action-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  &__action-label {
+    white-space: nowrap;
+  }
+
+  // --- Bottom Row (Recent + Quick Actions side by side) ---
+  &__bottom-row {
+    margin-bottom: base(2);
+
+    @media (max-width: 900px) {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: base(1) !important;
+    }
+  }
+}

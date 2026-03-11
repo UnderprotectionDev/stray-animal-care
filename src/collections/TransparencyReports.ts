@@ -10,10 +10,11 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
     read: () => true,
     update: authenticated,
   },
+  trash: true,
   labels: { singular: 'Şeffaflık Raporu', plural: 'Şeffaflık Raporları' },
   admin: {
     defaultColumns: ['title', 'month', 'totalExpense', 'totalDonation'],
-    group: 'Raporlar',
+    group: 'Destek & Raporlar',
     useAsTitle: 'title',
   },
   fields: [

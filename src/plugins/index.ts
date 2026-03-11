@@ -1,24 +1,26 @@
-import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { CollectionQuickFilterPlugin } from '@shefing/quickfilter'
+import { translator, copyResolver } from '@payload-enchants/translator'
+import { auditLogPlugin } from '@rumess/payload-audit-log'
 
-import { Animal, EmergencyCase, Page, Post } from '@/payload-types'
+import { Animal, EmergencyCase, Event, Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
-const generateTitle: GenerateTitle<Post | Page | Animal | EmergencyCase> = ({ doc }) => {
+const generateTitle: GenerateTitle<Post | Page | Animal | EmergencyCase | Event> = ({ doc }) => {
   const title = doc && 'title' in doc ? doc.title : doc && 'name' in doc ? doc.name : null
   return title ? `${title} | Paws of Hope` : 'Paws of Hope'
 }
 
-const generateURL: GenerateURL<Post | Page | Animal | EmergencyCase> = ({ doc }) => {
+const generateURL: GenerateURL<Post | Page | Animal | EmergencyCase | Event> = ({ doc }) => {
   const url = getServerSideURL()
 
   if (!doc?.slug) return url
@@ -30,13 +32,16 @@ const generateURL: GenerateURL<Post | Page | Animal | EmergencyCase> = ({ doc })
   if (doc && 'targetAmount' in doc) {
     return `${url}/emergency/${doc.slug}`
   }
+  if (doc && 'eventDate' in doc) {
+    return `${url}/events/${doc.slug}`
+  }
 
   return `${url}/${doc.slug}`
 }
 
 export const plugins: Plugin[] = [
   redirectsPlugin({
-    collections: ['pages', 'posts', 'animals', 'emergency-cases'],
+    collections: ['pages', 'posts', 'animals', 'emergency-cases', 'events'],
     overrides: {
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
@@ -65,32 +70,6 @@ export const plugins: Plugin[] = [
     generateTitle,
     generateURL,
   }),
-  formBuilderPlugin({
-    fields: {
-      payment: false,
-    },
-    formOverrides: {
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'confirmationMessage') {
-            return {
-              ...field,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                  ]
-                },
-              }),
-            }
-          }
-          return field
-        })
-      },
-    },
-  }),
   searchPlugin({
     collections: ['posts', 'animals'],
     beforeSync: beforeSyncWithSearch,
@@ -99,5 +78,25 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  CollectionQuickFilterPlugin({
+    includedCollections: ['animals', 'emergency-cases', 'volunteers', 'events'],
+  }),
+  translator({
+    resolvers: [copyResolver()],
+    collections: ['animals', 'emergency-cases', 'events', 'posts', 'pages', 'needs-list'],
+    globals: [],
+  }),
+  auditLogPlugin({
+    collections: ['animals', 'emergency-cases', 'vet-records', 'events', 'volunteers'],
+  }),
+  importExportPlugin({
+    collections: [
+      { slug: 'animals' },
+      { slug: 'emergency-cases' },
+      { slug: 'volunteers' },
+      { slug: 'vet-records' },
+      { slug: 'needs-list' },
+    ],
   }),
 ]
