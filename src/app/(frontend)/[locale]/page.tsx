@@ -50,7 +50,7 @@ export default async function HomePage({ params }: Args) {
         caseStatus: { equals: 'aktif' },
         _status: { equals: 'published' },
       },
-      limit: 3,
+      limit: 5,
       locale: payloadLocale,
       depth: 1,
     }),

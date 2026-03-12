@@ -67,14 +67,11 @@
       "description": "Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz."
     },
     "hero": {
-      "record": "KAYIT: IST-24 // OPERASYON BAŞLANGICI",
-      "badge": "AKTİF DURUM",
-      "headline": "UMUT\nAĞI.",
-      "description": "İstanbul'un sokaklarında sistemli kurtarma operasyonu. Her can bir nefes, her nefes kaydedilen bir umut. Sadece beslemiyor, rehabilite ediyor ve kalıcı yuvalar buluyoruz. Duygusallık değil, disiplinli bir kurtarma ağı.",
-      "updateLabel": "SON GÜNCELLEME: BUGÜN 08:45",
-      "fundLink": "ACİL MÜDAHALE FONU ↓",
-      "ctaDonate": "Destek Ol",
-      "ctaEmergency": "Acil Durumlar"
+      "urgentBadge": "ACİL DURUM SÜRÜYOR",
+      "headline": "BİR İNSAN.\nBİNLERCE\nCAN.",
+      "description": "İstanbul'un sokaklarında sistemli kurtarma operasyonu. Her can bir nefes, her nefes kaydedilen bir umut. Sadece beslemiyor, rehabilite ediyor ve kalıcı yuvalar buluyoruz.",
+      "quoteText": "Birini kurtarmak dünyayı değiştirmez. Ama o birinin dünyasını değiştirir.",
+      "quoteAuthor": "AYŞE"
     },
     "stats": {
       "title": "Rakamlarla Biz",
@@ -85,16 +82,16 @@
       "vaccinated": "Aşılanan",
       "metric1Label": "METRİK 01 // OPERASYONEL",
       "metric1Value": "347",
-      "metric1Name": "KURTARILDI",
+      "metric1Name": "KURTARILAN",
       "metric2Label": "METRİK 02 // TRANSFER",
       "metric2Value": "89",
-      "metric2Name": "YUVA BULDU",
+      "metric2Name": "YENİ BULDU",
       "metric3Label": "METRİK 03 // LOJİSTİK",
       "metric3Value": "2.4K",
       "metric3Name": "BESLENDİ",
       "metric4Label": "METRİK 04 // SÜREKLİLİK",
       "metric4Value": "04",
-      "metric4Name": "YIL AKTİF HİZMET"
+      "metric4Name": "AKTİF YUVA"
     },
     "featured": {
       "animalsTitle": "Canlarımız",
@@ -137,10 +134,37 @@
       "followUs": "Takip Et"
     },
     "story": {
-      "title": "Hikayemiz",
-      "description": "Her gün sokaklarda yaşam mücadelesi veren hayvanlara umut oluyoruz. Tedavi, besleme, barınma ve sahiplendirme çalışmalarıyla onlara daha iyi bir yaşam sunuyoruz.",
-      "missionTitle": "Misyonumuz",
-      "missionDescription": "Sokak hayvanlarının sağlıklı, güvenli ve sevgi dolu bir yaşam sürmesini sağlamak. Her cana eşit değer vererek, toplumda hayvanseverlik bilincini yaygınlaştırmak."
+      "sectionTitle": "HİKAYEMİZ & MİSYON",
+      "missionText": "Misyonumuz net: Acil tıbbi müdahale gerektiren vakalara anında ulaşmak, sokaklardaki popülasyonu etik yöntemlerle kontrol altına almak ve kalıcı yuva bulana kadar onlara güvenli bir sığınak olmak.",
+      "originTitle": "BAŞLANGIÇ",
+      "founderCaption": "AYŞE KAYA, 2019",
+      "founderName": "Ayşe",
+      "originParagraph1": "Her şey 2019'da soğuk bir kış gecesi, kapımın önünde titreyen yaralı bir kediyle başladı. Onu veterinere götürdüm, tedavi ettirdim ve o gece fark ettim — bu sadece bir kedi değildi, bir sorumluluktu.",
+      "originParagraph2": "O günden bu yana yüzlerce can kurtardık. Her birinin hikayesi farklı ama hepsinin ortak noktası aynı: onlara sahip çıkacak birinin olması yeterli.",
+      "originQuote": "Birini kurtarmak dünyayı değiştirmez. Ama o birinin dünyasını değiştirir.",
+      "timelineTitle": "ZAMAN ÇİZELGESİ",
+      "timeline2019": "İlk kurtarma — kapının önündeki yaralı kedi",
+      "timeline2020": "Düzenli besleme noktaları oluşturuldu",
+      "timeline2021": "Gönüllü ağı kuruldu, 20+ aktif gönüllü",
+      "timeline2022": "Veteriner klinik ortaklığı başladı",
+      "timeline2023": "347 hayvan kurtarıldı, web sitesi yayında",
+      "timeline2024": "Dernek başvurusu, uluslararası destek ağı",
+      "whatWeDoTitle": "NELER YAPIYORUZ?",
+      "feedingNumber": "01",
+      "feedingTitle": "BESLEME",
+      "feedingDescription": "Her gün 40+ noktada düzenli besleme yapıyoruz. Kış aylarında sıcak mama ve su sağlıyoruz.",
+      "feedingStat": "2.4T",
+      "feedingStatLabel": "ÖĞÜN / YIL",
+      "treatmentNumber": "02",
+      "treatmentTitle": "TEDAVİ",
+      "treatmentDescription": "Hasta ve yaralı sokak hayvanlarının tüm veteriner masraflarını karşılıyoruz.",
+      "treatmentStat": "₺450K",
+      "treatmentStatLabel": "TEDAVİ HARCAMASI",
+      "shelterNumber": "03",
+      "shelterTitle": "YUVA",
+      "shelterDescription": "Tedavisi tamamlanan hayvanları güvenli, sevgi dolu kalıcı yuvalara yerleştiriyoruz.",
+      "shelterStat": "89",
+      "shelterStatLabel": "YUVA BULDU"
     },
     "needs": {
       "title": "Güncel İhtiyaçlar",

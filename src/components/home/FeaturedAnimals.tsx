@@ -14,6 +14,7 @@ const PLACEHOLDER_IMAGES: Record<number, string> = {
   903: 'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=600&h=800&fit=crop&crop=face',
   904: 'https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=600&h=800&fit=crop&crop=face',
   905: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&h=800&fit=crop&crop=face',
+  906: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600&h=800&fit=crop&crop=face',
 }
 
 const PLACEHOLDER_ANIMALS: Animal[] = [
@@ -22,6 +23,7 @@ const PLACEHOLDER_ANIMALS: Animal[] = [
   { id: 903, name: 'Pamuk', slug: 'pamuk', type: 'kedi', age: '1 yaş', gender: 'disi', animalStatus: 'tedavide', featured: true, photos: [], createdAt: '', updatedAt: '', _status: 'published' },
   { id: 904, name: 'Çakıl', slug: 'cakil', type: 'kopek', age: '3 yaş', gender: 'erkek', animalStatus: 'acil', featured: true, photos: [], createdAt: '', updatedAt: '', _status: 'published' },
   { id: 905, name: 'Minnoş', slug: 'minnos', type: 'kedi', age: '6 ay', gender: 'disi', animalStatus: 'tedavide', featured: true, photos: [], createdAt: '', updatedAt: '', _status: 'published' },
+  { id: 906, name: 'Tarçın', slug: 'tarcin', type: 'kedi', age: '2 yaş', gender: 'erkek', animalStatus: 'kalici-bakim', featured: true, photos: [], createdAt: '', updatedAt: '', _status: 'published' },
 ]
 
 function PlaceholderCard({ animal, t }: { animal: Animal; t: Awaited<ReturnType<typeof getTranslations<'home.featured'>>> }) {
@@ -33,7 +35,7 @@ function PlaceholderCard({ animal, t }: { animal: Animal; t: Awaited<ReturnType<
   return (
     <Link
       href={`/canlarimiz/${animal.slug}`}
-      className="aspect-[3/4] relative group overflow-hidden bg-[var(--muted)]"
+      className="h-[320px] relative group overflow-hidden bg-[var(--muted)]"
     >
       {imgSrc && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -76,7 +78,7 @@ function MagazineCard({ animal, t }: { animal: Animal; t: Awaited<ReturnType<typ
   return (
     <Link
       href={`/canlarimiz/${animal.slug}`}
-      className="aspect-[3/4] relative group overflow-hidden bg-[var(--muted)]"
+      className="h-[320px] relative group overflow-hidden bg-[var(--muted)]"
     >
       {photo && (
         <Media
@@ -106,27 +108,6 @@ function MagazineCard({ animal, t }: { animal: Animal; t: Awaited<ReturnType<typ
   )
 }
 
-function CTACard({ t }: { t: Awaited<ReturnType<typeof getTranslations<'home.featured'>>> }) {
-  return (
-    <Link
-      href="/canlarimiz"
-      className="aspect-[3/4] relative group overflow-hidden"
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600&h=800&fit=crop&crop=face"
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
-      />
-      <div className="photo-overlay-gradient absolute inset-0" />
-      <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col items-center gap-1">
-        <span className="t-h1 text-white">{t('adoptCta')}</span>
-        <span className="t-meta text-[var(--accent)]">{t('adoptCtaLink')}</span>
-      </div>
-    </Link>
-  )
-}
-
 export async function FeaturedAnimals({ animals }: FeaturedAnimalsProps) {
   const t = await getTranslations('home.featured')
 
@@ -134,11 +115,7 @@ export async function FeaturedAnimals({ animals }: FeaturedAnimalsProps) {
   const usePlaceholder = animals.length === 0
   const data = usePlaceholder ? PLACEHOLDER_ANIMALS : animals
 
-  // Graceful degradation: only show CTA in row 2 when we have 4+ animals
-  const row1 = data.slice(0, 3)
-  const row2Animals = data.slice(3, 5)
-  const showCTA = row2Animals.length > 0
-
+  const cards = data.slice(0, 6)
   const CardComponent = usePlaceholder ? PlaceholderCard : MagazineCard
 
   return (
@@ -150,20 +127,9 @@ export async function FeaturedAnimals({ animals }: FeaturedAnimalsProps) {
         </Link>
       </div>
       <div className="featured-animals-grid">
-        {row1.map((animal) => (
+        {cards.map((animal) => (
           <CardComponent key={animal.id} animal={animal} t={t} />
         ))}
-        {showCTA && (
-          <>
-            {row2Animals[0] && (
-              <CardComponent key={row2Animals[0].id} animal={row2Animals[0]} t={t} />
-            )}
-            <CTACard t={t} />
-            {row2Animals[1] && (
-              <CardComponent key={row2Animals[1].id} animal={row2Animals[1]} t={t} />
-            )}
-          </>
-        )}
       </div>
     </section>
   )

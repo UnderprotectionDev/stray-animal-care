@@ -67,14 +67,11 @@
       "description": "Helping stray animals find care, treatment, and loving homes."
     },
     "hero": {
-      "record": "RECORD: IST-24 // OPERATION START",
-      "badge": "ACTIVE STATUS",
-      "headline": "HOPE\nNET.",
-      "description": "A systematic rescue operation on the streets of Istanbul. Every life is a breath, every breath a recorded hope. Not just feeding — rehabilitating and finding permanent homes. Not sentimentality, but a disciplined rescue network.",
-      "updateLabel": "LAST UPDATE: TODAY 08:45",
-      "fundLink": "EMERGENCY FUND ↓",
-      "ctaDonate": "Donate",
-      "ctaEmergency": "Emergencies"
+      "urgentBadge": "EMERGENCY IN PROGRESS",
+      "headline": "ONE HUMAN.\nTHOUSANDS\nOF LIVES.",
+      "description": "A systematic rescue operation on the streets of Istanbul. Every life is a breath, every breath a recorded hope. Not just feeding — rehabilitating and finding permanent homes.",
+      "quoteText": "Saving one doesn't change the world. But it changes the world for that one.",
+      "quoteAuthor": "AYSE"
     },
     "stats": {
       "title": "By the Numbers",
@@ -88,13 +85,13 @@
       "metric1Name": "RESCUED",
       "metric2Label": "METRIC 02 // TRANSFER",
       "metric2Value": "89",
-      "metric2Name": "FOUND HOMES",
+      "metric2Name": "NEW HOMES",
       "metric3Label": "METRIC 03 // LOGISTICS",
       "metric3Value": "2.4K",
       "metric3Name": "FED",
       "metric4Label": "METRIC 04 // CONTINUITY",
       "metric4Value": "04",
-      "metric4Name": "YEARS ACTIVE"
+      "metric4Name": "ACTIVE SHELTERS"
     },
     "featured": {
       "animalsTitle": "Our Animals",
@@ -137,10 +134,37 @@
       "followUs": "Follow Us"
     },
     "story": {
-      "title": "Our Story",
-      "description": "Every day, we bring hope to animals struggling to survive on the streets. Through treatment, feeding, shelter, and adoption, we offer them a better life.",
-      "missionTitle": "Our Mission",
-      "missionDescription": "To ensure stray animals live healthy, safe, and loving lives. To spread awareness of animal welfare in society, valuing every life equally."
+      "sectionTitle": "OUR STORY & MISSION",
+      "missionText": "Our mission is clear: to reach cases requiring urgent medical intervention immediately, to control the street population through ethical methods, and to be a safe shelter until permanent homes are found.",
+      "originTitle": "THE BEGINNING",
+      "founderCaption": "AYSE KAYA, 2019",
+      "founderName": "Ayse",
+      "originParagraph1": "It all started on a cold winter night in 2019, with an injured cat shivering at my doorstep. I took her to the vet, got her treated, and that night I realized — this wasn't just a cat, it was a responsibility.",
+      "originParagraph2": "Since that day, we've rescued hundreds of lives. Each story is different, but they all share one thing: all it takes is someone willing to care.",
+      "originQuote": "Saving one doesn't change the world. But it changes the world for that one.",
+      "timelineTitle": "TIMELINE",
+      "timeline2019": "First rescue — the injured cat at the doorstep",
+      "timeline2020": "Regular feeding stations established",
+      "timeline2021": "Volunteer network formed, 20+ active volunteers",
+      "timeline2022": "Veterinary clinic partnership launched",
+      "timeline2023": "347 animals rescued, website launched",
+      "timeline2024": "NGO application filed, international support network",
+      "whatWeDoTitle": "WHAT WE DO?",
+      "feedingNumber": "01",
+      "feedingTitle": "FEEDING",
+      "feedingDescription": "We provide regular feeding at 40+ stations daily. Hot food and water during winter months.",
+      "feedingStat": "2.4T",
+      "feedingStatLabel": "MEALS / YEAR",
+      "treatmentNumber": "02",
+      "treatmentTitle": "TREATMENT",
+      "treatmentDescription": "We cover all veterinary costs for sick and injured stray animals.",
+      "treatmentStat": "₺450K",
+      "treatmentStatLabel": "TREATMENT SPENT",
+      "shelterNumber": "03",
+      "shelterTitle": "SHELTER",
+      "shelterDescription": "We place recovered animals in safe, loving permanent homes.",
+      "shelterStat": "89",
+      "shelterStatLabel": "FOUND HOMES"
     },
     "needs": {
       "title": "Current Needs",
