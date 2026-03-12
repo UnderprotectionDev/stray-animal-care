@@ -1,13 +1,4 @@
 import React from 'react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableFooter,
-} from '@/components/ui/table'
 
 type Expense = {
   category?: string | null
@@ -35,34 +26,34 @@ export function ExpenseBreakdown({
 }: ExpenseBreakdownProps) {
   return (
     <div>
-      <h4 className="mb-3 font-heading font-semibold">{labels.expenses}</h4>
-      <div className="overflow-x-auto rounded-lg border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{labels.category}</TableHead>
-              <TableHead className="text-right">{labels.amount}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+      <h4 className="t-h2 mb-3">{labels.expenses}</h4>
+      <div className="border border-border">
+        <table className="sys-table w-full">
+          <thead>
+            <tr className="border-b border-border bg-foreground text-background">
+              <th className="p-3 text-left t-meta font-medium uppercase tracking-wide">{labels.category}</th>
+              <th className="p-3 text-right t-meta font-medium uppercase tracking-wide">{labels.amount}</th>
+            </tr>
+          </thead>
+          <tbody>
             {expenses.map((expense) => (
-              <TableRow key={expense.id}>
-                <TableCell>{expense.category || '—'}</TableCell>
-                <TableCell className="text-right">
+              <tr key={expense.id} className="border-b border-border last:border-b-0">
+                <td className="p-3 t-body">{expense.category || '\u2014'}</td>
+                <td className="p-3 text-right t-body">
                   {(expense.amount ?? 0).toLocaleString('tr-TR')} {currency}
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell className="font-semibold">{labels.totalExpense}</TableCell>
-              <TableCell className="text-right font-semibold">
+          </tbody>
+          <tfoot>
+            <tr className="border-t border-border bg-muted">
+              <td className="p-3 font-semibold t-body">{labels.totalExpense}</td>
+              <td className="p-3 text-right font-semibold t-body">
                 {totalExpense.toLocaleString('tr-TR')} {currency}
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
   )

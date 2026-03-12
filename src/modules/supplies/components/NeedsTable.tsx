@@ -1,21 +1,10 @@
 import React from 'react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { StatusBadge } from '@/components/shared/StatusBadge'
 import type { NeedsList } from '@/payload-types'
 
-type StatusVariant = 'urgent' | 'pending' | 'active'
-
-const urgencyVariantMap: Record<string, StatusVariant> = {
-  acil: 'urgent',
-  orta: 'pending',
-  yeterli: 'active',
+const urgencyClassMap: Record<string, string> = {
+  acil: 'badge-sys critical',
+  orta: 'badge-sys',
+  yeterli: 'badge-sys mint',
 }
 
 type NeedsTableProps = {
@@ -31,31 +20,31 @@ type NeedsTableProps = {
 
 export function NeedsTable({ items, labels, urgencyLabels }: NeedsTableProps) {
   return (
-    <div className="overflow-x-auto rounded-lg border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{labels.product}</TableHead>
-            <TableHead>{labels.brand}</TableHead>
-            <TableHead>{labels.urgency}</TableHead>
-            <TableHead>{labels.stock}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+    <div className="border border-border">
+      <table className="sys-table w-full">
+        <thead>
+          <tr className="border-b border-border bg-foreground text-background">
+            <th className="p-3 text-left t-meta font-medium uppercase tracking-wide">{labels.product}</th>
+            <th className="p-3 text-left t-meta font-medium uppercase tracking-wide">{labels.brand}</th>
+            <th className="p-3 text-left t-meta font-medium uppercase tracking-wide">{labels.urgency}</th>
+            <th className="p-3 text-left t-meta font-medium uppercase tracking-wide">{labels.stock}</th>
+          </tr>
+        </thead>
+        <tbody>
           {items.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell className="font-medium">{item.productName}</TableCell>
-              <TableCell>{item.brandDetail || '—'}</TableCell>
-              <TableCell>
-                <StatusBadge status={urgencyVariantMap[item.urgency] ?? 'pending'}>
+            <tr key={item.id} className="border-b border-border last:border-b-0">
+              <td className="p-3 font-medium t-body">{item.productName}</td>
+              <td className="p-3 t-body">{item.brandDetail || '\u2014'}</td>
+              <td className="p-3">
+                <span className={urgencyClassMap[item.urgency] ?? 'badge-sys'}>
                   {urgencyLabels[item.urgency] ?? item.urgency}
-                </StatusBadge>
-              </TableCell>
-              <TableCell>{item.stockStatus || '—'}</TableCell>
-            </TableRow>
+                </span>
+              </td>
+              <td className="p-3 t-body">{item.stockStatus || '\u2014'}</td>
+            </tr>
           ))}
-        </TableBody>
-      </Table>
+        </tbody>
+      </table>
     </div>
   )
 }

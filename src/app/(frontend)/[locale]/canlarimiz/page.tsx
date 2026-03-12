@@ -1,8 +1,5 @@
 import type { Metadata } from 'next'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
-import { Section } from '@/components/shared/Section'
-import { Container } from '@/components/shared/Container'
-import { Heading } from '@/components/shared/Heading'
 import { AnimalFilter } from '@/modules/animals/components/AnimalFilter'
 import { AnimalList } from '@/modules/animals/components/AnimalList'
 import { getAnimals } from '@/modules/animals/lib/queries'
@@ -44,22 +41,23 @@ export default async function AnimalsPage({ params }: Args) {
   }
 
   return (
-    <>
-      <Section padding="lg">
-        <Container>
-          <div className="mb-8 text-center">
-            <Heading as="h1" className="mb-3">
-              {t('title')}
-            </Heading>
-            <p className="text-muted-foreground text-lg">{t('subtitle')}</p>
-          </div>
-          <div className="mb-8 flex justify-center">
-            <AnimalFilter labels={filterLabels} />
-          </div>
-          <AnimalList animals={animals} labels={listLabels} />
-        </Container>
-      </Section>
-    </>
+    <div className="sys-wrap">
+      <div className="px-4 py-8 max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8 border-b border-border pb-6">
+          <h1 className="t-mega">{t('title')}</h1>
+          <p className="t-meta mt-2">{t('subtitle')}</p>
+        </div>
+
+        {/* Filter */}
+        <div className="mb-8">
+          <AnimalFilter labels={filterLabels} />
+        </div>
+
+        {/* Grid */}
+        <AnimalList animals={animals} labels={listLabels} />
+      </div>
+    </div>
   )
 }
 

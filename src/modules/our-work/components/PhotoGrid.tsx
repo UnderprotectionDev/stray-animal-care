@@ -10,15 +10,15 @@ export function PhotoGrid({ images }: PhotoGridProps) {
   if (!images || images.length === 0) return null
 
   return (
-    <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-[1px] bg-foreground sm:grid-cols-2 md:grid-cols-3">
       {images.map((image, index) => {
         if (typeof image === 'number') return null
         return (
-          <div key={image.id ?? index} className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
+          <div key={image.id ?? index} className="relative aspect-[4/3] bg-muted">
             <Media
               resource={image}
               fill
-              imgClassName="object-cover"
+              imgClassName="object-cover photo-sys"
             />
           </div>
         )

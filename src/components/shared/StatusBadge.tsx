@@ -2,10 +2,10 @@ import React from 'react'
 import { cn } from '@/utilities/ui'
 
 const statusStyles = {
-  active: 'bg-secondary/20 text-secondary-foreground border-secondary/40',
-  urgent: 'bg-destructive/10 text-destructive border-destructive/30',
-  completed: 'bg-muted text-muted-foreground border-border',
-  pending: 'bg-warning/20 text-foreground border-warning/40',
+  active: 'badge-sys mint',
+  urgent: 'badge-sys critical',
+  completed: 'badge-sys',
+  pending: 'badge-sys mint',
 } as const
 
 type StatusBadgeProps = {
@@ -16,13 +16,7 @@ type StatusBadgeProps = {
 
 export function StatusBadge({ status, children, className }: StatusBadgeProps) {
   return (
-    <span
-      className={cn(
-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
-        statusStyles[status],
-        className,
-      )}
-    >
+    <span className={cn(statusStyles[status], className)}>
       {children}
     </span>
   )

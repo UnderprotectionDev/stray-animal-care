@@ -1,8 +1,6 @@
 import React from 'react'
-import { Heading } from '@/components/shared/Heading'
 import { PhotoGrid } from './PhotoGrid'
 import type { Media as MediaType } from '@/payload-types'
-import { cn } from '@/utilities/ui'
 
 type ActivitySectionProps = {
   title: string
@@ -11,15 +9,13 @@ type ActivitySectionProps = {
   isAlternate: boolean
 }
 
-export function ActivitySection({ title, description, images, isAlternate }: ActivitySectionProps) {
+export function ActivitySection({ title, description, images, isAlternate: _isAlternate }: ActivitySectionProps) {
   return (
-    <div className={cn('py-12 md:py-16', isAlternate && 'bg-muted/30')}>
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
+    <div className="border-b border-border">
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8 py-8">
         <div className="mb-6">
-          <Heading as="h2" className="mb-3">
-            {title}
-          </Heading>
-          <p className="text-muted-foreground max-w-2xl text-lg">{description}</p>
+          <h2 className="t-h1 mb-2">{title}</h2>
+          <p className="t-meta max-w-2xl text-lg">{description}</p>
         </div>
         <PhotoGrid images={images} />
       </div>

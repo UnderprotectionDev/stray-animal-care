@@ -23,8 +23,8 @@ export function PhotoGallery({ photos, animalName, labels }: PhotoGalleryProps) 
 
   if (!photos || photos.length === 0) {
     return (
-      <div className="flex aspect-square items-center justify-center rounded-xl bg-muted text-muted-foreground">
-        <span>{labels.noPhotos}</span>
+      <div className="flex aspect-square items-center justify-center border border-border bg-muted">
+        <span className="t-meta">{labels.noPhotos}</span>
       </div>
     )
   }
@@ -42,33 +42,33 @@ export function PhotoGallery({ photos, animalName, labels }: PhotoGalleryProps) 
       {/* Hero image */}
       <button
         type="button"
-        className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted"
+        className="relative aspect-[4/3] w-full overflow-hidden bg-muted"
         onClick={() => openLightbox(0)}
         aria-label={`${labels.imageOf} ${animalName}`}
       >
         <Media
           resource={heroPhoto}
           fill
-          imgClassName="object-cover hover:scale-105 transition-transform duration-300"
+          imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-300"
           priority
         />
       </button>
 
       {/* Thumbnails */}
       {photos.length > 1 && (
-        <div className="mt-2 grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-px bg-foreground border-t border-border">
           {thumbnails.map((photo, i) => (
             <button
               key={photo.id ?? i}
               type="button"
               onClick={() => openLightbox(i)}
-              className="relative aspect-square overflow-hidden rounded-md bg-muted ring-2 ring-transparent hover:ring-primary/50 transition-all"
+              className="relative aspect-square overflow-hidden bg-muted"
               aria-label={`${animalName} - ${i + 1}`}
             >
               <Media
                 resource={photo}
                 fill
-                imgClassName="object-cover"
+                imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-300"
               />
             </button>
           ))}

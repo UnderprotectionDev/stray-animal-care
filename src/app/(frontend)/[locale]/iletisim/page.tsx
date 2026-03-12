@@ -35,7 +35,7 @@ export default async function ContactPage({ params }: Args) {
         <Container>
           <div className="mb-10 text-center">
             <Heading as="h1">{t('title')}</Heading>
-            <p className="mt-4 text-lg text-muted-foreground">{t('subtitle')}</p>
+            <p className="mt-4 text-lg t-body">{t('subtitle')}</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

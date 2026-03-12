@@ -1,13 +1,9 @@
 import React from 'react'
 import { getTranslations } from 'next-intl/server'
 import type { SiteSetting } from '@/payload-types'
-import { Section } from '@/components/shared/Section'
-import { Container } from '@/components/shared/Container'
-import { Heading } from '@/components/shared/Heading'
 import { CopyButton } from '@/components/shared/CopyButton'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Landmark, Globe, Package, HandHeart } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
 
 type SupportCardsProps = {
   siteSettings: SiteSetting
@@ -17,94 +13,74 @@ export async function SupportCards({ siteSettings }: SupportCardsProps) {
   const t = await getTranslations('home.support')
 
   return (
-    <Section>
-      <Container>
-        <Heading as="h2" className="mb-10 text-center">{t('title')}</Heading>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {/* IBAN Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Landmark className="size-5 text-primary" />
-                {t('iban')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {siteSettings.bankName && (
-                <p className="text-sm text-muted-foreground">{siteSettings.bankName}</p>
-              )}
-              {siteSettings.accountHolder && (
-                <p className="text-sm font-medium">{siteSettings.accountHolder}</p>
-              )}
-              {siteSettings.iban && <CopyButton text={siteSettings.iban} label={siteSettings.iban} />}
-            </CardContent>
-          </Card>
-
-          {/* International Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="size-5 text-primary" />
-                {t('international')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {siteSettings.paypalLink && (
-                <a
-                  href={siteSettings.paypalLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-sm text-primary underline-offset-4 hover:underline"
-                >
-                  PayPal
-                </a>
-              )}
-              {siteSettings.wiseLink && (
-                <a
-                  href={siteSettings.wiseLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-sm text-primary underline-offset-4 hover:underline"
-                >
-                  Wise
-                </a>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Supplies Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Package className="size-5 text-primary" />
-                {t('supplies')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                {t('suppliesPlaceholder')}
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Volunteer Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <HandHeart className="size-5 text-primary" />
-                {t('volunteer')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {siteSettings.whatsapp && (
-                <WhatsAppButton phone={siteSettings.whatsapp}>
-                  {t('volunteer')}
-                </WhatsAppButton>
-              )}
-            </CardContent>
-          </Card>
+    <section>
+      <div className="panel py-4 px-6 border-b border-border">
+        <h2 className="t-h2">{t('title')}</h2>
+      </div>
+      <div className="g-1 md:g-4">
+        {/* IBAN */}
+        <div className="panel space-y-3">
+          <h3 className="t-meta font-bold uppercase tracking-wider">{t('iban')}</h3>
+          {siteSettings.bankName && (
+            <p className="t-meta text-muted-foreground">{siteSettings.bankName}</p>
+          )}
+          {siteSettings.accountHolder && (
+            <p className="t-meta font-bold">{siteSettings.accountHolder}</p>
+          )}
+          {siteSettings.iban && (
+            <div className="flex items-center gap-2 border border-border p-3">
+              <code className="text-xs font-mono break-all flex-1">{siteSettings.iban}</code>
+              <CopyButton text={siteSettings.iban} label={t('iban')} className="shrink-0" />
+            </div>
+          )}
         </div>
-      </Container>
-    </Section>
+
+        {/* International */}
+        <div className="panel space-y-3">
+          <h3 className="t-meta font-bold uppercase tracking-wider">{t('international')}</h3>
+          <div className="flex flex-col gap-2">
+            {siteSettings.paypalLink && (
+              <a
+                href={siteSettings.paypalLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-cta text-xs py-2 justify-start"
+              >
+                PayPal →
+              </a>
+            )}
+            {siteSettings.wiseLink && (
+              <a
+                href={siteSettings.wiseLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-cta text-xs py-2 justify-start"
+              >
+                Wise →
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Supplies */}
+        <div className="panel space-y-3">
+          <h3 className="t-meta font-bold uppercase tracking-wider">{t('supplies')}</h3>
+          <p className="t-meta text-muted-foreground">{t('suppliesPlaceholder')}</p>
+          <Link href="/ihtiyac-listesi" className="btn-cta text-xs py-2 inline-flex">
+            {t('supplies')} →
+          </Link>
+        </div>
+
+        {/* Volunteer */}
+        <div className="panel space-y-3">
+          <h3 className="t-meta font-bold uppercase tracking-wider">{t('volunteer')}</h3>
+          {siteSettings.whatsapp && (
+            <WhatsAppButton phone={siteSettings.whatsapp}>
+              {t('volunteer')}
+            </WhatsAppButton>
+          )}
+        </div>
+      </div>
+    </section>
   )
 }

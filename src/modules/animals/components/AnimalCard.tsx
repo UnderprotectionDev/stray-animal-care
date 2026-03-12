@@ -1,17 +1,7 @@
 import React from 'react'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
-import { StatusBadge } from '@/components/shared/StatusBadge'
-import { Card } from '@/components/ui/card'
 import type { Animal, Media as MediaType } from '@/payload-types'
-
-type StatusVariant = 'pending' | 'active' | 'urgent'
-
-const statusVariantMap: Record<NonNullable<Animal['animalStatus']>, StatusVariant> = {
-  tedavide: 'pending',
-  'kalici-bakim': 'active',
-  acil: 'urgent',
-}
 
 type AnimalCardProps = {
   animal: Animal
@@ -25,36 +15,44 @@ export function AnimalCard({ animal, typeLabel, statusLabel }: AnimalCardProps) 
       ? (animal.photos[0] as MediaType)
       : null
 
+  const badgeClass =
+    animal.animalStatus === 'acil' ? 'badge-sys critical' : 'badge-sys mint'
+
   return (
     <Link href={`/canlarimiz/${animal.slug}`} className="group block">
-      <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-warm-md">
-        <div className="relative aspect-square bg-muted">
+      <div className="border border-border bg-background">
+        {/* 1:1 square photo */}
+        <div className="relative aspect-square overflow-hidden bg-muted">
           {firstPhoto && typeof firstPhoto === 'object' ? (
             <Media
               resource={firstPhoto}
               fill
-              imgClassName="object-cover transition-transform duration-300 group-hover:scale-105"
+              imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
             />
           ) : (
             <div className="flex h-full items-center justify-center text-muted-foreground">
-              <span className="text-4xl">🐾</span>
-            </div>
-          )}
-          {animal.animalStatus && (
-            <div className="absolute top-2 left-2">
-              <StatusBadge status={statusVariantMap[animal.animalStatus] ?? 'pending'}>
-                {statusLabel}
-              </StatusBadge>
+              <span className="text-4xl">&#128062;</span>
             </div>
           )}
         </div>
-        <div className="p-4">
-          <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors">
-            {animal.name}
-          </h3>
-          <p className="mt-1 text-sm text-muted-foreground">{typeLabel}</p>
+
+        {/* Data rows */}
+        <div className="border-t border-border">
+          <div className="flex items-center justify-between border-b border-border px-3 py-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+              {animal.name}
+            </span>
+            {animal.animalStatus && (
+              <span className={badgeClass}>{statusLabel}</span>
+            )}
+          </div>
+          <div className="px-3 py-2">
+            <span className="text-xs uppercase tracking-wider text-muted-foreground">
+              {typeLabel}
+            </span>
+          </div>
         </div>
-      </Card>
+      </div>
     </Link>
   )
 }

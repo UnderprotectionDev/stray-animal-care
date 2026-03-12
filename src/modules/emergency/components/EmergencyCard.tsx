@@ -1,15 +1,7 @@
 import React from 'react'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
-import { StatusBadge } from '@/components/shared/StatusBadge'
-import { ProgressBar } from '@/components/shared/ProgressBar'
-import { Card } from '@/components/ui/card'
 import type { EmergencyCase, Media as MediaType } from '@/payload-types'
-
-const caseStatusVariantMap = {
-  aktif: 'urgent' as const,
-  tamamlandi: 'completed' as const,
-}
 
 const fmt = (n: number) =>
   new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(n)
@@ -24,41 +16,54 @@ export function EmergencyCard({ ec }: EmergencyCardProps) {
 
   const collected = ec.collectedAmount ?? 0
   const target = ec.targetAmount ?? 0
+  const pct = target > 0 ? Math.min(Math.round((collected / target) * 100), 100) : 0
 
   return (
     <Link href={`/acil-vakalar/${ec.slug}`} className="group block">
-      <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-warm-md">
-        <div className="relative aspect-video bg-muted">
+      <div className="border border-border bg-background">
+        <div className="relative aspect-video bg-muted overflow-hidden">
           {firstPhoto && typeof firstPhoto === 'object' ? (
             <Media
               resource={firstPhoto}
               fill
-              imgClassName="object-cover transition-transform duration-300 group-hover:scale-105"
+              imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-muted-foreground">
+            <div className="flex h-full items-center justify-center text-foreground">
               <span className="text-4xl">🚨</span>
             </div>
           )}
-          <div className="absolute top-2 left-2">
-            <StatusBadge status={caseStatusVariantMap[ec.caseStatus] ?? 'urgent'}>
-              {ec.caseStatus === 'aktif' ? 'Aktif' : 'Tamamlandı'}
-            </StatusBadge>
+          <div className="absolute top-0 left-0">
+            <span
+              className={`inline-block px-3 py-1 text-[11px] font-bold uppercase tracking-wider border border-border ${
+                ec.caseStatus === 'aktif'
+                  ? 'bg-destructive text-background'
+                  : 'bg-accent text-foreground'
+              }`}
+            >
+              {ec.caseStatus === 'aktif' ? 'Aktif' : 'Tamamlandi'}
+            </span>
           </div>
         </div>
-        <div className="p-4 space-y-3">
-          <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
+        <div className="p-4 space-y-3 border-t border-border">
+          <h3 className="font-bold text-foreground text-base uppercase tracking-wide leading-tight line-clamp-2 group-hover:text-accent transition-colors">
             {ec.title}
           </h3>
           {target > 0 && (
-            <ProgressBar
-              current={collected}
-              target={target}
-              label={`${fmt(collected)} / ${fmt(target)}`}
-            />
+            <div className="space-y-1">
+              <div className="w-full h-3 border border-border bg-background">
+                <div
+                  className="h-full bg-accent"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <p className="text-[11px] font-mono text-foreground tracking-wide">
+                {fmt(collected)} / {fmt(target)}
+              </p>
+            </div>
           )}
         </div>
-      </Card>
+      </div>
     </Link>
   )
 }

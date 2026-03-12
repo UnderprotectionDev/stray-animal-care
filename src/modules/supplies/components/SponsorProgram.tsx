@@ -1,8 +1,5 @@
 import React from 'react'
 import { Link } from '@/i18n/navigation'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Heading } from '@/components/shared/Heading'
 import { Heart } from 'lucide-react'
 
 type SponsorProgramProps = {
@@ -15,15 +12,13 @@ type SponsorProgramProps = {
 
 export function SponsorProgram({ labels }: SponsorProgramProps) {
   return (
-    <Card className="bg-primary/5 border-primary/20 p-6 text-center md:p-8">
-      <Heart className="mx-auto mb-4 size-10 text-primary" />
-      <Heading as="h2" className="mb-3">
-        {labels.title}
-      </Heading>
-      <p className="text-muted-foreground mx-auto mb-6 max-w-lg">{labels.description}</p>
-      <Button render={<Link href="/destek-ol" />} size="lg">
+    <div className="border border-border bg-background p-6 text-center md:p-8">
+      <Heart className="mx-auto mb-4 size-10 text-foreground" />
+      <h2 className="t-h1 mb-3">{labels.title}</h2>
+      <p className="t-meta mx-auto mb-6 max-w-lg">{labels.description}</p>
+      <Link href="/destek-ol" className="btn-cta inline-block">
         {labels.cta}
-      </Button>
-    </Card>
+      </Link>
+    </div>
   )
 }

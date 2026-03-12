@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { useQueryState } from 'nuqs'
-import { cn } from '@/utilities/ui'
 
 type BlogFilterProps = {
   labels: {
@@ -28,19 +27,18 @@ export function BlogFilter({ labels }: BlogFilterProps) {
   const [category, setCategory] = useQueryState('category', { defaultValue: '' })
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-[1px] bg-foreground border border-border">
       {FILTER_OPTIONS.map((option) => (
         <button
           key={option.value}
           type="button"
           onClick={() => setCategory(option.value || null)}
           aria-pressed={category === option.value}
-          className={cn(
-            'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
+          className={
             category === option.value
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground',
-          )}
+              ? 'badge-sys mint'
+              : 'badge-sys'
+          }
         >
           {labels[option.labelKey]}
         </button>

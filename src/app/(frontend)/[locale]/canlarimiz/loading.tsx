@@ -1,28 +1,32 @@
 import React from 'react'
-import { Section } from '@/components/shared/Section'
-import { Container } from '@/components/shared/Container'
-import { Skeleton } from '@/components/ui/skeleton'
 import { AnimalCardSkeleton } from '@/modules/animals/components/skeletons/AnimalCardSkeleton'
 
 export default function AnimalsLoading() {
   return (
-    <Section padding="lg">
-      <Container>
-        <div className="mb-8 text-center space-y-3">
-          <Skeleton className="mx-auto h-10 w-48" />
-          <Skeleton className="mx-auto h-5 w-72" />
+    <div className="sys-wrap">
+      <div className="px-4 py-8 max-w-7xl mx-auto">
+        {/* Header skeleton */}
+        <div className="mb-8 border-b border-border pb-6">
+          <div className="h-10 w-48 animate-pulse bg-muted" />
+          <div className="mt-2 h-4 w-72 animate-pulse bg-muted" />
         </div>
-        <div className="mb-8 flex justify-center gap-2">
+
+        {/* Filter skeleton */}
+        <div className="mb-8 flex gap-2">
           {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-8 w-20 rounded-full" />
+            <div key={i} className="h-7 w-20 animate-pulse border border-muted bg-muted" />
           ))}
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+
+        {/* Grid skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-foreground">
           {Array.from({ length: 8 }).map((_, i) => (
-            <AnimalCardSkeleton key={i} />
+            <div key={i} className="bg-background">
+              <AnimalCardSkeleton />
+            </div>
           ))}
         </div>
-      </Container>
-    </Section>
+      </div>
+    </div>
   )
 }

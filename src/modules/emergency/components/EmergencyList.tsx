@@ -16,16 +16,20 @@ export function EmergencyList({ cases, labels }: EmergencyListProps) {
   const completed = cases.filter((c) => c.caseStatus === 'tamamlandi')
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
       {/* Active cases */}
       <div>
-        <h2 className="font-heading text-2xl font-semibold mb-6">{labels.activeCases}</h2>
+        <h2 className="font-bold text-xl uppercase tracking-widest text-foreground mb-6 pb-2 border-b border-border">
+          {labels.activeCases}
+        </h2>
         {active.length === 0 ? (
-          <p className="text-muted-foreground">{labels.noActive}</p>
+          <p className="text-sm text-muted-foreground font-mono">{labels.noActive}</p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-px bg-foreground sm:grid-cols-2 lg:grid-cols-3 border border-border">
             {active.map((ec) => (
-              <EmergencyCard key={ec.id} ec={ec} />
+              <div key={ec.id} className="bg-background">
+                <EmergencyCard ec={ec} />
+              </div>
             ))}
           </div>
         )}
@@ -34,10 +38,14 @@ export function EmergencyList({ cases, labels }: EmergencyListProps) {
       {/* Completed cases */}
       {completed.length > 0 && (
         <div>
-          <h2 className="font-heading text-2xl font-semibold mb-6">{labels.completedCases}</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <h2 className="font-bold text-xl uppercase tracking-widest text-foreground mb-6 pb-2 border-b border-border">
+            {labels.completedCases}
+          </h2>
+          <div className="grid gap-px bg-foreground sm:grid-cols-2 lg:grid-cols-3 border border-border">
             {completed.map((ec) => (
-              <EmergencyCard key={ec.id} ec={ec} />
+              <div key={ec.id} className="bg-background">
+                <EmergencyCard ec={ec} />
+              </div>
             ))}
           </div>
         </div>

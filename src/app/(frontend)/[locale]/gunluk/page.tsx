@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
-import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
-import { Heading } from '@/components/shared/Heading'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { BlogFilter, BlogList } from '@/modules/blog'
 import { getBlogPosts } from '@/modules/blog/lib/queries'
@@ -45,33 +43,31 @@ export default async function BlogPage({ params }: Args) {
   }
 
   return (
-    <>
-      <Section padding="lg">
-        <Container>
+    <Container>
+      <div className="sys-wrap my-8">
+        <div className="panel p-6">
           <PageBreadcrumb
             items={[
               { label: tBreadcrumb('home'), href: '/' },
               { label: t('title') },
             ]}
           />
-          <div className="mb-8 text-center">
-            <Heading as="h1" className="mb-3">
-              {t('title')}
-            </Heading>
-            <p className="text-muted-foreground text-lg">{t('subtitle')}</p>
-          </div>
-          <div className="mb-8 flex justify-center">
-            <BlogFilter labels={filterLabels} />
-          </div>
-          <BlogList
-            posts={posts}
-            categoryLabels={categoryLabels}
-            readMoreLabel={t('readMore')}
-            emptyLabel={t('empty')}
-          />
-        </Container>
-      </Section>
-    </>
+        </div>
+        <div className="panel p-8 text-center">
+          <h1 className="t-mega">{t('title')}</h1>
+          <p className="t-meta text-lg mt-2">{t('subtitle')}</p>
+        </div>
+        <div className="panel p-4 flex justify-center">
+          <BlogFilter labels={filterLabels} />
+        </div>
+        <BlogList
+          posts={posts}
+          categoryLabels={categoryLabels}
+          readMoreLabel={t('readMore')}
+          emptyLabel={t('empty')}
+        />
+      </div>
+    </Container>
   )
 }
 

@@ -67,8 +67,12 @@
       "description": "Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz."
     },
     "hero": {
-      "headline": "Her Cana Bir Umut",
-      "subtitle": "Sokak hayvanlarının tedavisi, bakımı ve sevgi dolu bir yaşam için birlikte çalışıyoruz.",
+      "record": "KAYIT: IST-24 // OPERASYON BAŞLANGICI",
+      "badge": "AKTİF DURUM",
+      "headline": "UMUT\nAĞI.",
+      "description": "İstanbul'un sokaklarında sistemli kurtarma operasyonu. Her can bir nefes, her nefes kaydedilen bir umut. Sadece beslemiyor, rehabilite ediyor ve kalıcı yuvalar buluyoruz. Duygusallık değil, disiplinli bir kurtarma ağı.",
+      "updateLabel": "SON GÜNCELLEME: BUGÜN 08:45",
+      "fundLink": "ACİL MÜDAHALE FONU ↓",
       "ctaDonate": "Destek Ol",
       "ctaEmergency": "Acil Durumlar"
     },
@@ -78,7 +82,19 @@
       "dogs": "Köpek",
       "treated": "Tedavi Edilen",
       "spayed": "Kısırlaştırılan",
-      "vaccinated": "Aşılanan"
+      "vaccinated": "Aşılanan",
+      "metric1Label": "METRİK 01 // OPERASYONEL",
+      "metric1Value": "347",
+      "metric1Name": "KURTARILDI",
+      "metric2Label": "METRİK 02 // TRANSFER",
+      "metric2Value": "89",
+      "metric2Name": "YUVA BULDU",
+      "metric3Label": "METRİK 03 // LOJİSTİK",
+      "metric3Value": "2.4K",
+      "metric3Name": "BESLENDİ",
+      "metric4Label": "METRİK 04 // SÜREKLİLİK",
+      "metric4Value": "04",
+      "metric4Name": "YIL AKTİF HİZMET"
     },
     "featured": {
       "animalsTitle": "Canlarımız",
@@ -93,7 +109,15 @@
         "tedavide": "Tedavide",
         "kalici-bakim": "Kalıcı Bakım",
         "acil": "Acil"
-      }
+      },
+      "adoptCta": "YUVA OLUN",
+      "adoptCtaLink": "TÜM LİSTEYİ GÖR →",
+      "emergencyTicker": "ACİL MÜDAHALE GEREKİYOR /// KLİNİK DESTEĞİ BEKLİYOR /// DESTEK OLUN",
+      "emergencyCodeRed": "KOD KIZIL: VAKA",
+      "emergencyCase": "Vaka",
+      "emergencyProgress": "İlerleme",
+      "emergencyStatus": "Durum",
+      "emergencyActive": "AKTİF"
     },
     "support": {
       "title": "Nasıl Destek Olabilirsiniz?",
@@ -111,6 +135,29 @@
     "instagram": {
       "title": "Instagram'da Biz",
       "followUs": "Takip Et"
+    },
+    "story": {
+      "title": "Hikayemiz",
+      "description": "Her gün sokaklarda yaşam mücadelesi veren hayvanlara umut oluyoruz. Tedavi, besleme, barınma ve sahiplendirme çalışmalarıyla onlara daha iyi bir yaşam sunuyoruz.",
+      "missionTitle": "Misyonumuz",
+      "missionDescription": "Sokak hayvanlarının sağlıklı, güvenli ve sevgi dolu bir yaşam sürmesini sağlamak. Her cana eşit değer vererek, toplumda hayvanseverlik bilincini yaygınlaştırmak."
+    },
+    "needs": {
+      "title": "Güncel İhtiyaçlar",
+      "viewAll": "Tüm Liste",
+      "item": "Ürün",
+      "priority": "Öncelik",
+      "quantity": "Miktar"
+    },
+    "volunteerCta": {
+      "title": "Gönüllü Ol",
+      "description": "Sokak hayvanları için bir fark yaratmak ister misiniz? Besleme, tedavi, geçici bakım veya farkındalık çalışmalarımıza katılın.",
+      "cta": "Gönüllü Ol →"
+    },
+    "transparency": {
+      "title": "Şeffaflık",
+      "description": "Tüm gelir ve giderlerimizi düzenli olarak paylaşıyoruz.",
+      "cta": "Raporları Gör"
     }
   },
   "contact": {

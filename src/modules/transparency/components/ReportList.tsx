@@ -21,7 +21,7 @@ type ReportListProps = {
 
 export function ReportList({ reports, labels, currency }: ReportListProps) {
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 gap-[1px] bg-foreground md:grid-cols-2">
       {reports.map((report) => (
         <ReportCard key={report.id} report={report} labels={labels} currency={currency} />
       ))}

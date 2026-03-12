@@ -2,10 +2,10 @@ import React from 'react'
 import { cn } from '@/utilities/ui'
 
 const defaultSizes = {
-  h1: 'text-4xl md:text-5xl font-bold',
-  h2: 'text-3xl md:text-4xl font-semibold',
-  h3: 'text-2xl md:text-3xl font-semibold',
-  h4: 'text-xl md:text-2xl font-medium',
+  h1: 't-mega',
+  h2: 't-h1',
+  h3: 't-h2',
+  h4: 't-h2',
 } as const
 
 type HeadingProps = {
@@ -17,7 +17,7 @@ type HeadingProps = {
 export function Heading({ as: Tag = 'h2', className, children, ...props }: HeadingProps) {
   return (
     <Tag
-      className={cn('font-heading tracking-tight', defaultSizes[Tag], className)}
+      className={cn(defaultSizes[Tag], className)}
       {...props}
     >
       {children}

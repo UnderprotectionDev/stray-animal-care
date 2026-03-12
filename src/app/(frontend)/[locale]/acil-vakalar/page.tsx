@@ -1,8 +1,5 @@
 import type { Metadata } from 'next'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
-import { Section } from '@/components/shared/Section'
-import { Container } from '@/components/shared/Container'
-import { Heading } from '@/components/shared/Heading'
 import { EmergencyList } from '@/modules/emergency/components/EmergencyList'
 import { getEmergencyCases } from '@/modules/emergency/lib/queries'
 import { locales, defaultLocale, type Locale } from '@/i18n/config'
@@ -24,10 +21,12 @@ export default async function EmergencyPage({ params }: Args) {
   ])
 
   return (
-    <Section padding="lg">
-      <Container>
-        <div className="mb-8 text-center">
-          <Heading as="h1">{t('title')}</Heading>
+    <div className="min-h-screen bg-background">
+      <div className="container py-12">
+        <div className="mb-10 border-b border-border pb-4">
+          <h1 className="font-bold text-3xl md:text-4xl uppercase tracking-widest text-foreground">
+            {t('title')}
+          </h1>
         </div>
         <EmergencyList
           cases={cases}
@@ -37,8 +36,8 @@ export default async function EmergencyPage({ params }: Args) {
             completedCases: t('completedCases'),
           }}
         />
-      </Container>
-    </Section>
+      </div>
+    </div>
   )
 }
 

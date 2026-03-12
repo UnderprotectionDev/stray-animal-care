@@ -1,32 +1,54 @@
 import React from 'react'
 import { getTranslations } from 'next-intl/server'
-import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/navigation'
-import { Heart, AlertTriangle } from 'lucide-react'
 
 export async function HomeHero() {
   const t = await getTranslations('home.hero')
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-24 md:py-32">
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-heading text-4xl font-bold tracking-tight md:text-6xl">
-            {t('headline')}
-          </h1>
-          <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-            {t('subtitle')}
-          </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button size="lg" render={<Link href="/destek-ol" />}>
-              <Heart className="size-4" data-icon="inline-start" />
-              {t('ctaDonate')}
-            </Button>
-            <Button size="lg" variant="outline" render={<Link href="/acil-vakalar" />}>
-              <AlertTriangle className="size-4" data-icon="inline-start" />
-              {t('ctaEmergency')}
-            </Button>
+    <section>
+      {/* Split hero: text left, image right */}
+      <div className="grid grid-cols-1 md:grid-cols-2 border-b border-border" style={{ minHeight: '70vh' }}>
+        {/* Left panel */}
+        <div className="relative flex flex-col justify-between p-6 md:p-10 border-r border-border bg-[var(--background)]">
+          {/* Top row: record label + badge */}
+          <div className="flex items-start justify-between gap-4">
+            <span className="t-meta text-muted-foreground">{t('record')}</span>
+            <span className="t-meta border border-border px-3 py-1 shrink-0">{t('badge')}</span>
           </div>
+
+          {/* Giant headline */}
+          <div className="my-8 md:my-0">
+            <h1
+              className="t-mega whitespace-pre-line"
+              style={{ fontSize: 'clamp(4rem, 12vw, 10rem)', lineHeight: 0.85 }}
+            >
+              {t('headline')}
+            </h1>
+          </div>
+
+          {/* Bottom: description + fund link */}
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-end">
+            <p className="t-body text-muted-foreground max-w-sm">
+              {t('description')}
+            </p>
+            <div className="shrink-0">
+              <span className="t-meta text-muted-foreground block mb-1">{t('updateLabel')}</span>
+              <Link href="/destek-ol" className="t-h2 hover:text-[var(--accent)] transition-colors">
+                {t('fundLink')}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Right panel: placeholder image */}
+        <div className="relative overflow-hidden bg-stone-200 min-h-[300px] md:min-h-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=1000&fit=crop&crop=face"
+            alt="Rescued dog"
+            className="absolute inset-0 w-full h-full object-cover grayscale"
+          />
         </div>
       </div>
     </section>

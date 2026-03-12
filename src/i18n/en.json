@@ -67,8 +67,12 @@
       "description": "Helping stray animals find care, treatment, and loving homes."
     },
     "hero": {
-      "headline": "Hope for Every Soul",
-      "subtitle": "Together, we provide treatment, care, and a loving life for stray animals.",
+      "record": "RECORD: IST-24 // OPERATION START",
+      "badge": "ACTIVE STATUS",
+      "headline": "HOPE\nNET.",
+      "description": "A systematic rescue operation on the streets of Istanbul. Every life is a breath, every breath a recorded hope. Not just feeding — rehabilitating and finding permanent homes. Not sentimentality, but a disciplined rescue network.",
+      "updateLabel": "LAST UPDATE: TODAY 08:45",
+      "fundLink": "EMERGENCY FUND ↓",
       "ctaDonate": "Donate",
       "ctaEmergency": "Emergencies"
     },
@@ -78,7 +82,19 @@
       "dogs": "Dogs",
       "treated": "Treated",
       "spayed": "Spayed/Neutered",
-      "vaccinated": "Vaccinated"
+      "vaccinated": "Vaccinated",
+      "metric1Label": "METRIC 01 // OPERATIONAL",
+      "metric1Value": "347",
+      "metric1Name": "RESCUED",
+      "metric2Label": "METRIC 02 // TRANSFER",
+      "metric2Value": "89",
+      "metric2Name": "FOUND HOMES",
+      "metric3Label": "METRIC 03 // LOGISTICS",
+      "metric3Value": "2.4K",
+      "metric3Name": "FED",
+      "metric4Label": "METRIC 04 // CONTINUITY",
+      "metric4Value": "04",
+      "metric4Name": "YEARS ACTIVE"
     },
     "featured": {
       "animalsTitle": "Our Animals",
@@ -93,7 +109,15 @@
         "tedavide": "In Treatment",
         "kalici-bakim": "In Permanent Care",
         "acil": "Emergency"
-      }
+      },
+      "adoptCta": "ADOPT",
+      "adoptCtaLink": "VIEW ALL →",
+      "emergencyTicker": "EMERGENCY RESPONSE NEEDED /// CLINIC SUPPORT REQUIRED /// HELP NOW",
+      "emergencyCodeRed": "CODE RED: CASE",
+      "emergencyCase": "Case",
+      "emergencyProgress": "Progress",
+      "emergencyStatus": "Status",
+      "emergencyActive": "ACTIVE"
     },
     "support": {
       "title": "How Can You Help?",
@@ -111,6 +135,29 @@
     "instagram": {
       "title": "Follow Us on Instagram",
       "followUs": "Follow Us"
+    },
+    "story": {
+      "title": "Our Story",
+      "description": "Every day, we bring hope to animals struggling to survive on the streets. Through treatment, feeding, shelter, and adoption, we offer them a better life.",
+      "missionTitle": "Our Mission",
+      "missionDescription": "To ensure stray animals live healthy, safe, and loving lives. To spread awareness of animal welfare in society, valuing every life equally."
+    },
+    "needs": {
+      "title": "Current Needs",
+      "viewAll": "Full List",
+      "item": "Item",
+      "priority": "Priority",
+      "quantity": "Quantity"
+    },
+    "volunteerCta": {
+      "title": "Volunteer",
+      "description": "Want to make a difference for stray animals? Join us in feeding, treatment, foster care, or awareness campaigns.",
+      "cta": "Volunteer Now →"
+    },
+    "transparency": {
+      "title": "Transparency",
+      "description": "We regularly share all our income and expenses.",
+      "cta": "View Reports"
     }
   },
   "contact": {

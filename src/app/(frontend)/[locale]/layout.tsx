@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { Plus_Jakarta_Sans, Inter, Caveat } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server'
@@ -9,23 +9,23 @@ import { hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { locales } from '@/i18n/config'
 
-const plusJakarta = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-heading',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '900'],
   display: 'swap',
 })
 
-const inter = Inter({
+const interBody = Inter({
   subsets: ['latin'],
   variable: '--font-body',
   weight: ['400', '500'],
   display: 'swap',
 })
 
-const caveat = Caveat({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-accent',
+  variable: '--font-mono',
   weight: ['400', '700'],
   display: 'swap',
 })
@@ -34,9 +34,7 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { MobileDonateBar } from '@/components/shared/MobileDonateBar'
-import { PawCursor } from '@/components/shared/PawCursor'
 import { Providers } from '@/providers'
-import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import { getCachedGlobal } from '@/utilities/getGlobals'
@@ -72,12 +70,10 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html
-      className={cn(plusJakarta.variable, inter.variable, caveat.variable)}
+      className={cn(inter.variable, interBody.variable, spaceGrotesk.variable)}
       lang={locale}
-      suppressHydrationWarning
     >
       <head>
-        <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
@@ -87,7 +83,7 @@ export default async function RootLayout({ children, params }: Props) {
             <NuqsAdapter>
             <a
               href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:border focus:border-border"
             >
               {t('skipToContent')}
             </a>
@@ -102,7 +98,6 @@ export default async function RootLayout({ children, params }: Props) {
             </main>
             <Footer siteSettings={siteSettings} />
             <MobileDonateBar />
-            <PawCursor />
             </NuqsAdapter>
           </NextIntlClientProvider>
         </Providers>

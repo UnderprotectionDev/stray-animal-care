@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { useQueryState } from 'nuqs'
-import { cn } from '@/utilities/ui'
 
 type AnimalFilterProps = {
   labels: {
@@ -29,12 +28,11 @@ export function AnimalFilter({ labels }: AnimalFilterProps) {
           type="button"
           onClick={() => setType(option.value || null)}
           aria-pressed={type === option.value}
-          className={cn(
-            'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
+          className={
             type === option.value
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground',
-          )}
+              ? 'badge-sys mint'
+              : 'badge-sys'
+          }
         >
           {labels[option.labelKey]}
         </button>

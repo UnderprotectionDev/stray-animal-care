@@ -2,20 +2,10 @@ import React from 'react'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
-import { StatusBadge } from '@/components/shared/StatusBadge'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
-import { Button } from '@/components/ui/button'
 import { PhotoGallery } from './PhotoGallery'
 import RichText from '@/components/RichText'
-import { Heart, ArrowLeft } from 'lucide-react'
 import type { Animal, Media as MediaType, SiteSetting } from '@/payload-types'
-
-type StatusVariant = 'pending' | 'active' | 'urgent'
-const statusVariantMap: Record<NonNullable<Animal['animalStatus']>, StatusVariant> = {
-  tedavide: 'pending',
-  'kalici-bakim': 'active',
-  acil: 'urgent',
-}
 
 type AnimalDetailProps = {
   animal: Animal
@@ -50,105 +40,110 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
       }[status] ?? '')
     : ''
 
+  const badgeClass =
+    status === 'acil' ? 'badge-sys critical' : 'badge-sys mint'
+
   return (
-    <div className="container py-8">
-      <PageBreadcrumb
-        items={[
-          { label: tBreadcrumb('home'), href: '/' },
-          { label: t('title'), href: '/canlarimiz' },
-          { label: animal.name },
-        ]}
-      />
+    <div className="sys-wrap">
+      <div className="px-4 py-8 max-w-7xl mx-auto">
+        <PageBreadcrumb
+          items={[
+            { label: tBreadcrumb('home'), href: '/' },
+            { label: t('title'), href: '/canlarimiz' },
+            { label: animal.name },
+          ]}
+        />
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left: photos */}
-        <div className="lg:col-span-2">
-          <PhotoGallery
-            photos={photos}
-            animalName={animal.name}
-            labels={{
-              close: t('lightbox.close'),
-              prev: t('lightbox.prev'),
-              next: t('lightbox.next'),
-              imageOf: t('lightbox.imageOf'),
-              noPhotos: t('detail.noPhotos'),
-            }}
-          />
-        </div>
-
-        {/* Right: sidebar */}
-        <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="space-y-2">
-            {status && (
-              <div className="flex items-center gap-2">
-                <StatusBadge status={statusVariantMap[status] ?? 'pending'}>
-                  {statusLabel}
-                </StatusBadge>
-              </div>
-            )}
-            <h1 className="font-heading text-3xl font-bold text-foreground">
-              {animal.name}
-            </h1>
+        {/* 8-col grid: 5 photo + 3 info */}
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-0 border border-border mt-6">
+          {/* Left: photos — 5 cols */}
+          <div className="lg:col-span-5 border-b lg:border-b-0 lg:border-r border-border">
+            <PhotoGallery
+              photos={photos}
+              animalName={animal.name}
+              labels={{
+                close: t('lightbox.close'),
+                prev: t('lightbox.prev'),
+                next: t('lightbox.next'),
+                imageOf: t('lightbox.imageOf'),
+                noPhotos: t('detail.noPhotos'),
+              }}
+            />
           </div>
 
-          {/* Details */}
-          <dl className="space-y-2 text-sm">
-            <div className="flex justify-between border-b pb-2">
-              <dt className="text-muted-foreground">{t('detail.type')}</dt>
-              <dd className="font-medium">{typeLabel}</dd>
+          {/* Right: info panel — 3 cols */}
+          <div className="lg:col-span-3 bg-background">
+            {/* Name + status */}
+            <div className="border-b border-border px-4 py-4">
+              {status && (
+                <span className={badgeClass}>{statusLabel}</span>
+              )}
+              <h1 className="t-h1 mt-2">{animal.name}</h1>
             </div>
-            {animal.age && (
-              <div className="flex justify-between border-b pb-2">
-                <dt className="text-muted-foreground">{t('detail.age')}</dt>
-                <dd className="font-medium">{animal.age}</dd>
+
+            {/* Data rows */}
+            <div className="sys-table">
+              <div className="flex justify-between border-b border-border px-4 py-3">
+                <span className="t-meta">{t('detail.type')}</span>
+                <span className="text-sm font-bold uppercase text-foreground">{typeLabel}</span>
               </div>
-            )}
-            <div className="flex justify-between border-b pb-2">
-              <dt className="text-muted-foreground">{t('detail.gender')}</dt>
-              <dd className="font-medium">{genderLabel}</dd>
+              {animal.age && (
+                <div className="flex justify-between border-b border-border px-4 py-3">
+                  <span className="t-meta">{t('detail.age')}</span>
+                  <span className="text-sm font-bold uppercase text-foreground">{animal.age}</span>
+                </div>
+              )}
+              <div className="flex justify-between border-b border-border px-4 py-3">
+                <span className="t-meta">{t('detail.gender')}</span>
+                <span className="text-sm font-bold uppercase text-foreground">{genderLabel}</span>
+              </div>
             </div>
-          </dl>
 
-          {/* CTA */}
-          <Button
-            className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-            render={<Link href="/destek-ol" />}
-          >
-            <Heart className="size-4" />
-            {t('detail.donate')}
-          </Button>
+            {/* CTA buttons */}
+            <div className="p-4 space-y-3">
+              <Link href="/destek-ol" className="btn-cta block w-full text-center">
+                {t('detail.donate')}
+              </Link>
 
-          {siteSettings.whatsapp && (
-            <WhatsAppButton
-              phone={siteSettings.whatsapp}
-              message={t('detail.whatsappMessage', { name: animal.name })}
-              className="w-full justify-center"
-            >
-              WhatsApp
-            </WhatsAppButton>
+              {siteSettings.whatsapp && (
+                <WhatsAppButton
+                  phone={siteSettings.whatsapp}
+                  message={t('detail.whatsappMessage', { name: animal.name })}
+                  className="block w-full border border-border bg-background px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-foreground hover:bg-muted"
+                >
+                  WhatsApp
+                </WhatsAppButton>
+              )}
+
+              <Link
+                href="/canlarimiz"
+                className="block w-full border border-border bg-background px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-foreground hover:bg-muted"
+              >
+                {t('detail.back')}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Story & Needs */}
+        <div className="mt-8 grid gap-0 md:grid-cols-2 border border-border">
+          {animal.story && (
+            <div className="border-b md:border-b-0 md:border-r border-border p-6">
+              <h2 className="t-h2 mb-4">{t('detail.story')}</h2>
+              <div className="t-body">
+                <RichText data={animal.story} enableGutter={false} />
+              </div>
+            </div>
           )}
-
-          <Button variant="outline" className="w-full" render={<Link href="/canlarimiz" />}>
-            <ArrowLeft className="size-4" />
-            {t('detail.back')}
-          </Button>
+          {animal.needs && (
+            <div className="p-6">
+              <h2 className="t-h2 mb-4">{t('detail.needs')}</h2>
+              <div className="t-body">
+                <RichText data={animal.needs} enableGutter={false} />
+              </div>
+            </div>
+          )}
         </div>
-      </div>
-
-      {/* Story & Needs */}
-      <div className="mt-10 grid gap-8 md:grid-cols-2">
-        {animal.story && (
-          <div>
-            <h2 className="font-heading text-xl font-semibold mb-4">{t('detail.story')}</h2>
-            <RichText data={animal.story} enableGutter={false} />
-          </div>
-        )}
-        {animal.needs && (
-          <div>
-            <h2 className="font-heading text-xl font-semibold mb-4">{t('detail.needs')}</h2>
-            <RichText data={animal.needs} enableGutter={false} />
-          </div>
-        )}
       </div>
     </div>
   )

@@ -22,7 +22,7 @@ export function BeforeAfter({ before, after, labels }: BeforeAfterProps) {
 
   return (
     <div className="space-y-2">
-      <div className="aspect-video w-full overflow-hidden rounded-xl">
+      <div className="aspect-video w-full overflow-hidden border border-border">
         <ReactCompareSlider
           style={{ height: '100%', width: '100%' }}
           itemOne={
@@ -41,7 +41,7 @@ export function BeforeAfter({ before, after, labels }: BeforeAfterProps) {
           }
         />
       </div>
-      <div className="flex justify-between text-xs text-muted-foreground px-1">
+      <div className="flex justify-between text-[10px] uppercase tracking-widest font-mono text-foreground px-0">
         <span>← {labels.before}</span>
         <span>{labels.after} →</span>
       </div>

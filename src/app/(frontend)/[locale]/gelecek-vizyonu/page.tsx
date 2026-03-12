@@ -64,21 +64,21 @@ export default async function VisionPage({ params }: Args) {
             <Heading as="h1" className="mb-4">
               {t('title')}
             </Heading>
-            <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+            <p className="t-body mx-auto max-w-2xl text-lg">
               {t('subtitle')}
             </p>
           </div>
 
           {/* Association Goal */}
           <div className="mx-auto mb-16 max-w-3xl">
-            <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-8 text-center dark:border-amber-900/30 dark:bg-amber-950/20">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/40">
-                <Target className="h-8 w-8 text-amber-700 dark:text-amber-400" />
+            <div className="panel border border-border p-8 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center border border-border bg-accent">
+                <Target className="h-8 w-8 text-foreground" />
               </div>
               <Heading as="h2" className="mb-3">
                 {t('association.title')}
               </Heading>
-              <p className="text-muted-foreground text-lg">
+              <p className="t-body text-lg">
                 {t('association.description')}
               </p>
             </div>
@@ -87,7 +87,7 @@ export default async function VisionPage({ params }: Args) {
       </Section>
 
       {/* Short-Term Goals */}
-      <Section padding="md" className="bg-muted/30">
+      <Section padding="md">
         <Container>
           <div className="mb-10 text-center">
             <Heading as="h2" className="mb-2">
@@ -98,8 +98,8 @@ export default async function VisionPage({ params }: Args) {
           {/* Timeline */}
           <div className="relative mx-auto max-w-4xl">
             {/* Vertical line */}
-            <div className="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-300 md:block" />
-            <div className="absolute left-6 top-0 h-full w-0.5 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-300 md:hidden" />
+            <div className="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 bg-foreground md:block" />
+            <div className="absolute left-6 top-0 h-full w-0.5 bg-foreground md:hidden" />
 
             <div className="space-y-8 md:space-y-12">
               {shortTermGoals.map((goal, index) => {
@@ -110,14 +110,14 @@ export default async function VisionPage({ params }: Args) {
                   <div key={goal.key} className="relative flex items-center">
                     {/* Mobile layout */}
                     <div className="md:hidden flex w-full items-start gap-4 pl-14">
-                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-amber-400 bg-white dark:bg-gray-900">
-                        <Icon className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center border border-border bg-accent">
+                        <Icon className="h-3.5 w-3.5 text-foreground" />
                       </div>
-                      <div className="rounded-xl border bg-card p-5 shadow-sm">
+                      <div className="panel border border-border p-5">
                         <h3 className="font-heading mb-1 text-lg font-semibold">
                           {t(`shortTerm.${goal.key}.title`)}
                         </h3>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="t-body text-sm">
                           {t(`shortTerm.${goal.key}.description`)}
                         </p>
                       </div>
@@ -128,11 +128,11 @@ export default async function VisionPage({ params }: Args) {
                       {/* Left card */}
                       <div className={isLeft ? '' : 'order-3'}>
                         {isLeft && (
-                          <div className="rounded-xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md ml-auto max-w-sm">
+                          <div className="panel border border-border p-6 ml-auto max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
                               {t(`shortTerm.${goal.key}.title`)}
                             </h3>
-                            <p className="text-muted-foreground text-sm">
+                            <p className="t-body text-sm">
                               {t(`shortTerm.${goal.key}.description`)}
                             </p>
                           </div>
@@ -140,18 +140,18 @@ export default async function VisionPage({ params }: Args) {
                       </div>
 
                       {/* Center dot */}
-                      <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-amber-400 bg-white shadow-sm dark:bg-gray-900">
-                        <Icon className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                      <div className="relative z-10 flex h-12 w-12 items-center justify-center border-2 border-border bg-accent">
+                        <Icon className="h-5 w-5 text-foreground" />
                       </div>
 
                       {/* Right card */}
                       <div className={isLeft ? 'order-3' : ''}>
                         {!isLeft && (
-                          <div className="rounded-xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md max-w-sm">
+                          <div className="panel border border-border p-6 max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
                               {t(`shortTerm.${goal.key}.title`)}
                             </h3>
-                            <p className="text-muted-foreground text-sm">
+                            <p className="t-body text-sm">
                               {t(`shortTerm.${goal.key}.description`)}
                             </p>
                           </div>
@@ -178,8 +178,8 @@ export default async function VisionPage({ params }: Args) {
           {/* Timeline */}
           <div className="relative mx-auto max-w-4xl">
             {/* Vertical line */}
-            <div className="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 bg-gradient-to-b from-green-300 via-green-500 to-green-300 md:block" />
-            <div className="absolute left-6 top-0 h-full w-0.5 bg-gradient-to-b from-green-300 via-green-500 to-green-300 md:hidden" />
+            <div className="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 bg-foreground md:block" />
+            <div className="absolute left-6 top-0 h-full w-0.5 bg-foreground md:hidden" />
 
             <div className="space-y-8 md:space-y-12">
               {longTermGoals.map((goal, index) => {
@@ -190,14 +190,14 @@ export default async function VisionPage({ params }: Args) {
                   <div key={goal.key} className="relative flex items-center">
                     {/* Mobile layout */}
                     <div className="md:hidden flex w-full items-start gap-4 pl-14">
-                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-green-400 bg-white dark:bg-gray-900">
-                        <Icon className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center border border-border bg-accent">
+                        <Icon className="h-3.5 w-3.5 text-foreground" />
                       </div>
-                      <div className="rounded-xl border bg-card p-5 shadow-sm">
+                      <div className="panel border border-border p-5">
                         <h3 className="font-heading mb-1 text-lg font-semibold">
                           {t(`longTerm.${goal.key}.title`)}
                         </h3>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="t-body text-sm">
                           {t(`longTerm.${goal.key}.description`)}
                         </p>
                       </div>
@@ -208,11 +208,11 @@ export default async function VisionPage({ params }: Args) {
                       {/* Left card */}
                       <div className={isLeft ? '' : 'order-3'}>
                         {isLeft && (
-                          <div className="rounded-xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md ml-auto max-w-sm">
+                          <div className="panel border border-border p-6 ml-auto max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
                               {t(`longTerm.${goal.key}.title`)}
                             </h3>
-                            <p className="text-muted-foreground text-sm">
+                            <p className="t-body text-sm">
                               {t(`longTerm.${goal.key}.description`)}
                             </p>
                           </div>
@@ -220,18 +220,18 @@ export default async function VisionPage({ params }: Args) {
                       </div>
 
                       {/* Center dot */}
-                      <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-green-400 bg-white shadow-sm dark:bg-gray-900">
-                        <Icon className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      <div className="relative z-10 flex h-12 w-12 items-center justify-center border-2 border-border bg-accent">
+                        <Icon className="h-5 w-5 text-foreground" />
                       </div>
 
                       {/* Right card */}
                       <div className={isLeft ? 'order-3' : ''}>
                         {!isLeft && (
-                          <div className="rounded-xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md max-w-sm">
+                          <div className="panel border border-border p-6 max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
                               {t(`longTerm.${goal.key}.title`)}
                             </h3>
-                            <p className="text-muted-foreground text-sm">
+                            <p className="t-body text-sm">
                               {t(`longTerm.${goal.key}.description`)}
                             </p>
                           </div>
@@ -247,16 +247,16 @@ export default async function VisionPage({ params }: Args) {
       </Section>
 
       {/* Growing Volunteer Network */}
-      <Section padding="md" className="bg-muted/30">
+      <Section padding="md">
         <Container>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/40">
-              <Users className="h-8 w-8 text-green-700 dark:text-green-400" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center border border-border bg-accent">
+              <Users className="h-8 w-8 text-foreground" />
             </div>
             <Heading as="h2" className="mb-3">
               {t('network.title')}
             </Heading>
-            <p className="text-muted-foreground text-lg">
+            <p className="t-body text-lg">
               {t('network.description')}
             </p>
           </div>
@@ -270,7 +270,7 @@ export default async function VisionPage({ params }: Args) {
             <Heading as="h2" className="mb-3">
               {t('cta.title')}
             </Heading>
-            <p className="text-muted-foreground mb-8 text-lg">
+            <p className="t-body mb-8 text-lg">
               {t('cta.description')}
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">

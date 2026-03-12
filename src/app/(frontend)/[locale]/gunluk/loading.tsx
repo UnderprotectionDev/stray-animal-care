@@ -1,34 +1,32 @@
 import React from 'react'
-import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
-import { Skeleton } from '@/components/ui/skeleton'
 
 export default function BlogLoading() {
   return (
-    <Section padding="lg">
-      <Container>
-        <div className="mb-8 text-center space-y-3">
-          <Skeleton className="mx-auto h-10 w-40" />
-          <Skeleton className="mx-auto h-5 w-72" />
+    <Container>
+      <div className="sys-wrap my-8">
+        <div className="panel p-8 text-center space-y-3">
+          <div className="mx-auto h-10 w-40 bg-muted border border-border" />
+          <div className="mx-auto h-5 w-72 bg-muted border border-border" />
         </div>
-        <div className="mb-8 flex justify-center gap-2">
+        <div className="panel p-4 flex justify-center gap-[1px] bg-foreground">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-8 w-20 rounded-full" />
+            <div key={i} className="h-8 w-20 bg-muted" />
           ))}
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-[1px] bg-foreground md:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="space-y-3 rounded-lg border overflow-hidden">
-              <Skeleton className="aspect-video w-full" />
-              <div className="space-y-2 p-4">
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-1/3" />
-                <Skeleton className="h-4 w-full" />
+            <div key={i} className="bg-background border border-border">
+              <div className="aspect-video w-full bg-muted" />
+              <div className="border-t border-border p-4 space-y-2">
+                <div className="h-5 w-3/4 bg-muted" />
+                <div className="h-4 w-1/3 bg-muted" />
+                <div className="h-4 w-full bg-muted" />
               </div>
             </div>
           ))}
         </div>
-      </Container>
-    </Section>
+      </div>
+    </Container>
   )
 }

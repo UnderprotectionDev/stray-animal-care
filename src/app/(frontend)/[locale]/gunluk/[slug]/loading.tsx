@@ -1,28 +1,26 @@
 import React from 'react'
-import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
-import { Skeleton } from '@/components/ui/skeleton'
 
 export default function BlogPostLoading() {
   return (
-    <>
-      <Skeleton className="aspect-video w-full" />
-      <Section padding="md">
-        <Container size="md">
-          <div className="space-y-4">
+    <Container>
+      <div className="sys-wrap my-8">
+        <div className="aspect-video w-full bg-muted border border-border" />
+        <div className="panel p-8">
+          <div className="space-y-4 max-w-3xl mx-auto">
             <div className="flex gap-3">
-              <Skeleton className="h-6 w-20 rounded-full" />
-              <Skeleton className="h-6 w-32" />
+              <div className="h-6 w-20 bg-muted border border-border" />
+              <div className="h-6 w-32 bg-muted border border-border" />
             </div>
-            <Skeleton className="h-12 w-3/4" />
+            <div className="h-12 w-3/4 bg-muted border border-border" />
             <div className="space-y-3 pt-4">
               {Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="h-4 w-full" />
+                <div key={i} className="h-4 w-full bg-muted border border-border" />
               ))}
             </div>
           </div>
-        </Container>
-      </Section>
-    </>
+        </div>
+      </div>
+    </Container>
   )
 }

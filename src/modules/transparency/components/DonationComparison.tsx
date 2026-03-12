@@ -1,5 +1,4 @@
 import React from 'react'
-import { ProgressBar } from '@/components/shared/ProgressBar'
 
 type DonationComparisonProps = {
   totalDonation: number
@@ -18,23 +17,27 @@ export function DonationComparison({
   labels,
   currency,
 }: DonationComparisonProps) {
+  const percentage = totalExpense > 0 ? Math.min((totalDonation / totalExpense) * 100, 100) : 0
+
   return (
     <div>
-      <h4 className="mb-3 font-heading font-semibold">{labels.comparison}</h4>
+      <h4 className="t-h2 mb-3">{labels.comparison}</h4>
       <div className="space-y-3">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">{labels.totalDonation}</span>
-          <span className="font-medium">
+        <div className="flex items-center justify-between t-meta">
+          <span>{labels.totalDonation}</span>
+          <span className="font-medium t-body">
             {totalDonation.toLocaleString('tr-TR')} {currency}
           </span>
         </div>
-        <ProgressBar
-          current={totalDonation}
-          target={Math.max(totalExpense, 1)}
-        />
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">{labels.totalExpense}</span>
-          <span className="font-medium">
+        <div className="h-6 w-full border border-border bg-background">
+          <div
+            className="h-full bg-accent"
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
+        <div className="flex items-center justify-between t-meta">
+          <span>{labels.totalExpense}</span>
+          <span className="font-medium t-body">
             {totalExpense.toLocaleString('tr-TR')} {currency}
           </span>
         </div>

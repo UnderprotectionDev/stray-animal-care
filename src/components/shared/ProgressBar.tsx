@@ -14,13 +14,13 @@ export function ProgressBar({ current, target, className, label }: ProgressBarPr
   return (
     <div className={cn('w-full', className)}>
       {label && (
-        <div className="mb-1.5 flex items-center justify-between text-sm">
+        <div className="mb-1.5 flex items-center justify-between t-meta">
           <span className="text-muted-foreground">{label}</span>
-          <span className="font-medium">{percentage}%</span>
+          <span className="font-bold">{percentage}%</span>
         </div>
       )}
       <div
-        className="h-2.5 w-full overflow-hidden rounded-full bg-muted"
+        className="h-2 w-full border border-border bg-muted"
         role="progressbar"
         aria-valuenow={current}
         aria-valuemin={0}
@@ -28,7 +28,7 @@ export function ProgressBar({ current, target, className, label }: ProgressBarPr
         aria-label={label || `${percentage}% complete`}
       >
         <div
-          className="h-full rounded-full bg-primary transition-all duration-500"
+          className="h-full bg-accent transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>

@@ -9,12 +9,14 @@ import type { Locale } from '@/i18n/config'
 
 import { HomeHero } from '@/components/home/HomeHero'
 import { StatsSection } from '@/components/home/StatsSection'
+import { StorySection } from '@/components/home/StorySection'
 import { FeaturedAnimals } from '@/components/home/FeaturedAnimals'
 import { ActiveEmergencies } from '@/components/home/ActiveEmergencies'
 import { SupportCards } from '@/components/home/SupportCards'
+import { NeedsList } from '@/components/home/NeedsList'
 import { RecentPosts } from '@/components/home/RecentPosts'
-import { InstagramFeedPlaceholder } from '@/components/home/InstagramFeedPlaceholder'
-import { ScrollReveal } from '@/components/shared/ScrollReveal'
+import { VolunteerCTA } from '@/components/home/VolunteerCTA'
+import { TransparencyBanner } from '@/components/home/TransparencyBanner'
 
 export const revalidate = 60
 
@@ -38,7 +40,7 @@ export default async function HomePage({ params }: Args) {
         featured: { equals: true },
         _status: { equals: 'published' },
       },
-      limit: 4,
+      limit: 5,
       locale: payloadLocale,
       depth: 1,
     }),
@@ -65,27 +67,18 @@ export default async function HomePage({ params }: Args) {
   ])
 
   return (
-    <>
+    <div className="sys-wrap">
       <HomeHero />
-      <ScrollReveal>
-        <StatsSection siteSettings={siteSettings} />
-      </ScrollReveal>
-      <ScrollReveal delay={0.1}>
-        <FeaturedAnimals animals={animals.docs} />
-      </ScrollReveal>
-      <ScrollReveal delay={0.1}>
-        <ActiveEmergencies cases={cases.docs} />
-      </ScrollReveal>
-      <ScrollReveal>
-        <SupportCards siteSettings={siteSettings} />
-      </ScrollReveal>
-      <ScrollReveal>
-        <RecentPosts posts={posts.docs} />
-      </ScrollReveal>
-      <ScrollReveal>
-        <InstagramFeedPlaceholder siteSettings={siteSettings} />
-      </ScrollReveal>
-    </>
+      <StatsSection siteSettings={siteSettings} />
+      <StorySection />
+      <FeaturedAnimals animals={animals.docs} />
+      <ActiveEmergencies cases={cases.docs} />
+      <SupportCards siteSettings={siteSettings} />
+      <NeedsList />
+      <RecentPosts posts={posts.docs} />
+      <VolunteerCTA />
+      <TransparencyBanner />
+    </div>
   )
 }
 

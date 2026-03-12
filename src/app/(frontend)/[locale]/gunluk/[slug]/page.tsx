@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
-import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { BlogDetail } from '@/modules/blog'
@@ -49,9 +48,9 @@ export default async function BlogPostPage({ params }: Args) {
   }
 
   return (
-    <>
-      <Section padding="sm">
-        <Container>
+    <Container>
+      <div className="sys-wrap my-8">
+        <div className="panel p-4">
           <PageBreadcrumb
             items={[
               { label: tBreadcrumb('home'), href: '/' },
@@ -59,17 +58,17 @@ export default async function BlogPostPage({ params }: Args) {
               { label: post.title },
             ]}
           />
-        </Container>
-      </Section>
+        </div>
 
-      <BlogDetail
-        post={post}
-        shareUrl={shareUrl}
-        categoryLabel={post.postCategory ? categoryLabels[post.postCategory] : undefined}
-        tagsLabel={t('tags')}
-        shareLabels={shareLabels}
-      />
-    </>
+        <BlogDetail
+          post={post}
+          shareUrl={shareUrl}
+          categoryLabel={post.postCategory ? categoryLabels[post.postCategory] : undefined}
+          tagsLabel={t('tags')}
+          shareLabels={shareLabels}
+        />
+      </div>
+    </Container>
   )
 }
 

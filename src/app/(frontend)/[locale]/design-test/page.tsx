@@ -32,14 +32,10 @@ export default async function DesignTestPage({ params }: Args) {
           <div className="space-y-4">
             <Heading as="h2">Color Palette</Heading>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="rounded-lg p-6 bg-primary text-primary-foreground text-center">Primary (Amber)</div>
-              <div className="rounded-lg p-6 bg-secondary text-secondary-foreground text-center">Secondary (Sage)</div>
-              <div className="rounded-lg p-6 bg-accent text-accent-foreground text-center">Accent (Terracotta)</div>
-              <div className="rounded-lg p-6 bg-muted text-muted-foreground text-center">Muted</div>
-              <div className="rounded-lg p-6 bg-destructive text-destructive-foreground text-center">Destructive</div>
-              <div className="rounded-lg p-6 bg-card text-card-foreground border border-border text-center">Card</div>
-              <div className="rounded-lg p-6 bg-background text-foreground border border-border text-center">Background</div>
-              <div className="rounded-lg p-6 bg-popover text-popover-foreground border border-border text-center">Popover</div>
+              <div className="p-6 bg-accent text-foreground text-center border border-border">Primary (Mint)</div>
+              <div className="p-6 bg-background text-foreground text-center border border-border">White (BG)</div>
+              <div className="p-6 bg-foreground text-background text-center border border-border">Black (Text)</div>
+              <div className="p-6 bg-muted text-foreground text-center border border-border">Muted</div>
             </div>
           </div>
 
@@ -66,7 +62,7 @@ export default async function DesignTestPage({ params }: Args) {
                   <CardDescription>Helping stray animals find hope</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p>Card content with the warm organic theme.</p>
+                  <p>Card content with the Mint System brutalist theme.</p>
                 </CardContent>
               </Card>
               <Card>
@@ -109,13 +105,13 @@ export default async function DesignTestPage({ params }: Args) {
             </div>
           </div>
 
-          {/* Shadows */}
+          {/* Panels */}
           <div className="space-y-4">
-            <Heading as="h2">Warm Shadows</Heading>
+            <Heading as="h2">Panels</Heading>
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="rounded-lg p-6 bg-card" style={{ boxShadow: 'var(--shadow-warm-sm)' }}>Shadow SM</div>
-              <div className="rounded-lg p-6 bg-card" style={{ boxShadow: 'var(--shadow-warm-md)' }}>Shadow MD</div>
-              <div className="rounded-lg p-6 bg-card" style={{ boxShadow: 'var(--shadow-warm-lg)' }}>Shadow LG</div>
+              <div className="panel border border-border p-6 bg-background">Panel Default</div>
+              <div className="panel border border-border p-6 bg-accent">Panel Mint</div>
+              <div className="panel border border-border p-6 bg-muted">Panel Muted</div>
             </div>
           </div>
         </div>

@@ -3,17 +3,7 @@
 import React, { useRef } from 'react'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
-import { Card } from '@/components/ui/card'
 import type { Post, Media as MediaType } from '@/payload-types'
-import { cn } from '@/utilities/ui'
-
-const categoryColorMap: Record<string, string> = {
-  kurtarma: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-  tedavi: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-  gunluk: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
-  duyuru: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
-  etkinlik: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
-}
 
 type BlogCardProps = {
   post: Post
@@ -34,8 +24,8 @@ export function BlogCard({ post, categoryLabel, readMoreLabel }: BlogCardProps) 
     : null
 
   return (
-    <Card
-      className="group cursor-pointer overflow-hidden transition-shadow duration-200 hover:shadow-warm-md"
+    <div
+      className="group cursor-pointer border border-border bg-background"
       onClick={() => linkRef.current?.click()}
     >
       <div className="relative aspect-video bg-muted">
@@ -43,42 +33,37 @@ export function BlogCard({ post, categoryLabel, readMoreLabel }: BlogCardProps) 
           <Media
             resource={heroImage}
             fill
-            imgClassName="object-cover transition-transform duration-300 group-hover:scale-105"
+            imgClassName="object-cover photo-sys"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-muted-foreground">
-            <span className="text-4xl">📝</span>
+          <div className="flex h-full items-center justify-center text-foreground/40">
+            <span className="t-h1">--</span>
           </div>
         )}
         {post.postCategory && (
-          <div className="absolute top-2 left-2">
-            <span
-              className={cn(
-                'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
-                categoryColorMap[post.postCategory] ?? 'bg-muted text-foreground',
-              )}
-            >
+          <div className="absolute top-0 left-0">
+            <span className="badge-sys">
               {categoryLabel ?? post.postCategory}
             </span>
           </div>
         )}
       </div>
-      <div className="p-4">
+      <div className="border-t border-border p-4 space-y-1">
         <Link
           ref={linkRef}
           href={`/gunluk/${post.slug}`}
-          className="font-heading text-lg font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2"
+          className="t-body font-semibold text-foreground hover:underline line-clamp-2 block"
         >
           {post.title}
         </Link>
         {publishedDate && (
-          <p className="mt-1 text-xs text-muted-foreground">{publishedDate}</p>
+          <p className="t-meta">{publishedDate}</p>
         )}
         {post.excerpt && (
-          <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
+          <p className="t-meta line-clamp-2">{post.excerpt}</p>
         )}
-        <p className="mt-3 text-sm font-medium text-primary">{readMoreLabel}</p>
+        <p className="t-meta font-medium uppercase tracking-wide pt-1">{readMoreLabel} &rarr;</p>
       </div>
-    </Card>
+    </div>
   )
 }

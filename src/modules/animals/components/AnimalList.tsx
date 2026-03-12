@@ -21,21 +21,22 @@ export function AnimalList({ animals, labels }: AnimalListProps) {
 
   if (filtered.length === 0) {
     return (
-      <div className="py-16 text-center text-muted-foreground">
-        {labels.noResults}
+      <div className="border border-border bg-background px-6 py-16 text-center">
+        <span className="t-meta">{labels.noResults}</span>
       </div>
     )
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-foreground">
       {filtered.map((animal) => (
-        <AnimalCard
-          key={animal.id}
-          animal={animal}
-          typeLabel={labels.typeLabels[animal.type] ?? animal.type}
-          statusLabel={animal.animalStatus ? (labels.statusLabels[animal.animalStatus] ?? animal.animalStatus) : ''}
-        />
+        <div key={animal.id} className="bg-background">
+          <AnimalCard
+            animal={animal}
+            typeLabel={labels.typeLabels[animal.type] ?? animal.type}
+            statusLabel={animal.animalStatus ? (labels.statusLabels[animal.animalStatus] ?? animal.animalStatus) : ''}
+          />
+        </div>
       ))}
     </div>
   )

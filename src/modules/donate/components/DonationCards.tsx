@@ -1,5 +1,4 @@
 import React from 'react'
-import { Card } from '@/components/ui/card'
 import { UtensilsCrossed, Stethoscope, Scissors } from 'lucide-react'
 
 type DonationCardsProps = {
@@ -12,24 +11,24 @@ type DonationCardsProps = {
 }
 
 const CARDS = [
-  { key: 'food' as const, Icon: UtensilsCrossed, color: 'text-primary' },
-  { key: 'vet' as const, Icon: Stethoscope, color: 'text-secondary' },
-  { key: 'surgery' as const, Icon: Scissors, color: 'text-accent' },
+  { key: 'food' as const, Icon: UtensilsCrossed },
+  { key: 'vet' as const, Icon: Stethoscope },
+  { key: 'surgery' as const, Icon: Scissors },
 ]
 
 export function DonationCards({ labels }: DonationCardsProps) {
   return (
     <div className="space-y-4">
-      <h2 className="font-heading text-xl font-semibold">{labels.title}</h2>
-      <div className="grid gap-4 sm:grid-cols-3">
-        {CARDS.map(({ key, Icon, color }) => (
-          <Card key={key} className="p-5 space-y-3">
-            <Icon className={`size-8 ${color}`} />
+      <h2 className="t-h2 uppercase">{labels.title}</h2>
+      <div className="grid grid-cols-1 gap-[1px] bg-foreground sm:grid-cols-3">
+        {CARDS.map(({ key, Icon }) => (
+          <div key={key} className="panel bg-background p-5 space-y-3">
+            <Icon className="size-8 text-foreground" />
             <div>
-              <p className="font-semibold">{labels[key].title}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{labels[key].description}</p>
+              <p className="font-semibold uppercase text-sm tracking-wide">{labels[key].title}</p>
+              <p className="mt-1 t-meta">{labels[key].description}</p>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     </div>

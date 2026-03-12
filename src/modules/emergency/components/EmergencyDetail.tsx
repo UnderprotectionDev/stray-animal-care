@@ -2,24 +2,11 @@ import React from 'react'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
-import { StatusBadge } from '@/components/shared/StatusBadge'
-import { ProgressBar } from '@/components/shared/ProgressBar'
-import { Button } from '@/components/ui/button'
 import { Media } from '@/components/Media'
 import { UpdateTimeline } from './UpdateTimeline'
 import { BeforeAfterWrapper } from './BeforeAfterWrapper'
 import RichText from '@/components/RichText'
-import { Heart } from 'lucide-react'
 import type { EmergencyCase, Animal, Media as MediaType } from '@/payload-types'
-
-const caseStatusVariantMap = {
-  aktif: 'urgent' as const,
-  tamamlandi: 'completed' as const,
-}
-
-type CaseStatusKey = keyof typeof caseStatusVariantMap
-const getStatusVariant = (status: string) =>
-  caseStatusVariantMap[status as CaseStatusKey] ?? 'urgent'
 
 const fmt = (n: number) =>
   new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(n)
@@ -35,6 +22,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
 
   const collected = ec.collectedAmount ?? 0
   const target = ec.targetAmount ?? 0
+  const pct = target > 0 ? Math.min(Math.round((collected / target) * 100), 100) : 0
 
   const firstPhoto =
     ec.photos && ec.photos.length > 0 ? (ec.photos[0] as MediaType) : null
@@ -61,23 +49,28 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
         ]}
       />
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left: content */}
-        <div className="space-y-8 lg:col-span-2">
+      <div className="grid gap-0 lg:grid-cols-8 border border-border mt-6">
+        {/* Left: content — 5 cols */}
+        <div className="lg:col-span-5 border-r border-border">
           {/* Hero photo */}
           {firstPhoto && (
-            <div className="relative aspect-video overflow-hidden rounded-xl bg-muted">
-              <Media resource={firstPhoto} fill imgClassName="object-cover" priority />
+            <div className="relative aspect-video overflow-hidden bg-muted border-b border-border">
+              <Media
+                resource={firstPhoto}
+                fill
+                imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                priority
+              />
             </div>
           )}
 
           {/* Before/After */}
           {beforePhoto && afterPhoto && (
-            <div>
-              <h2 className="font-heading text-xl font-semibold mb-4">
+            <div className="border-b border-border p-6">
+              <h2 className="font-bold text-lg uppercase tracking-wider text-foreground mb-4">
                 {t('detail.beforeAfter')}
               </h2>
-              <div className="aspect-video">
+              <div className="aspect-video border border-border overflow-hidden">
                 <BeforeAfterWrapper
                   before={beforePhoto}
                   after={afterPhoto}
@@ -92,17 +85,19 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
 
           {/* Description */}
           {ec.description && (
-            <div>
-              <h2 className="font-heading text-xl font-semibold mb-4">
+            <div className="border-b border-border p-6">
+              <h2 className="font-bold text-lg uppercase tracking-wider text-foreground mb-4">
                 {t('detail.description')}
               </h2>
-              <RichText data={ec.description} enableGutter={false} />
+              <div className="text-sm leading-relaxed text-foreground">
+                <RichText data={ec.description} enableGutter={false} />
+              </div>
             </div>
           )}
 
           {/* Timeline */}
-          <div>
-            <h2 className="font-heading text-xl font-semibold mb-4">
+          <div className="p-6">
+            <h2 className="font-bold text-lg uppercase tracking-wider text-foreground mb-4">
               {t('detail.updates')}
             </h2>
             <UpdateTimeline
@@ -113,33 +108,44 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           </div>
         </div>
 
-        {/* Right: sidebar */}
-        <div className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="space-y-2">
-            <StatusBadge status={getStatusVariant(ec.caseStatus)}>
-              {ec.caseStatus === 'aktif' ? 'Aktif' : 'Tamamlandı'}
-            </StatusBadge>
-            <h1 className="font-heading text-2xl font-bold text-foreground">
+        {/* Right: sidebar — 3 cols */}
+        <div className="lg:col-span-3 lg:sticky lg:top-24 lg:self-start">
+          {/* Status + Title */}
+          <div className="p-6 border-b border-border">
+            <span
+              className={`inline-block px-3 py-1 text-[11px] font-bold uppercase tracking-wider border border-border mb-3 ${
+                ec.caseStatus === 'aktif'
+                  ? 'bg-destructive text-background'
+                  : 'bg-accent text-foreground'
+              }`}
+            >
+              {ec.caseStatus === 'aktif' ? 'Aktif' : 'Tamamlandi'}
+            </span>
+            <h1 className="font-bold text-2xl uppercase tracking-wide text-foreground leading-tight">
               {ec.title}
             </h1>
           </div>
 
           {/* Progress */}
           {target > 0 && (
-            <div className="rounded-xl border p-4 space-y-3">
-              <ProgressBar
-                current={collected}
-                target={target}
-                label={t('progress')}
-              />
-              <div className="flex justify-between text-sm">
+            <div className="p-6 border-b border-border space-y-3">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-foreground">
+                {t('progress')}
+              </p>
+              <div className="w-full h-4 border border-border bg-background">
+                <div
+                  className="h-full bg-accent"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-sm font-mono">
                 <div>
-                  <p className="text-muted-foreground text-xs">{t('collected')}</p>
-                  <p className="font-semibold">{fmt(collected)}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('collected')}</p>
+                  <p className="font-bold text-foreground">{fmt(collected)}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-muted-foreground text-xs">{t('target')}</p>
-                  <p className="font-semibold">{fmt(target)}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('target')}</p>
+                  <p className="font-bold text-foreground">{fmt(target)}</p>
                 </div>
               </div>
             </div>
@@ -147,11 +153,13 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
 
           {/* Related animal */}
           {relatedAnimal && (
-            <div className="rounded-lg border p-3 text-sm">
-              <p className="text-muted-foreground text-xs mb-1">{t('detail.relatedAnimal')}</p>
+            <div className="p-6 border-b border-border">
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                {t('detail.relatedAnimal')}
+              </p>
               <Link
                 href={`/canlarimiz/${relatedAnimal.slug}`}
-                className="font-medium text-primary hover:underline"
+                className="font-bold text-foreground hover:text-accent transition-colors uppercase tracking-wide text-sm"
               >
                 {relatedAnimal.name}
               </Link>
@@ -159,13 +167,14 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           )}
 
           {/* Donate CTA */}
-          <Button
-            className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-            render={<Link href="/destek-ol" />}
-          >
-            <Heart className="size-4" />
-            {t('title')}
-          </Button>
+          <div className="p-6">
+            <Link
+              href="/destek-ol"
+              className="block w-full bg-accent text-foreground text-center font-bold uppercase tracking-widest text-sm py-3 px-6 border border-border hover:bg-foreground hover:text-accent transition-colors"
+            >
+              {t('title')}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

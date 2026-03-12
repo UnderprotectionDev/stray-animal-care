@@ -21,7 +21,11 @@ export default async function EmergencyCaseDetailPage({ params }: Args) {
 
   if (!ec) notFound()
 
-  return <EmergencyDetail ec={ec} locale={locale} />
+  return (
+    <div className="min-h-screen bg-background">
+      <EmergencyDetail ec={ec} locale={locale} />
+    </div>
+  )
 }
 
 export async function generateStaticParams() {

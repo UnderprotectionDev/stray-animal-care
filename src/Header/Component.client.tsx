@@ -1,107 +1,140 @@
 'use client'
 
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { Link, usePathname } from '@/i18n/navigation'
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { SearchIcon, Menu, Heart } from 'lucide-react'
+import { SearchIcon, Menu, X, Heart } from 'lucide-react'
 
-import { Logo } from '@/components/Logo/Logo'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
-import { HeaderNav } from './Nav'
 import { LanguageSwitcher } from './LanguageSwitcher'
-import { MobileMenu } from './MobileMenu'
 import { SearchModal } from '@/components/shared/SearchModal'
 
+const NAV_ITEMS = [
+  { href: '/', labelKey: 'home' },
+  { href: '/canlarimiz', labelKey: 'animals' },
+  { href: '/acil-vakalar', labelKey: 'emergency' },
+  { href: '/gonullu-ol', labelKey: 'volunteer' },
+  { href: '/gunluk', labelKey: 'blog' },
+] as const
+
 export const HeaderClient: React.FC = () => {
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
   const t = useTranslations('layout.header')
 
-  const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
 
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
-
-  const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 10)
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [handleScroll])
-
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-200',
-        isScrolled
-          ? 'border-b bg-background/95 shadow-warm-sm backdrop-blur-sm'
-          : 'bg-background',
-      )}
-      {...(theme ? { 'data-theme': theme } : {})}
-    >
-      <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-        </Link>
+    <>
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
+        {/* Desktop: 8-column grid nav */}
+        <div className="hidden md:grid" style={{ gridTemplateColumns: 'auto repeat(5, 1fr) auto auto', gap: '1px', background: 'var(--foreground)' }}>
+          {/* Brand */}
+          <div className="panel flex items-center py-3 px-4">
+            <Link href="/" className="t-meta font-bold uppercase tracking-widest whitespace-nowrap">
+              UMUT PATİLERİ
+            </Link>
+          </div>
 
-        {/* Desktop Nav (center) */}
-        <HeaderNav />
+          {/* Nav links */}
+          {NAV_ITEMS.map(({ href, labelKey }) => {
+            const isActive = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  'panel flex items-center justify-center py-3 px-2 t-meta font-bold uppercase tracking-wider transition-colors',
+                  isActive ? 'bg-accent' : 'hover:bg-accent',
+                )}
+              >
+                {t(labelKey)}
+              </Link>
+            )
+          })}
 
-        {/* Desktop Right */}
-        <div className="hidden items-center gap-2 md:flex">
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="rounded-md p-2 text-muted-foreground hover:text-foreground"
-            aria-label={t('search')}
-          >
-            <SearchIcon className="size-5" />
-          </button>
-          <LanguageSwitcher />
-          <Button
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
-            render={<Link href="/destek-ol" />}
+          {/* Language + Search */}
+          <div className="panel flex items-center justify-center py-3 px-2 gap-2">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-1"
+              aria-label={t('search')}
+            >
+              <SearchIcon className="size-4" />
+            </button>
+            <LanguageSwitcher className="text-xs" />
+          </div>
+
+          {/* CTA */}
+          <Link
+            href="/destek-ol"
+            className="btn-cta flex items-center gap-2 whitespace-nowrap"
           >
             <Heart className="size-4" />
             {t('donate')}
-          </Button>
+          </Link>
         </div>
 
-        {/* Mobile Right */}
-        <div className="flex items-center gap-1 md:hidden">
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="rounded-md p-2 text-muted-foreground hover:text-foreground"
-            aria-label={t('search')}
-          >
-            <SearchIcon className="size-5" />
-          </button>
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="rounded-md p-2 text-muted-foreground hover:text-foreground"
-            aria-label={t('openMenu')}
-          >
-            <Menu className="size-5" />
-          </button>
+        {/* Mobile: simple bar */}
+        <div className="flex items-center justify-between md:hidden border-b border-border">
+          <Link href="/" className="panel py-3 px-4 t-meta font-bold uppercase tracking-widest">
+            UMUT PATİLERİ
+          </Link>
+          <div className="flex items-center">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="panel py-3 px-3 border-l border-border"
+              aria-label={t('search')}
+            >
+              <SearchIcon className="size-5" />
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="panel py-3 px-3 border-l border-border"
+              aria-label={mobileMenuOpen ? 'Close menu' : t('openMenu')}
+            >
+              {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+          </div>
         </div>
-      </div>
 
-      <MobileMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
+        {/* Mobile: full-screen grid overlay */}
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 top-[49px] z-40 bg-background md:hidden">
+            <div className="sys-wrap h-full">
+              {NAV_ITEMS.map(({ href, labelKey }) => {
+                const isActive = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      'panel py-5 px-6 t-h2',
+                      isActive && 'bg-accent',
+                    )}
+                  >
+                    {t(labelKey)}
+                  </Link>
+                )
+              })}
+              <div className="panel py-4 px-6 flex items-center justify-between">
+                <LanguageSwitcher />
+              </div>
+              <Link
+                href="/destek-ol"
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn-cta py-5 px-6 text-center justify-center text-lg"
+              >
+                <Heart className="size-5" />
+                {t('donate')}
+              </Link>
+            </div>
+          </div>
+        )}
+      </header>
+
       <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
-    </header>
+    </>
   )
 }

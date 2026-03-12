@@ -67,7 +67,7 @@ export default async function VolunteerPage({ params }: Args) {
           <Heading as="h1" className="mb-3">
             {t('title')}
           </Heading>
-          <p className="text-muted-foreground text-lg">{t('subtitle')}</p>
+          <p className="t-body text-lg">{t('subtitle')}</p>
         </div>
 
         {/* Volunteer Areas */}
@@ -79,15 +79,15 @@ export default async function VolunteerPage({ params }: Args) {
             {volunteerAreas.map(({ key, icon: Icon }) => (
               <div
                 key={key}
-                className="rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-shadow hover:shadow-md"
+                className="panel border border-border p-6 text-center"
               >
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <Icon className="h-7 w-7 text-primary" />
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center border border-border bg-accent">
+                  <Icon className="h-7 w-7 text-foreground" />
                 </div>
                 <h3 className="font-heading mb-2 text-lg font-semibold">
                   {t(`areas.${key}.title`)}
                 </h3>
-                <p className="text-muted-foreground text-sm">
+                <p className="t-body text-sm">
                   {t(`areas.${key}.description`)}
                 </p>
               </div>
@@ -96,17 +96,17 @@ export default async function VolunteerPage({ params }: Args) {
         </div>
 
         {/* Volunteer Stats */}
-        <div className="mb-16 rounded-2xl bg-secondary/10 px-6 py-10">
+        <div className="mb-16 border border-border bg-background px-6 py-10">
           <Heading as="h2" className="mb-8 text-center">
             {t('stats.title')}
           </Heading>
           <div className="grid gap-8 sm:grid-cols-3">
             {stats.map(({ key, value }) => (
               <div key={key} className="text-center">
-                <p className="font-heading text-4xl font-bold text-primary">
+                <p className="font-heading text-4xl font-bold text-foreground">
                   {value}
                 </p>
-                <p className="text-muted-foreground mt-1 text-sm font-medium">
+                <p className="t-body mt-1 text-sm font-medium">
                   {t(`stats.${key}`)}
                 </p>
               </div>
@@ -130,11 +130,11 @@ export default async function VolunteerPage({ params }: Args) {
         </div>
 
         {/* CTA */}
-        <div className="rounded-2xl bg-accent/10 px-6 py-10 text-center">
+        <div className="border border-border bg-background px-6 py-10 text-center">
           <Heading as="h2" className="mb-3">
             {t('cta.title')}
           </Heading>
-          <p className="text-muted-foreground mb-6 text-lg">
+          <p className="t-body mb-6 text-lg">
             {t('cta.description')}
           </p>
           {siteSettings.whatsapp && (
