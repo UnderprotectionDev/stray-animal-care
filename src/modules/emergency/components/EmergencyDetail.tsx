@@ -1,12 +1,12 @@
 import React from 'react'
-import { getTranslations } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Link } from '@/i18n/navigation'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { Media } from '@/components/Media'
 import { UpdateTimeline } from './UpdateTimeline'
 import { BeforeAfterWrapper } from './BeforeAfterWrapper'
 import RichText from '@/components/RichText'
-import type { EmergencyCase, Animal, Media as MediaType } from '@/payload-types'
+import type { EmergencyCase, Animal, Media as MediaType, UiString } from '@/payload-types'
 
 const fmt = (n: number) =>
   new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(n)
@@ -17,8 +17,7 @@ type EmergencyDetailProps = {
 }
 
 export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
-  const t = await getTranslations('emergency')
-  const tBreadcrumb = await getTranslations('layout.breadcrumb')
+  const ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
 
   const collected = ec.collectedAmount ?? 0
   const target = ec.targetAmount ?? 0
@@ -43,8 +42,8 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
     <div className="container py-8">
       <PageBreadcrumb
         items={[
-          { label: tBreadcrumb('home'), href: '/' },
-          { label: t('title'), href: '/acil-vakalar' },
+          { label: ui?.layout?.breadcrumb?.home ?? 'Ana Sayfa', href: '/' },
+          { label: ui?.emergency?.title ?? 'Acil Vakalar', href: '/acil-vakalar' },
           { label: ec.title },
         ]}
       />
@@ -68,15 +67,15 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           {beforePhoto && afterPhoto && (
             <div className="border-b border-border p-6">
               <h2 className="font-bold text-lg uppercase tracking-wider text-foreground mb-4">
-                {t('detail.beforeAfter')}
+                {ui?.emergency?.detail?.beforeAfter ?? 'Önce / Sonra'}
               </h2>
               <div className="aspect-video border border-border overflow-hidden">
                 <BeforeAfterWrapper
                   before={beforePhoto}
                   after={afterPhoto}
                   labels={{
-                    before: t('detail.before'),
-                    after: t('detail.after'),
+                    before: ui?.emergency?.detail?.before ?? 'Önce',
+                    after: ui?.emergency?.detail?.after ?? 'Sonra',
                   }}
                 />
               </div>
@@ -87,7 +86,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           {ec.description && (
             <div className="border-b border-border p-6">
               <h2 className="font-bold text-lg uppercase tracking-wider text-foreground mb-4">
-                {t('detail.description')}
+                {ui?.emergency?.detail?.description ?? 'Açıklama'}
               </h2>
               <div className="text-sm leading-relaxed text-foreground">
                 <RichText data={ec.description} enableGutter={false} />
@@ -98,11 +97,11 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           {/* Timeline */}
           <div className="p-6">
             <h2 className="font-bold text-lg uppercase tracking-wider text-foreground mb-4">
-              {t('detail.updates')}
+              {ui?.emergency?.detail?.updates ?? 'Güncellemeler'}
             </h2>
             <UpdateTimeline
               updates={ec.updates ?? []}
-              noUpdatesLabel={t('detail.noUpdates')}
+              noUpdatesLabel={ui?.emergency?.detail?.noUpdates ?? 'Henüz güncelleme yok.'}
               locale={locale}
             />
           </div>
@@ -130,7 +129,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           {target > 0 && (
             <div className="p-6 border-b border-border space-y-3">
               <p className="text-[11px] font-bold uppercase tracking-wider text-foreground">
-                {t('progress')}
+                {ui?.emergency?.progress ?? 'İlerleme'}
               </p>
               <div className="w-full h-4 border border-border bg-background">
                 <div
@@ -140,11 +139,11 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
               </div>
               <div className="flex justify-between text-sm font-mono">
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('collected')}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{ui?.emergency?.collected ?? 'Toplanan'}</p>
                   <p className="font-bold text-foreground">{fmt(collected)}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{t('target')}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{ui?.emergency?.target ?? 'Hedef'}</p>
                   <p className="font-bold text-foreground">{fmt(target)}</p>
                 </div>
               </div>
@@ -155,7 +154,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           {relatedAnimal && (
             <div className="p-6 border-b border-border">
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
-                {t('detail.relatedAnimal')}
+                {ui?.emergency?.detail?.relatedAnimal ?? 'İlgili Hayvan'}
               </p>
               <Link
                 href={`/canlarimiz/${relatedAnimal.slug}`}
@@ -172,7 +171,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
               href="/destek-ol"
               className="block w-full bg-accent text-foreground text-center font-bold uppercase tracking-widest text-sm py-3 px-6 border border-border hover:bg-foreground hover:text-accent transition-colors"
             >
-              {t('title')}
+              {ui?.emergency?.donateButton ?? 'Destek Ol'}
             </Link>
           </div>
         </div>

@@ -51,6 +51,42 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
       localized: true,
     },
     {
+      name: 'currentStock',
+      label: 'Mevcut Stok',
+      type: 'number',
+      min: 0,
+      defaultValue: 0,
+    },
+    {
+      name: 'targetStock',
+      label: 'Hedef Stok',
+      type: 'number',
+      min: 1,
+      required: true,
+    },
+    {
+      name: 'unit',
+      label: 'Birim',
+      type: 'select',
+      options: [
+        { label: 'Kutu', value: 'kutu' },
+        { label: 'Kg', value: 'kg' },
+        { label: 'Adet', value: 'adet' },
+      ],
+    },
+    {
+      name: 'priority',
+      label: 'Öncelik',
+      type: 'select',
+      index: true,
+      options: [
+        { label: 'Acil', value: 'acil' },
+        { label: 'Yüksek', value: 'yuksek' },
+        { label: 'Orta', value: 'orta' },
+        { label: 'Düşük', value: 'dusuk' },
+      ],
+    },
+    {
       name: 'order',
       label: 'Sıralama',
       type: 'number',

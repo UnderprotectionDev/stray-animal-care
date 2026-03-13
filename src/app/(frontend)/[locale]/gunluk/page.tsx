@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Container } from '@/components/shared/Container'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { BlogFilter, BlogList } from '@/modules/blog'
 import { getBlogPosts } from '@/modules/blog/lib/queries'
 import { locales, defaultLocale, type Locale } from '@/i18n/config'
+import type { UiString } from '@/payload-types'
 
 export const revalidate = 60
 
@@ -19,27 +21,26 @@ export default async function BlogPage({ params }: Args) {
   const payloadLocale: Locale = locales.includes(locale as Locale)
     ? (locale as Locale)
     : defaultLocale
-  const [posts, t, tBreadcrumb] = await Promise.all([
+  const [posts, ui] = await Promise.all([
     getBlogPosts(payloadLocale),
-    getTranslations('blog'),
-    getTranslations('layout.breadcrumb'),
+    getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>,
   ])
 
   const filterLabels = {
-    all: t('filter.all'),
-    kurtarma: t('filter.kurtarma'),
-    tedavi: t('filter.tedavi'),
-    gunluk: t('filter.gunluk'),
-    duyuru: t('filter.duyuru'),
-    etkinlik: t('filter.etkinlik'),
+    all: ui?.blog?.filter?.all ?? 'Tümü',
+    kurtarma: ui?.blog?.filter?.kurtarma ?? 'Kurtarma',
+    tedavi: ui?.blog?.filter?.tedavi ?? 'Tedavi',
+    gunluk: ui?.blog?.filter?.gunluk ?? 'Günlük',
+    duyuru: ui?.blog?.filter?.duyuru ?? 'Duyuru',
+    etkinlik: ui?.blog?.filter?.etkinlik ?? 'Etkinlik',
   }
 
   const categoryLabels: Record<string, string> = {
-    kurtarma: t('filter.kurtarma'),
-    tedavi: t('filter.tedavi'),
-    gunluk: t('filter.gunluk'),
-    duyuru: t('filter.duyuru'),
-    etkinlik: t('filter.etkinlik'),
+    kurtarma: ui?.blog?.filter?.kurtarma ?? 'Kurtarma',
+    tedavi: ui?.blog?.filter?.tedavi ?? 'Tedavi',
+    gunluk: ui?.blog?.filter?.gunluk ?? 'Günlük',
+    duyuru: ui?.blog?.filter?.duyuru ?? 'Duyuru',
+    etkinlik: ui?.blog?.filter?.etkinlik ?? 'Etkinlik',
   }
 
   return (
@@ -48,14 +49,14 @@ export default async function BlogPage({ params }: Args) {
         <div className="panel p-6">
           <PageBreadcrumb
             items={[
-              { label: tBreadcrumb('home'), href: '/' },
-              { label: t('title') },
+              { label: ui?.layout?.breadcrumb?.home ?? 'Ana Sayfa', href: '/' },
+              { label: ui?.blog?.title ?? 'Günlük' },
             ]}
           />
         </div>
         <div className="panel p-8 text-center">
-          <h1 className="t-mega">{t('title')}</h1>
-          <p className="t-meta text-lg mt-2">{t('subtitle')}</p>
+          <h1 className="t-mega">{ui?.blog?.title ?? 'Günlük'}</h1>
+          <p className="t-meta text-lg mt-2">{ui?.blog?.subtitle ?? ''}</p>
         </div>
         <div className="panel p-4 flex justify-center">
           <BlogFilter labels={filterLabels} />
@@ -63,8 +64,8 @@ export default async function BlogPage({ params }: Args) {
         <BlogList
           posts={posts}
           categoryLabels={categoryLabels}
-          readMoreLabel={t('readMore')}
-          emptyLabel={t('empty')}
+          readMoreLabel={ui?.blog?.readMore ?? 'Devamını Oku'}
+          emptyLabel={ui?.blog?.empty ?? 'Henüz yazı yok.'}
         />
       </div>
     </Container>
@@ -77,9 +78,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'blog.meta' })
+  const ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   return {
-    title: t('title'),
-    description: t('description'),
+    title: ui?.blog?.meta?.title ?? 'Günlük — Paws of Hope',
+    description: ui?.blog?.meta?.description ?? 'Paws of Hope günlük yazıları ve haberler.',
   }
 }

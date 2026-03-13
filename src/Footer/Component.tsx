@@ -1,15 +1,19 @@
 import { Link } from '@/i18n/navigation'
-import { getTranslations } from 'next-intl/server'
 import React from 'react'
-import { Instagram, Phone, Mail, MessageCircle, ExternalLink } from 'lucide-react'
+import { Instagram, Phone, Mail, MessageCircle } from 'lucide-react'
 
-import type { SiteSetting } from '@/payload-types'
+import type { SiteSetting, UiString } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { CopyButton } from '@/components/shared/CopyButton'
 
+type FooterLabels = NonNullable<UiString['layout']>['footer']
+type HeaderLabels = NonNullable<UiString['layout']>['header']
+
 type FooterProps = {
   siteSettings: SiteSetting | null
+  labels?: FooterLabels | null
+  headerLabels?: HeaderLabels | null
 }
 
 const NAV_ITEMS = [
@@ -21,9 +25,9 @@ const NAV_ITEMS = [
   { href: '/destek-ol', labelKey: 'donate' },
 ] as const
 
-export async function Footer({ siteSettings }: FooterProps) {
-  const t = await getTranslations('layout.footer')
-  const tHeader = await getTranslations('layout.header')
+export async function Footer({ siteSettings, labels, headerLabels }: FooterProps) {
+  const fl = (key: string) => (labels as Record<string, string | null | undefined> | null)?.[key] || key
+  const hl = (key: string) => (headerLabels as Record<string, string | null | undefined> | null)?.[key] || key
 
   return (
     <footer className="mt-auto border-t border-border bg-background">
@@ -33,7 +37,7 @@ export async function Footer({ siteSettings }: FooterProps) {
           <Link href="/" className="inline-block">
             <Logo />
           </Link>
-          <p className="t-meta text-muted-foreground">{t('description')}</p>
+          <p className="t-meta text-muted-foreground">{fl('description')}</p>
           <div className="flex items-center gap-3">
             {siteSettings?.instagram && (
               <a
@@ -63,7 +67,7 @@ export async function Footer({ siteSettings }: FooterProps) {
         {/* Quick Links Column */}
         <div className="panel space-y-4">
           <h3 className="t-meta font-bold uppercase tracking-wider">
-            {t('quickLinks')}
+            {fl('quickLinks')}
           </h3>
           <nav className="flex flex-col gap-2">
             {NAV_ITEMS.map(({ href, labelKey }) => (
@@ -72,7 +76,7 @@ export async function Footer({ siteSettings }: FooterProps) {
                 href={href}
                 className="t-meta text-muted-foreground transition-colors hover:text-foreground"
               >
-                {labelKey === 'home' ? tHeader('home') : tHeader(labelKey)}
+                {hl(labelKey)}
               </Link>
             ))}
           </nav>
@@ -81,7 +85,7 @@ export async function Footer({ siteSettings }: FooterProps) {
         {/* Bank Info Column */}
         <div className="panel space-y-4">
           <h3 className="t-meta font-bold uppercase tracking-wider">
-            {t('bankInfo')}
+            {fl('bankInfo')}
           </h3>
           {(siteSettings?.bankName || siteSettings?.iban) && (
             <div className="border border-border p-4 space-y-2">
@@ -96,40 +100,11 @@ export async function Footer({ siteSettings }: FooterProps) {
                   <code className="text-xs font-mono break-all">{siteSettings?.iban}</code>
                   <CopyButton
                     text={siteSettings?.iban}
-                    label={t('copyIban')}
+                    label={fl('copyIban')}
                     className="shrink-0"
                   />
                 </div>
               )}
-            </div>
-          )}
-          {(siteSettings?.paypalLink || siteSettings?.wiseLink) && (
-            <div className="space-y-2">
-              <p className="t-meta font-bold uppercase tracking-wider text-muted-foreground">
-                {t('international')}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {siteSettings?.paypalLink && (
-                  <a
-                    href={siteSettings?.paypalLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-cta text-xs py-1 px-3"
-                  >
-                    PayPal <ExternalLink className="size-3" />
-                  </a>
-                )}
-                {siteSettings?.wiseLink && (
-                  <a
-                    href={siteSettings?.wiseLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-cta text-xs py-1 px-3"
-                  >
-                    Wise <ExternalLink className="size-3" />
-                  </a>
-                )}
-              </div>
             </div>
           )}
         </div>
@@ -137,7 +112,7 @@ export async function Footer({ siteSettings }: FooterProps) {
         {/* Contact Column */}
         <div className="panel space-y-4">
           <h3 className="t-meta font-bold uppercase tracking-wider">
-            {t('contactUs')}
+            {fl('contactUs')}
           </h3>
           <div className="flex flex-col gap-3">
             {siteSettings?.phone && (
@@ -176,7 +151,7 @@ export async function Footer({ siteSettings }: FooterProps) {
       {/* Bottom Bar */}
       <div className="panel flex flex-col items-center justify-between gap-4 border-t border-border py-4 md:flex-row">
         <p className="t-meta text-muted-foreground">
-          &copy; {new Date().getFullYear()} Paws of Hope. {t('copyright')}
+          &copy; {new Date().getFullYear()} Paws of Hope. {fl('copyright')}
         </p>
       </div>
     </footer>

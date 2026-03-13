@@ -1,42 +1,43 @@
 import React from 'react'
-import { getTranslations } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import { interpolate } from '@/utilities/interpolate'
 import { Link } from '@/i18n/navigation'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 import { PhotoGallery } from './PhotoGallery'
 import RichText from '@/components/RichText'
-import type { Animal, Media as MediaType, SiteSetting } from '@/payload-types'
+import type { Animal, Media as MediaType, SiteSetting, UiString } from '@/payload-types'
 
 type AnimalDetailProps = {
   animal: Animal
-  siteSettings: SiteSetting
+  siteSettings: SiteSetting | null
+  locale: string
 }
 
-export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) {
-  const t = await getTranslations('animals')
-  const tBreadcrumb = await getTranslations('layout.breadcrumb')
+export async function AnimalDetail({ animal, siteSettings, locale }: AnimalDetailProps) {
+  const ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
 
   const photos = (animal.photos ?? []).filter(
     (p): p is MediaType => p !== null && typeof p === 'object',
   )
 
   const genderLabel = {
-    erkek: t('detail.erkek'),
-    disi: t('detail.disi'),
-    bilinmiyor: t('detail.bilinmiyor'),
+    erkek: ui?.animals?.detail?.erkek ?? 'Erkek',
+    disi: ui?.animals?.detail?.disi ?? 'Dişi',
+    bilinmiyor: ui?.animals?.detail?.bilinmiyor ?? 'Bilinmiyor',
   }[animal.gender]
 
   const typeLabel = {
-    kedi: t('filter.kedi'),
-    kopek: t('filter.kopek'),
+    kedi: ui?.animals?.filter?.kedi ?? 'Kedi',
+    kopek: ui?.animals?.filter?.kopek ?? 'Köpek',
   }[animal.type]
 
   const status = animal.animalStatus
   const statusLabel = status
     ? ({
-        tedavide: t('filter.tedavide'),
-        'kalici-bakim': t('filter.kalici-bakim'),
-        acil: t('filter.acil'),
+        tedavide: ui?.animals?.filter?.tedavide ?? 'Tedavide',
+        'kalici-bakim': ui?.animals?.filter?.kaliciBakim ?? 'Kalıcı Bakım',
+        acil: ui?.animals?.filter?.acil ?? 'Acil',
       }[status] ?? '')
     : ''
 
@@ -48,8 +49,8 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
       <div className="px-4 py-8 max-w-7xl mx-auto">
         <PageBreadcrumb
           items={[
-            { label: tBreadcrumb('home'), href: '/' },
-            { label: t('title'), href: '/canlarimiz' },
+            { label: ui?.layout?.breadcrumb?.home ?? 'Ana Sayfa', href: '/' },
+            { label: ui?.animals?.title ?? 'Canlarımız', href: '/canlarimiz' },
             { label: animal.name },
           ]}
         />
@@ -62,11 +63,11 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
               photos={photos}
               animalName={animal.name}
               labels={{
-                close: t('lightbox.close'),
-                prev: t('lightbox.prev'),
-                next: t('lightbox.next'),
-                imageOf: t('lightbox.imageOf'),
-                noPhotos: t('detail.noPhotos'),
+                close: ui?.animals?.lightbox?.close ?? 'Kapat',
+                prev: ui?.animals?.lightbox?.prev ?? 'Önceki',
+                next: ui?.animals?.lightbox?.next ?? 'Sonraki',
+                imageOf: ui?.animals?.lightbox?.imageOf ?? '{current} / {total}',
+                noPhotos: ui?.animals?.detail?.noPhotos ?? 'Fotoğraf yok',
               }}
             />
           </div>
@@ -84,17 +85,17 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
             {/* Data rows */}
             <div className="sys-table">
               <div className="flex justify-between border-b border-border px-4 py-3">
-                <span className="t-meta">{t('detail.type')}</span>
+                <span className="t-meta">{ui?.animals?.detail?.type ?? 'Tür'}</span>
                 <span className="text-sm font-bold uppercase text-foreground">{typeLabel}</span>
               </div>
               {animal.age && (
                 <div className="flex justify-between border-b border-border px-4 py-3">
-                  <span className="t-meta">{t('detail.age')}</span>
+                  <span className="t-meta">{ui?.animals?.detail?.age ?? 'Yaş'}</span>
                   <span className="text-sm font-bold uppercase text-foreground">{animal.age}</span>
                 </div>
               )}
               <div className="flex justify-between border-b border-border px-4 py-3">
-                <span className="t-meta">{t('detail.gender')}</span>
+                <span className="t-meta">{ui?.animals?.detail?.gender ?? 'Cinsiyet'}</span>
                 <span className="text-sm font-bold uppercase text-foreground">{genderLabel}</span>
               </div>
             </div>
@@ -102,13 +103,13 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
             {/* CTA buttons */}
             <div className="p-4 space-y-3">
               <Link href="/destek-ol" className="btn-cta block w-full text-center">
-                {t('detail.donate')}
+                {ui?.animals?.detail?.donate ?? 'Destek Ol'}
               </Link>
 
-              {siteSettings.whatsapp && (
+              {siteSettings?.whatsapp && (
                 <WhatsAppButton
                   phone={siteSettings.whatsapp}
-                  message={t('detail.whatsappMessage', { name: animal.name })}
+                  message={interpolate(ui?.animals?.detail?.whatsappMessage ?? '{name} hakkında bilgi almak istiyorum', { name: animal.name })}
                   className="block w-full border border-border bg-background px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-foreground hover:bg-muted"
                 >
                   WhatsApp
@@ -119,7 +120,7 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
                 href="/canlarimiz"
                 className="block w-full border border-border bg-background px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-foreground hover:bg-muted"
               >
-                {t('detail.back')}
+                {ui?.animals?.detail?.back ?? 'Geri Dön'}
               </Link>
             </div>
           </div>
@@ -129,7 +130,7 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
         <div className="mt-8 grid gap-0 md:grid-cols-2 border border-border">
           {animal.story && (
             <div className="border-b md:border-b-0 md:border-r border-border p-6">
-              <h2 className="t-h2 mb-4">{t('detail.story')}</h2>
+              <h2 className="t-h2 mb-4">{ui?.animals?.detail?.story ?? 'Hikayesi'}</h2>
               <div className="t-body">
                 <RichText data={animal.story} enableGutter={false} />
               </div>
@@ -137,7 +138,7 @@ export async function AnimalDetail({ animal, siteSettings }: AnimalDetailProps) 
           )}
           {animal.needs && (
             <div className="p-6">
-              <h2 className="t-h2 mb-4">{t('detail.needs')}</h2>
+              <h2 className="t-h2 mb-4">{ui?.animals?.detail?.needs ?? 'İhtiyaçları'}</h2>
               <div className="t-body">
                 <RichText data={animal.needs} enableGutter={false} />
               </div>

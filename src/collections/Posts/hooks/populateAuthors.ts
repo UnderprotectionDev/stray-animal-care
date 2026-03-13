@@ -15,22 +15,21 @@ export const populateAuthors: CollectionAfterReadHook = async ({ doc, req, req: 
           id: typeof author === 'object' ? author?.id : author,
           collection: 'users',
           depth: 0,
+          req,
         })
 
         if (authorDoc) {
           authorDocs.push(authorDoc)
         }
-
-        if (authorDocs.length > 0) {
-          doc.populatedAuthors = authorDocs.map((authorDoc) => ({
-            id: authorDoc.id,
-            name: authorDoc.name,
-          }))
-        }
-      } catch {
-        // swallow error
+      } catch (err) {
+        payload.logger.warn(`Failed to populate author: ${err}`)
       }
     }
+
+    doc.populatedAuthors = authorDocs.map((authorDoc) => ({
+      id: authorDoc.id,
+      name: authorDoc.name,
+    }))
   }
 
   return doc

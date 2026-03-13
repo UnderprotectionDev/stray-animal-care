@@ -1,6 +1,6 @@
 'use client'
 
-import { useLocale, useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { useRouter, usePathname } from '@/i18n/navigation'
 import { cn } from '@/utilities/ui'
 import type { Locale } from '@/i18n/config'
@@ -9,7 +9,6 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
-  const t = useTranslations('layout.languageSwitcher')
 
   const switchLocale = (targetLocale: Locale) => {
     router.replace(pathname, { locale: targetLocale })
@@ -18,7 +17,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   return (
     <div
       role="group"
-      aria-label={t('label')}
+      aria-label="Language selection"
       className={cn('flex items-center gap-1', className)}
     >
       <button

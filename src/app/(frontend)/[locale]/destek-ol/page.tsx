@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Container } from '@/components/shared/Container'
 import { IBANCopy } from '@/modules/donate/components/IBANCopy'
@@ -9,7 +9,7 @@ import { DonateTicker } from '@/modules/donate/components/DonateTicker'
 import { DonationCards } from '@/modules/donate/components/DonationCards'
 import { DonateFAQ } from '@/modules/donate/components/DonateFAQ'
 import { TransparencyNote } from '@/modules/donate/components/TransparencyNote'
-import type { SiteSetting } from '@/payload-types'
+import type { SiteSetting, UiString } from '@/payload-types'
 
 export const revalidate = 60
 
@@ -58,7 +58,12 @@ export default async function DonatePage({ params }: Args) {
     // DB unreachable — fall through to mock data
   }
 
-  const t = await getTranslations('donate')
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
 
   // Use CMS data if available, otherwise fall back to mock data
   const bankAccounts =
@@ -73,12 +78,12 @@ export default async function DonatePage({ params }: Args) {
   }
 
   const faqItems = [
-    { q: t('faq.q1'), a: t('faq.a1') },
-    { q: t('faq.q2'), a: t('faq.a2') },
-    { q: t('faq.q3'), a: t('faq.a3') },
-    { q: t('faq.q4'), a: t('faq.a4') },
-    { q: t('faq.q5'), a: t('faq.a5') },
-  ]
+    { q: ui?.donate?.faq?.q1 ?? '', a: ui?.donate?.faq?.a1 ?? '' },
+    { q: ui?.donate?.faq?.q2 ?? '', a: ui?.donate?.faq?.a2 ?? '' },
+    { q: ui?.donate?.faq?.q3 ?? '', a: ui?.donate?.faq?.a3 ?? '' },
+    { q: ui?.donate?.faq?.q4 ?? '', a: ui?.donate?.faq?.a4 ?? '' },
+    { q: ui?.donate?.faq?.q5 ?? '', a: ui?.donate?.faq?.a5 ?? '' },
+  ].filter(item => item.q && item.a)
 
   return (
     <Container>
@@ -86,15 +91,15 @@ export default async function DonatePage({ params }: Args) {
         {/* Hero */}
         <div className="panel p-8 md:p-12 relative overflow-hidden">
           <span className="badge-sys mint absolute top-6 right-6 rotate-3">
-            {t('hero.badge')}
+            {ui?.donate?.hero?.badge ?? 'HAYAT KURTAR'}
           </span>
-          <h1 className="t-mega">{t('hero.title')}</h1>
-          <p className="t-body mt-4 max-w-xl">{t('hero.subtitle')}</p>
+          <h1 className="t-mega">{ui?.donate?.hero?.title ?? 'BİR CAN KURTAR'}</h1>
+          <p className="t-body mt-4 max-w-xl">{ui?.donate?.hero?.subtitle ?? ''}</p>
         </div>
 
         {/* Cards Grid */}
         <div className="donate-grid">
-          {/* ① IBAN — spans left column, rows 1-2 on desktop */}
+          {/* IBAN — spans left column, rows 1-2 on desktop */}
           <div className="md:row-span-2">
             <IBANCopy
               bankAccounts={bankAccounts}
@@ -102,38 +107,34 @@ export default async function DonatePage({ params }: Args) {
               accountHolder={siteSettings?.accountHolder}
               iban={siteSettings?.iban}
               labels={{
-                title: t('iban.title'),
-                bank: t('iban.bank'),
-                accountHolder: t('iban.accountHolder'),
-                iban: t('iban.iban'),
-                copy: t('iban.copy'),
-                placeholder: t('iban.placeholder'),
+                title: ui?.donate?.iban?.title ?? 'IBAN İLE BAĞIŞ',
+                bank: ui?.donate?.iban?.bank ?? 'Banka',
+                accountHolder: ui?.donate?.iban?.accountHolder ?? 'Hesap Sahibi',
+                iban: ui?.donate?.iban?.iban ?? 'IBAN',
+                copy: ui?.donate?.iban?.copy ?? "IBAN'ı Kopyala",
+                placeholder: ui?.donate?.iban?.placeholder ?? 'Banka hesap bilgileri yakında eklenecek.',
               }}
             />
           </div>
 
-          {/* ② International — right column, row 1 */}
+          {/* International — right column, row 1 */}
           <div>
             <InternationalPayment
-              paypalLink={siteSettings?.paypalLink || 'https://paypal.me/pawsofhope'}
-              wiseLink={siteSettings?.wiseLink || 'https://wise.com/pay/pawsofhope'}
               labels={{
-                title: t('international.title'),
-                paypal: t('international.paypal'),
-                wise: t('international.wise'),
-                comingSoon: t('international.comingSoon'),
-                placeholder: t('international.placeholder'),
+                title: ui?.donate?.international?.title ?? 'Uluslararası Destek',
+                comingSoon: ui?.donate?.international?.comingSoon ?? 'YAKINDA',
+                placeholder: ui?.donate?.international?.placeholder ?? 'Yurtdışı ödeme seçenekleri hazırlanıyor.',
               }}
             />
           </div>
 
-          {/* ③ Volunteer — right column, row 2 */}
+          {/* Volunteer — right column, row 2 */}
           <div>
             <VolunteerCard
               labels={{
-                title: t('volunteer.title'),
-                description: t('volunteer.description'),
-                cta: t('volunteer.cta'),
+                title: ui?.donate?.volunteer?.title ?? 'GÖNÜLLÜ OL',
+                description: ui?.donate?.volunteer?.description ?? '',
+                cta: ui?.donate?.volunteer?.cta ?? 'BAŞVURU FORMU →',
               }}
             />
           </div>
@@ -143,12 +144,12 @@ export default async function DonatePage({ params }: Args) {
         <DonateTicker
           stats={stats}
           labels={{
-            slogan1: t('ticker.slogan1'),
-            slogan2: t('ticker.slogan2'),
-            slogan3: t('ticker.slogan3'),
-            cats: t('ticker.cats'),
-            dogs: t('ticker.dogs'),
-            treated: t('ticker.treated'),
+            slogan1: ui?.donate?.ticker?.slogan1 ?? 'YAŞAM HAKKINA SAYGI',
+            slogan2: ui?.donate?.ticker?.slogan2 ?? 'DESTEK OL HAYAT KURTAR',
+            slogan3: ui?.donate?.ticker?.slogan3 ?? 'HER CAN DEĞERLİ',
+            cats: ui?.donate?.ticker?.cats ?? 'KEDİ',
+            dogs: ui?.donate?.ticker?.dogs ?? 'KÖPEK',
+            treated: ui?.donate?.ticker?.treated ?? 'TEDAVİ EDİLEN',
           }}
         />
 
@@ -156,18 +157,18 @@ export default async function DonatePage({ params }: Args) {
         <div className="bg-background p-6">
           <DonationCards
             labels={{
-              title: t('cards.title'),
+              title: ui?.donate?.cards?.title ?? 'Bağışınız Neye Yarar?',
               food: {
-                title: t('cards.food.title'),
-                description: t('cards.food.description'),
+                title: ui?.donate?.cards?.foodTitle ?? 'Mama Desteği',
+                description: ui?.donate?.cards?.foodDescription ?? '',
               },
               vet: {
-                title: t('cards.vet.title'),
-                description: t('cards.vet.description'),
+                title: ui?.donate?.cards?.vetTitle ?? 'Veteriner Ziyareti',
+                description: ui?.donate?.cards?.vetDescription ?? '',
               },
               surgery: {
-                title: t('cards.surgery.title'),
-                description: t('cards.surgery.description'),
+                title: ui?.donate?.cards?.surgeryTitle ?? 'Cerrahi Destek',
+                description: ui?.donate?.cards?.surgeryDescription ?? '',
               },
             }}
           />
@@ -175,16 +176,16 @@ export default async function DonatePage({ params }: Args) {
 
         {/* FAQ */}
         <div className="bg-background p-6">
-          <DonateFAQ title={t('faq.title')} items={faqItems} />
+          <DonateFAQ title={ui?.donate?.faq?.title ?? 'Sık Sorulan Sorular'} items={faqItems} />
         </div>
 
         {/* Transparency */}
         <div className="bg-background">
           <TransparencyNote
             labels={{
-              title: t('transparency.title'),
-              description: t('transparency.description'),
-              reports: t('transparency.reports'),
+              title: ui?.donate?.transparency?.title ?? 'Şeffaf Yönetim',
+              description: ui?.donate?.transparency?.description ?? '',
+              reports: ui?.donate?.transparency?.reports ?? 'Şeffaflık Raporları',
             }}
           />
         </div>
@@ -199,9 +200,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'donate.meta' })
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
   return {
-    title: t('title'),
-    description: t('description'),
+    title: ui?.donate?.meta?.title ?? 'Destek Ol — Paws of Hope',
+    description: ui?.donate?.meta?.description ?? '',
   }
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import type { UiString } from '@/payload-types'
 import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
 import { Heading } from '@/components/shared/Heading'
@@ -21,37 +23,36 @@ export default async function SuppliesPage({ params }: Args) {
   const payloadLocale: Locale = locales.includes(locale as Locale)
     ? (locale as Locale)
     : defaultLocale
-  const [items, t, tBreadcrumb] = await Promise.all([
+  const [items, ui] = await Promise.all([
     getNeedsList(payloadLocale),
-    getTranslations('supplies'),
-    getTranslations('layout.breadcrumb'),
+    getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>,
   ])
 
   const tableLabels = {
-    product: t('table.product'),
-    brand: t('table.brand'),
-    urgency: t('table.urgency'),
-    stock: t('table.stock'),
+    product: ui?.supplies?.table?.product || '',
+    brand: ui?.supplies?.table?.brand || '',
+    urgency: ui?.supplies?.table?.urgency || '',
+    stock: ui?.supplies?.table?.stock || '',
   }
 
   const urgencyLabels: Record<string, string> = {
-    acil: t('urgency.acil'),
-    orta: t('urgency.orta'),
-    yeterli: t('urgency.yeterli'),
+    acil: ui?.supplies?.urgency?.acil || '',
+    orta: ui?.supplies?.urgency?.orta || '',
+    yeterli: ui?.supplies?.urgency?.yeterli || '',
   }
 
   const shippingLabels = {
-    title: t('shipping.title'),
-    description: t('shipping.description'),
-    cargo: t('shipping.cargo'),
-    inPerson: t('shipping.inPerson'),
-    online: t('shipping.online'),
+    title: ui?.supplies?.shipping?.title || '',
+    description: ui?.supplies?.shipping?.description || '',
+    cargo: ui?.supplies?.shipping?.cargo || '',
+    inPerson: ui?.supplies?.shipping?.inPerson || '',
+    online: ui?.supplies?.shipping?.online || '',
   }
 
   const sponsorLabels = {
-    title: t('sponsor.title'),
-    description: t('sponsor.description'),
-    cta: t('sponsor.cta'),
+    title: ui?.supplies?.sponsor?.title || '',
+    description: ui?.supplies?.sponsor?.description || '',
+    cta: ui?.supplies?.sponsor?.cta || '',
   }
 
   return (
@@ -60,21 +61,21 @@ export default async function SuppliesPage({ params }: Args) {
         <Container>
           <PageBreadcrumb
             items={[
-              { label: tBreadcrumb('home'), href: '/' },
-              { label: t('title') },
+              { label: ui?.layout?.breadcrumb?.home || '', href: '/' },
+              { label: ui?.supplies?.title || '' },
             ]}
           />
           <div className="mb-8 text-center">
             <Heading as="h1" className="mb-3">
-              {t('title')}
+              {ui?.supplies?.title}
             </Heading>
-            <p className="t-body text-lg">{t('subtitle')}</p>
+            <p className="t-body text-lg">{ui?.supplies?.subtitle}</p>
           </div>
 
           {items.length > 0 ? (
             <NeedsTable items={items} labels={tableLabels} urgencyLabels={urgencyLabels} />
           ) : (
-            <div className="py-16 text-center t-body">{t('empty')}</div>
+            <div className="py-16 text-center t-body">{ui?.supplies?.empty}</div>
           )}
         </Container>
       </Section>
@@ -100,9 +101,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'supplies.meta' })
+  const ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   return {
-    title: t('title'),
-    description: t('description'),
+    title: ui?.supplies?.meta?.title || '',
+    description: ui?.supplies?.meta?.description || '',
   }
 }

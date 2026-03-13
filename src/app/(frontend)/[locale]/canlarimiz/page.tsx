@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { AnimalFilter } from '@/modules/animals/components/AnimalFilter'
 import { AnimalList } from '@/modules/animals/components/AnimalList'
 import { getAnimals } from '@/modules/animals/lib/queries'
 import { locales, defaultLocale, type Locale } from '@/i18n/config'
+import type { UiString } from '@/payload-types'
 
 export const revalidate = 60
 
@@ -16,28 +18,28 @@ export default async function AnimalsPage({ params }: Args) {
   setRequestLocale(locale)
 
   const payloadLocale: Locale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
-  const [animals, t] = await Promise.all([
+  const [animals, ui] = await Promise.all([
     getAnimals(payloadLocale),
-    getTranslations('animals'),
+    getCachedGlobal('ui-strings', 0, payloadLocale)() as Promise<UiString | null>,
   ])
 
   const filterLabels = {
-    all: t('filter.all'),
-    kedi: t('filter.kedi'),
-    kopek: t('filter.kopek'),
+    all: ui?.animals?.filter?.all ?? 'Tümü',
+    kedi: ui?.animals?.filter?.kedi ?? 'Kediler',
+    kopek: ui?.animals?.filter?.kopek ?? 'Köpekler',
   }
 
   const listLabels = {
     typeLabels: {
-      kedi: t('filter.kedi'),
-      kopek: t('filter.kopek'),
+      kedi: ui?.animals?.filter?.kedi ?? 'Kediler',
+      kopek: ui?.animals?.filter?.kopek ?? 'Köpekler',
     },
     statusLabels: {
-      tedavide: t('filter.tedavide'),
-      'kalici-bakim': t('filter.kalici-bakim'),
-      acil: t('filter.acil'),
+      tedavide: ui?.animals?.filter?.tedavide ?? 'Tedavide',
+      'kalici-bakim': ui?.animals?.filter?.kaliciBakim ?? 'Kalıcı Bakım',
+      acil: ui?.animals?.filter?.acil ?? 'Acil',
     },
-    noResults: t('filter.noResults'),
+    noResults: ui?.animals?.filter?.noResults ?? 'Bu filtreyle eşleşen hayvan bulunamadı.',
   }
 
   return (
@@ -45,8 +47,8 @@ export default async function AnimalsPage({ params }: Args) {
       <div className="px-4 py-8 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8 border-b border-border pb-6">
-          <h1 className="t-mega">{t('title')}</h1>
-          <p className="t-meta mt-2">{t('subtitle')}</p>
+          <h1 className="t-mega">{ui?.animals?.title ?? 'Canlarımız'}</h1>
+          <p className="t-meta mt-2">{ui?.animals?.subtitle ?? ''}</p>
         </div>
 
         {/* Filter */}
@@ -67,9 +69,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'animals.meta' })
+  const payloadLocale: Locale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, payloadLocale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
   return {
-    title: t('title'),
-    description: t('description'),
+    title: ui?.animals?.meta?.title ?? 'Canlarımız — Paws of Hope',
+    description: ui?.animals?.meta?.description ?? '',
   }
 }

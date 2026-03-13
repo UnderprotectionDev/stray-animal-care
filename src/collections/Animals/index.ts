@@ -118,6 +118,7 @@ export const Animals: CollectionConfig<'animals'> = {
               label: 'Cinsiyet',
               type: 'select',
               required: true,
+              index: true,
               options: [
                 { label: 'Erkek', value: 'erkek' },
                 { label: 'Dişi', value: 'disi' },
@@ -141,6 +142,7 @@ export const Animals: CollectionConfig<'animals'> = {
               label: 'Öne Çıkan',
               type: 'checkbox',
               defaultValue: false,
+              index: true,
               admin: {
                 position: 'sidebar',
               },
@@ -165,6 +167,8 @@ export const Animals: CollectionConfig<'animals'> = {
               name: 'microchipId',
               label: 'Mikroçip Numarası',
               type: 'text',
+              unique: true,
+              index: true,
             },
             {
               name: 'isSpayed',

@@ -31,6 +31,7 @@ export const Volunteers: CollectionConfig<'volunteers'> = {
       label: 'E-posta',
       type: 'email',
       required: true,
+      unique: true,
     },
     {
       name: 'phone',

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import type { UiString } from '@/payload-types'
 import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
 import { Heading } from '@/components/shared/Heading'
@@ -21,21 +23,20 @@ export default async function TransparencyPage({ params }: Args) {
   const payloadLocale: Locale = locales.includes(locale as Locale)
     ? (locale as Locale)
     : defaultLocale
-  const [reports, t, tBreadcrumb] = await Promise.all([
+  const [reports, ui] = await Promise.all([
     getReports(payloadLocale),
-    getTranslations('transparency'),
-    getTranslations('layout.breadcrumb'),
+    getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>,
   ])
 
   const reportLabels = {
-    expenses: t('report.expenses'),
-    totalExpense: t('report.totalExpense'),
-    donations: t('report.donations'),
-    totalDonation: t('report.totalDonation'),
-    category: t('report.category'),
-    amount: t('report.amount'),
-    comparison: t('report.comparison'),
-    documents: t('report.documents'),
+    expenses: ui?.transparency?.report?.expenses || '',
+    totalExpense: ui?.transparency?.report?.totalExpense || '',
+    donations: ui?.transparency?.report?.donations || '',
+    totalDonation: ui?.transparency?.report?.totalDonation || '',
+    category: ui?.transparency?.report?.category || '',
+    amount: ui?.transparency?.report?.amount || '',
+    comparison: ui?.transparency?.report?.comparison || '',
+    documents: ui?.transparency?.report?.documents || '',
   }
 
   return (
@@ -44,21 +45,21 @@ export default async function TransparencyPage({ params }: Args) {
         <Container>
           <PageBreadcrumb
             items={[
-              { label: tBreadcrumb('home'), href: '/' },
-              { label: t('title') },
+              { label: ui?.layout?.breadcrumb?.home || '', href: '/' },
+              { label: ui?.transparency?.title || '' },
             ]}
           />
           <div className="mb-8 text-center">
             <Heading as="h1" className="mb-3">
-              {t('title')}
+              {ui?.transparency?.title || 'Şeffaflık'}
             </Heading>
-            <p className="t-body text-lg">{t('subtitle')}</p>
+            <p className="t-body text-lg">{ui?.transparency?.subtitle || ''}</p>
           </div>
 
           {reports.length > 0 ? (
-            <ReportList reports={reports} labels={reportLabels} currency={t('currency')} />
+            <ReportList reports={reports} labels={reportLabels} currency={ui?.transparency?.currency || ''} />
           ) : (
-            <div className="py-16 text-center t-body">{t('empty')}</div>
+            <div className="py-16 text-center t-body">{ui?.transparency?.empty || 'Henüz rapor bulunmuyor.'}</div>
           )}
         </Container>
       </Section>
@@ -72,9 +73,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'transparency.meta' })
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
   return {
-    title: t('title'),
-    description: t('description'),
+    title: ui?.transparency?.meta?.title || 'Şeffaflık — Paws of Hope',
+    description: ui?.transparency?.meta?.description || '',
   }
 }

@@ -2,6 +2,19 @@ import type { GlobalConfig } from 'payload'
 
 import { authenticated } from '../access/authenticated'
 import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
+import {
+  HomeHeroBlock,
+  StatsBlock,
+  StoryBlock,
+  OurWorkBlock,
+  FeaturedAnimalsBlock,
+  SuccessStoriesBlock,
+  ActiveEmergenciesBlock,
+  SupportCardsBlock,
+  NeedsListBlock,
+  RecentPostsBlock,
+  TransparencyBannerBlock,
+} from '../blocks/homepage'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
@@ -17,6 +30,32 @@ export const SiteSettings: GlobalConfig = {
     {
       type: 'tabs',
       tabs: [
+        {
+          label: 'Ana Sayfa',
+          fields: [
+            {
+              name: 'homepageBlocks',
+              label: 'Ana Sayfa Blokları',
+              type: 'blocks',
+              blocks: [
+                HomeHeroBlock,
+                StatsBlock,
+                StoryBlock,
+                OurWorkBlock,
+                FeaturedAnimalsBlock,
+                SuccessStoriesBlock,
+                ActiveEmergenciesBlock,
+                SupportCardsBlock,
+                NeedsListBlock,
+                RecentPostsBlock,
+                TransparencyBannerBlock,
+              ],
+              admin: {
+                description: 'Ana sayfa bölümlerini sıralayın, etkinleştirin veya devre dışı bırakın.',
+              },
+            },
+          ],
+        },
         {
           label: 'Banka Bilgileri',
           fields: [
@@ -100,56 +139,6 @@ export const SiteSettings: GlobalConfig = {
               name: 'instagram',
               label: 'Instagram',
               type: 'text',
-            },
-          ],
-        },
-        {
-          label: 'Uluslararası',
-          fields: [
-            {
-              name: 'paypalLink',
-              label: 'PayPal Linki',
-              type: 'text',
-            },
-            {
-              name: 'wiseLink',
-              label: 'Wise Linki',
-              type: 'text',
-            },
-          ],
-        },
-        {
-          label: 'Çalışmalarımız',
-          fields: [
-            {
-              name: 'ourWorkActivities',
-              label: 'Aktiviteler',
-              type: 'array',
-              minRows: 0,
-              maxRows: 10,
-              fields: [
-                {
-                  name: 'key',
-                  label: 'Anahtar',
-                  type: 'select',
-                  required: true,
-                  options: [
-                    { label: 'Besleme', value: 'feeding' },
-                    { label: 'Tedavi', value: 'treatment' },
-                    { label: 'Kısırlaştırma', value: 'spaying' },
-                    { label: 'Acil Müdahale', value: 'emergency' },
-                    { label: 'Aşılama', value: 'vaccination' },
-                    { label: 'Barınma', value: 'shelter' },
-                  ],
-                },
-                {
-                  name: 'images',
-                  label: 'Fotoğraflar',
-                  type: 'upload',
-                  relationTo: 'media',
-                  hasMany: true,
-                },
-              ],
             },
           ],
         },

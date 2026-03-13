@@ -131,11 +131,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'site-settings': SiteSetting;
+    'ui-strings': UiString;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'ui-strings': UiStringsSelect<false> | UiStringsSelect<true>;
   };
   locale: 'tr' | 'en';
   widgets: {
@@ -903,6 +905,10 @@ export interface NeedsList {
   brandDetail?: string | null;
   urgency: 'acil' | 'orta' | 'yeterli';
   stockStatus?: string | null;
+  currentStock?: number | null;
+  targetStock: number;
+  unit?: ('kutu' | 'kg' | 'adet') | null;
+  priority?: ('acil' | 'yuksek' | 'orta' | 'dusuk') | null;
   order: number;
   updatedAt: string;
   createdAt: string;
@@ -992,6 +998,10 @@ export interface Search {
     | {
         relationTo: 'animals';
         value: number | Animal;
+      }
+    | {
+        relationTo: 'emergency-cases';
+        value: number | EmergencyCase;
       };
   slug?: string | null;
   meta?: {
@@ -1869,6 +1879,10 @@ export interface NeedsListSelect<T extends boolean = true> {
   brandDetail?: T;
   urgency?: T;
   stockStatus?: T;
+  currentStock?: T;
+  targetStock?: T;
+  unit?: T;
+  priority?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2143,9 +2157,17 @@ export interface PayloadQueryPresetsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  /**
+   * Başlık çubuğunda gösterilecek logo (opsiyonel — yoksa marka adı metin olarak gösterilir)
+   */
+  logo?: (number | null) | Media;
+  /**
+   * Logo yoksa veya alt metin olarak gösterilecek marka adı
+   */
+  brandName?: string | null;
   navItems?:
     | {
-        link: {
+        link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
@@ -2158,8 +2180,23 @@ export interface Header {
                 value: number | Post;
               } | null);
           url?: string | null;
-          label: string;
         };
+        label: string;
+        /**
+         * Menü açıldığında gösterilecek görsel
+         */
+        image?: (number | null) | Media;
+        /**
+         * Bu öğeyi bağış butonu olarak işaretle
+         */
+        isCta?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        label: string;
+        url: string;
         id?: string | null;
       }[]
     | null;
@@ -2201,6 +2238,188 @@ export interface Footer {
  */
 export interface SiteSetting {
   id: number;
+  /**
+   * Ana sayfa bölümlerini sıralayın, etkinleştirin veya devre dışı bırakın.
+   */
+  homepageBlocks?:
+    | (
+        | {
+            enabled?: boolean | null;
+            urgentBadge?: string | null;
+            headline?: string | null;
+            description?: string | null;
+            quoteText?: string | null;
+            quoteAuthor?: string | null;
+            leftImage?: (number | null) | Media;
+            rightImage?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeHero';
+          }
+        | {
+            enabled?: boolean | null;
+            metrics?:
+              | {
+                  label: string;
+                  value: string;
+                  name: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeStats';
+          }
+        | {
+            enabled?: boolean | null;
+            sectionTitle?: string | null;
+            founderImage?: (number | null) | Media;
+            founderCaption?: string | null;
+            founderName?: string | null;
+            originTitle?: string | null;
+            originQuote?: string | null;
+            originParagraph1?: string | null;
+            originParagraph2?: string | null;
+            missionText?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeStory';
+          }
+        | {
+            enabled?: boolean | null;
+            sectionTitle?: string | null;
+            viewAllLabel?: string | null;
+            viewAllLink?: string | null;
+            photoCountTemplate?: string | null;
+            activities?:
+              | {
+                  key: 'feeding' | 'treatment' | 'spaying' | 'emergency' | 'vaccination' | 'shelter';
+                  title: string;
+                  description?: string | null;
+                  images?: (number | Media)[] | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeOurWork';
+          }
+        | {
+            enabled?: boolean | null;
+            sectionTitle?: string | null;
+            viewAllLabel?: string | null;
+            viewAllLink?: string | null;
+            limit?: number | null;
+            adoptCta?: string | null;
+            adoptCtaSecondaryLabel?: string | null;
+            typeLabels?: {
+              kedi?: string | null;
+              kopek?: string | null;
+            };
+            statusLabels?: {
+              tedavide?: string | null;
+              kaliciBakim?: string | null;
+              acil?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeFeaturedAnimals';
+          }
+        | {
+            enabled?: boolean | null;
+            sectionTitle?: string | null;
+            viewAllLabel?: string | null;
+            viewAllLink?: string | null;
+            limit?: number | null;
+            labels?: {
+              before?: string | null;
+              after?: string | null;
+              completed?: string | null;
+              collected?: string | null;
+              target?: string | null;
+              funded?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeSuccessStories';
+          }
+        | {
+            enabled?: boolean | null;
+            sectionTitle?: string | null;
+            viewAllLabel?: string | null;
+            viewAllLink?: string | null;
+            tickerText?: string | null;
+            limit?: number | null;
+            labels?: {
+              codeRed?: string | null;
+              case?: string | null;
+              active?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeActiveEmergencies';
+          }
+        | {
+            enabled?: boolean | null;
+            slogan?: string | null;
+            ibanTitle?: string | null;
+            internationalTitle?: string | null;
+            volunteerTitle?: string | null;
+            volunteerDescription?: string | null;
+            internationalPlaceholder?: string | null;
+            labels?: {
+              copy?: string | null;
+              comingSoon?: string | null;
+              ibanPlaceholder?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeSupportCards';
+          }
+        | {
+            enabled?: boolean | null;
+            sectionTitle?: string | null;
+            viewAllLabel?: string | null;
+            viewAllLink?: string | null;
+            limit?: number | null;
+            labels?: {
+              needed?: string | null;
+              inStock?: string | null;
+              stockLevel?: string | null;
+              priorityAcil?: string | null;
+              priorityYuksek?: string | null;
+              priorityOrta?: string | null;
+              priorityDusuk?: string | null;
+              unitKutu?: string | null;
+              unitKg?: string | null;
+              unitAdet?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeNeedsList';
+          }
+        | {
+            enabled?: boolean | null;
+            sectionTitle?: string | null;
+            viewAllLabel?: string | null;
+            viewAllLink?: string | null;
+            limit?: number | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeRecentPosts';
+          }
+        | {
+            enabled?: boolean | null;
+            title?: string | null;
+            description?: string | null;
+            ctaLabel?: string | null;
+            ctaLink?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'homeTransparencyBanner';
+          }
+      )[]
+    | null;
   bankAccounts?:
     | {
         bankName: string;
@@ -2226,15 +2445,6 @@ export interface SiteSetting {
   email?: string | null;
   whatsapp?: string | null;
   instagram?: string | null;
-  paypalLink?: string | null;
-  wiseLink?: string | null;
-  ourWorkActivities?:
-    | {
-        key: 'feeding' | 'treatment' | 'spaying' | 'emergency' | 'vaccination' | 'shelter';
-        images?: (number | Media)[] | null;
-        id?: string | null;
-      }[]
-    | null;
   catsCount?: number | null;
   dogsCount?: number | null;
   treatedCount?: number | null;
@@ -2245,9 +2455,430 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ui-strings".
+ */
+export interface UiString {
+  id: number;
+  common?: {
+    siteName?: string | null;
+    search?: string | null;
+    loading?: string | null;
+    goHome?: string | null;
+    notFound?: string | null;
+    backToHome?: string | null;
+  };
+  layout?: {
+    skipToContent?: string | null;
+    siteTitle?: string | null;
+    siteDescription?: string | null;
+    header?: {
+      home?: string | null;
+      posts?: string | null;
+      search?: string | null;
+      animals?: string | null;
+      emergency?: string | null;
+      blog?: string | null;
+      donate?: string | null;
+      volunteer?: string | null;
+      openMenu?: string | null;
+      closeMenu?: string | null;
+    };
+    languageSwitcher?: {
+      label?: string | null;
+    };
+    mobileMenu?: {
+      title?: string | null;
+    };
+    footer?: {
+      copyright?: string | null;
+      bankInfo?: string | null;
+      contactUs?: string | null;
+      quickLinks?: string | null;
+      international?: string | null;
+      copyIban?: string | null;
+      followUs?: string | null;
+      description?: string | null;
+    };
+    breadcrumb?: {
+      home?: string | null;
+    };
+    mobileDonate?: {
+      cta?: string | null;
+    };
+  };
+  search?: {
+    title?: string | null;
+    placeholder?: string | null;
+    noResults?: string | null;
+    modal?: {
+      placeholder?: string | null;
+      noResults?: string | null;
+      shortcut?: string | null;
+    };
+  };
+  posts?: {
+    title?: string | null;
+    readMore?: string | null;
+    noPosts?: string | null;
+  };
+  animals?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    filter?: {
+      all?: string | null;
+      kedi?: string | null;
+      kopek?: string | null;
+      noResults?: string | null;
+      tedavide?: string | null;
+      kaliciBakim?: string | null;
+      acil?: string | null;
+    };
+    detail?: {
+      story?: string | null;
+      needs?: string | null;
+      photos?: string | null;
+      type?: string | null;
+      age?: string | null;
+      gender?: string | null;
+      status?: string | null;
+      erkek?: string | null;
+      disi?: string | null;
+      bilinmiyor?: string | null;
+      back?: string | null;
+      donate?: string | null;
+      noPhotos?: string | null;
+      whatsappMessage?: string | null;
+    };
+    lightbox?: {
+      close?: string | null;
+      prev?: string | null;
+      next?: string | null;
+      imageOf?: string | null;
+    };
+  };
+  emergency?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    activeCases?: string | null;
+    collected?: string | null;
+    target?: string | null;
+    progress?: string | null;
+    noActive?: string | null;
+    completedCases?: string | null;
+    donateButton?: string | null;
+    detail?: {
+      description?: string | null;
+      updates?: string | null;
+      beforeAfter?: string | null;
+      before?: string | null;
+      after?: string | null;
+      relatedAnimal?: string | null;
+      noUpdates?: string | null;
+    };
+  };
+  donate?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    hero?: {
+      title?: string | null;
+      badge?: string | null;
+      subtitle?: string | null;
+    };
+    iban?: {
+      title?: string | null;
+      bank?: string | null;
+      accountHolder?: string | null;
+      iban?: string | null;
+      copy?: string | null;
+      placeholder?: string | null;
+    };
+    international?: {
+      title?: string | null;
+      comingSoon?: string | null;
+      placeholder?: string | null;
+    };
+    volunteer?: {
+      title?: string | null;
+      description?: string | null;
+      cta?: string | null;
+    };
+    ticker?: {
+      slogan1?: string | null;
+      slogan2?: string | null;
+      slogan3?: string | null;
+      cats?: string | null;
+      dogs?: string | null;
+      treated?: string | null;
+    };
+    cards?: {
+      title?: string | null;
+      foodTitle?: string | null;
+      foodDescription?: string | null;
+      vetTitle?: string | null;
+      vetDescription?: string | null;
+      surgeryTitle?: string | null;
+      surgeryDescription?: string | null;
+    };
+    faq?: {
+      title?: string | null;
+      q1?: string | null;
+      a1?: string | null;
+      q2?: string | null;
+      a2?: string | null;
+      q3?: string | null;
+      a3?: string | null;
+      q4?: string | null;
+      a4?: string | null;
+      q5?: string | null;
+      a5?: string | null;
+    };
+    transparency?: {
+      title?: string | null;
+      description?: string | null;
+      reports?: string | null;
+    };
+  };
+  supplies?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    table?: {
+      product?: string | null;
+      brand?: string | null;
+      urgency?: string | null;
+      stock?: string | null;
+    };
+    urgency?: {
+      acil?: string | null;
+      orta?: string | null;
+      yeterli?: string | null;
+    };
+    shipping?: {
+      title?: string | null;
+      description?: string | null;
+      cargo?: string | null;
+      inPerson?: string | null;
+      online?: string | null;
+    };
+    sponsor?: {
+      title?: string | null;
+      description?: string | null;
+      cta?: string | null;
+    };
+    empty?: string | null;
+  };
+  transparency?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    report?: {
+      expenses?: string | null;
+      totalExpense?: string | null;
+      donations?: string | null;
+      totalDonation?: string | null;
+      category?: string | null;
+      amount?: string | null;
+      comparison?: string | null;
+      documents?: string | null;
+    };
+    empty?: string | null;
+    currency?: string | null;
+  };
+  blog?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    filter?: {
+      all?: string | null;
+      kurtarma?: string | null;
+      tedavi?: string | null;
+      gunluk?: string | null;
+      duyuru?: string | null;
+      etkinlik?: string | null;
+    };
+    readMore?: string | null;
+    share?: {
+      title?: string | null;
+      twitter?: string | null;
+      facebook?: string | null;
+      whatsapp?: string | null;
+      copy?: string | null;
+      copied?: string | null;
+    };
+    tags?: string | null;
+    empty?: string | null;
+    back?: string | null;
+  };
+  volunteer?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    areas?: {
+      title?: string | null;
+      fosterTitle?: string | null;
+      fosterDescription?: string | null;
+      healthTitle?: string | null;
+      healthDescription?: string | null;
+      feedingTitle?: string | null;
+      feedingDescription?: string | null;
+      shelterTitle?: string | null;
+      shelterDescription?: string | null;
+    };
+    stats?: {
+      title?: string | null;
+      volunteers?: string | null;
+      animalsHelped?: string | null;
+      feedingPoints?: string | null;
+    };
+    faq?: {
+      title?: string | null;
+      q1?: string | null;
+      a1?: string | null;
+      q2?: string | null;
+      a2?: string | null;
+      q3?: string | null;
+      a3?: string | null;
+      q4?: string | null;
+      a4?: string | null;
+    };
+    cta?: {
+      title?: string | null;
+      description?: string | null;
+      whatsappMessage?: string | null;
+    };
+  };
+  vision?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    association?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    shortTerm?: {
+      title?: string | null;
+      shelterTitle?: string | null;
+      shelterDescription?: string | null;
+      spayTitle?: string | null;
+      spayDescription?: string | null;
+      volunteersTitle?: string | null;
+      volunteersDescription?: string | null;
+      clinicTitle?: string | null;
+      clinicDescription?: string | null;
+    };
+    longTerm?: {
+      title?: string | null;
+      ngoTitle?: string | null;
+      ngoDescription?: string | null;
+      vetClinicTitle?: string | null;
+      vetClinicDescription?: string | null;
+      fosterTitle?: string | null;
+      fosterDescription?: string | null;
+      awarenessTitle?: string | null;
+      awarenessDescription?: string | null;
+    };
+    network?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    cta?: {
+      title?: string | null;
+      description?: string | null;
+      donate?: string | null;
+      volunteer?: string | null;
+    };
+  };
+  contact?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+    whatsapp?: {
+      label?: string | null;
+      description?: string | null;
+      message?: string | null;
+    };
+    phone?: {
+      label?: string | null;
+      description?: string | null;
+    };
+    email?: {
+      label?: string | null;
+      description?: string | null;
+    };
+    instagram?: {
+      label?: string | null;
+      description?: string | null;
+    };
+  };
+  notFound?: {
+    title?: string | null;
+    message?: string | null;
+    goHome?: string | null;
+    viewAnimals?: string | null;
+    donate?: string | null;
+  };
+  home?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    instagram?: {
+      title?: string | null;
+      followUs?: string | null;
+    };
+    volunteerCta?: {
+      title?: string | null;
+      description?: string | null;
+      cta?: string | null;
+    };
+  };
+  ourWork?: {
+    meta?: {
+      title?: string | null;
+      description?: string | null;
+    };
+    title?: string | null;
+    subtitle?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  brandName?: T;
   navItems?:
     | T
     | {
@@ -2258,8 +2889,17 @@ export interface HeaderSelect<T extends boolean = true> {
               newTab?: T;
               reference?: T;
               url?: T;
-              label?: T;
             };
+        label?: T;
+        image?: T;
+        isCta?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -2294,6 +2934,208 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  homepageBlocks?:
+    | T
+    | {
+        homeHero?:
+          | T
+          | {
+              enabled?: T;
+              urgentBadge?: T;
+              headline?: T;
+              description?: T;
+              quoteText?: T;
+              quoteAuthor?: T;
+              leftImage?: T;
+              rightImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        homeStats?:
+          | T
+          | {
+              enabled?: T;
+              metrics?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    name?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        homeStory?:
+          | T
+          | {
+              enabled?: T;
+              sectionTitle?: T;
+              founderImage?: T;
+              founderCaption?: T;
+              founderName?: T;
+              originTitle?: T;
+              originQuote?: T;
+              originParagraph1?: T;
+              originParagraph2?: T;
+              missionText?: T;
+              id?: T;
+              blockName?: T;
+            };
+        homeOurWork?:
+          | T
+          | {
+              enabled?: T;
+              sectionTitle?: T;
+              viewAllLabel?: T;
+              viewAllLink?: T;
+              photoCountTemplate?: T;
+              activities?:
+                | T
+                | {
+                    key?: T;
+                    title?: T;
+                    description?: T;
+                    images?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        homeFeaturedAnimals?:
+          | T
+          | {
+              enabled?: T;
+              sectionTitle?: T;
+              viewAllLabel?: T;
+              viewAllLink?: T;
+              limit?: T;
+              adoptCta?: T;
+              adoptCtaSecondaryLabel?: T;
+              typeLabels?:
+                | T
+                | {
+                    kedi?: T;
+                    kopek?: T;
+                  };
+              statusLabels?:
+                | T
+                | {
+                    tedavide?: T;
+                    kaliciBakim?: T;
+                    acil?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        homeSuccessStories?:
+          | T
+          | {
+              enabled?: T;
+              sectionTitle?: T;
+              viewAllLabel?: T;
+              viewAllLink?: T;
+              limit?: T;
+              labels?:
+                | T
+                | {
+                    before?: T;
+                    after?: T;
+                    completed?: T;
+                    collected?: T;
+                    target?: T;
+                    funded?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        homeActiveEmergencies?:
+          | T
+          | {
+              enabled?: T;
+              sectionTitle?: T;
+              viewAllLabel?: T;
+              viewAllLink?: T;
+              tickerText?: T;
+              limit?: T;
+              labels?:
+                | T
+                | {
+                    codeRed?: T;
+                    case?: T;
+                    active?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        homeSupportCards?:
+          | T
+          | {
+              enabled?: T;
+              slogan?: T;
+              ibanTitle?: T;
+              internationalTitle?: T;
+              volunteerTitle?: T;
+              volunteerDescription?: T;
+              internationalPlaceholder?: T;
+              labels?:
+                | T
+                | {
+                    copy?: T;
+                    comingSoon?: T;
+                    ibanPlaceholder?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        homeNeedsList?:
+          | T
+          | {
+              enabled?: T;
+              sectionTitle?: T;
+              viewAllLabel?: T;
+              viewAllLink?: T;
+              limit?: T;
+              labels?:
+                | T
+                | {
+                    needed?: T;
+                    inStock?: T;
+                    stockLevel?: T;
+                    priorityAcil?: T;
+                    priorityYuksek?: T;
+                    priorityOrta?: T;
+                    priorityDusuk?: T;
+                    unitKutu?: T;
+                    unitKg?: T;
+                    unitAdet?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        homeRecentPosts?:
+          | T
+          | {
+              enabled?: T;
+              sectionTitle?: T;
+              viewAllLabel?: T;
+              viewAllLink?: T;
+              limit?: T;
+              id?: T;
+              blockName?: T;
+            };
+        homeTransparencyBanner?:
+          | T
+          | {
+              enabled?: T;
+              title?: T;
+              description?: T;
+              ctaLabel?: T;
+              ctaLink?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
   bankAccounts?:
     | T
     | {
@@ -2310,20 +3152,566 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   email?: T;
   whatsapp?: T;
   instagram?: T;
-  paypalLink?: T;
-  wiseLink?: T;
-  ourWorkActivities?:
-    | T
-    | {
-        key?: T;
-        images?: T;
-        id?: T;
-      };
   catsCount?: T;
   dogsCount?: T;
   treatedCount?: T;
   spayedCount?: T;
   vaccinatedCount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ui-strings_select".
+ */
+export interface UiStringsSelect<T extends boolean = true> {
+  common?:
+    | T
+    | {
+        siteName?: T;
+        search?: T;
+        loading?: T;
+        goHome?: T;
+        notFound?: T;
+        backToHome?: T;
+      };
+  layout?:
+    | T
+    | {
+        skipToContent?: T;
+        siteTitle?: T;
+        siteDescription?: T;
+        header?:
+          | T
+          | {
+              home?: T;
+              posts?: T;
+              search?: T;
+              animals?: T;
+              emergency?: T;
+              blog?: T;
+              donate?: T;
+              volunteer?: T;
+              openMenu?: T;
+              closeMenu?: T;
+            };
+        languageSwitcher?:
+          | T
+          | {
+              label?: T;
+            };
+        mobileMenu?:
+          | T
+          | {
+              title?: T;
+            };
+        footer?:
+          | T
+          | {
+              copyright?: T;
+              bankInfo?: T;
+              contactUs?: T;
+              quickLinks?: T;
+              international?: T;
+              copyIban?: T;
+              followUs?: T;
+              description?: T;
+            };
+        breadcrumb?:
+          | T
+          | {
+              home?: T;
+            };
+        mobileDonate?:
+          | T
+          | {
+              cta?: T;
+            };
+      };
+  search?:
+    | T
+    | {
+        title?: T;
+        placeholder?: T;
+        noResults?: T;
+        modal?:
+          | T
+          | {
+              placeholder?: T;
+              noResults?: T;
+              shortcut?: T;
+            };
+      };
+  posts?:
+    | T
+    | {
+        title?: T;
+        readMore?: T;
+        noPosts?: T;
+      };
+  animals?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        filter?:
+          | T
+          | {
+              all?: T;
+              kedi?: T;
+              kopek?: T;
+              noResults?: T;
+              tedavide?: T;
+              kaliciBakim?: T;
+              acil?: T;
+            };
+        detail?:
+          | T
+          | {
+              story?: T;
+              needs?: T;
+              photos?: T;
+              type?: T;
+              age?: T;
+              gender?: T;
+              status?: T;
+              erkek?: T;
+              disi?: T;
+              bilinmiyor?: T;
+              back?: T;
+              donate?: T;
+              noPhotos?: T;
+              whatsappMessage?: T;
+            };
+        lightbox?:
+          | T
+          | {
+              close?: T;
+              prev?: T;
+              next?: T;
+              imageOf?: T;
+            };
+      };
+  emergency?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        activeCases?: T;
+        collected?: T;
+        target?: T;
+        progress?: T;
+        noActive?: T;
+        completedCases?: T;
+        donateButton?: T;
+        detail?:
+          | T
+          | {
+              description?: T;
+              updates?: T;
+              beforeAfter?: T;
+              before?: T;
+              after?: T;
+              relatedAnimal?: T;
+              noUpdates?: T;
+            };
+      };
+  donate?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        hero?:
+          | T
+          | {
+              title?: T;
+              badge?: T;
+              subtitle?: T;
+            };
+        iban?:
+          | T
+          | {
+              title?: T;
+              bank?: T;
+              accountHolder?: T;
+              iban?: T;
+              copy?: T;
+              placeholder?: T;
+            };
+        international?:
+          | T
+          | {
+              title?: T;
+              comingSoon?: T;
+              placeholder?: T;
+            };
+        volunteer?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              cta?: T;
+            };
+        ticker?:
+          | T
+          | {
+              slogan1?: T;
+              slogan2?: T;
+              slogan3?: T;
+              cats?: T;
+              dogs?: T;
+              treated?: T;
+            };
+        cards?:
+          | T
+          | {
+              title?: T;
+              foodTitle?: T;
+              foodDescription?: T;
+              vetTitle?: T;
+              vetDescription?: T;
+              surgeryTitle?: T;
+              surgeryDescription?: T;
+            };
+        faq?:
+          | T
+          | {
+              title?: T;
+              q1?: T;
+              a1?: T;
+              q2?: T;
+              a2?: T;
+              q3?: T;
+              a3?: T;
+              q4?: T;
+              a4?: T;
+              q5?: T;
+              a5?: T;
+            };
+        transparency?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              reports?: T;
+            };
+      };
+  supplies?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        table?:
+          | T
+          | {
+              product?: T;
+              brand?: T;
+              urgency?: T;
+              stock?: T;
+            };
+        urgency?:
+          | T
+          | {
+              acil?: T;
+              orta?: T;
+              yeterli?: T;
+            };
+        shipping?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              cargo?: T;
+              inPerson?: T;
+              online?: T;
+            };
+        sponsor?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              cta?: T;
+            };
+        empty?: T;
+      };
+  transparency?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        report?:
+          | T
+          | {
+              expenses?: T;
+              totalExpense?: T;
+              donations?: T;
+              totalDonation?: T;
+              category?: T;
+              amount?: T;
+              comparison?: T;
+              documents?: T;
+            };
+        empty?: T;
+        currency?: T;
+      };
+  blog?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        filter?:
+          | T
+          | {
+              all?: T;
+              kurtarma?: T;
+              tedavi?: T;
+              gunluk?: T;
+              duyuru?: T;
+              etkinlik?: T;
+            };
+        readMore?: T;
+        share?:
+          | T
+          | {
+              title?: T;
+              twitter?: T;
+              facebook?: T;
+              whatsapp?: T;
+              copy?: T;
+              copied?: T;
+            };
+        tags?: T;
+        empty?: T;
+        back?: T;
+      };
+  volunteer?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        areas?:
+          | T
+          | {
+              title?: T;
+              fosterTitle?: T;
+              fosterDescription?: T;
+              healthTitle?: T;
+              healthDescription?: T;
+              feedingTitle?: T;
+              feedingDescription?: T;
+              shelterTitle?: T;
+              shelterDescription?: T;
+            };
+        stats?:
+          | T
+          | {
+              title?: T;
+              volunteers?: T;
+              animalsHelped?: T;
+              feedingPoints?: T;
+            };
+        faq?:
+          | T
+          | {
+              title?: T;
+              q1?: T;
+              a1?: T;
+              q2?: T;
+              a2?: T;
+              q3?: T;
+              a3?: T;
+              q4?: T;
+              a4?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              whatsappMessage?: T;
+            };
+      };
+  vision?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        association?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        shortTerm?:
+          | T
+          | {
+              title?: T;
+              shelterTitle?: T;
+              shelterDescription?: T;
+              spayTitle?: T;
+              spayDescription?: T;
+              volunteersTitle?: T;
+              volunteersDescription?: T;
+              clinicTitle?: T;
+              clinicDescription?: T;
+            };
+        longTerm?:
+          | T
+          | {
+              title?: T;
+              ngoTitle?: T;
+              ngoDescription?: T;
+              vetClinicTitle?: T;
+              vetClinicDescription?: T;
+              fosterTitle?: T;
+              fosterDescription?: T;
+              awarenessTitle?: T;
+              awarenessDescription?: T;
+            };
+        network?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              donate?: T;
+              volunteer?: T;
+            };
+      };
+  contact?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        whatsapp?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+              message?: T;
+            };
+        phone?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+            };
+        email?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+            };
+        instagram?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+            };
+      };
+  notFound?:
+    | T
+    | {
+        title?: T;
+        message?: T;
+        goHome?: T;
+        viewAnimals?: T;
+        donate?: T;
+      };
+  home?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        instagram?:
+          | T
+          | {
+              title?: T;
+              followUs?: T;
+            };
+        volunteerCta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              cta?: T;
+            };
+      };
+  ourWork?:
+    | T
+    | {
+        meta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+            };
+        title?: T;
+        subtitle?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

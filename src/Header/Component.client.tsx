@@ -2,7 +2,6 @@
 
 import { Link, usePathname } from '@/i18n/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import { SearchIcon, Menu, X, Heart } from 'lucide-react'
 import gsap from 'gsap'
 
@@ -12,20 +11,38 @@ import FlowingMenu from '@/components/FlowingMenu'
 import { StaggeredMenu } from '@/components/StaggeredMenu'
 import type { FlowingMenuItem } from '@/components/FlowingMenu'
 import type { StaggeredMenuItem, StaggeredMenuSocialItem } from '@/components/StaggeredMenu'
+import type { Header as HeaderType, Media, UiString } from '@/payload-types'
 
-const NAV_ITEMS = [
-  { href: '/', labelKey: 'home', image: '/images/menu/home.jpg' },
-  { href: '/canlarimiz', labelKey: 'animals', image: '/images/menu/animals.jpg' },
-  { href: '/acil-vakalar', labelKey: 'emergency', image: '/images/menu/emergency.jpg' },
-  { href: '/gonullu-ol', labelKey: 'volunteer', image: '/images/menu/volunteer.jpg' },
-  { href: '/gunluk', labelKey: 'blog', image: '/images/menu/blog.jpg' },
-  { href: '/destek-ol', labelKey: 'donate', image: '/images/menu/donate.jpg', isCta: true },
-] as const
+type HeaderLabels = NonNullable<UiString['layout']>['header']
+type SearchLabels = UiString['search']
+type NavItem = NonNullable<HeaderType['navItems']>[number]
+type SocialLink = NonNullable<HeaderType['socialLinks']>[number]
 
-const SOCIAL_ITEMS: StaggeredMenuSocialItem[] = [
-  { label: 'Instagram', link: 'https://instagram.com/umutpatileri' },
-  { label: 'Twitter', link: 'https://twitter.com/umutpatileri' },
-]
+function resolveNavHref(item: NavItem): string {
+  const link = item.link
+  if (!link) return '/'
+  if (link.type === 'reference' && link.reference) {
+    const ref = link.reference
+    if (typeof ref.value === 'object' && ref.value !== null && 'slug' in ref.value) {
+      const slug = ref.value.slug
+      if (ref.relationTo === 'pages') {
+        return slug === 'home' ? '/' : `/${slug}`
+      }
+      if (ref.relationTo === 'posts') {
+        return `/gunluk/${slug}`
+      }
+    }
+    return '/'
+  }
+  return link.url || '/'
+}
+
+function resolveNavImage(item: NavItem): string {
+  if (item.image && typeof item.image === 'object') {
+    return (item.image as Media).url || '/images/menu/placeholder.jpg'
+  }
+  return '/images/menu/placeholder.jpg'
+}
 
 function findClosestEdge4(e: React.MouseEvent, el: HTMLElement): 'top' | 'bottom' | 'left' | 'right' {
   const rect = el.getBoundingClientRect()
@@ -58,7 +75,6 @@ const NavCellLink: React.FC<{
   const containerRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  // Set initial overlay position via GSAP (not CSS) to avoid conflicts
   useEffect(() => {
     const overlay = overlayRef.current
     if (!overlay) return
@@ -112,9 +128,22 @@ const NavCellLink: React.FC<{
   )
 }
 
-export const HeaderClient: React.FC = () => {
+function getLabel(labels: HeaderLabels | null | undefined, key: string): string {
+  if (!labels) return key
+  return (labels as Record<string, string | null | undefined>)[key] || key
+}
+
+type Props = {
+  headerLabels?: HeaderLabels | null
+  searchLabels?: SearchLabels | null
+  navItems?: NavItem[] | null
+  socialLinks?: SocialLink[] | null
+  brandName?: string | null
+  logo?: (number | null) | Media
+}
+
+export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navItems, socialLinks, brandName, logo }) => {
   const pathname = usePathname()
-  const t = useTranslations('layout.header')
 
   const headerRef = useRef<HTMLElement>(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -134,91 +163,121 @@ export const HeaderClient: React.FC = () => {
 
   const handleCloseMenu = useCallback(() => setMenuOpen(false), [])
 
-  const flowingItems: FlowingMenuItem[] = NAV_ITEMS.map(({ href, labelKey, image, ...rest }) => ({
-    href,
-    text: t(labelKey),
-    image,
-    isCta: 'isCta' in rest ? rest.isCta : undefined,
+  const items = navItems ?? []
+  const brand = brandName || 'UMUT PATİLERİ'
+  const logoUrl = logo && typeof logo === 'object' ? (logo as Media).url : null
+
+  const flowingItems: FlowingMenuItem[] = items.map((item) => ({
+    href: resolveNavHref(item),
+    text: item.label || '',
+    image: resolveNavImage(item),
+    isCta: item.isCta || undefined,
   }))
 
-  const staggeredItems: StaggeredMenuItem[] = NAV_ITEMS.map(({ href, labelKey, image, ...rest }) => ({
-    href,
-    label: t(labelKey),
-    image,
-    isCta: 'isCta' in rest ? rest.isCta : undefined,
+  const staggeredItems: StaggeredMenuItem[] = items.map((item) => ({
+    href: resolveNavHref(item),
+    label: item.label || '',
+    image: resolveNavImage(item),
+    isCta: item.isCta || undefined,
+  }))
+
+  const staggeredSocialItems: StaggeredMenuSocialItem[] = (socialLinks ?? []).map((s) => ({
+    label: s.label,
+    link: s.url,
   }))
 
   return (
     <>
       <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border bg-background">
-        {/* Desktop: 8-column grid nav */}
-        <div className="hidden lg:grid" style={{ gridTemplateColumns: 'auto repeat(5, 1fr) auto auto auto', gap: '1px', background: 'var(--foreground)' }}>
-          {/* Brand */}
-          <div className="panel flex items-center py-3 px-4">
-            <Link href="/" className="t-meta font-bold uppercase tracking-widest whitespace-nowrap">
-              UMUT PATİLERİ
-            </Link>
-          </div>
+        {/* Desktop: grid nav */}
+        {(() => {
+          const barItems = items.filter((item) => {
+            const href = resolveNavHref(item)
+            return href !== '/' && !item.isCta
+          })
+          const ctaItem = items.find((item) => item.isCta)
+          const colTemplate = `auto repeat(${barItems.length}, 1fr) auto${ctaItem ? ' auto' : ''} auto`
+          return (
+            <div className="hidden lg:grid" style={{ gridTemplateColumns: colTemplate, gap: '1px', background: 'var(--foreground)' }}>
+              {/* Brand */}
+              <div className="panel flex items-center py-3 px-4">
+                <Link href="/" className="flex items-center gap-2">
+                  {logoUrl ? (
+                    <img src={logoUrl} alt={brand} className="h-6 w-auto" />
+                  ) : (
+                    <span className="t-meta font-bold uppercase tracking-widest whitespace-nowrap">{brand}</span>
+                  )}
+                </Link>
+              </div>
 
-          {/* Nav links (excluding home and donate CTA) */}
-          {NAV_ITEMS.filter(item => item.href !== '/' && !('isCta' in item && item.isCta)).map(({ href, labelKey }) => {
-            const isActive = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
-            return (
-              <NavCellLink key={href} href={href} isActive={isActive}>
-                {t(labelKey)}
-              </NavCellLink>
-            )
-          })}
+              {/* Nav links (excluding home and CTA) */}
+              {barItems.map((item) => {
+                const href = resolveNavHref(item)
+                const isActive = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
+                return (
+                  <NavCellLink key={item.id || href} href={href} isActive={isActive}>
+                    {item.label || ''}
+                  </NavCellLink>
+                )
+              })}
 
-          {/* Language + Search */}
-          <div className="panel flex items-center justify-center py-3 px-2 gap-2">
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="p-1"
-              aria-label={t('search')}
-            >
-              <SearchIcon className="size-4" />
-            </button>
-            <LanguageSwitcher className="text-xs" />
-          </div>
+              {/* Language + Search */}
+              <div className="panel flex items-center justify-center py-3 px-2 gap-2">
+                <button
+                  onClick={() => setSearchOpen(true)}
+                  className="p-1"
+                  aria-label={getLabel(headerLabels, 'search')}
+                >
+                  <SearchIcon className="size-4" />
+                </button>
+                <LanguageSwitcher className="text-xs" />
+              </div>
 
-          {/* CTA */}
-          <Link
-            href="/destek-ol"
-            className="btn-cta flex items-center gap-2 whitespace-nowrap"
-          >
-            <Heart className="size-4" />
-            {t('donate')}
-          </Link>
+              {/* CTA */}
+              {ctaItem && (
+                <Link
+                  href={resolveNavHref(ctaItem)}
+                  className="btn-cta flex items-center gap-2 whitespace-nowrap"
+                >
+                  <Heart className="size-4" />
+                  {ctaItem.label || ''}
+                </Link>
+              )}
 
-          {/* Hamburger (desktop fullscreen menu) */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="panel flex items-center justify-center py-3 px-4 transition-colors hover:bg-accent"
-            aria-label={menuOpen ? 'Close menu' : t('openMenu')}
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
+              {/* Hamburger (desktop fullscreen menu) */}
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="panel flex items-center justify-center py-3 px-4 transition-colors hover:bg-accent"
+                aria-label={menuOpen ? getLabel(headerLabels, 'closeMenu') : getLabel(headerLabels, 'openMenu')}
+                aria-expanded={menuOpen}
+              >
+                {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+              </button>
+            </div>
+          )
+        })()}
 
         {/* Mobile: simple bar */}
         <div className="flex items-center justify-between lg:hidden border-b border-border">
-          <Link href="/" className="panel py-3 px-4 t-meta font-bold uppercase tracking-widest">
-            UMUT PATİLERİ
+          <Link href="/" className="panel py-3 px-4 flex items-center gap-2">
+            {logoUrl ? (
+              <img src={logoUrl} alt={brand} className="h-6 w-auto" />
+            ) : (
+              <span className="t-meta font-bold uppercase tracking-widest">{brand}</span>
+            )}
           </Link>
           <div className="flex items-center">
             <button
               onClick={() => setSearchOpen(true)}
               className="panel py-3 px-3 border-l border-border"
-              aria-label={t('search')}
+              aria-label={getLabel(headerLabels, 'search')}
             >
               <SearchIcon className="size-5" />
             </button>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="panel py-3 px-3 border-l border-border"
-              aria-label={menuOpen ? 'Close menu' : t('openMenu')}
+              aria-label={menuOpen ? getLabel(headerLabels, 'closeMenu') : getLabel(headerLabels, 'openMenu')}
               aria-expanded={menuOpen}
             >
               {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -241,14 +300,14 @@ export const HeaderClient: React.FC = () => {
       <div className="lg:hidden">
         <StaggeredMenu
           items={staggeredItems}
-          socialItems={SOCIAL_ITEMS}
+          socialItems={staggeredSocialItems}
           isOpen={menuOpen}
           onClose={handleCloseMenu}
           activePathname={pathname}
         />
       </div>
 
-      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
+      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} labels={searchLabels} />
     </>
   )
 }

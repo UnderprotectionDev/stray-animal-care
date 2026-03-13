@@ -20,6 +20,7 @@ import { Volunteers } from './collections/Volunteers'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { SiteSettings } from './SiteSettings/config'
+import { UIStrings } from './globals/UIStrings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -78,11 +79,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    push: process.env.DB_PUSH === 'true',
+    push: true,
   }),
   collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, VetRecords, Events, Volunteers, NeedsList, TransparencyReports],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, SiteSettings],
+  globals: [Header, Footer, SiteSettings, UIStrings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

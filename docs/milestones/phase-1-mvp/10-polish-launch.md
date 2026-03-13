@@ -1,8 +1,8 @@
-# M10: Polish, Search, Instagram & Launch — Done ✅
+# M10: Polish, Search & Launch — Done
 
 ## Description
 
-Final MVP milestone — implement site-wide search, remaining pages (Volunteer, Vision), custom paw cursor, animations, full SEO setup, accessibility improvements, and performance optimization.
+Final MVP milestone — implement site-wide search, remaining pages (Volunteer, Vision), full SEO setup, accessibility improvements, and performance optimization. Note: PawCursor and ScrollReveal were removed during the Mint System redesign.
 
 ## Dependencies
 
@@ -14,11 +14,10 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 ## Scope
 
 - Site-wide search (SearchModal with Cmd+K)
-- Instagram placeholder (stays as-is, no API token)
+- Instagram integration (skipped — section removed from homepage in Mint System redesign)
 - Volunteer page (`/[locale]/gonullu-ol`)
 - Vision page (`/[locale]/gelecek-vizyonu`)
-- Custom paw cursor (desktop only)
-- Motion (Framer Motion) scroll animations
+- GSAP animation components (BlurText, CountUp, FlowingMenu, RotatingText, SplitText, StaggeredMenu)
 - Full SEO (dynamic sitemap, robots.ts, JSON-LD)
 - Accessibility improvements (skip nav, focus indicators)
 - Performance optimization
@@ -27,18 +26,14 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 
 ### T10.1: Build Search module
 
-**What:** Create the site-wide search functionality with a search bar/modal, results page, and URL state management via Nuqs.
+**What:** Create the site-wide search functionality with a search modal and URL state management via Nuqs.
 
 **Files:**
-- `src/modules/search/components/SearchBar.tsx`
-- `src/modules/search/components/SearchModal.tsx`
-- `src/modules/search/components/SearchResults.tsx`
-- `src/modules/search/lib/queries.ts`
-- `src/modules/search/index.ts`
+- `src/components/shared/SearchModal.tsx` (cmdk-based, Cmd+K / Ctrl+K)
 
 **Acceptance Criteria:**
 - [x] Search icon in header opens SearchModal (Cmd+K / Ctrl+K)
-- [x] Search queries via PayloadCMS search collection REST API
+- [x] Search queries via PayloadCMS search collection REST API (`/api/search`)
 - [x] Results displayed with type labels
 - [x] Empty state message when no results found
 - [x] Keyboard accessible (Escape closes)
@@ -48,15 +43,7 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 
 ### T10.2: Integrate Instagram API
 
-**What:** Replace the placeholder Instagram feed with live data from Instagram Basic Display API (or Graph API).
-
-**Files:**
-- `src/modules/instagram/lib/api.ts`
-- `src/modules/instagram/components/InstagramGrid.tsx`
-- `src/modules/instagram/index.ts`
-- `src/modules/home/components/InstagramFeed.tsx` (update)
-
-**Status:** Skipped — Instagram placeholder stays as-is (no API token available).
+**Status:** Skipped — Instagram placeholder stays as-is (no API token available). Instagram section REMOVED from homepage in Mint System redesign.
 
 ---
 
@@ -65,12 +52,7 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 **What:** Create the volunteer page with volunteer area cards, requirements, FAQ, and WhatsApp application link.
 
 **Files:**
-- `src/modules/volunteer/components/VolunteerAreas.tsx`
-- `src/modules/volunteer/components/VolunteerRequirements.tsx`
-- `src/modules/volunteer/components/VolunteerFAQ.tsx`
-- `src/modules/volunteer/components/VolunteerStats.tsx`
 - `src/app/(frontend)/[locale]/gonullu-ol/page.tsx`
-- `src/modules/volunteer/index.ts`
 
 **Acceptance Criteria:**
 - [x] Volunteer area cards: foster care, health support, feeding, shelter building
@@ -87,12 +69,7 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 **What:** Create the future vision page with NGO establishment goals, short-term and long-term targets.
 
 **Files:**
-- `src/modules/vision/components/VisionHero.tsx`
-- `src/modules/vision/components/ShortTermGoals.tsx`
-- `src/modules/vision/components/LongTermGoals.tsx`
-- `src/modules/vision/components/CallToAction.tsx`
 - `src/app/(frontend)/[locale]/gelecek-vizyonu/page.tsx`
-- `src/modules/vision/index.ts`
 
 **Acceptance Criteria:**
 - [x] NGO establishment goal section
@@ -105,36 +82,32 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 
 ---
 
-### T10.5: Implement custom paw cursor
+### T10.5: Custom paw cursor
 
-**What:** Create a custom cursor that replaces the default cursor with a paw print icon on desktop.
-
-**Files:**
-- `src/modules/shared/components/PawCursor.tsx`
-- `public/images/cursor-paw.svg` (or PNG)
-
-**Acceptance Criteria:**
-- [x] Custom paw cursor appears on desktop (> 768px)
-- [x] Default cursor on mobile/tablet (no custom cursor)
-- [x] Smooth cursor following (requestAnimationFrame)
-- [x] Respects prefers-reduced-motion
+**Status:** REMOVED — PawCursor component was deleted during the Mint System redesign (March 2026). The Mint System intentionally has no custom cursor.
 
 ---
 
-### T10.6: Add Motion + GSAP animations
+### T10.6: GSAP Animation components
 
-**What:** Add scroll-triggered animations, page transitions, and micro-interactions across the site.
+**What:** GSAP-based animation components used across the site. ScrollReveal was removed in the Mint System redesign.
 
 **Files:**
-- `src/modules/shared/components/ScrollReveal.tsx`
-- `src/modules/shared/components/CountUp.tsx`
-- `src/modules/shared/hooks/useScrollAnimation.ts`
+- `src/components/CountUp.tsx` — GSAP animated number counter (scroll-triggered)
+- `src/components/BlurText.tsx` — text fade-in with blur effect
+- `src/components/FlowingMenu.tsx` — desktop fullscreen menu with image reveals
+- `src/components/RotatingText.tsx` — text rotation animation
+- `src/components/SplitText.tsx` — character/word split animation
+- `src/components/StaggeredMenu.tsx` — mobile fullscreen menu with staggered animation
+
+**Removed:**
+- `ScrollReveal` — removed in Mint System redesign (no scroll-triggered fade-ins)
 
 **Acceptance Criteria:**
-- [x] Sections fade-in/slide-up on scroll (Motion via ScrollReveal component)
-- [x] Stat counters animate on scroll into view (CountUpNumber)
-- [x] Home page sections wrapped with ScrollReveal
-- [x] Animations respect `prefers-reduced-motion` (via useInView + media query)
+- [x] CountUp animates stat numbers on scroll into view (GSAP)
+- [x] BlurText, RotatingText, SplitText provide text animation effects
+- [x] FlowingMenu and StaggeredMenu provide GSAP-based fullscreen menus
+- [x] Animations respect `prefers-reduced-motion`
 
 ---
 
@@ -145,7 +118,7 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 **Files:**
 - `src/app/sitemap.ts`
 - `src/app/robots.ts`
-- `src/modules/shared/lib/jsonld.ts` (structured data helpers)
+- `src/lib/jsonld.ts` (structured data helpers: Organization, Article, BreadcrumbList)
 
 **Acceptance Criteria:**
 - [x] `sitemap.xml` dynamically generated via `src/app/sitemap.ts` (all pages, both locales)
@@ -173,7 +146,7 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 **What:** Optimize bundle size, images, fonts, and rendering for target performance metrics.
 
 **Acceptance Criteria:**
-- [x] Fonts preloaded with `next/font` (Plus Jakarta Sans, Inter, Caveat)
+- [x] Fonts preloaded with `next/font` (Inter, Space Grotesk)
 - [x] CSS purged by Tailwind CSS 4
 - [x] Build succeeds with no errors
 - [x] First Load JS shared: ~102KB
@@ -204,24 +177,22 @@ Final MVP milestone — implement site-wide search, remaining pages (Volunteer, 
 ## Milestone Acceptance Criteria
 
 - [x] Site-wide search works via SearchModal (Cmd+K)
-- [x] Instagram placeholder stays (no API token)
+- [x] Instagram placeholder stays (no API token) — section removed from homepage
 - [x] Volunteer and Vision pages are complete and translated
-- [x] Custom paw cursor works on desktop only
-- [x] Animations are smooth and respect reduced motion
+- [x] PawCursor: REMOVED (Mint System — no custom cursor)
+- [x] GSAP animations: CountUp, BlurText, FlowingMenu, RotatingText, SplitText, StaggeredMenu
 - [x] SEO: dynamic sitemap, robots.ts, JSON-LD helpers present
 - [x] Accessibility: skip nav, focus indicators, ARIA labels
-- [x] Performance: fonts preloaded, CSS purged, build clean
+- [x] Performance: fonts preloaded (Inter, Space Grotesk), CSS purged, build clean
 - [x] All pages work in both TR and EN
 
 ## Verification
 
 1. Open search modal — search for an animal name, blog title, and emergency case
-2. Verify Instagram section shows live posts or fallback
-3. Navigate to `/tr/gonullu-ol` — verify all sections and WhatsApp button
-4. Navigate to `/tr/gelecek-vizyonu` — verify vision content
-5. Desktop: verify custom paw cursor, mobile: verify default cursor
-6. Scroll through pages — verify animations trigger smoothly
-7. View page source — verify JSON-LD, OG tags, hreflang
-8. Check `/sitemap.xml` and `/robots.txt`
-9. Run Lighthouse audit — verify 90+ on Performance, Accessibility, SEO
-10. Verify production deployment at Vercel URL
+2. Navigate to `/tr/gonullu-ol` — verify all sections and WhatsApp button
+3. Navigate to `/tr/gelecek-vizyonu` — verify vision content
+4. Scroll through stats section — verify GSAP CountUp animations
+5. View page source — verify JSON-LD, OG tags, hreflang
+6. Check `/sitemap.xml` and `/robots.txt`
+7. Run Lighthouse audit — verify 90+ on Performance, Accessibility, SEO
+8. Verify production deployment at Vercel URL

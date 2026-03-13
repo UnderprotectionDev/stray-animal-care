@@ -1,6 +1,6 @@
 # Paws of Hope — Project Documentation
 
-> Last updated: 2026-03-10 — All milestones complete (M1-M10, M13)
+> Last updated: 2026-03-13 — All milestones complete (M1-M10, M13). Design system: Mint System (March 2026).
 
 ---
 
@@ -20,12 +20,12 @@ Paws of Hope is a donation-focused website for an individual animal lover who pe
 | CMS                 | PayloadCMS 3.x (embedded)                                  |
 | Database            | PostgreSQL (Neon)                                          |
 | Hosting             | Vercel                                                     |
-| Animation           | Motion (Framer Motion)                                     |
+| Animation           | GSAP + @gsap/react (primary) + motion (secondary)          |
 | i18n                | next-intl (frontend) + PayloadCMS i18n (CMS)               |
 | SEO                 | Next.js Metadata API + PayloadCMS SEO Plugin               |
 | Form Validation     | Zod + TanStack Form                                        |
 | Package Manager     | pnpm                                                       |
-| Linting/Formatting  | Biome                                                      |
+| Linting/Formatting  | ESLint (next/core-web-vitals + next/typescript)             |
 | Search/State        | PayloadCMS fullText search + Nuqs                          |
 
 ---

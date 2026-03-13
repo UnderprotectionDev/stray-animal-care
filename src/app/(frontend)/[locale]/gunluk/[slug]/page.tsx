@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Container } from '@/components/shared/Container'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { BlogDetail } from '@/modules/blog'
 import { getBlogPostBySlug, getBlogPostSlugs } from '@/modules/blog/lib/queries'
 import { locales, type Locale } from '@/i18n/config'
 import { getServerSideURL } from '@/utilities/getURL'
-import type { Media as MediaType } from '@/payload-types'
+import type { Media as MediaType, UiString } from '@/payload-types'
 
 export const revalidate = 300
 export const dynamicParams = true
@@ -20,10 +21,9 @@ export default async function BlogPostPage({ params }: Args) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const [post, t, tBreadcrumb] = await Promise.all([
+  const [post, ui] = await Promise.all([
     getBlogPostBySlug(slug, locale as Locale),
-    getTranslations('blog'),
-    getTranslations('layout.breadcrumb'),
+    getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>,
   ])
 
   if (!post) notFound()
@@ -31,20 +31,20 @@ export default async function BlogPostPage({ params }: Args) {
   const shareUrl = `${getServerSideURL()}/${locale}/gunluk/${post.slug}`
 
   const categoryLabels: Record<string, string> = {
-    kurtarma: t('filter.kurtarma'),
-    tedavi: t('filter.tedavi'),
-    gunluk: t('filter.gunluk'),
-    duyuru: t('filter.duyuru'),
-    etkinlik: t('filter.etkinlik'),
+    kurtarma: ui?.blog?.filter?.kurtarma ?? 'Kurtarma',
+    tedavi: ui?.blog?.filter?.tedavi ?? 'Tedavi',
+    gunluk: ui?.blog?.filter?.gunluk ?? 'Günlük',
+    duyuru: ui?.blog?.filter?.duyuru ?? 'Duyuru',
+    etkinlik: ui?.blog?.filter?.etkinlik ?? 'Etkinlik',
   }
 
   const shareLabels = {
-    title: t('share.title'),
-    twitter: t('share.twitter'),
-    facebook: t('share.facebook'),
-    whatsapp: t('share.whatsapp'),
-    copy: t('share.copy'),
-    copied: t('share.copied'),
+    title: ui?.blog?.share?.title ?? 'Paylaş',
+    twitter: ui?.blog?.share?.twitter ?? 'Twitter',
+    facebook: ui?.blog?.share?.facebook ?? 'Facebook',
+    whatsapp: ui?.blog?.share?.whatsapp ?? 'WhatsApp',
+    copy: ui?.blog?.share?.copy ?? 'Kopyala',
+    copied: ui?.blog?.share?.copied ?? 'Kopyalandı!',
   }
 
   return (
@@ -53,8 +53,8 @@ export default async function BlogPostPage({ params }: Args) {
         <div className="panel p-4">
           <PageBreadcrumb
             items={[
-              { label: tBreadcrumb('home'), href: '/' },
-              { label: t('title'), href: '/gunluk' },
+              { label: ui?.layout?.breadcrumb?.home ?? 'Ana Sayfa', href: '/' },
+              { label: ui?.blog?.title ?? 'Günlük', href: '/gunluk' },
               { label: post.title },
             ]}
           />
@@ -64,7 +64,7 @@ export default async function BlogPostPage({ params }: Args) {
           post={post}
           shareUrl={shareUrl}
           categoryLabel={post.postCategory ? categoryLabels[post.postCategory] : undefined}
-          tagsLabel={t('tags')}
+          tagsLabel={ui?.blog?.tags ?? 'Etiketler'}
           shareLabels={shareLabels}
         />
       </div>

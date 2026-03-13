@@ -25,18 +25,18 @@ const generateURL: GenerateURL<Post | Page | Animal | EmergencyCase | Event> = (
 
   if (!doc?.slug) return url
 
-  // Detect collection by unique fields
+  // Detect collection by unique fields — use locale-prefixed Turkish routes
   if (doc && 'type' in doc && 'gender' in doc) {
-    return `${url}/animals/${doc.slug}`
+    return `${url}/tr/canlarimiz/${doc.slug}`
   }
   if (doc && 'targetAmount' in doc) {
-    return `${url}/emergency/${doc.slug}`
+    return `${url}/tr/acil-vakalar/${doc.slug}`
   }
   if (doc && 'eventDate' in doc) {
-    return `${url}/events/${doc.slug}`
+    return `${url}/tr/events/${doc.slug}`
   }
 
-  return `${url}/${doc.slug}`
+  return `${url}/tr/${doc.slug}`
 }
 
 export const plugins: Plugin[] = [
@@ -71,7 +71,7 @@ export const plugins: Plugin[] = [
     generateURL,
   }),
   searchPlugin({
-    collections: ['posts', 'animals'],
+    collections: ['posts', 'animals', 'emergency-cases'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       fields: ({ defaultFields }) => {
@@ -85,7 +85,7 @@ export const plugins: Plugin[] = [
   translator({
     resolvers: [copyResolver()],
     collections: ['animals', 'emergency-cases', 'events', 'posts', 'pages', 'needs-list'],
-    globals: [],
+    globals: ['ui-strings'],
   }),
   auditLogPlugin({
     collections: ['animals', 'emergency-cases', 'vet-records', 'events', 'volunteers'],

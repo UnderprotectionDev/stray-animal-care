@@ -14,13 +14,13 @@
 | Database            | PostgreSQL (Neon — serverless, @payloadcms/db-postgres)        |
 | Hosting             | Vercel                                                         |
 | Analytics           | Vercel Analytics                                               |
-| Animation           | Motion (general animations) + GSAP (scroll/timeline)           |
+| Animation           | GSAP + @gsap/react (primary) + motion (secondary)              |
 | i18n (Frontend)     | next-intl (middleware, server/client component, type-safe)     |
 | i18n (CMS)          | PayloadCMS i18n (collection field localization)                |
 | SEO                 | Next.js Metadata API + PayloadCMS SEO Plugin                   |
 | Form Validation     | Zod + TanStack Form                                            |
 | Package Manager     | pnpm                                                           |
-| Linting/Formatting  | Biome (single tool replacing ESLint + Prettier)                |
+| Linting/Formatting  | ESLint (next/core-web-vitals + next/typescript)                |
 | Search              | PayloadCMS fullText search + Nuqs (URL state)                  |
 | State Management    | Nuqs (search/filter URL state), global state added later if needed |
 
@@ -31,6 +31,8 @@
 ### Modular File Structure
 
 The project uses a page-based module architecture. Each page maps 1:1 to a module. CMS collection definitions are co-located inside the relevant module as a `collection.ts` file. Global definitions are kept in the `settings` module as a `global.ts` file.
+
+> **Note (actual implementation):** The codebase uses `src/collections/` for collection definitions (not `src/modules/<name>/collection.ts`), `src/Header/` and `src/Footer/` for layout components, `src/components/` for shared components, and `src/SiteSettings/` for the SiteSettings global. The module tree below documents the original design intent.
 
 ```
 stray-animal-care/
@@ -118,9 +120,9 @@ stray-animal-care/
 │   ├── PRD.md                  # Index
 │   └── prd/                    # Modular PRD files
 ├── next.config.ts
-├── tailwind.config.ts
+├── tailwind.config.mjs
 ├── tsconfig.json
-├── biome.json
+├── .eslintrc.json
 ├── package.json
 └── .env.local
 ```
@@ -298,30 +300,66 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 
 ### Global: Site Settings
 
+Uses a tabs-based layout (`src/SiteSettings/config.ts`):
+
 ```typescript
 {
   slug: 'site-settings',
-  label: 'Genel Ayarlar',
+  label: 'Site Ayarları',
   fields: [
-    // IBAN Details
-    { name: 'bankName', type: 'text' },
-    { name: 'accountHolder', type: 'text' },
-    { name: 'iban', type: 'text' },
-    // Contact
-    { name: 'phone', type: 'text' },
-    { name: 'email', type: 'email' },
-    { name: 'whatsapp', type: 'text' },
-    { name: 'instagram', type: 'text' },
-    // International Payment
-    { name: 'paypalLink', type: 'text' },
-    { name: 'wiseLink', type: 'text' },
-    // Statistics
-    { name: 'stats', type: 'group', fields: [
-      { name: 'catsCount', type: 'number' },
-      { name: 'dogsCount', type: 'number' },
-      { name: 'treatedCount', type: 'number' },
-      { name: 'spayedCount', type: 'number' },
-      { name: 'vaccinatedCount', type: 'number' },
+    { type: 'tabs', tabs: [
+      // Tab 1: Banka Bilgileri
+      {
+        label: 'Banka Bilgileri',
+        fields: [
+          { name: 'bankAccounts', type: 'array', maxRows: 10, fields: [
+            { name: 'bankName', type: 'text', required: true },
+            { name: 'accountHolder', type: 'text', required: true },
+            { name: 'iban', type: 'text', required: true },
+            { name: 'currency', type: 'select', options: ['TRY', 'USD', 'EUR'] },
+          ]},
+          // Legacy flat fields (bankName, accountHolder, iban) kept for backwards compat
+        ],
+      },
+      // Tab 2: İletişim
+      {
+        label: 'İletişim',
+        fields: [
+          { name: 'phone', type: 'text' },
+          { name: 'email', type: 'text' },
+          { name: 'whatsapp', type: 'text' },
+          { name: 'instagram', type: 'text' },
+        ],
+      },
+      // Tab 3: Uluslararası
+      {
+        label: 'Uluslararası',
+        fields: [
+          { name: 'paypalLink', type: 'text' },
+          { name: 'wiseLink', type: 'text' },
+        ],
+      },
+      // Tab 4: Çalışmalarımız
+      {
+        label: 'Çalışmalarımız',
+        fields: [
+          { name: 'ourWorkActivities', type: 'array', maxRows: 10, fields: [
+            { name: 'key', type: 'select', options: ['feeding', 'treatment', 'spaying', 'emergency', 'vaccination', 'shelter'] },
+            { name: 'images', type: 'upload', relationTo: 'media', hasMany: true },
+          ]},
+        ],
+      },
+      // Tab 5: İstatistikler (flat fields, not grouped)
+      {
+        label: 'İstatistikler',
+        fields: [
+          { name: 'catsCount', type: 'number' },
+          { name: 'dogsCount', type: 'number' },
+          { name: 'treatedCount', type: 'number' },
+          { name: 'spayedCount', type: 'number' },
+          { name: 'vaccinatedCount', type: 'number' },
+        ],
+      },
     ]},
   ]
 }
@@ -456,12 +494,14 @@ Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List 
 
 ### Admin Navigation Grouping
 
-| Group     | Collections                           |
-| --------- | ------------------------------------- |
-| Content   | Animals, Blog Posts, Emergency Cases  |
-| Support   | Needs List                            |
-| Reports   | Transparency Reports                  |
-| Settings  | Site Settings                         |
+| Group (Turkish)       | Collections                                     |
+| --------------------- | ----------------------------------------------- |
+| İçerik Yönetimi       | Pages, Posts, Categories                        |
+| Hayvan Bakım          | Animals, EmergencyCases, VetRecords             |
+| Topluluk              | Events, Volunteers                              |
+| Destek & Raporlar     | NeedsList, TransparencyReports                  |
+| Sistem                | Media, Users                                    |
+| Ayarlar               | SiteSettings (global)                           |
 
 ---
 
@@ -486,7 +526,7 @@ Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List 
 - **Monitoring**: Vercel Analytics + Vercel Speed Insights
 - **Rollback**: Vercel instant rollback to previous deployment
 - **Branch strategy**: main (production), feature branches → PR → merge
-- **CI pipeline**: Biome lint/format check → Type check → Unit tests → Build → Deploy
+- **CI pipeline**: ESLint check → Type check → Unit tests → Build → Deploy
 
 ---
 
@@ -509,7 +549,7 @@ Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List 
   - Animal cards: Gray shimmer boxes matching card layout
   - Blog list: Title + excerpt placeholder lines
   - Emergency cases: Progress bar skeleton
-- **Error states**: Module-level error boundaries with friendly messages + retry button + link to home. Use the project's warm design language.
+- **Error states**: Module-level error boundaries with friendly messages + retry button + link to home. Use the project's Mint System design language.
 - **Empty states**: Custom illustrations (paw-themed) with helpful messages:
   - No animals found: "No animals match your filter. Try adjusting your search."
   - No emergency cases: "Great news! No active emergency cases right now."
