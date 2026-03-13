@@ -1,8 +1,10 @@
 # M2: Design System & shadcn/ui
 
+> **Note:** Originally implemented as "Warm & Organic" style, then redesigned to **Mint System** (brutalist/typographic) in March 2026. Acceptance criteria below reflect the current Mint System.
+
 ## Description
 
-Establish the visual design system with "Warm & Organic" style tokens, custom fonts, and shadcn/ui component library. This milestone creates the reusable design foundation that all pages will build upon.
+Establish the visual design system with Mint System style tokens, custom fonts, and shadcn/ui component library. This milestone creates the reusable design foundation that all pages will build upon.
 
 ## Dependencies
 
@@ -10,45 +12,47 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 
 ## Scope
 
-- Color tokens (Amber primary, Sage Green secondary, Terracotta CTA)
-- Typography (Plus Jakarta Sans, Inter, Caveat)
+- Color tokens (oklch: black foreground, white background, mint accent)
+- Typography (Inter for headings + body, Space Grotesk for mono/UI)
 - shadcn/ui installation and base component setup
 - Shared UI components (buttons, cards, badges, etc.)
-- Dark mode support (optional, can be deferred)
 - CSS custom properties / Tailwind theme extension
+- No dark mode (intentionally excluded in Mint System)
 
 ## Tasks
 
 ### T2.1: Configure custom fonts
 
-**What:** Set up Plus Jakarta Sans (headings), Inter (body), and Caveat (accent) using `next/font` for self-hosted optimization.
+**What:** Set up Inter (headings + body) and Space Grotesk (mono/UI) using `next/font` for self-hosted optimization.
 
 **Files:**
 - `src/app/layout.tsx` (font imports)
-- `src/app/globals.css` (font-family CSS variables)
+- `src/app/(frontend)/globals.css` (font-family CSS variables: `--font-heading`, `--font-body`, `--font-mono`)
 - `public/fonts/` (if local font files needed)
 
 **Acceptance Criteria:**
-- [x] Plus Jakarta Sans renders for headings
-- [x] Inter renders for body text
-- [x] Caveat renders for accent/handwritten text
+- [x] Inter renders for headings (weight 900) and body text (weights 400, 500)
+- [x] Space Grotesk renders for mono/UI elements (weights 400, 700)
 - [x] Fonts load without layout shift (CLS < 0.1)
 - [x] `next/font` handles optimization automatically
+- [x] All headings are uppercase via typography utility classes
 
 ---
 
 ### T2.2: Define color tokens and Tailwind theme
 
-**What:** Extend the Tailwind CSS configuration with the project's color palette: Amber primary, Sage Green secondary, Terracotta CTA, and neutral/semantic colors.
+**What:** Define the Mint System color palette as oklch CSS custom properties: black foreground, white background, mint accent (#A8D5BA), red destructive.
 
 **Files:**
-- `src/app/globals.css` (CSS custom properties)
-- `tailwind.config.ts` (theme extension, if needed for v4)
+- `src/app/(frontend)/globals.css` (CSS custom properties — `:root` block)
+- `tailwind.config.mjs` (theme extension, if needed for v4)
 
 **Acceptance Criteria:**
-- [x] `bg-primary`, `text-primary`, `bg-secondary`, `bg-cta` classes work
-- [x] Amber, Sage Green, Terracotta, and neutral shades are available (50–950)
-- [x] Semantic colors (success, warning, error, info) are defined
+- [x] oklch tokens defined: `--background`, `--foreground`, `--accent`, `--destructive`, `--muted`, `--border`
+- [x] `--accent` maps to mint (`oklch(0.82 0.08 155)`)
+- [x] `--border` and `--foreground` are black (`oklch(0 0 0)`)
+- [x] `--radius: 0px` — zero border radius everywhere
+- [x] Semantic colors (success, warning, error) are defined
 - [x] Colors meet WCAG 2.1 AA contrast ratios for text
 
 ---
@@ -81,21 +85,22 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 
 ### T2.4: Create shared design components
 
-**What:** Build project-specific shared components that extend shadcn/ui for consistent use across modules.
+**What:** Build project-specific shared components that extend shadcn/ui for consistent use across the site.
 
 **Files:**
-- `src/modules/shared/components/Section.tsx` (page section wrapper with consistent padding/spacing)
-- `src/modules/shared/components/Container.tsx` (max-width container)
-- `src/modules/shared/components/Heading.tsx` (H1–H4 with font presets)
-- `src/modules/shared/components/CopyButton.tsx` (copy-to-clipboard with toast)
-- `src/modules/shared/components/StatusBadge.tsx` (animal/case status badges)
-- `src/modules/shared/components/ProgressBar.tsx` (donation progress)
-- `src/modules/shared/components/WhatsAppButton.tsx` (wa.me link button)
-- `src/modules/shared/index.ts` (barrel exports)
+- `src/components/shared/Section.tsx` (page section wrapper with consistent padding/spacing)
+- `src/components/shared/Container.tsx` (max-width container)
+- `src/components/shared/Heading.tsx` (H1–H4 with font presets, `as` prop)
+- `src/components/shared/CopyButton.tsx` (copy-to-clipboard with toast)
+- `src/components/shared/StatusBadge.tsx` (animal/case status badges)
+- `src/components/shared/ProgressBar.tsx` (donation progress)
+- `src/components/shared/WhatsAppButton.tsx` (wa.me link button)
+- `src/components/shared/Breadcrumb.tsx` (breadcrumb navigation)
+- `src/components/shared/MobileDonateBar.tsx` (sticky mobile donate CTA)
 
 **Acceptance Criteria:**
-- [x] All shared components are importable from `@/modules/shared`
-- [x] Components use the design system tokens (fonts, colors, spacing)
+- [x] All shared components are importable from `@/components/shared`
+- [x] Components use the Mint System tokens (fonts, colors, spacing)
 - [x] CopyButton copies text and shows a toast notification
 - [x] WhatsAppButton generates correct `wa.me` URLs
 - [x] StatusBadge renders different colors per status
@@ -104,24 +109,24 @@ Establish the visual design system with "Warm & Organic" style tokens, custom fo
 
 ### T2.5: Define spacing and layout tokens
 
-**What:** Establish consistent spacing scale, border-radius, shadow, and breakpoint values in the Tailwind/CSS configuration.
+**What:** Establish consistent spacing scale, border-radius, and breakpoint values in the Tailwind/CSS configuration.
 
 **Files:**
-- `src/app/globals.css` (CSS custom properties for spacing, radius, shadows)
+- `src/app/(frontend)/globals.css` (CSS custom properties for spacing, radius)
 
 **Acceptance Criteria:**
 - [x] Consistent spacing scale is used across components
-- [x] Border-radius tokens match design (rounded-sm, rounded-md, rounded-lg, rounded-full)
-- [x] Shadow tokens are defined for cards, modals, and dropdowns
-- [x] Responsive breakpoints match target: 320px–1920px
+- [x] `--radius: 0px` — border radius is zero everywhere (Mint System)
+- [x] No shadow tokens — Mint System uses flat surfaces only
+- [x] Responsive breakpoints: sm 40rem, md 48rem, lg 64rem, xl 80rem, 2xl 86rem
 
 ---
 
 ## Milestone Acceptance Criteria
 
-- [x] All three fonts render correctly on a test page
-- [x] Color tokens are available as Tailwind classes
-- [x] shadcn/ui components render with custom theme
+- [x] Inter + Space Grotesk fonts render correctly
+- [x] oklch color tokens are available as CSS custom properties and Tailwind classes
+- [x] shadcn/ui components render with Mint System theme (0px radius, black borders)
 - [x] Shared components are importable and functional
 - [x] No Tailwind CSS build warnings
 - [x] WCAG 2.1 AA color contrast is met for all text/background combinations

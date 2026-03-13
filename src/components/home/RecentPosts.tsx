@@ -1,26 +1,29 @@
 import React from 'react'
-import { getTranslations, getFormatter } from 'next-intl/server'
-import type { Post } from '@/payload-types'
+import type { Post, SiteSetting } from '@/payload-types'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
+import { formatDate } from '@/utilities/formatDate'
 
-type RecentPostsProps = {
+type RecentPostsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeRecentPosts' }>
+
+type Props = {
+  block: RecentPostsBlock
   posts: Post[]
+  locale: string
 }
 
-export async function RecentPosts({ posts }: RecentPostsProps) {
-  const t = await getTranslations('home.posts')
-  const format = await getFormatter()
-
+export function RecentPosts({ block, posts, locale }: Props) {
   if (!posts.length) return null
 
   return (
     <section>
       <div className="panel py-4 px-6 flex items-center justify-between border-b border-border">
-        <h2 className="t-h2">{t('title')}</h2>
-        <Link href="/gunluk" className="btn-cta text-xs py-2 px-4">
-          {t('viewAll')}
-        </Link>
+        <h2 className="t-h2">{block.sectionTitle}</h2>
+        {block.viewAllLabel && block.viewAllLink && (
+          <Link href={block.viewAllLink} className="btn-cta text-xs py-2 px-4">
+            {block.viewAllLabel}
+          </Link>
+        )}
       </div>
       <div className="g-1 md:g-3">
         {posts.map((post) => {
@@ -42,7 +45,7 @@ export async function RecentPosts({ posts }: RecentPostsProps) {
                 )}
                 {post.publishedAt && (
                   <p className="t-meta text-muted-foreground mt-2 text-xs">
-                    {format.dateTime(new Date(post.publishedAt), { dateStyle: 'medium' })}
+                    {formatDate(post.publishedAt, locale)}
                   </p>
                 )}
               </div>

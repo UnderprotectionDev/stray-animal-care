@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import { FileTextIcon } from 'lucide-react'
 
 import {
@@ -16,14 +15,17 @@ import {
 import { useDebounce } from '@/utilities/useDebounce'
 import { useRouter } from '@/i18n/navigation'
 import { searchAction, type SearchResult } from '@/actions/searchAction'
+import type { UiString } from '@/payload-types'
+
+type SearchLabels = UiString['search']
 
 interface SearchModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  labels?: SearchLabels | null
 }
 
-export function SearchModal({ open, onOpenChange }: SearchModalProps) {
-  const t = useTranslations('search')
+export function SearchModal({ open, onOpenChange, labels }: SearchModalProps) {
   const router = useRouter()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
@@ -31,6 +33,10 @@ export function SearchModal({ open, onOpenChange }: SearchModalProps) {
   const requestIdRef = useRef(0)
 
   const debouncedQuery = useDebounce(query, 300)
+
+  const modalPlaceholder = labels?.modal?.placeholder || 'Search...'
+  const modalNoResults = labels?.modal?.noResults || 'No results found.'
+  const modalShortcut = labels?.modal?.shortcut || 'Open search'
 
   // Keyboard shortcut: Cmd+K / Ctrl+K
   useEffect(() => {
@@ -111,23 +117,23 @@ export function SearchModal({ open, onOpenChange }: SearchModalProps) {
     <CommandDialog
       open={open}
       onOpenChange={onOpenChange}
-      title={t('modal.shortcut')}
-      description={t('modal.placeholder')}
+      title={modalShortcut}
+      description={modalPlaceholder}
     >
       <Command shouldFilter={false}>
         <CommandInput
-          placeholder={`${t('modal.placeholder')} (⌘K)`}
+          placeholder={`${modalPlaceholder} (⌘K)`}
           value={query}
           onValueChange={setQuery}
         />
         <CommandList>
           {debouncedQuery.length >= 2 && !isLoading && results.length === 0 && (
-            <CommandEmpty>{t('modal.noResults')}</CommandEmpty>
+            <CommandEmpty>{modalNoResults}</CommandEmpty>
           )}
 
           {isLoading && (
             <div className="py-6 text-center text-sm text-muted-foreground">
-              {t('modal.placeholder')}...
+              {modalPlaceholder}...
             </div>
           )}
 

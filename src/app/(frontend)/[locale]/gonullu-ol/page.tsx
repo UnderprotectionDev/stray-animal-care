@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
@@ -12,7 +12,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from '@/components/ui/accordion'
-import type { SiteSetting } from '@/payload-types'
+import type { SiteSetting, UiString } from '@/payload-types'
 import { Heart, Stethoscope, UtensilsCrossed, Home } from 'lucide-react'
 
 export const revalidate = 3600
@@ -38,18 +38,25 @@ export default async function VolunteerPage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const [siteSettings, t, tBreadcrumb] = await Promise.all([
-    getCachedGlobal('site-settings', 1)() as Promise<SiteSetting>,
-    getTranslations('volunteer'),
-    getTranslations('layout.breadcrumb'),
-  ])
+  let siteSettings: SiteSetting | null = null
+  let ui: UiString | null = null
+  try {
+    siteSettings = (await getCachedGlobal('site-settings', 1, locale)()) as SiteSetting
+  } catch {
+    // site-settings fetch failed
+  }
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
 
   const faqItems = [
-    { q: t('faq.q1'), a: t('faq.a1') },
-    { q: t('faq.q2'), a: t('faq.a2') },
-    { q: t('faq.q3'), a: t('faq.a3') },
-    { q: t('faq.q4'), a: t('faq.a4') },
-  ]
+    { q: ui?.volunteer?.faq?.q1, a: ui?.volunteer?.faq?.a1 },
+    { q: ui?.volunteer?.faq?.q2, a: ui?.volunteer?.faq?.a2 },
+    { q: ui?.volunteer?.faq?.q3, a: ui?.volunteer?.faq?.a3 },
+    { q: ui?.volunteer?.faq?.q4, a: ui?.volunteer?.faq?.a4 },
+  ].filter(item => item.q && item.a)
 
   return (
     <Section padding="lg">
@@ -57,23 +64,23 @@ export default async function VolunteerPage({ params }: Args) {
         {/* Breadcrumb */}
         <PageBreadcrumb
           items={[
-            { label: tBreadcrumb('home'), href: '/' },
-            { label: t('title') },
+            { label: ui?.layout?.breadcrumb?.home || '', href: '/' },
+            { label: ui?.volunteer?.title || '' },
           ]}
         />
 
         {/* Header */}
         <div className="mb-12 text-center">
           <Heading as="h1" className="mb-3">
-            {t('title')}
+            {ui?.volunteer?.title}
           </Heading>
-          <p className="t-body text-lg">{t('subtitle')}</p>
+          <p className="t-body text-lg">{ui?.volunteer?.subtitle}</p>
         </div>
 
         {/* Volunteer Areas */}
         <div className="mb-16">
           <Heading as="h2" className="mb-8 text-center">
-            {t('areas.title')}
+            {ui?.volunteer?.areas?.title}
           </Heading>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {volunteerAreas.map(({ key, icon: Icon }) => (
@@ -85,10 +92,10 @@ export default async function VolunteerPage({ params }: Args) {
                   <Icon className="h-7 w-7 text-foreground" />
                 </div>
                 <h3 className="font-heading mb-2 text-lg font-semibold">
-                  {t(`areas.${key}.title`)}
+                  {ui?.volunteer?.areas?.[`${key}Title`]}
                 </h3>
                 <p className="t-body text-sm">
-                  {t(`areas.${key}.description`)}
+                  {ui?.volunteer?.areas?.[`${key}Description`]}
                 </p>
               </div>
             ))}
@@ -98,7 +105,7 @@ export default async function VolunteerPage({ params }: Args) {
         {/* Volunteer Stats */}
         <div className="mb-16 border border-border bg-background px-6 py-10">
           <Heading as="h2" className="mb-8 text-center">
-            {t('stats.title')}
+            {ui?.volunteer?.stats?.title}
           </Heading>
           <div className="grid gap-8 sm:grid-cols-3">
             {stats.map(({ key, value }) => (
@@ -107,7 +114,7 @@ export default async function VolunteerPage({ params }: Args) {
                   {value}
                 </p>
                 <p className="t-body mt-1 text-sm font-medium">
-                  {t(`stats.${key}`)}
+                  {ui?.volunteer?.stats?.[key]}
                 </p>
               </div>
             ))}
@@ -117,7 +124,7 @@ export default async function VolunteerPage({ params }: Args) {
         {/* FAQ */}
         <div className="mx-auto mb-16 max-w-2xl">
           <Heading as="h2" className="mb-6 text-center">
-            {t('faq.title')}
+            {ui?.volunteer?.faq?.title}
           </Heading>
           <Accordion>
             {faqItems.map((item, index) => (
@@ -132,15 +139,15 @@ export default async function VolunteerPage({ params }: Args) {
         {/* CTA */}
         <div className="border border-border bg-background px-6 py-10 text-center">
           <Heading as="h2" className="mb-3">
-            {t('cta.title')}
+            {ui?.volunteer?.cta?.title}
           </Heading>
           <p className="t-body mb-6 text-lg">
-            {t('cta.description')}
+            {ui?.volunteer?.cta?.description}
           </p>
-          {siteSettings.whatsapp && (
+          {siteSettings?.whatsapp && (
             <WhatsAppButton
               phone={siteSettings.whatsapp}
-              message={t('cta.whatsappMessage')}
+              message={ui?.volunteer?.cta?.whatsappMessage || ''}
               className="text-base px-6 py-3"
             >
               WhatsApp
@@ -158,9 +165,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'volunteer.meta' })
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
   return {
-    title: t('title'),
-    description: t('description'),
+    title: ui?.volunteer?.meta?.title || 'Gönüllü Ol — Paws of Hope',
+    description: ui?.volunteer?.meta?.description || '',
   }
 }

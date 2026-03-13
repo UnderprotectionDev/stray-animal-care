@@ -19,14 +19,17 @@ export default async function AnimalDetailPage({ params }: Args) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const [animal, siteSettings] = await Promise.all([
-    getAnimalBySlug(slug, locale as Locale),
-    getCachedGlobal('site-settings', 1)() as Promise<SiteSetting>,
-  ])
-
+  const animal = await getAnimalBySlug(slug, locale as Locale)
   if (!animal) notFound()
 
-  return <AnimalDetail animal={animal} siteSettings={siteSettings} />
+  let siteSettings: SiteSetting | null = null
+  try {
+    siteSettings = (await getCachedGlobal('site-settings', 1)()) as SiteSetting
+  } catch {
+    // site-settings fetch failed
+  }
+
+  return <AnimalDetail animal={animal} siteSettings={siteSettings} locale={locale} />
 }
 
 export async function generateStaticParams() {

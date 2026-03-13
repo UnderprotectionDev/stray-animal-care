@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { unstable_cache } from 'next/cache'
 import type { Locale } from '@/i18n/config'
+import type { EmergencyCase } from '@/payload-types'
 
 async function fetchEmergencyCases(locale: Locale) {
   const payload = await getPayload({ config: configPromise })
@@ -13,9 +14,22 @@ async function fetchEmergencyCases(locale: Locale) {
     limit: 100,
     sort: '-publishedAt',
     locale,
-    depth: 2,
+    depth: 1,
+    select: {
+      title: true,
+      slug: true,
+      photos: true,
+      beforePhoto: true,
+      afterPhoto: true,
+      targetAmount: true,
+      collectedAmount: true,
+      caseStatus: true,
+      publishedAt: true,
+      animal: true,
+      meta: true,
+    },
   })
-  return result.docs
+  return result.docs as EmergencyCase[]
 }
 
 export function getEmergencyCases(locale: Locale) {

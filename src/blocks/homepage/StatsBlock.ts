@@ -1,0 +1,27 @@
+import type { Block } from 'payload'
+
+export const StatsBlock: Block = {
+  slug: 'homeStats',
+  labels: { singular: 'İstatistikler', plural: 'İstatistikler' },
+  fields: [
+    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
+    {
+      name: 'metrics',
+      label: 'Metrikler',
+      type: 'array',
+      minRows: 1,
+      maxRows: 8,
+      fields: [
+        { name: 'label', type: 'text', localized: true, required: true },
+        { name: 'value', type: 'text', localized: true, required: true },
+        { name: 'name', type: 'text', localized: true, required: true },
+      ],
+      defaultValue: [
+        { label: 'METRİK 01 // OPERASYONEL', value: '347', name: 'KURTARILAN' },
+        { label: 'METRİK 02 // TRANSFER', value: '89', name: 'YENİ BULDU' },
+        { label: 'METRİK 03 // LOJİSTİK', value: '2.4K', name: 'BESLENDİ' },
+        { label: 'METRİK 04 // SÜREKLİLİK', value: '04', name: 'AKTİF YUVA' },
+      ],
+    },
+  ],
+}

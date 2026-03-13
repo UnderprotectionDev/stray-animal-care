@@ -214,14 +214,42 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'header',
       data: {
+        brandName: 'UMUT PATİLERİ',
         navItems: [
           {
-            link: {
-              type: 'custom',
-              label: 'Posts',
-              url: '/posts',
-            },
+            link: { type: 'custom', url: '/' },
+            label: 'Ana Sayfa',
+            isCta: false,
           },
+          {
+            link: { type: 'custom', url: '/canlarimiz' },
+            label: 'Canlarımız',
+            isCta: false,
+          },
+          {
+            link: { type: 'custom', url: '/acil-vakalar' },
+            label: 'Acil Vakalar',
+            isCta: false,
+          },
+          {
+            link: { type: 'custom', url: '/gonullu-ol' },
+            label: 'Gönüllü Ol',
+            isCta: false,
+          },
+          {
+            link: { type: 'custom', url: '/gunluk' },
+            label: 'Günlük',
+            isCta: false,
+          },
+          {
+            link: { type: 'custom', url: '/destek-ol' },
+            label: 'Destek Ol',
+            isCta: true,
+          },
+        ],
+        socialLinks: [
+          { label: 'Instagram', url: 'https://instagram.com/umutpatileri' },
+          { label: 'Twitter', url: 'https://twitter.com/umutpatileri' },
         ],
       },
     }),
@@ -373,6 +401,10 @@ export const seed = async ({
         urgency: 'acil',
         stockStatus: 'Tukenmek uzere',
         order: 1,
+        targetStock: 50,
+        currentStock: 3,
+        unit: 'kg',
+        priority: 'acil',
       },
     }),
     payload.create({
@@ -383,6 +415,10 @@ export const seed = async ({
         urgency: 'acil',
         stockStatus: '2 torba kaldi',
         order: 2,
+        targetStock: 40,
+        currentStock: 5,
+        unit: 'kg',
+        priority: 'acil',
       },
     }),
     payload.create({
@@ -393,6 +429,10 @@ export const seed = async ({
         urgency: 'orta',
         stockStatus: '5 kutu mevcut',
         order: 3,
+        targetStock: 20,
+        currentStock: 5,
+        unit: 'kutu',
+        priority: 'orta',
       },
     }),
     payload.create({
@@ -403,6 +443,10 @@ export const seed = async ({
         urgency: 'yeterli',
         stockStatus: 'Stokta yeterli',
         order: 4,
+        targetStock: 10,
+        currentStock: 8,
+        unit: 'adet',
+        priority: 'dusuk',
       },
     }),
   ])
@@ -441,8 +485,6 @@ export const seed = async ({
       email: 'info@pawsofhope.org',
       whatsapp: '+905551234567',
       instagram: 'pawsofhope',
-      paypalLink: 'https://paypal.me/pawsofhope',
-      wiseLink: 'https://wise.com/pay/pawsofhope',
       catsCount: 45,
       dogsCount: 30,
       treatedCount: 120,

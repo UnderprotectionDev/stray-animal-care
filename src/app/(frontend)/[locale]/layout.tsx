@@ -4,7 +4,7 @@ import { cn } from '@/utilities/ui'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 import { hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { locales } from '@/i18n/config'
@@ -40,7 +40,7 @@ import { draftMode } from 'next/headers'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
-import type { SiteSetting } from '@/payload-types'
+import type { SiteSetting, UiString } from '@/payload-types'
 
 import '../globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -64,14 +64,25 @@ export default async function RootLayout({ children, params }: Props) {
   setRequestLocale(locale)
 
   const { isEnabled } = await draftMode()
-  const messages = await getMessages()
-  const t = await getTranslations('layout')
+
   let siteSettings: SiteSetting | null = null
+  let ui: UiString | null = null
   try {
-    siteSettings = await getCachedGlobal('site-settings', 1)()
+    siteSettings = (await getCachedGlobal('site-settings', 1, locale)()) as SiteSetting
   } catch {
-    // DB unreachable — continue with null
+    // site-settings fetch failed — continue with null
   }
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed — continue with null
+  }
+
+  const layoutLabels = ui?.layout
+  const headerLabels = layoutLabels?.header
+  const searchLabels = ui?.search
+  const footerLabels = layoutLabels?.footer
+  const mobileDonateLabel = layoutLabels?.mobileDonate?.cta
 
   return (
     <html
@@ -84,25 +95,25 @@ export default async function RootLayout({ children, params }: Props) {
       </head>
       <body>
         <Providers>
-          <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider messages={{}}>
             <NuqsAdapter>
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:border focus:border-border"
             >
-              {t('skipToContent')}
+              {layoutLabels?.skipToContent || 'İçeriğe geç'}
             </a>
             <AdminBar
               adminBarProps={{
                 preview: isEnabled,
               }}
             />
-            <Header />
+            <Header locale={locale} headerLabels={headerLabels} searchLabels={searchLabels} />
             <main id="main-content" className="flex-1 pb-20 md:pb-0">
               {children}
             </main>
-            <Footer siteSettings={siteSettings} />
-            <MobileDonateBar />
+            <Footer siteSettings={siteSettings} labels={footerLabels} headerLabels={headerLabels} />
+            <MobileDonateBar label={mobileDonateLabel} />
             </NuqsAdapter>
           </NextIntlClientProvider>
         </Providers>
@@ -113,13 +124,18 @@ export default async function RootLayout({ children, params }: Props) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'layout' })
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
 
   return {
     metadataBase: new URL(getServerSideURL()),
     openGraph: mergeOpenGraph({
-      title: t('siteTitle'),
-      description: t('siteDescription'),
+      title: ui?.layout?.siteTitle || 'Paws of Hope',
+      description: ui?.layout?.siteDescription || '',
       locale,
     }),
     twitter: {

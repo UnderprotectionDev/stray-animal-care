@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import type { UiString } from '@/payload-types'
 import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
 import { Heading } from '@/components/shared/Heading'
@@ -44,10 +46,12 @@ export default async function VisionPage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const [t, tBreadcrumb] = await Promise.all([
-    getTranslations('vision'),
-    getTranslations('layout.breadcrumb'),
-  ])
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
 
   return (
     <>
@@ -56,16 +60,16 @@ export default async function VisionPage({ params }: Args) {
         <Container>
           <PageBreadcrumb
             items={[
-              { label: tBreadcrumb('home'), href: '/' },
-              { label: t('title') },
+              { label: ui?.layout?.breadcrumb?.home || '', href: '/' },
+              { label: ui?.vision?.title || '' },
             ]}
           />
           <div className="mb-12 text-center">
             <Heading as="h1" className="mb-4">
-              {t('title')}
+              {ui?.vision?.title}
             </Heading>
             <p className="t-body mx-auto max-w-2xl text-lg">
-              {t('subtitle')}
+              {ui?.vision?.subtitle}
             </p>
           </div>
 
@@ -76,10 +80,10 @@ export default async function VisionPage({ params }: Args) {
                 <Target className="h-8 w-8 text-foreground" />
               </div>
               <Heading as="h2" className="mb-3">
-                {t('association.title')}
+                {ui?.vision?.association?.title}
               </Heading>
               <p className="t-body text-lg">
-                {t('association.description')}
+                {ui?.vision?.association?.description}
               </p>
             </div>
           </div>
@@ -91,7 +95,7 @@ export default async function VisionPage({ params }: Args) {
         <Container>
           <div className="mb-10 text-center">
             <Heading as="h2" className="mb-2">
-              {t('shortTerm.title')}
+              {ui?.vision?.shortTerm?.title}
             </Heading>
           </div>
 
@@ -115,10 +119,10 @@ export default async function VisionPage({ params }: Args) {
                       </div>
                       <div className="panel border border-border p-5">
                         <h3 className="font-heading mb-1 text-lg font-semibold">
-                          {t(`shortTerm.${goal.key}.title`)}
+                          {ui?.vision?.shortTerm?.[`${goal.key}Title`]}
                         </h3>
                         <p className="t-body text-sm">
-                          {t(`shortTerm.${goal.key}.description`)}
+                          {ui?.vision?.shortTerm?.[`${goal.key}Description`]}
                         </p>
                       </div>
                     </div>
@@ -130,10 +134,10 @@ export default async function VisionPage({ params }: Args) {
                         {isLeft && (
                           <div className="panel border border-border p-6 ml-auto max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
-                              {t(`shortTerm.${goal.key}.title`)}
+                              {ui?.vision?.shortTerm?.[`${goal.key}Title`]}
                             </h3>
                             <p className="t-body text-sm">
-                              {t(`shortTerm.${goal.key}.description`)}
+                              {ui?.vision?.shortTerm?.[`${goal.key}Description`]}
                             </p>
                           </div>
                         )}
@@ -149,10 +153,10 @@ export default async function VisionPage({ params }: Args) {
                         {!isLeft && (
                           <div className="panel border border-border p-6 max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
-                              {t(`shortTerm.${goal.key}.title`)}
+                              {ui?.vision?.shortTerm?.[`${goal.key}Title`]}
                             </h3>
                             <p className="t-body text-sm">
-                              {t(`shortTerm.${goal.key}.description`)}
+                              {ui?.vision?.shortTerm?.[`${goal.key}Description`]}
                             </p>
                           </div>
                         )}
@@ -171,7 +175,7 @@ export default async function VisionPage({ params }: Args) {
         <Container>
           <div className="mb-10 text-center">
             <Heading as="h2" className="mb-2">
-              {t('longTerm.title')}
+              {ui?.vision?.longTerm?.title}
             </Heading>
           </div>
 
@@ -195,10 +199,10 @@ export default async function VisionPage({ params }: Args) {
                       </div>
                       <div className="panel border border-border p-5">
                         <h3 className="font-heading mb-1 text-lg font-semibold">
-                          {t(`longTerm.${goal.key}.title`)}
+                          {ui?.vision?.longTerm?.[`${goal.key}Title`]}
                         </h3>
                         <p className="t-body text-sm">
-                          {t(`longTerm.${goal.key}.description`)}
+                          {ui?.vision?.longTerm?.[`${goal.key}Description`]}
                         </p>
                       </div>
                     </div>
@@ -210,10 +214,10 @@ export default async function VisionPage({ params }: Args) {
                         {isLeft && (
                           <div className="panel border border-border p-6 ml-auto max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
-                              {t(`longTerm.${goal.key}.title`)}
+                              {ui?.vision?.longTerm?.[`${goal.key}Title`]}
                             </h3>
                             <p className="t-body text-sm">
-                              {t(`longTerm.${goal.key}.description`)}
+                              {ui?.vision?.longTerm?.[`${goal.key}Description`]}
                             </p>
                           </div>
                         )}
@@ -229,10 +233,10 @@ export default async function VisionPage({ params }: Args) {
                         {!isLeft && (
                           <div className="panel border border-border p-6 max-w-sm">
                             <h3 className="font-heading mb-2 text-lg font-semibold">
-                              {t(`longTerm.${goal.key}.title`)}
+                              {ui?.vision?.longTerm?.[`${goal.key}Title`]}
                             </h3>
                             <p className="t-body text-sm">
-                              {t(`longTerm.${goal.key}.description`)}
+                              {ui?.vision?.longTerm?.[`${goal.key}Description`]}
                             </p>
                           </div>
                         )}
@@ -254,10 +258,10 @@ export default async function VisionPage({ params }: Args) {
               <Users className="h-8 w-8 text-foreground" />
             </div>
             <Heading as="h2" className="mb-3">
-              {t('network.title')}
+              {ui?.vision?.network?.title}
             </Heading>
             <p className="t-body text-lg">
-              {t('network.description')}
+              {ui?.vision?.network?.description}
             </p>
           </div>
         </Container>
@@ -268,14 +272,14 @@ export default async function VisionPage({ params }: Args) {
         <Container>
           <div className="mx-auto max-w-2xl text-center">
             <Heading as="h2" className="mb-3">
-              {t('cta.title')}
+              {ui?.vision?.cta?.title}
             </Heading>
             <p className="t-body mb-8 text-lg">
-              {t('cta.description')}
+              {ui?.vision?.cta?.description}
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button size="lg" render={<Link href="/destek-ol" />}>
-                {t('cta.donate')}
+                {ui?.vision?.cta?.donate}
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
               <Button
@@ -283,7 +287,7 @@ export default async function VisionPage({ params }: Args) {
                 variant="outline"
                 render={<Link href="/gonullu-ol" />}
               >
-                {t('cta.volunteer')}
+                {ui?.vision?.cta?.volunteer}
               </Button>
             </div>
           </div>
@@ -299,9 +303,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'vision.meta' })
+  let ui: UiString | null = null
+  try {
+    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
+  } catch {
+    // ui-strings fetch failed
+  }
   return {
-    title: t('title'),
-    description: t('description'),
+    title: ui?.vision?.meta?.title || 'Gelecek Vizyonu — Paws of Hope',
+    description: ui?.vision?.meta?.description || 'Derneğimizin gelecek vizyonu ve hedefleri.',
   }
 }

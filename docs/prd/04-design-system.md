@@ -1,60 +1,98 @@
 # 04 — Design System
 
+> **Mint System** — Brutalist/typographic design language adopted March 2026, replacing the original "Warm & Organic" system.
+
 ---
 
 ## 4.1 Color Palette
 
-| Role       | Color           | HEX     |
-| ---------- | --------------- | ------- |
-| Primary    | Warm Amber      | #F59E0B |
-| Secondary  | Soft Sage Green | #86EFAC |
-| Accent/CTA | Terracotta      | #C2410C |
-| Background | Warm Off-White  | #FFFBEB |
-| Text       | Charcoal        | #1C1917 |
-| Muted      | Warm Gray       | #A8A29E |
-| Danger     | Red             | #DC2626 |
-| Success    | Green           | #16A34A |
+All colors are defined as oklch tokens in `src/app/(frontend)/globals.css`.
+
+| Role        | Token              | oklch Value           | Approx. HEX |
+| ----------- | ------------------ | --------------------- | ------------ |
+| Background  | `--background`     | `oklch(1 0 0)`       | #FFFFFF      |
+| Foreground  | `--foreground`     | `oklch(0 0 0)`       | #000000      |
+| Accent      | `--accent`         | `oklch(0.82 0.08 155)` | #A8D5BA (mint) |
+| Destructive | `--destructive`    | `oklch(0.63 0.29 29)` | #FF0000      |
+| Muted       | `--muted`          | `oklch(0.97 0 0)`    | #F5F5F5      |
+| Border      | `--border`         | `oklch(0 0 0)`       | #000000      |
+| Primary     | `--primary`        | `oklch(0 0 0)`       | #000000      |
+| Secondary   | `--secondary`      | `oklch(0.82 0.08 155)` | #A8D5BA      |
+
+Additional semantic tokens: `--success` (mint), `--warning` (oklch yellow), `--error` (destructive).
+
+**Key constraints:**
+- `--radius: 0px` — zero border radius everywhere
+- No dark mode
+- No shadows, no gradients
+- 1px black borders for grid lines and panels
 
 ---
 
 ## 4.2 Typography
 
-| Usage         | Font              | Weight                      |
-| ------------- | ----------------- | --------------------------- |
-| Headings      | Plus Jakarta Sans | Bold (700)                  |
-| Body          | Inter             | Regular (400), Medium (500) |
-| Accent/Quote  | Caveat            | Regular (400)               |
+| Usage    | Font          | Weight                       | CSS Variable      |
+| -------- | ------------- | ---------------------------- | ------------------ |
+| Headings | Inter         | 400, 500, 900 (Black)       | `--font-heading`   |
+| Body     | Inter         | 400 (Regular), 500 (Medium) | `--font-body`      |
+| Mono/UI  | Space Grotesk | 400 (Regular), 700 (Bold)   | `--font-mono`      |
 
-All fonts are self-hosted via `next/font` (no external requests).
+All fonts are self-hosted via `next/font` (no external requests). All headings are uppercase.
+
+### Typography Utility Classes
+
+| Class     | Size                       | Weight | Line Height | Notes                      |
+| --------- | -------------------------- | ------ | ----------- | -------------------------- |
+| `.t-mega` | `clamp(3rem, 8vw, 7rem)`  | 900    | 0.9         | Hero headlines, uppercase  |
+| `.t-h1`   | `clamp(1.75rem, 4vw, 3rem)` | 900  | 1.0         | Page titles, uppercase     |
+| `.t-h2`   | `clamp(1.25rem, 2.5vw, 1.75rem)` | 900 | 1.1     | Section titles, uppercase  |
+| `.t-body` | `1rem`                     | 400    | 1.6         | Body text                  |
+| `.t-meta` | `0.8125rem`                | 400    | 1.4         | Mono font, labels, captions |
 
 ---
 
 ## 4.3 UI Principles
 
-- **Border radius:** 16px-24px (rounded corners)
-- **Shadows:** Soft shadows in warm tones
-- **Section dividers:** Organic blob shapes (SVG)
-- **Decorative element:** Paw print motif
-- **Micro-interactions:** Hover scale-up, shadow increase
-- **Custom cursor:** Paw print (desktop only, using `pointer-events` and `cursor: none`)
-- **Cards:** Warm-toned border, elevated shadow effect on hover
-- **CTA Buttons:** Terracotta background, white text, darken on hover
+- **Border radius:** 0px everywhere (no rounding)
+- **Shadows:** None — flat surfaces only
+- **Gradients:** None
+- **Grid lines:** 1px black lines between cells (achieved via `gap: 1px; background: var(--foreground)`)
+- **Panels:** `.panel` class — white background, 1.5rem padding, no borders
+- **System wrapper:** `.sys-wrap` — vertical stack with 1px gap, black border, black background (shows through gaps as grid lines)
+- **Photo treatment:** `.photo-sys` — grayscale by default, full color on hover (transition 0.3s)
+- **Tables:** `.sys-table` — monospace font, 1px borders, uppercase headers, mint hover
+- **Micro-interactions:** Minimal — background color transitions (0.15s), no scale/shadow animations
 
 ---
 
 ## 4.4 Animation Strategy
 
-| Library | Usage Area                                                             |
-| ------- | ---------------------------------------------------------------------- |
-| Motion  | General UI animations (hover, enter/exit, layout transitions)          |
-| GSAP    | Scroll-triggered animations, timeline, parallax effects                |
+| Library          | Usage Area                                                        |
+| ---------------- | ----------------------------------------------------------------- |
+| GSAP (primary)   | Header edge-detection hover, menus, text animations, count-up     |
+| motion (secondary) | General UI animations (hover, enter/exit) where GSAP is overkill |
+
+### GSAP Animation Components
+
+| Component       | File                              | Description                                |
+| --------------- | --------------------------------- | ------------------------------------------ |
+| FlowingMenu     | `src/components/FlowingMenu.tsx`  | Desktop fullscreen menu with image reveals  |
+| StaggeredMenu   | `src/components/StaggeredMenu.tsx`| Mobile fullscreen menu with colored pre-layers, staggered item animation |
+| BlurText        | `src/components/BlurText.tsx`     | Text fade-in with blur effect              |
+| CountUp         | `src/components/CountUp.tsx`      | Animated number counter (scroll-triggered) |
+| RotatingText    | `src/components/RotatingText.tsx` | Text rotation animation                    |
+| SplitText       | `src/components/SplitText.tsx`    | Character/word split animation             |
+
+### Removed Components
+- **ScrollReveal** — removed in Mint System redesign (no scroll-triggered fade-ins)
+- **PawCursor** — removed in Mint System redesign (no custom cursor)
 
 ### Principles
 
 - Animations respect the `prefers-reduced-motion` media query
-- Only hero and above-the-fold animations play on initial load
-- Scroll animations are triggered via `IntersectionObserver` (GSAP ScrollTrigger)
-- Animation durations range between 200-500ms (for a snappy feel)
+- Header nav cells use GSAP edge-detection (`findClosestEdge4`) for directional hover fills
+- Animation durations: 200-500ms for UI, up to 1s for menu transitions
+- No parallax effects
 
 ---
 
@@ -74,6 +112,18 @@ Base unit: **4px**
 | `3xl`  | 64px  | Page section padding (vertical)            |
 | `4xl`  | 96px  | Hero section padding, page top/bottom      |
 
+### Container Breakpoints
+
+| Breakpoint | Width    |
+| ---------- | -------- |
+| `sm`       | 40rem    |
+| `md`       | 48rem    |
+| `lg`       | 64rem    |
+| `xl`       | 80rem    |
+| `2xl`      | 86rem    |
+
+Container uses `width: 100%; margin-inline: auto; padding-inline: 1rem` (2rem from `md`).
+
 ---
 
 ## 4.6 Icon System
@@ -83,7 +133,7 @@ Base unit: **4px**
 | Category   | Icons                                                                 |
 | ---------- | --------------------------------------------------------------------- |
 | Navigation | `Menu`, `X`, `ChevronRight`, `ChevronLeft`, `Search`, `ArrowUp`      |
-| Social     | `Instagram`, `Phone`, `Mail`, `ExternalLink`                          |
+| Social     | `Instagram`, `Phone`, `Mail`, `ExternalLink`, `MessageCircle`         |
 | Status     | `Heart`, `AlertTriangle`, `CheckCircle`, `Clock`, `Shield`            |
 | Action     | `Copy`, `Share2`, `Download`, `Filter`, `SlidersHorizontal`           |
 | Content    | `PawPrint`, `Calendar`, `Tag`, `FileText`, `Image`                    |
@@ -99,74 +149,88 @@ Base unit: **4px**
 
 ## 4.7 Component Variants
 
-### Button Variants
+### Button: `.btn-cta`
 
-| Variant     | Background   | Text    | Border          | Usage                                   |
-| ----------- | ------------ | ------- | --------------- | --------------------------------------- |
-| `primary`   | Terracotta   | White   | None            | Main CTAs: "Bagis Yap" (Donate), Apply  |
-| `secondary` | Transparent  | Amber   | 1px Amber       | Secondary actions: Learn More, Filter   |
-| `ghost`     | Transparent  | Charcoal| None            | Tertiary actions: navigation, links     |
-| `danger`    | Red          | White   | None            | Destructive actions, emergency alerts   |
+| Property    | Value                                    |
+| ----------- | ---------------------------------------- |
+| Background  | `var(--accent)` (mint)                   |
+| Text        | `var(--foreground)` (black)              |
+| Border      | `1px solid var(--border)` (black)        |
+| Font        | Mono, 700, 0.875rem, uppercase           |
+| Padding     | `0.75rem 1.5rem`                         |
+| Hover       | `color-mix(in oklch, accent 80%, foreground)` |
+| Radius      | 0px                                      |
 
-All buttons: `border-radius: 16px`, padding `12px 24px`, hover state with slight darken + scale(1.02).
+Additional button variant: `.btn-donate-cta` — full-width, 2px black border, black-on-white, inverts on hover.
 
-### Card Variants
+### Card: `.panel`
 
-| Variant       | Border         | Shadow        | Hover Effect                  | Usage                            |
-| ------------- | -------------- | ------------- | ----------------------------- | -------------------------------- |
-| `default`     | 1px warm gray  | sm            | Shadow increase               | Blog cards, report cards         |
-| `interactive` | 1px warm gray  | sm            | Shadow lg + translateY(-2px)  | Animal cards, emergency cases    |
-| `featured`    | 2px amber      | md            | Amber glow + scale(1.01)      | Featured animals, active cases   |
+| Property    | Value                    |
+| ----------- | ------------------------ |
+| Background  | `var(--background)` (white) |
+| Padding     | 1.5rem                   |
+| Border      | None (grid lines via parent `gap: 1px`) |
+| Shadow      | None                     |
+| Radius      | 0px                      |
 
-### Badge Variants
+### Badge: `.badge-sys`
 
-| Variant    | Style                          | Usage                                       |
-| ---------- | ------------------------------ | ------------------------------------------- |
-| `status`   | Rounded pill, colored bg       | Animal status: "Tedavide" (In Treatment), "Acil" (Emergency), "Kalici Bakim" (Permanent Care) |
-| `category` | Rounded pill, muted bg         | Blog categories, volunteer areas             |
-| `priority` | Rounded pill, urgency-colored  | Needs list urgency: high (red), medium (amber), low (green) |
+| Property    | Value                                    |
+| ----------- | ---------------------------------------- |
+| Border      | `1px solid var(--border)`                |
+| Font        | Mono, 700, 0.75rem, uppercase            |
+| Padding     | `0.25rem 0.75rem`                        |
+| Background  | `var(--background)` (white)              |
+
+**Badge variants:**
+- `.badge-sys.mint` — mint background
+- `.badge-sys.critical` — red background, white text, red border
+- `.badge-sys-dark` — for dark backgrounds, white text, semi-transparent border
+
+### Grid Utilities
+
+| Class   | Columns | Notes                              |
+| ------- | ------- | ---------------------------------- |
+| `.g-1`  | 1       | Responsive-variant-ready (`md:g-4`) |
+| `.g-2`  | 2       | 1px gap with black background      |
+| `.g-3`  | 3       |                                    |
+| `.g-4`  | 4       |                                    |
+| `.g-5`  | 5       |                                    |
+| `.g-6`  | 6       |                                    |
+| `.g-8`  | 8       | Used by desktop header nav         |
+
+### Ticker
+
+- `.ticker-wrap` — black background, white text, top/bottom borders
+- `.ticker-track` — flex, gap 3rem, infinite horizontal scroll (30s linear)
 
 ---
 
 ## 4.8 Responsive Strategy
 
-| Breakpoint | Width      | Behavior                                        |
-| ---------- | ---------- | ----------------------------------------------- |
-| Mobile     | < 640px    | Single column, hamburger menu, sticky CTA       |
-| Tablet     | 640-1024px | 2-column grid, condensed navigation             |
-| Desktop    | > 1024px   | 3-4 column grid, full navigation, custom cursor |
+| Breakpoint | Width      | Behavior                                           |
+| ---------- | ---------- | -------------------------------------------------- |
+| Mobile     | < 640px    | Single column, hamburger menu, sticky donate CTA   |
+| Tablet     | 640-1024px | 2-column grid, condensed navigation                |
+| Desktop    | > 1024px   | Multi-column grid, full 8-col header nav           |
 
-- All pages display properly between 320px-1920px
-- Hamburger menu works on mobile
-- Sticky "Bagis Yap" (Donate) CTA is visible on mobile
-- Custom cursor is active only on desktop, disabled on mobile
+### Navigation (Desktop)
 
-### Responsive Breakpoint Details for Key Components
+8-column CSS grid with GSAP edge-detection hover fills:
+- Brand cell + 4 nav link cells + lang/search cell + `.btn-cta` donate + hamburger
+- Hamburger opens `FlowingMenu` (fullscreen with image reveals)
 
-**Animal Card Grid**
+### Navigation (Mobile)
 
-| Breakpoint          | Columns | Card Size    | Gap   |
-| ------------------- | ------- | ------------ | ----- |
-| Mobile (< 640px)    | 1       | Full width   | 16px  |
-| Tablet (640-1024px) | 2       | 1/2 width    | 24px  |
-| Desktop (1024-1280px)| 3      | 1/3 width    | 24px  |
-| Wide (> 1280px)     | 4       | 1/4 width    | 32px  |
+Simple bar: brand left, search + hamburger right.
+- Hamburger opens `StaggeredMenu` (GSAP fullscreen overlay with colored pre-layers, staggered item animations)
 
-**Navigation**
+### Hero Section
 
-| Breakpoint          | Behavior                                                              |
-| ------------------- | --------------------------------------------------------------------- |
-| Mobile (< 640px)    | Hamburger icon → full-screen overlay menu, logo centered              |
-| Tablet (640-1024px) | Hamburger icon → slide-in drawer menu, logo left-aligned              |
-| Desktop (> 1024px)  | Fully expanded horizontal nav, logo left, "Bagis Yap" CTA right      |
-
-**Hero Section**
-
-| Breakpoint          | Layout                                                                |
-| ------------------- | --------------------------------------------------------------------- |
-| Mobile (< 640px)    | Stacked: image on top, text below, single CTA button full-width      |
-| Tablet (640-1024px) | Stacked: image on top, text below, two CTA buttons side by side      |
-| Desktop (> 1024px)  | Side-by-side: text left (60%), image right (40%), two CTA buttons    |
+| Breakpoint  | Layout                                                                |
+| ----------- | --------------------------------------------------------------------- |
+| Mobile      | Stacked: headline + urgent badge above, photos below                  |
+| Desktop     | Editorial split-panel: text left, photos right, `.t-mega` headline    |
 
 ---
 
@@ -195,3 +259,16 @@ Full compliance with WCAG 2.1 AA standards.
 
 - Lighthouse Accessibility score: 90+ target
 - Manual testing with axe DevTools
+
+---
+
+## 4.10 Transition Note
+
+The original "Warm & Organic" design system (Amber/Sage Green/Terracotta palette, Plus Jakarta Sans/Inter/Caveat fonts, rounded corners, shadows, PawCursor, ScrollReveal) was fully replaced by the **Mint System** in March 2026.
+
+Key changes:
+- Colors: Warm Amber/Terracotta → Black/White/Mint
+- Typography: Plus Jakarta Sans/Caveat → Inter (all weights) + Space Grotesk
+- UI: Rounded corners/shadows/blobs → 0px radius, 1px grid lines, flat panels
+- Animations: Motion (Framer Motion) primary → GSAP primary (header, menus, text)
+- Removed: Custom paw cursor, scroll reveal animations, organic blob shapes, dark mode consideration

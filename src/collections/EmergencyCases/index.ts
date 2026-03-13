@@ -64,6 +64,7 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
               label: 'Hayvan',
               type: 'relationship',
               relationTo: 'animals',
+              index: true,
             },
             {
               name: 'description',
@@ -211,7 +212,7 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 500,
+        interval: 3000,
       },
       schedulePublish: true,
     },
