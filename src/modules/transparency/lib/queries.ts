@@ -9,6 +9,7 @@ async function fetchReports(locale: Locale) {
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({
     collection: 'transparency-reports',
+    depth: 1,
     limit: 100,
     sort: '-month',
     locale,

@@ -3,11 +3,9 @@ import { Footer } from '@/payload-types'
 import { RowLabelProps, useRowLabel } from '@payloadcms/ui'
 
 export const RowLabel: React.FC<RowLabelProps> = () => {
-  const data = useRowLabel<NonNullable<Footer['navItems']>[number]>()
+  const { data, rowNumber } = useRowLabel<NonNullable<Footer['navItems']>[number]>()
 
-  const label = data?.data?.link?.label
-    ? `Nav item ${data.rowNumber !== undefined ? data.rowNumber + 1 : ''}: ${data?.data?.link?.label}`
-    : 'Row'
+  const label = data?.link?.label || `Nav Item ${(rowNumber ?? 0) + 1}`
 
   return <div>{label}</div>
 }

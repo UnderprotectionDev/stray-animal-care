@@ -84,7 +84,7 @@ export default async function HomePage({ params }: Args) {
       ? payload.find({
           collection: 'needs-list',
           limit: 5,
-          sort: 'order',
+          sort: '_order',
           locale: payloadLocale,
           depth: 0,
           select: { productName: true, brandDetail: true, urgency: true, currentStock: true, targetStock: true, unit: true },

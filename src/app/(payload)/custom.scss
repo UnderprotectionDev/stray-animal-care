@@ -1,0 +1,5 @@
+// Hide locale indicator labels on field labels in admin panel
+// (e.g. "— tr" / "— en" next to field names)
+.field-label .localized {
+  display: none;
+}

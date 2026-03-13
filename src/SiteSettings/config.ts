@@ -97,24 +97,6 @@ export const SiteSettings: GlobalConfig = {
                 },
               ],
             },
-            {
-              name: 'bankName',
-              label: 'Banka Adı (Eski)',
-              type: 'text',
-              admin: { description: 'Eski alan — yeni hesapları yukarıdaki diziye ekleyin.' },
-            },
-            {
-              name: 'accountHolder',
-              label: 'Hesap Sahibi (Eski)',
-              type: 'text',
-              admin: { description: 'Eski alan — yeni hesapları yukarıdaki diziye ekleyin.' },
-            },
-            {
-              name: 'iban',
-              label: 'IBAN (Eski)',
-              type: 'text',
-              admin: { description: 'Eski alan — yeni hesapları yukarıdaki diziye ekleyin.' },
-            },
           ],
         },
         {
@@ -172,6 +154,12 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'vaccinatedCount',
               label: 'Aşılanan',
+              type: 'number',
+              defaultValue: 0,
+            },
+            {
+              name: 'feedingPointsCount',
+              label: 'Besleme Noktası Sayısı',
               type: 'number',
               defaultValue: 0,
             },

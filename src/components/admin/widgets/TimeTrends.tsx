@@ -9,8 +9,14 @@ import './widget-styles.scss'
 const baseClass = 'paws-dashboard'
 
 const TimeTrends = async () => {
-  const payload = await getPayload({ config: configPromise })
-  const monthlyTrends = await getTrendData(payload)
+  let monthlyTrends: { month: string; animals: number; posts: number; volunteers: number }[] = []
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    monthlyTrends = await getTrendData(payload)
+  } catch (error) {
+    console.error('TimeTrends widget error:', error)
+  }
 
   return (
     <div className={baseClass}>

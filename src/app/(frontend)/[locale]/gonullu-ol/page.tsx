@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
@@ -28,12 +30,6 @@ const volunteerAreas = [
   { key: 'shelter', icon: Home },
 ] as const
 
-const stats = [
-  { key: 'volunteers', value: '25+' },
-  { key: 'animalsHelped', value: '150+' },
-  { key: 'feedingPoints', value: '40+' },
-] as const
-
 export default async function VolunteerPage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
@@ -50,6 +46,34 @@ export default async function VolunteerPage({ params }: Args) {
   } catch {
     // ui-strings fetch failed
   }
+
+  let volunteerCount = 0
+  let animalsHelpedCount = 0
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const [volunteers, animals] = await Promise.all([
+      payload.count({
+        collection: 'volunteers',
+        where: { applicationStatus: { equals: 'onaylandi' } },
+      }),
+      payload.count({
+        collection: 'animals',
+        where: { _status: { equals: 'published' } },
+      }),
+    ])
+    volunteerCount = volunteers.totalDocs
+    animalsHelpedCount = animals.totalDocs
+  } catch {
+    // count queries failed — fallback to 0
+  }
+
+  const feedingPointsCount = siteSettings?.feedingPointsCount ?? 0
+
+  const stats = [
+    { key: 'volunteers' as const, value: `${volunteerCount}+` },
+    { key: 'animalsHelped' as const, value: `${animalsHelpedCount}+` },
+    { key: 'feedingPoints' as const, value: `${feedingPointsCount}+` },
+  ]
 
   const faqItems = [
     { q: ui?.volunteer?.faq?.q1, a: ui?.volunteer?.faq?.a1 },

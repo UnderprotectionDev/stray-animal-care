@@ -19,7 +19,9 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
-    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
+    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/seed-data.ts",
+    "seed:cms": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/seed-cms-content.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
@@ -37,7 +39,6 @@
     "@payloadcms/richtext-lexical": "3.79.0",
     "@payloadcms/translations": "^3.79.0",
     "@payloadcms/ui": "3.79.0",
-    "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",

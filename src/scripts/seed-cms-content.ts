@@ -217,19 +217,8 @@ async function seed() {
   })
   console.log('Header navigation seeded.')
 
-  // Touch UIStrings to trigger defaultValue population
-  console.log('Initializing UIStrings with defaults...')
-  try {
-    await payload.updateGlobal({
-      slug: 'ui-strings',
-      locale: 'tr',
-      context: { disableRevalidate: true },
-      data: {},
-    })
-    console.log('UIStrings initialized.')
-  } catch (err) {
-    console.log('UIStrings already initialized or error:', err)
-  }
+  // UIStrings — skipped (235+ fields exceed PostgreSQL's 100-argument limit;
+  // defaultValues auto-populate on first admin save)
 
   console.log('Seed complete!')
   process.exit(0)

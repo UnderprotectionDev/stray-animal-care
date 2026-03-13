@@ -19,7 +19,7 @@ export function TransparencyNote({ labels }: TransparencyNoteProps) {
           <h3 className="t-h2">{labels.title}</h3>
           <p className="t-meta">{labels.description}</p>
           <Link
-            href="/posts"
+            href="/seffaflik"
             className="btn-cta inline-block mt-2"
           >
             {labels.reports}

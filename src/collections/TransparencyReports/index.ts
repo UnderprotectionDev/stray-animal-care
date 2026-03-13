@@ -1,6 +1,10 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../access/authenticated'
+import { authenticated } from '../../access/authenticated'
+import {
+  revalidateTransparencyReport,
+  revalidateTransparencyReportDelete,
+} from './hooks/revalidateTransparencyReport'
 
 export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
   slug: 'transparency-reports',
@@ -9,6 +13,25 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
     delete: authenticated,
     read: () => true,
     update: authenticated,
+  },
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        if (data) {
+          data.totalExpense = (data.expenses ?? []).reduce(
+            (sum: number, item: { amount?: number | null }) => sum + (item.amount ?? 0),
+            0,
+          )
+          data.totalDonation = (data.donorList ?? []).reduce(
+            (sum: number, item: { amount?: number | null }) => sum + (item.amount ?? 0),
+            0,
+          )
+        }
+        return data
+      },
+    ],
+    afterChange: [revalidateTransparencyReport],
+    afterDelete: [revalidateTransparencyReportDelete],
   },
   trash: true,
   labels: { singular: 'Şeffaflık Raporu', plural: 'Şeffaflık Raporları' },
@@ -55,7 +78,7 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
                 },
                 {
                   name: 'amount',
-                  label: 'Miktar',
+                  label: 'Harcama Tutarı',
                   type: 'number',
                 },
               ],
@@ -64,6 +87,10 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
               name: 'totalExpense',
               label: 'Toplam Gider',
               type: 'number',
+              admin: {
+                readOnly: true,
+                description: 'Otomatik hesaplanır (giderlerin toplamı)',
+              },
             },
           ],
         },
@@ -74,6 +101,10 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
               name: 'totalDonation',
               label: 'Toplam Bağış',
               type: 'number',
+              admin: {
+                readOnly: true,
+                description: 'Otomatik hesaplanır (bağışların toplamı)',
+              },
             },
             {
               name: 'donorList',
@@ -87,7 +118,7 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
                 },
                 {
                   name: 'amount',
-                  label: 'Miktar',
+                  label: 'Bağış Tutarı',
                   type: 'number',
                 },
               ],

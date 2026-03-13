@@ -901,6 +901,7 @@ export interface Volunteer {
  */
 export interface NeedsList {
   id: number;
+  _order?: string | null;
   productName: string;
   brandDetail?: string | null;
   urgency: 'acil' | 'orta' | 'yeterli';
@@ -909,7 +910,6 @@ export interface NeedsList {
   targetStock: number;
   unit?: ('kutu' | 'kg' | 'adet') | null;
   priority?: ('acil' | 'yuksek' | 'orta' | 'dusuk') | null;
-  order: number;
   updatedAt: string;
   createdAt: string;
 }
@@ -928,7 +928,13 @@ export interface TransparencyReport {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Otomatik hesaplanır (giderlerin toplamı)
+   */
   totalExpense?: number | null;
+  /**
+   * Otomatik hesaplanır (bağışların toplamı)
+   */
   totalDonation?: number | null;
   donorList?:
     | {
@@ -1875,6 +1881,7 @@ export interface VolunteersSelect<T extends boolean = true> {
  * via the `definition` "needs-list_select".
  */
 export interface NeedsListSelect<T extends boolean = true> {
+  _order?: T;
   productName?: T;
   brandDetail?: T;
   urgency?: T;
@@ -1883,7 +1890,6 @@ export interface NeedsListSelect<T extends boolean = true> {
   targetStock?: T;
   unit?: T;
   priority?: T;
-  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2429,18 +2435,6 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Eski alan — yeni hesapları yukarıdaki diziye ekleyin.
-   */
-  bankName?: string | null;
-  /**
-   * Eski alan — yeni hesapları yukarıdaki diziye ekleyin.
-   */
-  accountHolder?: string | null;
-  /**
-   * Eski alan — yeni hesapları yukarıdaki diziye ekleyin.
-   */
-  iban?: string | null;
   phone?: string | null;
   email?: string | null;
   whatsapp?: string | null;
@@ -2450,6 +2444,7 @@ export interface SiteSetting {
   treatedCount?: number | null;
   spayedCount?: number | null;
   vaccinatedCount?: number | null;
+  feedingPointsCount?: number | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3145,9 +3140,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         currency?: T;
         id?: T;
       };
-  bankName?: T;
-  accountHolder?: T;
-  iban?: T;
   phone?: T;
   email?: T;
   whatsapp?: T;
@@ -3157,6 +3149,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   treatedCount?: T;
   spayedCount?: T;
   vaccinatedCount?: T;
+  feedingPointsCount?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -3826,6 +3819,43 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalloutBlock".
+ */
+export interface CalloutBlock {
+  variant: 'info' | 'warning' | 'success' | 'error';
+  title?: string | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'callout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock".
+ */
+export interface VideoEmbedBlock {
+  url: string;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

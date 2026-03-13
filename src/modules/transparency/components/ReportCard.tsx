@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import type { TransparencyReport } from '@/payload-types'
+import { ChevronDown, ChevronUp, FileText, Download } from 'lucide-react'
+import type { Media, TransparencyReport } from '@/payload-types'
 import { ExpenseBreakdown } from './ExpenseBreakdown'
 import { DonationComparison } from './DonationComparison'
 
@@ -75,6 +75,33 @@ export function ReportCard({ report, labels, currency }: ReportCardProps) {
             labels={labels}
             currency={currency}
           />
+
+          {report.documents && report.documents.length > 0 && (
+            <div>
+              <h4 className="t-h2 mb-4">{labels.documents}</h4>
+              <div className="space-y-2">
+                {report.documents.map((doc) => {
+                  const media = typeof doc === 'number' ? null : (doc as Media)
+                  if (!media?.url) return null
+                  return (
+                    <a
+                      key={media.id}
+                      href={media.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 border border-border p-3 hover:bg-muted transition-colors"
+                    >
+                      <FileText className="size-5 shrink-0" />
+                      <span className="t-body flex-1 truncate">
+                        {media.filename ?? labels.documents}
+                      </span>
+                      <Download className="size-4 shrink-0 text-muted-foreground" />
+                    </a>
+                  )
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

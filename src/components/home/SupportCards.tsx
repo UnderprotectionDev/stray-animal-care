@@ -14,20 +14,7 @@ type Props = {
 export function SupportCards({ block, siteSettings }: Props) {
   const labels = block.labels ?? {}
 
-  const bankAccounts =
-    siteSettings?.bankAccounts && siteSettings.bankAccounts.length > 0
-      ? siteSettings.bankAccounts
-      : siteSettings?.iban
-        ? [
-            {
-              id: 'legacy',
-              bankName: siteSettings.bankName || '',
-              accountHolder: siteSettings.accountHolder || '',
-              iban: siteSettings.iban,
-              currency: 'TRY' as const,
-            },
-          ]
-        : []
+  const bankAccounts = siteSettings?.bankAccounts ?? []
 
   return (
     <section>

@@ -87,24 +87,28 @@ export async function Footer({ siteSettings, labels, headerLabels }: FooterProps
           <h3 className="t-meta font-bold uppercase tracking-wider">
             {fl('bankInfo')}
           </h3>
-          {(siteSettings?.bankName || siteSettings?.iban) && (
-            <div className="border border-border p-4 space-y-2">
-              {siteSettings?.bankName && (
-                <p className="t-meta text-muted-foreground">{siteSettings?.bankName}</p>
-              )}
-              {siteSettings?.accountHolder && (
-                <p className="t-meta font-bold">{siteSettings?.accountHolder}</p>
-              )}
-              {siteSettings?.iban && (
-                <div className="flex items-center gap-2">
-                  <code className="text-xs font-mono break-all">{siteSettings?.iban}</code>
-                  <CopyButton
-                    text={siteSettings?.iban}
-                    label={fl('copyIban')}
-                    className="shrink-0"
-                  />
+          {siteSettings?.bankAccounts && siteSettings.bankAccounts.length > 0 && (
+            <div className="space-y-3">
+              {siteSettings.bankAccounts.map((account, i) => (
+                <div key={account.id || i} className="border border-border p-4 space-y-2">
+                  {account.bankName && (
+                    <p className="t-meta text-muted-foreground">{account.bankName}</p>
+                  )}
+                  {account.accountHolder && (
+                    <p className="t-meta font-bold">{account.accountHolder}</p>
+                  )}
+                  {account.iban && (
+                    <div className="flex items-center gap-2">
+                      <code className="text-xs font-mono break-all">{account.iban}</code>
+                      <CopyButton
+                        text={account.iban}
+                        label={fl('copyIban')}
+                        className="shrink-0"
+                      />
+                    </div>
+                  )}
                 </div>
-              )}
+              ))}
             </div>
           )}
         </div>

@@ -9,8 +9,21 @@ import './widget-styles.scss'
 const baseClass = 'paws-dashboard'
 
 const CommunityStats = async () => {
-  const payload = await getPayload({ config: configPromise })
-  const { volunteerStatuses, eventTypes, vetRecordTypes, needsUrgency } = await getCommunityData(payload)
+  let volunteerStatuses: { name: string; value: number; fill: string }[] = []
+  let eventTypes: { name: string; value: number; fill: string }[] = []
+  let vetRecordTypes: { name: string; value: number; fill: string }[] = []
+  let needsUrgency: { name: string; value: number; fill: string }[] = []
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const data = await getCommunityData(payload)
+    volunteerStatuses = data.volunteerStatuses
+    eventTypes = data.eventTypes
+    vetRecordTypes = data.vetRecordTypes
+    needsUrgency = data.needsUrgency
+  } catch (error) {
+    console.error('CommunityStats widget error:', error)
+  }
 
   return (
     <div className={baseClass}>

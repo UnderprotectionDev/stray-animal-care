@@ -10,7 +10,7 @@ async function fetchNeedsList(locale: Locale) {
   const result = await payload.find({
     collection: 'needs-list',
     limit: 100,
-    sort: 'order',
+    sort: '_order',
     locale,
   })
   return result.docs

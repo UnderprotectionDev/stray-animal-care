@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -43,18 +44,18 @@ export function PageBreadcrumb({ items, className }: PageBreadcrumbProps) {
             const isLast = index === items.length - 1
 
             return (
-              <BreadcrumbItem key={index}>
-                {isLast ? (
-                  <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                ) : (
-                  <>
+              <React.Fragment key={index}>
+                <BreadcrumbItem>
+                  {isLast ? (
+                    <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                  ) : (
                     <BreadcrumbLink render={<Link href={item.href!} />}>
                       {item.label}
                     </BreadcrumbLink>
-                    <BreadcrumbSeparator />
-                  </>
-                )}
-              </BreadcrumbItem>
+                  )}
+                </BreadcrumbItem>
+                {!isLast && <BreadcrumbSeparator />}
+              </React.Fragment>
             )
           })}
         </BreadcrumbList>

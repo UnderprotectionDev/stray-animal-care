@@ -9,8 +9,17 @@ import './widget-styles.scss'
 const baseClass = 'paws-dashboard'
 
 const FinancialOverview = async () => {
-  const payload = await getPayload({ config: configPromise })
-  const { monthlyFinancials, fundraising } = await getFinancialData(payload)
+  let monthlyFinancials: { month: string; donation: number; expense: number }[] = []
+  let fundraising: { name: string; target: number; collected: number }[] = []
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const data = await getFinancialData(payload)
+    monthlyFinancials = data.monthlyFinancials
+    fundraising = data.fundraising
+  } catch (error) {
+    console.error('FinancialOverview widget error:', error)
+  }
 
   return (
     <div className={baseClass}>

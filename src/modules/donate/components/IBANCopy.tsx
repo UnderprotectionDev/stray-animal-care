@@ -11,9 +11,6 @@ type BankAccount = {
 
 type IBANCopyProps = {
   bankAccounts?: BankAccount[] | null
-  bankName?: string | null
-  accountHolder?: string | null
-  iban?: string | null
   labels: {
     title: string
     bank: string
@@ -24,14 +21,8 @@ type IBANCopyProps = {
   }
 }
 
-export function IBANCopy({ bankAccounts, bankName, accountHolder, iban, labels }: IBANCopyProps) {
-  // Build accounts list — prefer array, fallback to legacy single fields
-  const accounts: BankAccount[] =
-    bankAccounts && bankAccounts.length > 0
-      ? bankAccounts
-      : iban
-        ? [{ bankName: bankName || '', accountHolder: accountHolder || '', iban, currency: 'TRY' }]
-        : []
+export function IBANCopy({ bankAccounts, labels }: IBANCopyProps) {
+  const accounts: BankAccount[] = bankAccounts ?? []
 
   return (
     <div className="bg-background p-6 flex flex-col h-full">

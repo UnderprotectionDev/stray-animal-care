@@ -103,9 +103,6 @@ export default async function DonatePage({ params }: Args) {
           <div className="md:row-span-2">
             <IBANCopy
               bankAccounts={bankAccounts}
-              bankName={siteSettings?.bankName}
-              accountHolder={siteSettings?.accountHolder}
-              iban={siteSettings?.iban}
               labels={{
                 title: ui?.donate?.iban?.title ?? 'IBAN İLE BAĞIŞ',
                 bank: ui?.donate?.iban?.bank ?? 'Banka',

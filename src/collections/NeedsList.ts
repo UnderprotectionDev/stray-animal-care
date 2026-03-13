@@ -4,6 +4,7 @@ import { authenticated } from '../access/authenticated'
 
 export const NeedsList: CollectionConfig<'needs-list'> = {
   slug: 'needs-list',
+  orderable: true,
   enableQueryPresets: true,
   access: {
     create: authenticated,
@@ -13,11 +14,10 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
   },
   labels: { singular: 'İhtiyaç Listesi', plural: 'İhtiyaç Listeleri' },
   admin: {
-    defaultColumns: ['productName', 'urgency', 'stockStatus', 'order'],
+    defaultColumns: ['productName', 'urgency', 'stockStatus'],
     group: 'Destek & Raporlar',
     useAsTitle: 'productName',
   },
-  defaultSort: 'order',
   fields: [
     {
       name: 'productName',
@@ -85,13 +85,6 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
         { label: 'Orta', value: 'orta' },
         { label: 'Düşük', value: 'dusuk' },
       ],
-    },
-    {
-      name: 'order',
-      label: 'Sıralama',
-      type: 'number',
-      required: true,
-      defaultValue: 0,
     },
   ],
 }
