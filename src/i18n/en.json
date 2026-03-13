@@ -109,6 +109,8 @@
       },
       "adoptCta": "ADOPT",
       "adoptCtaLink": "VIEW ALL →",
+      "emergencySectionTitle": "Emergency Cases",
+      "emergencyViewAll": "View All",
       "emergencyTicker": "EMERGENCY RESPONSE NEEDED /// CLINIC SUPPORT REQUIRED /// HELP NOW",
       "emergencyCodeRed": "CODE RED: CASE",
       "emergencyCase": "Case",
@@ -118,11 +120,15 @@
     },
     "support": {
       "title": "How Can You Help?",
+      "slogan": "Save a Life",
       "iban": "Donate via IBAN",
       "international": "International Support",
-      "supplies": "Supply Donations",
-      "suppliesPlaceholder": "Coming soon — check back for needed supplies.",
-      "volunteer": "Volunteer"
+      "volunteer": "Volunteer",
+      "volunteerDescription": "Give your time, join our field team.",
+      "internationalPlaceholder": "International payment options are being prepared.",
+      "comingSoon": "Coming Soon",
+      "copy": "Copy",
+      "ibanPlaceholder": "Bank account details coming soon."
     },
     "posts": {
       "title": "Recent Posts",
@@ -171,12 +177,75 @@
       "viewAll": "Full List",
       "item": "Item",
       "priority": "Priority",
-      "quantity": "Quantity"
+      "quantity": "Quantity",
+      "antibiyotik": "Antibiotics",
+      "kuruMama": "Dry Food",
+      "yasMama": "Wet Food",
+      "battaniye": "Blankets",
+      "tasimaKafesi": "Carrier Crate",
+      "forCats": "For cats",
+      "forDogs": "For dogs",
+      "acilTedavi": "Urgent treatment needed",
+      "kisHazirlik": "Winter preparation",
+      "transferIcin": "Needed for transfers",
+      "unitBox": "boxes",
+      "unitKg": "kg",
+      "unitPiece": "pcs",
+      "priorityAcil": "URGENT",
+      "priorityYuksek": "HIGH",
+      "priorityOrta": "MEDIUM",
+      "priorityDusuk": "LOW",
+      "stockLevel": "Stock Level",
+      "inStock": "In Stock",
+      "needed": "Needed"
     },
     "volunteerCta": {
       "title": "Volunteer",
       "description": "Want to make a difference for stray animals? Join us in feeding, treatment, foster care, or awareness campaigns.",
       "cta": "Volunteer Now →"
+    },
+    "ourWork": {
+      "sectionTitle": "Our Work",
+      "viewAll": "View All",
+      "photoCount": "{count} photos",
+      "activities": {
+        "feeding": {
+          "title": "Feeding",
+          "description": "Regular feeding at 40+ stations every day."
+        },
+        "treatment": {
+          "title": "Treatment",
+          "description": "Covering veterinary costs for sick and injured animals."
+        },
+        "spaying": {
+          "title": "Spaying",
+          "description": "Organizing spaying campaigns for population control."
+        },
+        "emergency": {
+          "title": "Emergency",
+          "description": "24/7 emergency response for animals in need."
+        },
+        "vaccination": {
+          "title": "Vaccination",
+          "description": "Regular vaccination programs for stray animals."
+        },
+        "shelter": {
+          "title": "Shelter",
+          "description": "Temporary shelter during treatment and recovery."
+        }
+      }
+    },
+    "successStories": {
+      "sectionTitle": "Success Stories",
+      "viewAll": "View All",
+      "before": "Before",
+      "after": "After",
+      "completed": "COMPLETED",
+      "collected": "Collected",
+      "target": "Target",
+      "funded": "funded",
+      "placeholderTitle": "Rescue Story",
+      "placeholderDescription": "A successfully completed treatment process."
     },
     "transparency": {
       "title": "Transparency",
@@ -284,17 +353,38 @@
     },
     "title": "Donate",
     "subtitle": "Every contribution brings hope to an animal in need.",
+    "hero": {
+      "title": "SAVE A LIFE",
+      "badge": "SAVE LIVES",
+      "subtitle": "Every contribution brings hope to an animal in need. Your donations go directly to treatment, food, and shelter costs."
+    },
     "iban": {
-      "title": "Bank Transfer Donation",
+      "title": "DONATE VIA IBAN",
       "bank": "Bank",
       "accountHolder": "Account Holder",
       "iban": "IBAN",
-      "copy": "Copy IBAN"
+      "copy": "Copy IBAN",
+      "placeholder": "Bank account details coming soon."
     },
     "international": {
       "title": "International Support",
       "paypal": "Donate via PayPal",
-      "wise": "Donate via Wise"
+      "wise": "Donate via Wise",
+      "comingSoon": "COMING SOON",
+      "placeholder": "International payment options coming soon."
+    },
+    "volunteer": {
+      "title": "VOLUNTEER",
+      "description": "Give your time, join our field team. Help with feeding, treatment, and rescue operations.",
+      "cta": "APPLICATION FORM →"
+    },
+    "ticker": {
+      "slogan1": "RESPECT FOR LIFE",
+      "slogan2": "DONATE SAVE LIVES",
+      "slogan3": "EVERY LIFE MATTERS",
+      "cats": "CATS",
+      "dogs": "DOGS",
+      "treated": "TREATED"
     },
     "cards": {
       "title": "What Does Your Donation Cover?",

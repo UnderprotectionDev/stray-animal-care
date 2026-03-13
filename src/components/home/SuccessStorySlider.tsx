@@ -1,29 +1,27 @@
 import Image from 'next/image'
-import type { Media as MediaType } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
 
-type BeforeAfterProps = {
-  before: MediaType
-  after: MediaType
-  labels: {
-    before: string
-    after: string
-  }
+type SuccessStorySliderProps = {
+  beforeUrl: string
+  afterUrl: string
+  beforeAlt: string
+  afterAlt: string
+  labels: { before: string; after: string }
 }
 
-export function BeforeAfter({ before, after, labels }: BeforeAfterProps) {
-  if (!before.url || !after.url) return null
-
-  const beforeUrl = getMediaUrl(before.url, before.updatedAt)
-  const afterUrl = getMediaUrl(after.url, after.updatedAt)
-
+export function SuccessStorySlider({
+  beforeUrl,
+  afterUrl,
+  beforeAlt,
+  afterAlt,
+  labels,
+}: SuccessStorySliderProps) {
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-2 gap-px bg-border border border-border">
+      <div className="grid grid-cols-2 gap-px bg-border">
         <div className="relative aspect-video bg-background">
           <Image
             src={beforeUrl}
-            alt={before.alt || labels.before}
+            alt={beforeAlt}
             fill
             className="object-cover grayscale"
             sizes="(max-width: 768px) 50vw, 25vw"
@@ -32,7 +30,7 @@ export function BeforeAfter({ before, after, labels }: BeforeAfterProps) {
         <div className="relative aspect-video bg-background">
           <Image
             src={afterUrl}
-            alt={after.alt || labels.after}
+            alt={afterAlt}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 50vw, 25vw"

@@ -109,6 +109,8 @@
       },
       "adoptCta": "YUVA OLUN",
       "adoptCtaLink": "TÜM LİSTEYİ GÖR →",
+      "emergencySectionTitle": "Acil Vakalar",
+      "emergencyViewAll": "Tümünü Gör",
       "emergencyTicker": "ACİL MÜDAHALE GEREKİYOR /// KLİNİK DESTEĞİ BEKLİYOR /// DESTEK OLUN",
       "emergencyCodeRed": "KOD KIZIL: VAKA",
       "emergencyCase": "Vaka",
@@ -118,11 +120,15 @@
     },
     "support": {
       "title": "Nasıl Destek Olabilirsiniz?",
+      "slogan": "Bir Can Kurtar",
       "iban": "IBAN ile Bağış",
       "international": "Uluslararası Destek",
-      "supplies": "Malzeme Desteği",
-      "suppliesPlaceholder": "Yakında — ihtiyaç listesi güncellenecek.",
-      "volunteer": "Gönüllü Ol"
+      "volunteer": "Gönüllü Ol",
+      "volunteerDescription": "Zamanınızı verin, saha ekibimize katılın.",
+      "internationalPlaceholder": "Yurtdışı ödeme seçenekleri hazırlanıyor.",
+      "comingSoon": "Yakında",
+      "copy": "Kopyala",
+      "ibanPlaceholder": "Banka hesap bilgileri yakında eklenecek."
     },
     "posts": {
       "title": "Son Yazılar",
@@ -171,12 +177,75 @@
       "viewAll": "Tüm Liste",
       "item": "Ürün",
       "priority": "Öncelik",
-      "quantity": "Miktar"
+      "quantity": "Miktar",
+      "antibiyotik": "Antibiyotik",
+      "kuruMama": "Kuru Mama",
+      "yasMama": "Yaş Mama",
+      "battaniye": "Battaniye",
+      "tasimaKafesi": "Taşıma Kafesi",
+      "forCats": "Kediler için",
+      "forDogs": "Köpekler için",
+      "acilTedavi": "Acil tedavi ihtiyacı",
+      "kisHazirlik": "Kış hazırlığı",
+      "transferIcin": "Transfer için gerekli",
+      "unitBox": "kutu",
+      "unitKg": "kg",
+      "unitPiece": "adet",
+      "priorityAcil": "ACİL",
+      "priorityYuksek": "YÜKSEK",
+      "priorityOrta": "ORTA",
+      "priorityDusuk": "DÜŞÜK",
+      "stockLevel": "Stok Seviyesi",
+      "inStock": "Mevcut",
+      "needed": "İhtiyaç"
     },
     "volunteerCta": {
       "title": "Gönüllü Ol",
       "description": "Sokak hayvanları için bir fark yaratmak ister misiniz? Besleme, tedavi, geçici bakım veya farkındalık çalışmalarımıza katılın.",
       "cta": "Gönüllü Ol →"
+    },
+    "ourWork": {
+      "sectionTitle": "Çalışmalarımız",
+      "viewAll": "Tümünü Gör",
+      "photoCount": "{count} fotoğraf",
+      "activities": {
+        "feeding": {
+          "title": "Besleme",
+          "description": "Her gün 40+ noktada düzenli besleme yapıyoruz."
+        },
+        "treatment": {
+          "title": "Tedavi",
+          "description": "Hasta ve yaralı hayvanların tedavilerini karşılıyoruz."
+        },
+        "spaying": {
+          "title": "Kısırlaştırma",
+          "description": "Popülasyon kontrolü için kampanyalar düzenliyoruz."
+        },
+        "emergency": {
+          "title": "Acil Müdahale",
+          "description": "Acil durumlarda 7/24 müdahale ediyoruz."
+        },
+        "vaccination": {
+          "title": "Aşılama",
+          "description": "Düzenli aşılama programı uyguluyoruz."
+        },
+        "shelter": {
+          "title": "Barınma",
+          "description": "Tedavi sürecinde geçici barınma sağlıyoruz."
+        }
+      }
+    },
+    "successStories": {
+      "sectionTitle": "Başarı Hikayeleri",
+      "viewAll": "Tümünü Gör",
+      "before": "Önce",
+      "after": "Sonra",
+      "completed": "TAMAMLANDI",
+      "collected": "Toplanan",
+      "target": "Hedef",
+      "funded": "fonlandı",
+      "placeholderTitle": "Kurtarma Hikayesi",
+      "placeholderDescription": "Başarıyla tamamlanan tedavi sürecimiz."
     },
     "transparency": {
       "title": "Şeffaflık",
@@ -284,17 +353,38 @@
     },
     "title": "Destek Ol",
     "subtitle": "Her katkınız bir cana umut olur.",
+    "hero": {
+      "title": "BİR CAN KURTAR",
+      "badge": "HAYAT KURTAR",
+      "subtitle": "Her katkınız bir cana umut olur. Bağışlarınız doğrudan tedavi, mama ve barınma masraflarına harcanır."
+    },
     "iban": {
-      "title": "Banka Havalesi ile Bağış",
+      "title": "IBAN İLE BAĞIŞ",
       "bank": "Banka",
       "accountHolder": "Hesap Sahibi",
       "iban": "IBAN",
-      "copy": "IBAN'ı Kopyala"
+      "copy": "IBAN'ı Kopyala",
+      "placeholder": "Banka hesap bilgileri yakında eklenecek."
     },
     "international": {
       "title": "Uluslararası Destek",
       "paypal": "PayPal ile Bağış Yap",
-      "wise": "Wise ile Bağış Yap"
+      "wise": "Wise ile Bağış Yap",
+      "comingSoon": "YAKINDA",
+      "placeholder": "Yurtdışı ödeme seçenekleri hazırlanıyor."
+    },
+    "volunteer": {
+      "title": "GÖNÜLLÜ OL",
+      "description": "Zamanınızı verin, saha ekibimize katılın. Besleme, tedavi ve kurtarma operasyonlarında destek olun.",
+      "cta": "BAŞVURU FORMU →"
+    },
+    "ticker": {
+      "slogan1": "YAŞAM HAKKINA SAYGI",
+      "slogan2": "DESTEK OL HAYAT KURTAR",
+      "slogan3": "HER CAN DEĞERLİ",
+      "cats": "KEDİ",
+      "dogs": "KÖPEK",
+      "treated": "TEDAVİ EDİLEN"
     },
     "cards": {
       "title": "Bağışınız Neye Yarar?",

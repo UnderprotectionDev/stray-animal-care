@@ -21,19 +21,60 @@ export const SiteSettings: GlobalConfig = {
           label: 'Banka Bilgileri',
           fields: [
             {
+              name: 'bankAccounts',
+              label: 'Banka Hesapları',
+              type: 'array',
+              minRows: 0,
+              maxRows: 10,
+              fields: [
+                {
+                  name: 'bankName',
+                  label: 'Banka Adı',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'accountHolder',
+                  label: 'Hesap Sahibi',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'iban',
+                  label: 'IBAN',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'currency',
+                  label: 'Para Birimi',
+                  type: 'select',
+                  defaultValue: 'TRY',
+                  options: [
+                    { label: 'TRY', value: 'TRY' },
+                    { label: 'USD', value: 'USD' },
+                    { label: 'EUR', value: 'EUR' },
+                  ],
+                },
+              ],
+            },
+            {
               name: 'bankName',
-              label: 'Banka Adı',
+              label: 'Banka Adı (Eski)',
               type: 'text',
+              admin: { description: 'Eski alan — yeni hesapları yukarıdaki diziye ekleyin.' },
             },
             {
               name: 'accountHolder',
-              label: 'Hesap Sahibi',
+              label: 'Hesap Sahibi (Eski)',
               type: 'text',
+              admin: { description: 'Eski alan — yeni hesapları yukarıdaki diziye ekleyin.' },
             },
             {
               name: 'iban',
-              label: 'IBAN',
+              label: 'IBAN (Eski)',
               type: 'text',
+              admin: { description: 'Eski alan — yeni hesapları yukarıdaki diziye ekleyin.' },
             },
           ],
         },

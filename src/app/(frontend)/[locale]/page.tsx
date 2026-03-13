@@ -10,12 +10,13 @@ import type { Locale } from '@/i18n/config'
 import { HomeHero } from '@/components/home/HomeHero'
 import { StatsSection } from '@/components/home/StatsSection'
 import { StorySection } from '@/components/home/StorySection'
+import { OurWorkShowcase } from '@/components/home/OurWorkShowcase'
 import { FeaturedAnimals } from '@/components/home/FeaturedAnimals'
+import { SuccessStories } from '@/components/home/SuccessStories'
 import { ActiveEmergencies } from '@/components/home/ActiveEmergencies'
 import { SupportCards } from '@/components/home/SupportCards'
 import { NeedsList } from '@/components/home/NeedsList'
 import { RecentPosts } from '@/components/home/RecentPosts'
-import { VolunteerCTA } from '@/components/home/VolunteerCTA'
 import { TransparencyBanner } from '@/components/home/TransparencyBanner'
 
 export const revalidate = 60
@@ -33,7 +34,7 @@ export default async function HomePage({ params }: Args) {
 
   const payloadLocale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
 
-  const [animals, cases, posts] = await Promise.all([
+  const [animals, cases, completedCases, posts] = await Promise.all([
     payload.find({
       collection: 'animals',
       where: {
@@ -55,6 +56,19 @@ export default async function HomePage({ params }: Args) {
       depth: 1,
     }),
     payload.find({
+      collection: 'emergency-cases',
+      where: {
+        caseStatus: { equals: 'tamamlandi' },
+        _status: { equals: 'published' },
+        beforePhoto: { exists: true },
+        afterPhoto: { exists: true },
+      },
+      limit: 4,
+      sort: '-updatedAt',
+      locale: payloadLocale,
+      depth: 1,
+    }),
+    payload.find({
       collection: 'posts',
       where: {
         _status: { equals: 'published' },
@@ -71,12 +85,13 @@ export default async function HomePage({ params }: Args) {
       <HomeHero />
       <StatsSection siteSettings={siteSettings} />
       <StorySection />
+      <OurWorkShowcase siteSettings={siteSettings} />
       <FeaturedAnimals animals={animals.docs} />
+      <SuccessStories stories={completedCases.docs} />
       <ActiveEmergencies cases={cases.docs} />
       <SupportCards siteSettings={siteSettings} />
       <NeedsList />
       <RecentPosts posts={posts.docs} />
-      <VolunteerCTA />
       <TransparencyBanner />
     </div>
   )

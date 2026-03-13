@@ -1,8 +1,6 @@
 import React from 'react'
 import { getTranslations } from 'next-intl/server'
 
-const activities = ['feeding', 'treatment', 'shelter'] as const
-
 export async function StorySection() {
   const t = await getTranslations('home.story')
 
@@ -64,47 +62,6 @@ export async function StorySection() {
         </div>
       </div>
 
-      {/* ── NELER YAPIYORUZ? ── */}
-      <div className="bg-[var(--background)] border-t border-b border-border py-6 px-6 md:px-8">
-        <h2
-          className="t-mega"
-          style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}
-        >
-          {t('whatWeDoTitle')}
-        </h2>
-      </div>
-
-      <div
-        className="grid grid-cols-1 md:grid-cols-3"
-        style={{ gap: '1px', background: 'var(--foreground)' }}
-      >
-        {activities.map((activity) => (
-          <div key={activity} className="bg-[var(--background)] p-6 md:p-8 flex flex-col justify-between min-h-[250px]">
-            <div>
-              <span className="t-meta text-muted-foreground block mb-2">
-                {t(`${activity}Number` as 'feedingNumber')}
-              </span>
-              <h3 className="t-h2 mb-3">
-                {t(`${activity}Title` as 'feedingTitle')}
-              </h3>
-              <p className="t-body text-muted-foreground">
-                {t(`${activity}Description` as 'feedingDescription')}
-              </p>
-            </div>
-            <div className="mt-6">
-              <span
-                className="t-mega text-destructive block"
-                style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}
-              >
-                {t(`${activity}Stat` as 'feedingStat')}
-              </span>
-              <span className="t-meta text-muted-foreground block mt-1">
-                {t(`${activity}StatLabel` as 'feedingStatLabel')}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
     </section>
   )
 }

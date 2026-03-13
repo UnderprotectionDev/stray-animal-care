@@ -66,7 +66,12 @@ export default async function RootLayout({ children, params }: Props) {
   const { isEnabled } = await draftMode()
   const messages = await getMessages()
   const t = await getTranslations('layout')
-  const siteSettings: SiteSetting = await getCachedGlobal('site-settings', 1)()
+  let siteSettings: SiteSetting | null = null
+  try {
+    siteSettings = await getCachedGlobal('site-settings', 1)()
+  } catch {
+    // DB unreachable — continue with null
+  }
 
   return (
     <html

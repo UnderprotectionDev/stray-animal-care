@@ -9,7 +9,7 @@ import { Logo } from '@/components/Logo/Logo'
 import { CopyButton } from '@/components/shared/CopyButton'
 
 type FooterProps = {
-  siteSettings: SiteSetting
+  siteSettings: SiteSetting | null
 }
 
 const NAV_ITEMS = [
@@ -35,9 +35,9 @@ export async function Footer({ siteSettings }: FooterProps) {
           </Link>
           <p className="t-meta text-muted-foreground">{t('description')}</p>
           <div className="flex items-center gap-3">
-            {siteSettings.instagram && (
+            {siteSettings?.instagram && (
               <a
-                href={siteSettings.instagram}
+                href={siteSettings?.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground transition-colors hover:text-foreground"
@@ -46,9 +46,9 @@ export async function Footer({ siteSettings }: FooterProps) {
                 <Instagram className="size-5" />
               </a>
             )}
-            {siteSettings.whatsapp && (
+            {siteSettings?.whatsapp && (
               <a
-                href={`https://wa.me/${siteSettings.whatsapp.replace(/\D/g, '')}`}
+                href={`https://wa.me/${siteSettings?.whatsapp.replace(/\D/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground transition-colors hover:text-foreground"
@@ -83,19 +83,19 @@ export async function Footer({ siteSettings }: FooterProps) {
           <h3 className="t-meta font-bold uppercase tracking-wider">
             {t('bankInfo')}
           </h3>
-          {(siteSettings.bankName || siteSettings.iban) && (
+          {(siteSettings?.bankName || siteSettings?.iban) && (
             <div className="border border-border p-4 space-y-2">
-              {siteSettings.bankName && (
-                <p className="t-meta text-muted-foreground">{siteSettings.bankName}</p>
+              {siteSettings?.bankName && (
+                <p className="t-meta text-muted-foreground">{siteSettings?.bankName}</p>
               )}
-              {siteSettings.accountHolder && (
-                <p className="t-meta font-bold">{siteSettings.accountHolder}</p>
+              {siteSettings?.accountHolder && (
+                <p className="t-meta font-bold">{siteSettings?.accountHolder}</p>
               )}
-              {siteSettings.iban && (
+              {siteSettings?.iban && (
                 <div className="flex items-center gap-2">
-                  <code className="text-xs font-mono break-all">{siteSettings.iban}</code>
+                  <code className="text-xs font-mono break-all">{siteSettings?.iban}</code>
                   <CopyButton
-                    text={siteSettings.iban}
+                    text={siteSettings?.iban}
                     label={t('copyIban')}
                     className="shrink-0"
                   />
@@ -103,15 +103,15 @@ export async function Footer({ siteSettings }: FooterProps) {
               )}
             </div>
           )}
-          {(siteSettings.paypalLink || siteSettings.wiseLink) && (
+          {(siteSettings?.paypalLink || siteSettings?.wiseLink) && (
             <div className="space-y-2">
               <p className="t-meta font-bold uppercase tracking-wider text-muted-foreground">
                 {t('international')}
               </p>
               <div className="flex flex-wrap gap-2">
-                {siteSettings.paypalLink && (
+                {siteSettings?.paypalLink && (
                   <a
-                    href={siteSettings.paypalLink}
+                    href={siteSettings?.paypalLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-cta text-xs py-1 px-3"
@@ -119,9 +119,9 @@ export async function Footer({ siteSettings }: FooterProps) {
                     PayPal <ExternalLink className="size-3" />
                   </a>
                 )}
-                {siteSettings.wiseLink && (
+                {siteSettings?.wiseLink && (
                   <a
-                    href={siteSettings.wiseLink}
+                    href={siteSettings?.wiseLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-cta text-xs py-1 px-3"
@@ -140,27 +140,27 @@ export async function Footer({ siteSettings }: FooterProps) {
             {t('contactUs')}
           </h3>
           <div className="flex flex-col gap-3">
-            {siteSettings.phone && (
+            {siteSettings?.phone && (
               <a
-                href={`tel:${siteSettings.phone}`}
+                href={`tel:${siteSettings?.phone}`}
                 className="t-meta inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
               >
                 <Phone className="size-4" />
-                {siteSettings.phone}
+                {siteSettings?.phone}
               </a>
             )}
-            {siteSettings.email && (
+            {siteSettings?.email && (
               <a
-                href={`mailto:${siteSettings.email}`}
+                href={`mailto:${siteSettings?.email}`}
                 className="t-meta inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
               >
                 <Mail className="size-4" />
-                {siteSettings.email}
+                {siteSettings?.email}
               </a>
             )}
-            {siteSettings.whatsapp && (
+            {siteSettings?.whatsapp && (
               <a
-                href={`https://wa.me/${siteSettings.whatsapp.replace(/\D/g, '')}`}
+                href={`https://wa.me/${siteSettings?.whatsapp.replace(/\D/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="t-meta inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"

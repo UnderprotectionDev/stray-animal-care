@@ -64,12 +64,20 @@ export async function ActiveEmergencies({ cases }: ActiveEmergenciesProps) {
 
   return (
     <section>
+      {/* Section title bar */}
+      <div className="panel flex items-center justify-between py-4 px-6 border-b border-border">
+        <h2 className="t-h2">{t('emergencySectionTitle')}</h2>
+        <Link href="/acil-vakalar" className="btn-cta text-xs py-2 px-4">
+          {t('emergencyViewAll')}
+        </Link>
+      </div>
+
       {/* Ticker marquee — black bar with bold white text */}
       <div className="ticker-wrap">
         <div className="ticker-track t-meta font-bold uppercase tracking-wider">
           {tickerItems.map((title, i) => (
             <span key={i} className="flex items-center gap-4">
-              <span className="text-destructive">///</span>
+              <span className="text-destructive">{'///'}</span>
               {title}
             </span>
           ))}

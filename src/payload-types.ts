@@ -2201,8 +2201,26 @@ export interface Footer {
  */
 export interface SiteSetting {
   id: number;
+  bankAccounts?:
+    | {
+        bankName: string;
+        accountHolder: string;
+        iban: string;
+        currency?: ('TRY' | 'USD' | 'EUR') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Eski alan — yeni hesapları yukarıdaki diziye ekleyin.
+   */
   bankName?: string | null;
+  /**
+   * Eski alan — yeni hesapları yukarıdaki diziye ekleyin.
+   */
   accountHolder?: string | null;
+  /**
+   * Eski alan — yeni hesapları yukarıdaki diziye ekleyin.
+   */
   iban?: string | null;
   phone?: string | null;
   email?: string | null;
@@ -2276,6 +2294,15 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  bankAccounts?:
+    | T
+    | {
+        bankName?: T;
+        accountHolder?: T;
+        iban?: T;
+        currency?: T;
+        id?: T;
+      };
   bankName?: T;
   accountHolder?: T;
   iban?: T;
