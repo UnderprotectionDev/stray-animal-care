@@ -11,6 +11,7 @@ const SOCIAL_TYPES = new Set([
   'linkedin',
   'github',
   'website',
+  'other',
 ])
 
 const CONTACT_TYPES = new Set(['whatsapp', 'phone', 'email'])
@@ -67,6 +68,9 @@ export function formatSocialUrl(link: SocialLinkItem): string {
 
 /** Get display label for a link */
 export function getSocialLabel(link: SocialLinkItem): string {
+  if (link.type === 'other') {
+    return link.label || link.customType || 'Diğer'
+  }
   return link.label || TYPE_LABELS[link.type] || link.type
 }
 

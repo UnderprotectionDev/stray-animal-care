@@ -2467,7 +2467,12 @@ export interface SiteSetting {
           | 'website'
           | 'whatsapp'
           | 'phone'
-          | 'email';
+          | 'email'
+          | 'other';
+        /**
+         * Örn: Bluesky, Threads, Telegram
+         */
+        customType?: string | null;
         /**
          * URL, telefon numarası veya e-posta adresi
          */
@@ -3169,6 +3174,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        customType?: T;
         url?: T;
         label?: T;
         id?: T;

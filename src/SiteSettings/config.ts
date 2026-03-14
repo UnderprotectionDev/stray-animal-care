@@ -125,7 +125,17 @@ export const SiteSettings: GlobalConfig = {
                     { label: 'WhatsApp', value: 'whatsapp' },
                     { label: 'Telefon', value: 'phone' },
                     { label: 'E-posta', value: 'email' },
+                    { label: 'Diğer', value: 'other' },
                   ],
+                },
+                {
+                  name: 'customType',
+                  label: 'Platform Adı',
+                  type: 'text',
+                  admin: {
+                    condition: (_data, siblingData) => siblingData?.type === 'other',
+                    description: 'Örn: Bluesky, Threads, Telegram',
+                  },
                 },
                 {
                   name: 'url',

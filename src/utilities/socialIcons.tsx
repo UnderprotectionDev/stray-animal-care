@@ -37,7 +37,6 @@ export function SocialIcon({
   icon: string
   className?: string
 }) {
-  const IconComponent = iconMap[icon]
-  if (!IconComponent) return null
+  const IconComponent = iconMap[icon] || Globe
   return <IconComponent className={className} />
 }

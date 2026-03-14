@@ -32,6 +32,19 @@ export default buildConfig({
   i18n: {
     fallbackLanguage: 'tr',
     supportedLanguages: { tr },
+    translations: {
+      tr: {
+        'plugin-translator': {
+          resolver_copy_buttonLabel: 'Diğer dilden kopyala',
+          resolver_copy_errorMessage: 'Veri kopyalanırken bir hata oluştu',
+          resolver_copy_modalTitle: 'Kopyalanacak dili seçin',
+          resolver_copy_submitButtonLabelEmpty: 'Yalnızca boş alanları kopyala',
+          resolver_copy_submitButtonLabelFull: 'Tümünü kopyala',
+          resolver_copy_successMessage:
+            'Başarıyla kopyalandı. Değişiklikleri uygulamak için "Kaydet" butonuna basın.',
+        },
+      },
+    },
   },
   localization: {
     locales: [

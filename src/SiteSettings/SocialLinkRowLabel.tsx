@@ -14,11 +14,14 @@ const TYPE_LABELS: Record<string, string> = {
   phone: 'Telefon',
   email: 'E-posta',
   website: 'Web Sitesi',
+  other: 'Diğer',
 }
 
 export const SocialLinkRowLabel: React.FC<RowLabelProps> = () => {
   const { data, rowNumber } = useRowLabel<NonNullable<SiteSetting['socialLinks']>[number]>()
-  const typeLabel = data?.type ? TYPE_LABELS[data.type] || data.type : ''
+  const typeLabel = data?.type === 'other'
+    ? data.customType || 'Diğer'
+    : data?.type ? TYPE_LABELS[data.type] || data.type : ''
   const urlSuffix = data?.url ? ` — ${data.url}` : ''
   const label = typeLabel ? `${typeLabel}${urlSuffix}` : `Link ${(rowNumber ?? 0) + 1}`
   return <div>{label}</div>

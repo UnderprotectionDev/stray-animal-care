@@ -24,6 +24,13 @@ async function seed() {
     locale: 'tr',
     context: { disableRevalidate: true },
     data: {
+      socialLinks: [
+        { type: 'instagram', url: 'https://instagram.com/umutpatileri' },
+        { type: 'x-twitter', url: 'https://twitter.com/umutpatileri' },
+        { type: 'whatsapp', url: '+905551234567' },
+        { type: 'phone', url: '+905551234567' },
+        { type: 'email', url: 'info@umutpatileri.org' },
+      ],
       homepageBlocks: [
         {
           blockType: 'homeHero',
@@ -198,10 +205,6 @@ async function seed() {
           label: 'Destek Ol',
           isCta: true,
         },
-      ],
-      socialLinks: [
-        { label: 'Instagram', url: 'https://instagram.com/umutpatileri' },
-        { label: 'Twitter', url: 'https://twitter.com/umutpatileri' },
       ],
     },
   })

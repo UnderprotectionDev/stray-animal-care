@@ -3,6 +3,7 @@ import type { SiteSetting } from '@/payload-types'
 import { CopyButton } from '@/components/shared/CopyButton'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 import { Link } from '@/i18n/navigation'
+import { getSocialLink } from '@/utilities/socialLinks'
 
 type SupportCardsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeSupportCards' }>
 
@@ -80,21 +81,24 @@ export function SupportCards({ block, siteSettings }: Props) {
           <p className="t-body text-white/70 mb-4">
             {block.volunteerDescription}
           </p>
-          {siteSettings?.whatsapp ? (
-            <WhatsAppButton
-              phone={siteSettings.whatsapp}
-              className="!bg-[var(--accent)] !text-black !rounded-none w-fit font-bold uppercase text-sm tracking-wider"
-            >
-              WHATSAPP →
-            </WhatsAppButton>
-          ) : (
-            <Link
-              href="/gonullu-ol"
-              className="inline-flex items-center bg-[var(--accent)] text-black px-4 py-2.5 text-sm font-bold uppercase tracking-wider"
-            >
-              {block.volunteerTitle} →
-            </Link>
-          )}
+          {(() => {
+            const wa = getSocialLink(siteSettings?.socialLinks, 'whatsapp')
+            return wa ? (
+              <WhatsAppButton
+                phone={wa.url}
+                className="!bg-[var(--accent)] !text-black !rounded-none w-fit font-bold uppercase text-sm tracking-wider"
+              >
+                WHATSAPP →
+              </WhatsAppButton>
+            ) : (
+              <Link
+                href="/gonullu-ol"
+                className="inline-flex items-center bg-[var(--accent)] text-black px-4 py-2.5 text-sm font-bold uppercase tracking-wider"
+              >
+                {block.volunteerTitle} →
+              </Link>
+            )
+          })()}
         </div>
       </div>
     </section>

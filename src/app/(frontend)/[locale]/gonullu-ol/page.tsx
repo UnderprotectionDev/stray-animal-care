@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/accordion'
 import type { SiteSetting, UiString } from '@/payload-types'
 import { Heart, Stethoscope, UtensilsCrossed, Home } from 'lucide-react'
+import { getSocialLink } from '@/utilities/socialLinks'
 
 export const revalidate = 3600
 
@@ -168,15 +169,18 @@ export default async function VolunteerPage({ params }: Args) {
           <p className="t-body mb-6 text-lg">
             {ui?.volunteer?.cta?.description}
           </p>
-          {siteSettings?.whatsapp && (
-            <WhatsAppButton
-              phone={siteSettings.whatsapp}
-              message={ui?.volunteer?.cta?.whatsappMessage || ''}
-              className="text-base px-6 py-3"
-            >
-              WhatsApp
-            </WhatsAppButton>
-          )}
+          {(() => {
+            const wa = getSocialLink(siteSettings?.socialLinks, 'whatsapp')
+            return wa ? (
+              <WhatsAppButton
+                phone={wa.url}
+                message={ui?.volunteer?.cta?.whatsappMessage || ''}
+                className="text-base px-6 py-3"
+              >
+                WhatsApp
+              </WhatsAppButton>
+            ) : null
+          })()}
         </div>
       </Container>
     </Section>

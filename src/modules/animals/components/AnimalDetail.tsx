@@ -7,6 +7,7 @@ import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 import { PhotoGallery } from './PhotoGallery'
 import RichText from '@/components/RichText'
 import type { Animal, Media as MediaType, SiteSetting, UiString } from '@/payload-types'
+import { getSocialLink } from '@/utilities/socialLinks'
 
 type AnimalDetailProps = {
   animal: Animal
@@ -106,15 +107,18 @@ export async function AnimalDetail({ animal, siteSettings, locale }: AnimalDetai
                 {ui?.animals?.detail?.donate ?? 'Destek Ol'}
               </Link>
 
-              {siteSettings?.whatsapp && (
-                <WhatsAppButton
-                  phone={siteSettings.whatsapp}
-                  message={interpolate(ui?.animals?.detail?.whatsappMessage ?? '{name} hakkında bilgi almak istiyorum', { name: animal.name })}
-                  className="block w-full border border-border bg-background px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-foreground hover:bg-muted"
-                >
-                  WhatsApp
-                </WhatsAppButton>
-              )}
+              {(() => {
+                const wa = getSocialLink(siteSettings?.socialLinks, 'whatsapp')
+                return wa ? (
+                  <WhatsAppButton
+                    phone={wa.url}
+                    message={interpolate(ui?.animals?.detail?.whatsappMessage ?? '{name} hakkında bilgi almak istiyorum', { name: animal.name })}
+                    className="block w-full border border-border bg-background px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-foreground hover:bg-muted"
+                  >
+                    WhatsApp
+                  </WhatsAppButton>
+                ) : null
+              })()}
 
               <Link
                 href="/canlarimiz"

@@ -247,10 +247,6 @@ export const seed = async ({
             isCta: true,
           },
         ],
-        socialLinks: [
-          { label: 'Instagram', url: 'https://instagram.com/umutpatileri' },
-          { label: 'Twitter', url: 'https://twitter.com/umutpatileri' },
-        ],
       },
     }),
     payload.updateGlobal({
@@ -482,10 +478,12 @@ export const seed = async ({
           currency: 'TRY',
         },
       ],
-      phone: '+90 555 123 4567',
-      email: 'info@pawsofhope.org',
-      whatsapp: '+905551234567',
-      instagram: 'pawsofhope',
+      socialLinks: [
+        { type: 'instagram', url: 'https://instagram.com/pawsofhope' },
+        { type: 'whatsapp', url: '+905551234567' },
+        { type: 'phone', url: '+905551234567' },
+        { type: 'email', url: 'info@pawsofhope.org' },
+      ],
       catsCount: 45,
       dogsCount: 30,
       treatedCount: 120,
