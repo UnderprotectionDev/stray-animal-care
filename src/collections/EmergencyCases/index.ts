@@ -26,6 +26,7 @@ import { slugField } from 'payload'
 
 export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
   slug: 'emergency-cases',
+  orderable: true,
   enableQueryPresets: true,
   access: {
     create: authenticated,

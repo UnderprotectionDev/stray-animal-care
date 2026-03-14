@@ -108,7 +108,7 @@ export default async function RootLayout({ children, params }: Props) {
                 preview: isEnabled,
               }}
             />
-            <Header locale={locale} headerLabels={headerLabels} searchLabels={searchLabels} />
+            <Header locale={locale} headerLabels={headerLabels} searchLabels={searchLabels} siteSettings={siteSettings} />
             <main id="main-content" className="flex-1 pb-20 md:pb-0">
               {children}
             </main>

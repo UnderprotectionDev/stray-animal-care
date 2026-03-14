@@ -673,6 +673,7 @@ export interface MissionBlock {
  */
 export interface Animal {
   id: number;
+  _order?: string | null;
   name: string;
   photos?: (number | Media)[] | null;
   story?: {
@@ -739,6 +740,7 @@ export interface Animal {
  */
 export interface EmergencyCase {
   id: number;
+  _order?: string | null;
   title: string;
   animal?: (number | null) | Animal;
   description?: {
@@ -809,6 +811,7 @@ export interface EmergencyCase {
  */
 export interface VetRecord {
   id: number;
+  _order?: string | null;
   animal: number | Animal;
   recordType: 'muayene' | 'asi' | 'kisirlastirma' | 'ameliyat' | 'tedavi' | 'kontrol';
   date: string;
@@ -1740,6 +1743,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "animals_select".
  */
 export interface AnimalsSelect<T extends boolean = true> {
+  _order?: T;
   name?: T;
   photos?: T;
   story?: T;
@@ -1773,6 +1777,7 @@ export interface AnimalsSelect<T extends boolean = true> {
  * via the `definition` "emergency-cases_select".
  */
 export interface EmergencyCasesSelect<T extends boolean = true> {
+  _order?: T;
   title?: T;
   animal?: T;
   description?: T;
@@ -1810,6 +1815,7 @@ export interface EmergencyCasesSelect<T extends boolean = true> {
  * via the `definition` "vet-records_select".
  */
 export interface VetRecordsSelect<T extends boolean = true> {
+  _order?: T;
   animal?: T;
   recordType?: T;
   date?: T;
@@ -2199,13 +2205,6 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
-  socialLinks?:
-    | {
-        label: string;
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2251,11 +2250,22 @@ export interface SiteSetting {
     | (
         | {
             enabled?: boolean | null;
-            urgentBadge?: string | null;
-            headline?: string | null;
-            description?: string | null;
-            quoteText?: string | null;
-            quoteAuthor?: string | null;
+            sectionTitle?: string | null;
+            content?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             leftImage?: (number | null) | Media;
             rightImage?: (number | null) | Media;
             id?: string | null;
@@ -2281,12 +2291,21 @@ export interface SiteSetting {
             sectionTitle?: string | null;
             founderImage?: (number | null) | Media;
             founderCaption?: string | null;
-            founderName?: string | null;
-            originTitle?: string | null;
-            originQuote?: string | null;
-            originParagraph1?: string | null;
-            originParagraph2?: string | null;
-            missionText?: string | null;
+            content?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'homeStory';
@@ -2435,10 +2454,31 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
-  phone?: string | null;
-  email?: string | null;
-  whatsapp?: string | null;
-  instagram?: string | null;
+  socialLinks?:
+    | {
+        type:
+          | 'instagram'
+          | 'x-twitter'
+          | 'facebook'
+          | 'youtube'
+          | 'tiktok'
+          | 'linkedin'
+          | 'github'
+          | 'website'
+          | 'whatsapp'
+          | 'phone'
+          | 'email';
+        /**
+         * URL, telefon numarası veya e-posta adresi
+         */
+        url: string;
+        /**
+         * Varsayılan platform adı yerine özel etiket
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   catsCount?: number | null;
   dogsCount?: number | null;
   treatedCount?: number | null;
@@ -2890,13 +2930,6 @@ export interface HeaderSelect<T extends boolean = true> {
         isCta?: T;
         id?: T;
       };
-  socialLinks?:
-    | T
-    | {
-        label?: T;
-        url?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -2936,11 +2969,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
           | T
           | {
               enabled?: T;
-              urgentBadge?: T;
-              headline?: T;
-              description?: T;
-              quoteText?: T;
-              quoteAuthor?: T;
+              sectionTitle?: T;
+              content?: T;
               leftImage?: T;
               rightImage?: T;
               id?: T;
@@ -2968,12 +2998,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               sectionTitle?: T;
               founderImage?: T;
               founderCaption?: T;
-              founderName?: T;
-              originTitle?: T;
-              originQuote?: T;
-              originParagraph1?: T;
-              originParagraph2?: T;
-              missionText?: T;
+              content?: T;
               id?: T;
               blockName?: T;
             };
@@ -3140,10 +3165,14 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         currency?: T;
         id?: T;
       };
-  phone?: T;
-  email?: T;
-  whatsapp?: T;
-  instagram?: T;
+  socialLinks?:
+    | T
+    | {
+        type?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
   catsCount?: T;
   dogsCount?: T;
   treatedCount?: T;

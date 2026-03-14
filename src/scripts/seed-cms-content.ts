@@ -28,11 +28,7 @@ async function seed() {
         {
           blockType: 'homeHero',
           enabled: true,
-          urgentBadge: 'ACİL DURUM SÜRÜYOR',
-          headline: 'BİR İNSAN.\nBİNLERCE\nCAN.',
-          description: 'İstanbul\'un sokaklarında sistemli kurtarma operasyonu. Her can bir nefes, her nefes kaydedilen bir umut. Sadece beslemiyor, rehabilite ediyor ve kalıcı yuvalar buluyoruz.',
-          quoteText: 'Birini kurtarmak dünyayı değiştirmez. Ama o birinin dünyasını değiştirir.',
-          quoteAuthor: 'AYŞE',
+          sectionTitle: 'ANA SAYFA',
         },
         {
           blockType: 'homeStats',
@@ -49,12 +45,6 @@ async function seed() {
           enabled: true,
           sectionTitle: 'HİKAYEMİZ & MİSYON',
           founderCaption: 'AYŞE KAYA, 2019',
-          founderName: 'Ayşe',
-          originTitle: 'BAŞLANGIÇ',
-          originQuote: 'Birini kurtarmak dünyayı değiştirmez. Ama o birinin dünyasını değiştirir.',
-          originParagraph1: 'Her şey 2019\'da soğuk bir kış gecesi, kapımın önünde titreyen yaralı bir kediyle başladı. Onu veterinere götürdüm, tedavi ettirdim ve o gece fark ettim — bu sadece bir kedi değildi, bir sorumluluktu.',
-          originParagraph2: 'O günden bu yana yüzlerce can kurtardık. Her birinin hikayesi farklı ama hepsinin ortak noktası aynı: onlara sahip çıkacak birinin olması yeterli.',
-          missionText: 'Misyonumuz net: Acil tıbbi müdahale gerektiren vakalara anında ulaşmak, sokaklardaki popülasyonu etik yöntemlerle kontrol altına almak ve kalıcı yuva bulana kadar onlara güvenli bir sığınak olmak.',
         },
         {
           blockType: 'homeOurWork',

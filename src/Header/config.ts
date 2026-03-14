@@ -72,30 +72,6 @@ export const Header: GlobalConfig = {
         },
       },
     },
-    {
-      name: 'socialLinks',
-      label: 'Sosyal Medya Linkleri',
-      type: 'array',
-      maxRows: 6,
-      fields: [
-        {
-          name: 'label',
-          label: 'Platform Adı',
-          type: 'text',
-          required: true,
-          localized: true,
-        },
-        {
-          name: 'url',
-          label: 'URL',
-          type: 'text',
-          required: true,
-        },
-      ],
-      admin: {
-        initCollapsed: true,
-      },
-    },
   ],
   hooks: {
     afterChange: [revalidateHeader],

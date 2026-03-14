@@ -23,6 +23,7 @@ import { slugField } from 'payload'
 
 export const Animals: CollectionConfig<'animals'> = {
   slug: 'animals',
+  orderable: true,
   enableQueryPresets: true,
   access: {
     create: authenticated,

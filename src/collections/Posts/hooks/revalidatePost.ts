@@ -3,6 +3,7 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Post } from '../../../payload-types'
+import { locales } from '@/i18n/config'
 
 export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   doc,
@@ -11,42 +12,53 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
-      const path = `/posts/${doc.slug}`
-      const blogPath = `/gunluk/${doc.slug}`
+      payload.logger.info(`Revalidating post: ${doc.slug}`)
 
-      payload.logger.info(`Revalidating post at path: ${path}`)
-
-      revalidatePath(path)
-      revalidatePath(blogPath)
-      revalidateTag('posts-sitemap')
-      revalidateTag('blog-list')
+      try {
+        for (const locale of locales) {
+          revalidatePath(`/${locale}/gunluk/${doc.slug}`)
+          revalidatePath(`/${locale}/gunluk`)
+        }
+        revalidateTag('posts-sitemap')
+        revalidateTag('blog-list')
+      } catch (err) {
+        payload.logger.error({ msg: 'Failed to revalidate post paths', err })
+      }
     }
 
-    // If the post was previously published, we need to revalidate the old path
     if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/posts/${previousDoc.slug}`
-      const oldBlogPath = `/gunluk/${previousDoc.slug}`
+      payload.logger.info(`Revalidating old post: ${previousDoc.slug}`)
 
-      payload.logger.info(`Revalidating old post at path: ${oldPath}`)
-
-      revalidatePath(oldPath)
-      revalidatePath(oldBlogPath)
-      revalidateTag('posts-sitemap')
-      revalidateTag('blog-list')
+      try {
+        for (const locale of locales) {
+          revalidatePath(`/${locale}/gunluk/${previousDoc.slug}`)
+          revalidatePath(`/${locale}/gunluk`)
+        }
+        revalidateTag('posts-sitemap')
+        revalidateTag('blog-list')
+      } catch (err) {
+        payload.logger.error({ msg: 'Failed to revalidate old post paths', err })
+      }
     }
   }
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { context } }) => {
+export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({
+  doc,
+  req: { payload, context },
+}) => {
   if (!context.disableRevalidate) {
-    const path = `/posts/${doc?.slug}`
-    const blogPath = `/gunluk/${doc?.slug}`
-
-    revalidatePath(path)
-    revalidatePath(blogPath)
-    revalidateTag('posts-sitemap')
-    revalidateTag('blog-list')
+    try {
+      for (const locale of locales) {
+        revalidatePath(`/${locale}/gunluk/${doc?.slug}`)
+        revalidatePath(`/${locale}/gunluk`)
+      }
+      revalidateTag('posts-sitemap')
+      revalidateTag('blog-list')
+    } catch (err) {
+      payload.logger.error({ msg: 'Failed to revalidate deleted post paths', err })
+    }
   }
 
   return doc

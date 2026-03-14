@@ -11,12 +11,13 @@ import FlowingMenu from '@/components/FlowingMenu'
 import { StaggeredMenu } from '@/components/StaggeredMenu'
 import type { FlowingMenuItem } from '@/components/FlowingMenu'
 import type { StaggeredMenuItem, StaggeredMenuSocialItem } from '@/components/StaggeredMenu'
-import type { Header as HeaderType, Media, UiString } from '@/payload-types'
+import type { Header as HeaderType, Media, SiteSetting, UiString } from '@/payload-types'
+import { getSocialLabel } from '@/utilities/socialLinks'
 
 type HeaderLabels = NonNullable<UiString['layout']>['header']
 type SearchLabels = UiString['search']
 type NavItem = NonNullable<HeaderType['navItems']>[number]
-type SocialLink = NonNullable<HeaderType['socialLinks']>[number]
+type SocialLink = NonNullable<SiteSetting['socialLinks']>[number]
 
 function resolveNavHref(item: NavItem): string {
   const link = item.link
@@ -182,7 +183,7 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
   }))
 
   const staggeredSocialItems: StaggeredMenuSocialItem[] = (socialLinks ?? []).map((s) => ({
-    label: s.label,
+    label: getSocialLabel(s),
     link: s.url,
   }))
 

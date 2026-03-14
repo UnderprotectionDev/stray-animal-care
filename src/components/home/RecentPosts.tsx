@@ -29,7 +29,7 @@ export function RecentPosts({ block, posts, locale }: Props) {
         {posts.map((post) => {
           const image = post.meta?.image
           return (
-            <Link key={post.id} href={`/posts/${post.slug}`} className="panel p-0 group">
+            <Link key={post.id} href={`/gunluk/${post.slug}`} className="panel p-0 group">
               {image && typeof image !== 'number' && (
                 <div className="aspect-video overflow-hidden">
                   <Media

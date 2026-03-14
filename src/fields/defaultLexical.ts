@@ -41,7 +41,7 @@ export const defaultLexical = lexicalEditor({
               if ((options?.siblingData as LinkFields)?.linkType === 'internal') {
                 return true // no validation needed, as no url should exist for internal links
               }
-              return value ? true : 'URL is required'
+              return value ? true : 'URL gereklidir'
             }) as TextFieldSingleValidation,
           },
         ]
@@ -49,11 +49,11 @@ export const defaultLexical = lexicalEditor({
     }),
     TextColorFeature({
       colors: [
-        { label: 'Amber (Primary)', value: 'oklch(0.795 0.16 75)' },
-        { label: 'Sage Green', value: 'oklch(0.78 0.1 155)' },
+        { label: 'Amber (Ana)', value: 'oklch(0.795 0.16 75)' },
+        { label: 'Adaçayı Yeşili', value: 'oklch(0.78 0.1 155)' },
         { label: 'Terracotta', value: 'oklch(0.55 0.17 35)' },
-        { label: 'Dark', value: 'oklch(0.25 0.02 75)' },
-        { label: 'Muted', value: 'oklch(0.55 0.02 75)' },
+        { label: 'Koyu', value: 'oklch(0.25 0.02 75)' },
+        { label: 'Soluk', value: 'oklch(0.55 0.02 75)' },
       ],
     }),
     TextSizeFeature({

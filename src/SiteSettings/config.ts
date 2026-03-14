@@ -100,27 +100,58 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
-          label: 'İletişim',
+          label: 'Sosyal Medya',
           fields: [
             {
-              name: 'phone',
-              label: 'Telefon',
-              type: 'text',
-            },
-            {
-              name: 'email',
-              label: 'E-posta',
-              type: 'text',
-            },
-            {
-              name: 'whatsapp',
-              label: 'WhatsApp',
-              type: 'text',
-            },
-            {
-              name: 'instagram',
-              label: 'Instagram',
-              type: 'text',
+              name: 'socialLinks',
+              label: 'Sosyal Medya & İletişim Linkleri',
+              type: 'array',
+              maxRows: 12,
+              fields: [
+                {
+                  name: 'type',
+                  label: 'Platform',
+                  type: 'select',
+                  required: true,
+                  options: [
+                    { label: 'Instagram', value: 'instagram' },
+                    { label: 'X (Twitter)', value: 'x-twitter' },
+                    { label: 'Facebook', value: 'facebook' },
+                    { label: 'YouTube', value: 'youtube' },
+                    { label: 'TikTok', value: 'tiktok' },
+                    { label: 'LinkedIn', value: 'linkedin' },
+                    { label: 'GitHub', value: 'github' },
+                    { label: 'Web Sitesi', value: 'website' },
+                    { label: 'WhatsApp', value: 'whatsapp' },
+                    { label: 'Telefon', value: 'phone' },
+                    { label: 'E-posta', value: 'email' },
+                  ],
+                },
+                {
+                  name: 'url',
+                  label: 'URL / Değer',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    description: 'URL, telefon numarası veya e-posta adresi',
+                  },
+                },
+                {
+                  name: 'label',
+                  label: 'Etiket (opsiyonel)',
+                  type: 'text',
+                  localized: true,
+                  admin: {
+                    description: 'Varsayılan platform adı yerine özel etiket',
+                  },
+                },
+              ],
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: '@/SiteSettings/SocialLinkRowLabel#SocialLinkRowLabel',
+                },
+              },
             },
           ],
         },

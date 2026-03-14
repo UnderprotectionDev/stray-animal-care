@@ -8,6 +8,7 @@ import { Search } from '@/search/Component'
 import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
 import { setRequestLocale } from 'next-intl/server'
+import type { Locale } from '@/i18n/config'
 
 type Args = {
   params: Promise<{
@@ -28,6 +29,7 @@ export default async function Page({ params: paramsPromise, searchParams: search
     collection: 'search',
     depth: 1,
     limit: 12,
+    locale: locale as Locale,
     select: {
       title: true,
       slug: true,

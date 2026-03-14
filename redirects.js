@@ -12,7 +12,19 @@ const redirects = async () => {
     source: '/:path((?!ie-incompatible.html$).*)', // all pages except the incompatibility page
   }
 
-  const redirects = [internetExplorerRedirect]
+  const postsToGunlukLocale = {
+    source: '/:locale(tr|en)/posts/:slug*',
+    destination: '/:locale/gunluk/:slug*',
+    permanent: true,
+  }
+
+  const postsToGunluk = {
+    source: '/posts/:slug*',
+    destination: '/gunluk/:slug*',
+    permanent: true,
+  }
+
+  const redirects = [internetExplorerRedirect, postsToGunlukLocale, postsToGunluk]
 
   return redirects
 }

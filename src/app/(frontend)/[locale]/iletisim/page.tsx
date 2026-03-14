@@ -9,6 +9,7 @@ import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { ContactCard } from '@/components/contact/ContactCard'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 import { MessageCircle, Phone, Mail, Instagram } from 'lucide-react'
+import { getSocialLink } from '@/utilities/socialLinks'
 
 export const revalidate = 60
 
@@ -50,47 +51,63 @@ export default async function ContactPage({ params }: Args) {
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {/* WhatsApp */}
-            <ContactCard
-              icon={MessageCircle}
-              title={ui?.contact?.whatsapp?.label ?? 'WhatsApp'}
-              description={ui?.contact?.whatsapp?.description ?? ''}
-              href={siteSettings?.whatsapp ? `https://wa.me/${siteSettings.whatsapp.replace(/\D/g, '')}` : '#'}
-            >
-              {siteSettings?.whatsapp && (
-                <WhatsAppButton phone={siteSettings.whatsapp} message={ui?.contact?.whatsapp?.message ?? ''}>
-                  {ui?.contact?.whatsapp?.label ?? 'WhatsApp'}
-                </WhatsAppButton>
-              )}
-            </ContactCard>
+            {(() => {
+              const wa = getSocialLink(siteSettings?.socialLinks, 'whatsapp')
+              return (
+                <ContactCard
+                  icon={MessageCircle}
+                  title={ui?.contact?.whatsapp?.label ?? 'WhatsApp'}
+                  description={ui?.contact?.whatsapp?.description ?? ''}
+                  href={wa ? `https://wa.me/${wa.url.replace(/\D/g, '')}` : '#'}
+                >
+                  {wa && (
+                    <WhatsAppButton phone={wa.url} message={ui?.contact?.whatsapp?.message ?? ''}>
+                      {ui?.contact?.whatsapp?.label ?? 'WhatsApp'}
+                    </WhatsAppButton>
+                  )}
+                </ContactCard>
+              )
+            })()}
 
             {/* Phone */}
-            <ContactCard
-              icon={Phone}
-              title={ui?.contact?.phone?.label ?? 'Telefon'}
-              description={ui?.contact?.phone?.description ?? ''}
-              href={siteSettings?.phone ? `tel:${siteSettings.phone}` : '#'}
-            />
+            {(() => {
+              const phone = getSocialLink(siteSettings?.socialLinks, 'phone')
+              return (
+                <ContactCard
+                  icon={Phone}
+                  title={ui?.contact?.phone?.label ?? 'Telefon'}
+                  description={ui?.contact?.phone?.description ?? ''}
+                  href={phone ? `tel:${phone.url}` : '#'}
+                />
+              )
+            })()}
 
             {/* Email */}
-            <ContactCard
-              icon={Mail}
-              title={ui?.contact?.email?.label ?? 'E-posta'}
-              description={ui?.contact?.email?.description ?? ''}
-              href={siteSettings?.email ? `mailto:${siteSettings.email}` : '#'}
-            />
+            {(() => {
+              const email = getSocialLink(siteSettings?.socialLinks, 'email')
+              return (
+                <ContactCard
+                  icon={Mail}
+                  title={ui?.contact?.email?.label ?? 'E-posta'}
+                  description={ui?.contact?.email?.description ?? ''}
+                  href={email ? `mailto:${email.url}` : '#'}
+                />
+              )
+            })()}
 
             {/* Instagram */}
-            <ContactCard
-              icon={Instagram}
-              title={ui?.contact?.instagram?.label ?? 'Instagram'}
-              description={ui?.contact?.instagram?.description ?? ''}
-              href={
-                siteSettings?.instagram
-                  ? `https://instagram.com/${siteSettings.instagram.replace('@', '')}`
-                  : '#'
-              }
-              external
-            />
+            {(() => {
+              const ig = getSocialLink(siteSettings?.socialLinks, 'instagram')
+              return (
+                <ContactCard
+                  icon={Instagram}
+                  title={ui?.contact?.instagram?.label ?? 'Instagram'}
+                  description={ui?.contact?.instagram?.description ?? ''}
+                  href={ig ? ig.url : '#'}
+                  external
+                />
+              )
+            })()}
           </div>
         </Container>
       </Section>

@@ -17,7 +17,7 @@ export const VetRecords: CollectionConfig<'vet-records'> = {
     useAsTitle: 'recordType',
   },
   trash: true,
-  defaultSort: '-date',
+  orderable: true,
   fields: [
     {
       name: 'animal',

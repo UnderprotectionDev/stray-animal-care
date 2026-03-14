@@ -12,9 +12,9 @@ export const StatsBlock: Block = {
       minRows: 1,
       maxRows: 8,
       fields: [
-        { name: 'label', type: 'text', localized: true, required: true },
-        { name: 'value', type: 'text', localized: true, required: true },
-        { name: 'name', type: 'text', localized: true, required: true },
+        { name: 'label', type: 'text', localized: true, required: true, label: 'Etiket' },
+        { name: 'value', type: 'text', localized: true, required: true, label: 'Değer' },
+        { name: 'name', type: 'text', localized: true, required: true, label: 'İsim' },
       ],
       defaultValue: [
         { label: 'METRİK 01 // OPERASYONEL', value: '347', name: 'KURTARILAN' },
