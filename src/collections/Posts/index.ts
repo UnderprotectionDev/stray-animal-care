@@ -97,6 +97,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'content',
               type: 'richText',
+              localized: true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -148,6 +149,7 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'tags',
               label: 'Etiketler',
               type: 'array',
+              localized: true,
               fields: [
                 {
                   name: 'tag',
