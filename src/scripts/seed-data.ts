@@ -1,5 +1,5 @@
 /**
- * Full seed script: populates all collections and globals with realistic Turkish data.
+ * Full seed script: populates all collections, globals, media and UIStrings with realistic Turkish data.
  *
  * Usage: pnpm tsx src/scripts/seed-data.ts
  *
@@ -7,6 +7,9 @@
  */
 
 import 'dotenv/config'
+import * as fs from 'fs'
+import * as path from 'path'
+import type { File } from 'payload'
 import { getPayload } from 'payload'
 import config from '../payload.config'
 
@@ -31,6 +34,27 @@ function richText(text: string) {
   }
 }
 
+// Fetch remote image and return Payload File object
+async function fetchFileByURL(url: string): Promise<File & { data: Buffer }> {
+  const res = await fetch(url, {
+    credentials: 'include',
+    method: 'GET',
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch file from ${url}, status: ${res.status}`)
+  }
+
+  const data = await res.arrayBuffer()
+
+  return {
+    name: url.split('/').pop() || `file-${Date.now()}`,
+    data: Buffer.from(data),
+    mimetype: `image/${url.split('.').pop()?.split('?')[0] || 'webp'}`,
+    size: data.byteLength,
+  } as File & { data: Buffer }
+}
+
 async function seed() {
   const payload = await getPayload({ config: await config })
 
@@ -49,6 +73,7 @@ async function seed() {
     'volunteers',
     'needs-list',
     'transparency-reports',
+    'media',
   ] as const
 
   for (const slug of collectionsToClean) {
@@ -57,6 +82,19 @@ async function seed() {
       await payload.delete({ collection: slug, id: doc.id, context: { disableRevalidate: true } })
     }
     console.log(`  Cleaned ${slug} (${existing.docs.length} docs)`)
+  }
+
+  // Clear local media directory
+  const mediaDir = path.resolve(process.cwd(), 'public/media')
+  if (fs.existsSync(mediaDir)) {
+    const files = fs.readdirSync(mediaDir)
+    for (const file of files) {
+      const filePath = path.join(mediaDir, file)
+      if (fs.statSync(filePath).isFile()) {
+        fs.unlinkSync(filePath)
+      }
+    }
+    console.log(`  Cleared public/media/ (${files.length} files)`)
   }
 
   // ──────────────────────────────────────────────
@@ -84,7 +122,63 @@ async function seed() {
   }
 
   // ──────────────────────────────────────────────
-  // 3. Animals
+  // 3. Seed Media (images from Unsplash)
+  // ──────────────────────────────────────────────
+  console.log('\nSeeding media...')
+
+  const imageUrls: Record<string, { url: string; alt: string }> = {
+    'cat-1': { url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&q=80&fm=webp', alt: 'Turuncu kedi portresi' },
+    'cat-2': { url: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=1200&q=80&fm=webp', alt: 'Gri tekir kedi' },
+    'cat-3': { url: 'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=1200&q=80&fm=webp', alt: 'Sarı kedi yavrusu' },
+    'cat-4': { url: 'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=1200&q=80&fm=webp', alt: 'Beyaz kedi' },
+    'cat-5': { url: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=1200&q=80&fm=webp', alt: 'Siyah beyaz kedi' },
+    'dog-1': { url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200&q=80&fm=webp', alt: 'Golden Retriever' },
+    'dog-2': { url: 'https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=1200&q=80&fm=webp', alt: 'Sokak köpeği portresi' },
+    'dog-3': { url: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1200&q=80&fm=webp', alt: 'Labrador köpek' },
+    'dog-4': { url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fm=webp', alt: 'İki köpek koşuyor' },
+    'dog-5': { url: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1200&q=80&fm=webp', alt: 'Yavru köpek' },
+    'post-hero-1': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Kurtarma hikayesi görseli' },
+    'post-hero-2': { url: 'https://images.unsplash.com/photo-1415369629372-26f2fe60c467?w=1200&q=80&fm=webp', alt: 'Kış aylarında sokak hayvanları' },
+    'post-hero-3': { url: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&q=80&fm=webp', alt: 'Veteriner muayenesi' },
+    'post-hero-4': { url: 'https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?w=1200&q=80&fm=webp', alt: 'Gönüllü çalışması' },
+    'event-cover-1': { url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
+    'event-cover-2': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
+  }
+
+  const mediaIds: Record<string, number> = {}
+  const imageKeys = Object.keys(imageUrls)
+
+  // Fetch in batches of 4 to avoid rate limiting
+  for (let i = 0; i < imageKeys.length; i += 4) {
+    const batch = imageKeys.slice(i, i + 4)
+    const results = await Promise.allSettled(
+      batch.map(async (key) => {
+        const { url, alt } = imageUrls[key]
+        try {
+          const file = await fetchFileByURL(url)
+          const media = await payload.create({
+            collection: 'media',
+            data: { alt },
+            file,
+            context: { disableRevalidate: true },
+          })
+          mediaIds[key] = media.id as number
+          console.log(`  Created media: ${key} (${alt})`)
+        } catch (err) {
+          console.warn(`  Warning: Failed to fetch image ${key}: ${(err as Error).message}`)
+        }
+      }),
+    )
+    // Brief pause between batches
+    if (i + 4 < imageKeys.length) {
+      await new Promise((r) => setTimeout(r, 500))
+    }
+  }
+
+  console.log(`  Total media created: ${Object.keys(mediaIds).length}/${imageKeys.length}`)
+
+  // ──────────────────────────────────────────────
+  // 4. Animals
   // ──────────────────────────────────────────────
   console.log('\nSeeding animals...')
 
@@ -101,6 +195,7 @@ async function seed() {
       microchipId: 'MC-2024-001',
       isSpayed: true,
       isVaccinated: true,
+      photos: mediaIds['cat-1'] ? [mediaIds['cat-1']] : [],
       story: richText('Pamuk, Kadıköy sokaklarında bulundu. İlk geldiğinde çok korkak ve zayıftı. Haftalarca süren bakım ve sevgiyle şimdi en şımarık kedimiz oldu.\n\nHer sabah kapıda karşılar, misafirlere sürtünür. Kucakta uyumayı çok sever.'),
       needs: richText('Pamuk şu an kalıcı bakımda ve sağlığı yerinde. Düzenli veteriner kontrolleri devam ediyor.'),
     },
@@ -116,6 +211,7 @@ async function seed() {
       microchipId: 'MC-2024-002',
       isSpayed: true,
       isVaccinated: true,
+      photos: mediaIds['dog-1'] ? [mediaIds['dog-1']] : [],
       story: richText('Karamel, trafik kazası sonrası kurtarıldı. Sol arka bacağında kırık vardı. Ameliyat sonrası başarıyla iyileşti.\n\nŞimdi en enerjik köpeğimiz. Topla oynamayı ve uzun yürüyüşleri çok seviyor.'),
       needs: richText('Karamel\'in düzenli fizik tedavi seansları devam ediyor. Aylık kontrollerini aksatmıyoruz.'),
     },
@@ -131,6 +227,7 @@ async function seed() {
       microchipId: 'MC-2024-003',
       isSpayed: false,
       isVaccinated: true,
+      photos: mediaIds['cat-2'] ? [mediaIds['cat-2']] : [],
       story: richText('Minnoş, bir inşaat alanında annesiz bulundu. Sadece 3 haftalıktı. Biberonla büyüttük.\n\nŞimdi 6 aylık ve tedavisi devam ediyor. Göz enfeksiyonu için damla kullanıyoruz.'),
       needs: richText('Göz enfeksiyonu tedavisi devam ediyor. Kısırlaştırma operasyonu planlanıyor.'),
     },
@@ -146,6 +243,7 @@ async function seed() {
       microchipId: 'MC-2024-004',
       isSpayed: true,
       isVaccinated: true,
+      photos: mediaIds['dog-2'] ? [mediaIds['dog-2']] : [],
       story: richText('Boncuk, bir parkta iple bağlı halde terk edilmiş bulundu. Boyun bölgesinde ip izleri vardı.\n\nTedavi sürecinden sonra en sadık dostumuza dönüştü. İnsanlara güvenmeyi yeniden öğrendi.'),
       needs: richText('Boncuk sağlıklı durumda. Kalıcı yuva arayışı sürüyor.'),
     },
@@ -161,6 +259,7 @@ async function seed() {
       microchipId: 'MC-2024-005',
       isSpayed: false,
       isVaccinated: false,
+      photos: mediaIds['cat-3'] ? [mediaIds['cat-3']] : [],
       story: richText('Tekir, çatıdan düşme sonucu ağır yaralı olarak getirildi. Pelvis kırığı ve iç kanama tespit edildi.\n\nAcil ameliyata alındı. Yoğun bakım sürecinde. Durumu ciddi ama stabil.'),
       needs: richText('ACİL: Ameliyat sonrası yoğun bakım devam ediyor. Kan tahlilleri ve röntgen kontrolleri gerekiyor. Maddi destek ihtiyacı var.'),
     },
@@ -176,6 +275,7 @@ async function seed() {
       microchipId: 'MC-2024-006',
       isSpayed: true,
       isVaccinated: true,
+      photos: mediaIds['dog-3'] ? [mediaIds['dog-3']] : [],
       story: richText('Zeytin, 7 yıldır sokakta yaşayan bir mahallenin sevgilisi. Yaşlılık nedeniyle eklem sorunları başlayınca yanımıza aldık.\n\nSakin, uyumlu ve çok efendi bir köpek. Diğer hayvanlara abilelik yapıyor.'),
       needs: richText('Eklem iltihabı için düzenli ilaç kullanıyor. Aylık veteriner kontrolü gerekiyor.'),
     },
@@ -191,6 +291,7 @@ async function seed() {
       microchipId: 'MC-2024-007',
       isSpayed: false,
       isVaccinated: true,
+      photos: mediaIds['cat-4'] ? [mediaIds['cat-4']] : [],
       story: richText('Fıstık, manav tezgahının altında doğmuş 4 kardeşten biri. Annesi araba çarpması sonucu kaybedildi.\n\nKardeşleriyle birlikte biberonla büyüttük. En oyuncu ve en cesur olan o.'),
       needs: richText('Kısırlaştırma operasyonu planlanıyor. Aşı takvimi devam ediyor.'),
     },
@@ -206,6 +307,7 @@ async function seed() {
       microchipId: 'MC-2024-008',
       isSpayed: false,
       isVaccinated: true,
+      photos: mediaIds['dog-4'] ? [mediaIds['dog-4']] : [],
       story: richText('Çomar, orman kenarında zehirlenmiş halde bulundu. Acil müdahaleyle hayata döndürüldü.\n\nŞu an karaciğer değerleri takip ediliyor. Güçlü bir köpek, iyileşme süreci olumlu ilerliyor.'),
       needs: richText('Zehirlenme sonrası karaciğer tedavisi devam ediyor. Özel diyet uygulanıyor.'),
     },
@@ -221,6 +323,7 @@ async function seed() {
       microchipId: 'MC-2024-009',
       isSpayed: true,
       isVaccinated: true,
+      photos: mediaIds['cat-5'] ? [mediaIds['cat-5']] : [],
       story: richText('Tarçın, apartman bodrumunda sıkışmış halde bulundu. 3 gün boyunca kurtarılmayı beklemiş.\n\nŞimdi en rahat kedimiz. Güneşli pencerelerde uzanmayı ve kuş izlemeyi seviyor.'),
       needs: richText('Sağlık durumu iyi. Kalıcı yuva bekliyor.'),
     },
@@ -236,6 +339,7 @@ async function seed() {
       microchipId: 'MC-2024-010',
       isSpayed: false,
       isVaccinated: false,
+      photos: mediaIds['cat-3'] ? [mediaIds['cat-3']] : [],
       story: richText('Maviş, bir çöp konteynerinin içinde ağlayarak bulundu. Ciddi solunum yolu enfeksiyonu var.\n\nAcil veteriner müdahalesi yapıldı. Antibiyotik tedavisi başlandı. Durumu takip ediliyor.'),
       needs: richText('ACİL: Solunum yolu enfeksiyonu tedavisi devam ediyor. İlaç ve veteriner masrafları için destek gerekiyor.'),
     },
@@ -246,11 +350,12 @@ async function seed() {
     const created = await payload.create({
       collection: 'animals',
       locale: 'tr',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...animal,
         _status: 'published',
         publishedAt: new Date().toISOString(),
-      },
+      } as any,
       context: { disableRevalidate: true },
     })
     animalIds.push(created.id as number)
@@ -258,7 +363,7 @@ async function seed() {
   }
 
   // ──────────────────────────────────────────────
-  // 4. Emergency Cases
+  // 5. Emergency Cases
   // ──────────────────────────────────────────────
   console.log('\nSeeding emergency cases...')
 
@@ -269,10 +374,17 @@ async function seed() {
       caseStatus: 'aktif' as const,
       targetAmount: 15000,
       collectedAmount: 8750,
+      photos: mediaIds['cat-3'] ? [mediaIds['cat-3']] : [],
       description: richText('Tekir, 5. kattan düşme sonucu pelvis kırığı ve iç kanama ile getirildi. Acil ameliyat yapıldı.\n\nAmeliyat başarılı geçti ancak yoğun bakım süreci devam ediyor. İlaç ve bakım masrafları yüksek seyrediyor.'),
       updates: [
-        { date: '2026-03-10', },
-        { date: '2026-03-12', },
+        {
+          date: '2026-03-10',
+          text: richText('Tekir acil ameliyata alındı. Pelvis fiksasyonu başarıyla yapıldı. İç kanama kontrol altına alındı. Yoğun bakıma transfer edildi.'),
+        },
+        {
+          date: '2026-03-12',
+          text: richText('Yoğun bakımda 2. gün. Tekir kendi başına su içmeye başladı. Ağrı kesiciler devam ediyor. Kan değerleri iyileşme trendinde.'),
+        },
       ],
     },
     {
@@ -281,7 +393,14 @@ async function seed() {
       caseStatus: 'aktif' as const,
       targetAmount: 5000,
       collectedAmount: 2100,
+      photos: mediaIds['cat-3'] ? [mediaIds['cat-3']] : [],
       description: richText('Maviş, ciddi solunum yolu enfeksiyonu ile bulundu. Antibiyotik tedavisi ve nebülizatör uygulaması devam ediyor.\n\nGünlük veteriner kontrolü gerekiyor. İyileşme süreci 2-3 hafta sürebilir.'),
+      updates: [
+        {
+          date: '2026-03-11',
+          text: richText('Maviş çöp konteynerinde bulundu. Ciddi solunum güçlüğü vardı. Acil antibiyotik ve nebülizatör tedavisi başlatıldı.'),
+        },
+      ],
     },
     {
       title: 'Çomar — Zehirlenme Tedavisi',
@@ -289,21 +408,64 @@ async function seed() {
       caseStatus: 'aktif' as const,
       targetAmount: 8000,
       collectedAmount: 6500,
+      photos: mediaIds['dog-4'] ? [mediaIds['dog-4']] : [],
       description: richText('Çomar, orman kenarında zehirlenmiş halde bulundu. Acil mide yıkama ve serum tedavisi uygulandı.\n\nKaraciğer değerleri yüksek. Özel diyet ve ilaç tedavisi devam ediyor.'),
+      updates: [
+        {
+          date: '2026-03-07',
+          text: richText('Çomar orman kenarında hareketsiz bulundu. Zehirlenme belirtileri tespit edildi. Acil mide yıkama ve serum tedavisi uygulandı.'),
+        },
+        {
+          date: '2026-03-09',
+          text: richText('Karaciğer değerleri hâlâ yüksek ama düşüş trendinde. Özel diyet başlatıldı. Çomar yemeye başladı, genel durumu iyi.'),
+        },
+      ],
     },
     {
       title: 'Paşa — Kırık Bacak Operasyonu',
       caseStatus: 'tamamlandi' as const,
       targetAmount: 12000,
       collectedAmount: 12000,
+      beforePhoto: mediaIds['dog-5'] || undefined,
+      afterPhoto: mediaIds['dog-1'] || undefined,
       description: richText('Paşa, trafik kazası sonrası sağ ön bacağında açık kırık tespit edildi. Platin takıldı.\n\n6 haftalık tedavi sürecinin ardından tamamen iyileşti. Şimdi yeni yuvasında mutlu bir şekilde yaşıyor.'),
+      updates: [
+        {
+          date: '2026-01-15',
+          text: richText('Paşa trafik kazası sonrası sağ ön bacağında açık kırık ile getirildi. Acil ameliyata alındı, platin takıldı.'),
+        },
+        {
+          date: '2026-02-01',
+          text: richText('Platin kontrolü yapıldı, kaynama başlamış. Fizik tedavi başlatıldı. Paşa ilk adımlarını attı.'),
+        },
+        {
+          date: '2026-03-01',
+          text: richText('Paşa tamamen iyileşti! Koşuyor, oynuyor. Yeni ailesi Ayşe ve Murat ile tanıştı. Sahiplendirme tamamlandı.'),
+        },
+      ],
     },
     {
       title: 'Duman — Göz Ameliyatı',
       caseStatus: 'tamamlandi' as const,
       targetAmount: 7000,
       collectedAmount: 7000,
+      beforePhoto: mediaIds['cat-5'] || undefined,
+      afterPhoto: mediaIds['cat-1'] || undefined,
       description: richText('Duman, her iki gözünde de ileri derece enfeksiyon ile getirildi. Sol göz kurtarılamadı ancak sağ göz ameliyatla tedavi edildi.\n\nTek gözüyle gayet iyi görüyor ve mutlu bir şekilde yaşamını sürdürüyor.'),
+      updates: [
+        {
+          date: '2026-01-20',
+          text: richText('Duman çok kötü durumda getirildi. Her iki gözde ileri derece enfeksiyon. Sol göz kurtarılamadı, sağ göz ameliyata alındı.'),
+        },
+        {
+          date: '2026-02-10',
+          text: richText('Sağ göz ameliyatı başarılı. Duman tek gözüyle görmeye başladı. Enfeksiyon kontrol altında.'),
+        },
+        {
+          date: '2026-03-05',
+          text: richText('Duman tamamen iyileşti. Tek gözüyle harika görüyor, oynuyor ve mutlu. Kalıcı bakımda.'),
+        },
+      ],
     },
   ]
 
@@ -312,11 +474,12 @@ async function seed() {
     const created = await payload.create({
       collection: 'emergency-cases',
       locale: 'tr',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...ec,
         _status: 'published',
         publishedAt: new Date().toISOString(),
-      },
+      } as any,
       context: { disableRevalidate: true },
     })
     emergencyIds.push(created.id as number)
@@ -324,7 +487,7 @@ async function seed() {
   }
 
   // ──────────────────────────────────────────────
-  // 5. Vet Records
+  // 6. Vet Records
   // ──────────────────────────────────────────────
   console.log('\nSeeding vet records...')
 
@@ -444,7 +607,7 @@ async function seed() {
   }
 
   // ──────────────────────────────────────────────
-  // 6. Posts (Blog)
+  // 7. Posts (Blog)
   // ──────────────────────────────────────────────
   console.log('\nSeeding posts...')
 
@@ -458,6 +621,7 @@ async function seed() {
       excerpt: 'Trafik kazası sonrası hayata tutunan Karamel\'in ilham veren kurtarma hikayesi.',
       postCategory: 'kurtarma' as const,
       categories: [categories['kurtarma-hikayeleri']],
+      heroImage: mediaIds['post-hero-1'] || undefined,
       content: richText('Karamel\'i ilk gördüğümüzde, yol kenarında hareketsiz yatıyordu. Sol arka bacağı kırıktı ve gözlerinde korku vardı. Hemen veterinere yetiştirdik.\n\nAmeliyat 3 saat sürdü. Bacağına platin takıldı. İlk hafta yoğun bakımda kaldı. Her gün yanında olduk, onu yalnız bırakmadık.\n\nİkinci haftada ayağa kalkmaya başladı. Üçüncü haftada ilk adımlarını attı. Bir ay sonra koşuyordu.\n\nŞimdi Karamel, en enerjik köpeğimiz. Her sabah bizi karşılıyor, parkta saatlerce oynuyor. Onun hikayesi, umudun asla bitmediğinin kanıtı.'),
       tags: [{ tag: 'kurtarma' }, { tag: 'köpek' }, { tag: 'başarı' }],
     },
@@ -466,6 +630,7 @@ async function seed() {
       excerpt: 'Soğuk kış günlerinde sokak hayvanlarına nasıl yardım edebileceğinizi anlattık.',
       postCategory: 'gunluk' as const,
       categories: [categories['gonullu-yazilari']],
+      heroImage: mediaIds['post-hero-2'] || undefined,
       content: richText('Kış ayları sokak hayvanları için en zorlu dönemdir. İşte onlara yardım etmek için yapabileceğiniz 5 basit ama etkili şey:\n\n1. Su kapları koyun — Soğukta su kaynakları donar. Kapılarınızın önüne taze su bırakın.\n\n2. Barınak yapın — Strafor kutulardan basit ama etkili barınaklar yapabilirsiniz.\n\n3. Düzenli besleyin — Soğukta kaloriye ihtiyaçları artar. Kuru mama bırakın.\n\n4. Arabanızın altını kontrol edin — Kediler sıcaklık için motor bölgesine girer.\n\n5. Yaralı hayvan görürseniz bize ulaşın — 7/24 acil hattımız aktif.'),
       tags: [{ tag: 'kış' }, { tag: 'rehber' }, { tag: 'yardım' }],
     },
@@ -474,6 +639,7 @@ async function seed() {
       excerpt: 'Bu ay 50 sokak hayvanını ücretsiz kısırlaştırma hedefimiz var. Gönüllü desteğinizi bekliyoruz.',
       postCategory: 'duyuru' as const,
       categories: [categories['duyurular']],
+      heroImage: mediaIds['post-hero-3'] || undefined,
       content: richText('Mart ayı boyunca Kadıköy ve Üsküdar bölgelerinde ücretsiz kısırlaştırma kampanyası düzenliyoruz.\n\nHedefimiz bu ay içinde en az 50 sokak hayvanını kısırlaştırmak. Kampanya kapsamında:\n\n- Yakalama ve nakliye ücretsiz\n- Ameliyat ve ilaç masrafları karşılanıyor\n- Ameliyat sonrası 48 saat bakım sağlanıyor\n\nGönüllü ihtiyacımız var! Özellikle nakliye ve yakalama konusunda yardıma ihtiyacımız var. Başvurmak için gönüllü formunu doldurun.'),
       tags: [{ tag: 'kampanya' }, { tag: 'kısırlaştırma' }, { tag: 'duyuru' }],
     },
@@ -482,6 +648,7 @@ async function seed() {
       excerpt: 'Gönüllü ekibimize katılan Elif, ilk kurtarma operasyonunu anlatıyor.',
       postCategory: 'gunluk' as const,
       categories: [categories['gonullu-yazilari']],
+      heroImage: mediaIds['post-hero-4'] || undefined,
       content: richText('Merhaba, ben Elif. 3 aydır Umut Patileri\'nde gönüllüyüm. İlk kurtarma operasyonumu sizlerle paylaşmak istiyorum.\n\nBir akşam vakti, bir inşaat alanından yavru kedi sesleri geldiği ihbarı aldık. Ekiple birlikte gittik. 4 yavru kedi, annesiz, soğukta titriyordu.\n\nOnları sıcak battaniyelere sardık, biberonla besledik ve kliniğe götürdük. O gece uyumadım — her 2 saatte bir mama verdim.\n\nŞimdi 4\'ü de sağlıklı ve yuva arıyor. Bu deneyim hayatımı değiştirdi. Bir cana dokunmanın verdiği mutluluk tarif edilemez.'),
       tags: [{ tag: 'gönüllü' }, { tag: 'deneyim' }, { tag: 'hikaye' }],
     },
@@ -490,6 +657,7 @@ async function seed() {
       excerpt: 'Uzun süredir bakımımızda olan Pamuk, sonunda kalıcı yuvasını buldu.',
       postCategory: 'kurtarma' as const,
       categories: [categories['sahiplendirme'], categories['kurtarma-hikayeleri']],
+      heroImage: mediaIds['post-hero-1'] || undefined,
       content: richText('Bugün çok özel bir gün. 8 aydır bakımımızda olan Pamuk, sonunda kalıcı yuvasını buldu!\n\nPamuk\'u sokaklardan kurtardığımızda çok korkak ve zayıftı. Haftalarca süren tedavi ve sevgiyle kendine geldi.\n\nYeni ailesi Ayşe ve Murat, ilk görüşte aşık oldu. Pamuk da onları hemen kabullendi — kucaklarına tırmanıp mırlamaya başladı.\n\nUğurlarken gözyaşlarımızı tutamadık ama biliyoruz ki en güzel yere gidiyor. Pamuk, yeni evinde çoktan kendine favori pencereyi seçmiş!'),
       tags: [{ tag: 'sahiplendirme' }, { tag: 'kedi' }, { tag: 'mutlu son' }],
     },
@@ -498,6 +666,7 @@ async function seed() {
       excerpt: 'Nisan ayı mama toplama etkinliğimizin detayları ve katılım bilgileri.',
       postCategory: 'etkinlik' as const,
       categories: [categories['duyurular']],
+      heroImage: mediaIds['post-hero-2'] || undefined,
       content: richText('Nisan ayının ilk hafta sonu büyük mama toplama etkinliğimizi düzenliyoruz!\n\nTarih: 5-6 Nisan 2026\nSaat: 10:00 - 18:00\nYer: Kadıköy Sahil Parkı\n\nKabul edilen ürünler:\n- Kedi maması (kuru ve yaş)\n- Köpek maması (kuru ve yaş)\n- Kedi kumu\n- Veteriner ilaçları\n- Battaniye ve havlu\n\nGönüllü olarak katılmak isteyenler bize ulaşabilir. Her türlü katkı değerli!'),
       tags: [{ tag: 'etkinlik' }, { tag: 'mama toplama' }, { tag: 'katılım' }],
     },
@@ -507,19 +676,20 @@ async function seed() {
     await payload.create({
       collection: 'posts',
       locale: 'tr',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...post,
         _status: 'published',
         publishedAt: new Date().toISOString(),
         ...(authorId ? { authors: [authorId] } : {}),
-      },
+      } as any,
       context: { disableRevalidate: true },
     })
     console.log(`  Created post: ${post.title}`)
   }
 
   // ──────────────────────────────────────────────
-  // 7. Events
+  // 8. Events
   // ──────────────────────────────────────────────
   console.log('\nSeeding events...')
 
@@ -531,6 +701,7 @@ async function seed() {
       eventType: 'sahiplendirme' as const,
       eventStatus: 'yaklasan' as const,
       location: 'Kadıköy Sahil Parkı, İstanbul',
+      coverImage: mediaIds['event-cover-1'] || undefined,
       description: richText('Bahar geldi, yeni yuvalar arıyoruz! Kadıköy Sahil Parkı\'nda büyük sahiplendirme günümüze davetlisiniz.\n\n20\'den fazla kedi ve köpek yeni ailelerini bekliyor. Tüm hayvanlarımız kısırlaştırılmış, aşılı ve mikroçipli.\n\nEtkinlikte veteriner danışmanlık, çocuklar için hayvan sevgisi atölyesi ve mama bağış noktası da olacak.'),
     },
     {
@@ -540,6 +711,7 @@ async function seed() {
       eventType: 'mama-toplama' as const,
       eventStatus: 'yaklasan' as const,
       location: 'Kadıköy Sahil Parkı',
+      coverImage: mediaIds['event-cover-2'] || undefined,
       description: richText('İki gün sürecek mama toplama kampanyamıza katılın. Kedi ve köpek maması, kum, ilaç ve bakım malzemeleri kabul ediyoruz.\n\nGeçen ay 500 kg mama toplamayı başardık. Bu ay hedefimiz 750 kg!'),
     },
     {
@@ -575,18 +747,19 @@ async function seed() {
     await payload.create({
       collection: 'events',
       locale: 'tr',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...event,
         _status: 'published',
         publishedAt: new Date().toISOString(),
-      },
+      } as any,
       context: { disableRevalidate: true },
     })
     console.log(`  Created event: ${event.title}`)
   }
 
   // ──────────────────────────────────────────────
-  // 8. Volunteers
+  // 9. Volunteers
   // ──────────────────────────────────────────────
   console.log('\nSeeding volunteers...')
 
@@ -652,14 +825,15 @@ async function seed() {
   for (const vol of volunteersData) {
     await payload.create({
       collection: 'volunteers',
-      data: vol,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: vol as any,
       context: { disableRevalidate: true },
     })
     console.log(`  Created volunteer: ${vol.name}`)
   }
 
   // ──────────────────────────────────────────────
-  // 9. Needs List
+  // 10. Needs List
   // ──────────────────────────────────────────────
   console.log('\nSeeding needs list...')
 
@@ -777,7 +951,7 @@ async function seed() {
   }
 
   // ──────────────────────────────────────────────
-  // 10. Transparency Reports
+  // 11. Transparency Reports
   // ──────────────────────────────────────────────
   console.log('\nSeeding transparency reports...')
 
@@ -856,11 +1030,11 @@ async function seed() {
   }
 
   // ──────────────────────────────────────────────
-  // 11. Globals (from existing seed-cms-content.ts)
+  // 12. Globals — SiteSettings (with bank accounts + statistics)
   // ──────────────────────────────────────────────
   console.log('\nSeeding globals...')
 
-  // Homepage blocks
+  // Homepage blocks + bank accounts + statistics
   await payload.updateGlobal({
     slug: 'site-settings',
     locale: 'tr',
@@ -873,12 +1047,31 @@ async function seed() {
         { type: 'phone', url: '+905551234567' },
         { type: 'email', url: 'info@umutpatileri.org' },
       ],
+      bankAccounts: [
+        {
+          bankName: 'Ziraat Bankası',
+          accountHolder: 'Umut Patileri Derneği',
+          iban: 'TR00 0001 0000 0000 0000 0000 00',
+          currency: 'TRY',
+        },
+        {
+          bankName: 'İş Bankası',
+          accountHolder: 'Umut Patileri Derneği',
+          iban: 'TR00 0006 4000 0000 0000 0000 00',
+          currency: 'EUR',
+        },
+      ],
+      catsCount: 42,
+      dogsCount: 28,
+      treatedCount: 347,
+      spayedCount: 89,
+      vaccinatedCount: 156,
+      feedingPointsCount: 4,
       homepageBlocks: [
         {
           blockType: 'homeHero',
           enabled: true,
           sectionTitle: 'ANA SAYFA',
-          // Content is managed via richText editor in admin
         },
         {
           blockType: 'homeStats',
@@ -895,7 +1088,6 @@ async function seed() {
           enabled: true,
           sectionTitle: 'HİKAYEMİZ & MİSYON',
           founderCaption: 'AYŞE KAYA, 2019',
-          // Content is managed via richText editor in admin
         },
         {
           blockType: 'homeOurWork',
@@ -1007,7 +1199,7 @@ async function seed() {
       ],
     },
   })
-  console.log('  Homepage blocks seeded.')
+  console.log('  SiteSettings seeded (homepage blocks + bank accounts + statistics).')
 
   // Header
   await payload.updateGlobal({
@@ -1028,25 +1220,583 @@ async function seed() {
   })
   console.log('  Header seeded.')
 
-  // Footer
+  // ──────────────────────────────────────────────
+  // 13. UIStrings — batched to stay under PostgreSQL 100-arg limit
+  // ──────────────────────────────────────────────
+  console.log('\nSeeding UIStrings (TR)...')
+
+  const uiStringsBatches: Array<{ label: string; data: Record<string, unknown> }> = [
+    // Batch 1: common + layout (top-level + header + languageSwitcher + mobileMenu)
+    {
+      label: 'common + layout (header)',
+      data: {
+        common: {
+          siteName: 'Paws of Hope',
+          search: 'Ara',
+          loading: 'Yükleniyor...',
+          goHome: 'Ana Sayfaya Git',
+          notFound: 'Sayfa bulunamadı',
+          backToHome: 'Ana Sayfaya Dön',
+        },
+        layout: {
+          skipToContent: 'İçeriğe geç',
+          siteTitle: 'Paws of Hope — Sokak Hayvanları Bakımı',
+          siteDescription: 'Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz.',
+          header: {
+            home: 'Ana Sayfa',
+            posts: 'Yazılar',
+            search: 'Ara',
+            animals: 'Canlarımız',
+            emergency: 'Acil Durumlar',
+            blog: 'Blog',
+            donate: 'Destek Ol',
+            volunteer: 'Gönüllü Ol',
+            openMenu: 'Menüyü aç',
+            closeMenu: 'Menüyü kapat',
+          },
+          languageSwitcher: {
+            label: 'Dil seçimi',
+          },
+          mobileMenu: {
+            title: 'Menü',
+          },
+        },
+      },
+    },
+    // Batch 2: layout (footer + breadcrumb + mobileDonate)
+    {
+      label: 'layout (footer, breadcrumb, mobileDonate)',
+      data: {
+        layout: {
+          footer: {
+            copyright: 'Tüm hakları saklıdır.',
+            bankInfo: 'Banka Bilgileri',
+            contactUs: 'İletişim',
+            quickLinks: 'Hızlı Bağlantılar',
+            international: 'Uluslararası Destek',
+            copyIban: "IBAN'ı Kopyala",
+            followUs: 'Bizi Takip Edin',
+            description: 'Sokak hayvanlarına umut oluyoruz.',
+          },
+          breadcrumb: {
+            home: 'Ana Sayfa',
+          },
+          mobileDonate: {
+            cta: 'Destek Ol',
+          },
+        },
+      },
+    },
+    // Batch 3: search + posts
+    {
+      label: 'search + posts',
+      data: {
+        search: {
+          title: 'Arama',
+          placeholder: 'Ara...',
+          noResults: 'Sonuç bulunamadı.',
+          modal: {
+            placeholder: 'Sayfa, yazı veya hayvan ara...',
+            noResults: 'Sonuç bulunamadı.',
+            shortcut: 'Aramayı aç',
+          },
+        },
+        posts: {
+          title: 'Yazılar',
+          readMore: 'Devamını Oku',
+          noPosts: 'Henüz yazı bulunmuyor.',
+        },
+      },
+    },
+    // Batch 4: animals (meta + top-level + filter)
+    {
+      label: 'animals (meta, filter)',
+      data: {
+        animals: {
+          meta: {
+            title: 'Canlarımız — Paws of Hope',
+            description: 'Sokak hayvanlarımızı tanıyın. Tedavi, bakım ve yuva arayan kediler ve köpekler.',
+          },
+          title: 'Canlarımız',
+          subtitle: 'Tedavi ve bakımımız altındaki tüm dostlarımızla tanışın.',
+          filter: {
+            all: 'Tümü',
+            kedi: 'Kediler',
+            kopek: 'Köpekler',
+            noResults: 'Bu filtreyle eşleşen hayvan bulunamadı.',
+            tedavide: 'Tedavide',
+            kaliciBakim: 'Kalıcı Bakım',
+            acil: 'Acil',
+          },
+        },
+      },
+    },
+    // Batch 5: animals (detail + lightbox)
+    {
+      label: 'animals (detail, lightbox)',
+      data: {
+        animals: {
+          detail: {
+            story: 'Hikayesi',
+            needs: 'İhtiyaçları',
+            photos: 'Fotoğraflar',
+            type: 'Tür',
+            age: 'Yaş',
+            gender: 'Cinsiyet',
+            status: 'Durum',
+            erkek: 'Erkek',
+            disi: 'Dişi',
+            bilinmiyor: 'Bilinmiyor',
+            back: 'Canlarımıza Dön',
+            donate: 'Destek Ol',
+            noPhotos: 'Fotoğraf bulunmuyor.',
+            whatsappMessage: '{name} hakkında bilgi almak istiyorum.',
+          },
+          lightbox: {
+            close: 'Kapat',
+            prev: 'Önceki',
+            next: 'Sonraki',
+            imageOf: '{current} / {total}',
+          },
+        },
+      },
+    },
+    // Batch 6: emergency
+    {
+      label: 'emergency',
+      data: {
+        emergency: {
+          meta: {
+            title: 'Acil Vakalar — Paws of Hope',
+            description: 'Acil yardıma ihtiyaç duyan hayvanlar. Tedavi masraflarına destek olun.',
+          },
+          title: 'Acil Vakalar',
+          activeCases: 'Aktif Vakalar',
+          collected: 'Toplanan',
+          target: 'Hedef',
+          progress: 'İlerleme',
+          noActive: 'Şu anda aktif acil vaka bulunmuyor.',
+          completedCases: 'Tamamlanan Vakalar',
+          donateButton: 'Destek Ol',
+          detail: {
+            description: 'Açıklama',
+            updates: 'Güncellemeler',
+            beforeAfter: 'Önce / Sonra',
+            before: 'Önce',
+            after: 'Sonra',
+            relatedAnimal: 'İlgili Hayvan',
+            noUpdates: 'Henüz güncelleme bulunmuyor.',
+          },
+        },
+      },
+    },
+    // Batch 7: donate (meta + hero + iban + international + volunteer)
+    {
+      label: 'donate (part 1)',
+      data: {
+        donate: {
+          meta: {
+            title: 'Destek Ol — Paws of Hope',
+            description: 'Sokak hayvanlarına destek olmak için bağış yapın. IBAN ile bağış kabul ediyoruz.',
+          },
+          title: 'Destek Ol',
+          subtitle: 'Her katkınız bir cana umut olur.',
+          hero: {
+            title: 'BİR CAN KURTAR',
+            badge: 'HAYAT KURTAR',
+            subtitle: 'Her katkınız bir cana umut olur. Bağışlarınız doğrudan tedavi, mama ve barınma masraflarına harcanır.',
+          },
+          iban: {
+            title: 'IBAN İLE BAĞIŞ',
+            bank: 'Banka',
+            accountHolder: 'Hesap Sahibi',
+            iban: 'IBAN',
+            copy: "IBAN'ı Kopyala",
+            placeholder: 'Banka hesap bilgileri yakında eklenecek.',
+          },
+          international: {
+            title: 'Uluslararası Destek',
+            comingSoon: 'YAKINDA',
+            placeholder: 'Yurtdışı ödeme seçenekleri hazırlanıyor.',
+          },
+          volunteer: {
+            title: 'GÖNÜLLÜ OL',
+            description: 'Zamanınızı verin, saha ekibimize katılın. Besleme, tedavi ve kurtarma operasyonlarında destek olun.',
+            cta: 'BAŞVURU FORMU →',
+          },
+        },
+      },
+    },
+    // Batch 8: donate (ticker + cards + faq + transparency)
+    {
+      label: 'donate (part 2)',
+      data: {
+        donate: {
+          ticker: {
+            slogan1: 'YAŞAM HAKKINA SAYGI',
+            slogan2: 'DESTEK OL HAYAT KURTAR',
+            slogan3: 'HER CAN DEĞERLİ',
+            cats: 'KEDİ',
+            dogs: 'KÖPEK',
+            treated: 'TEDAVİ EDİLEN',
+          },
+          cards: {
+            title: 'Bağışınız Neye Yarar?',
+            foodTitle: 'Mama Desteği',
+            foodDescription: '1 aylık mama masrafını karşılar.',
+            vetTitle: 'Veteriner Ziyareti',
+            vetDescription: 'Rutin muayene ve aşı masrafını karşılar.',
+            surgeryTitle: 'Cerrahi Destek',
+            surgeryDescription: 'Küçük bir operasyon masrafını karşılar.',
+          },
+          faq: {
+            title: 'Sık Sorulan Sorular',
+            q1: 'Bağışım nereye gidiyor?',
+            a1: 'Tüm bağışlar doğrudan hayvan bakım, tedavi ve mama masraflarına harcanmaktadır. Şeffaflık raporlarımızda detaylı harcama bilgisini görebilirsiniz.',
+            q2: 'Bağış makbuzu alabilir miyim?',
+            a2: 'Vergi makbuzu için lütfen e-posta veya WhatsApp üzerinden bizimle iletişime geçin.',
+            q3: 'Düzenli bağış yapabilir miyim?',
+            a3: 'Evet! Aylık sabit bağış yapmak için banka otomatik ödeme talimatı verebilirsiniz.',
+            q4: 'Yurt dışından bağış kabul ediyor musunuz?',
+            a4: 'Evet, uluslararası bağış seçenekleri yakında aktif olacak. Lütfen bizimle iletişime geçin.',
+            q5: 'Bağış yerine malzeme gönderebilir miyim?',
+            a5: 'Evet! İhtiyaç listesi için bize ulaşın. Mama, kedi kumu, ilaç ve battaniye gibi malzemeler kabul ediyoruz.',
+          },
+          transparency: {
+            title: 'Şeffaf Yönetim',
+            description: 'Tüm gelir ve giderleri düzenli olarak yayınlıyoruz. Bağışlarınızın nereye gittiğini her zaman görebilirsiniz.',
+            reports: 'Şeffaflık Raporları',
+          },
+        },
+      },
+    },
+    // Batch 9: supplies
+    {
+      label: 'supplies',
+      data: {
+        supplies: {
+          meta: {
+            title: 'Mama & Malzeme — Paws of Hope',
+            description: 'İhtiyaç listemizi inceleyin. Mama, ilaç, kedi kumu ve diğer malzemelere desteğinizi bekliyoruz.',
+          },
+          title: 'Mama & Malzeme İhtiyaçları',
+          subtitle: 'Hayvanlarımızın güncel ihtiyaç listesini burada bulabilirsiniz.',
+          table: {
+            product: 'Ürün',
+            brand: 'Marka / Detay',
+            urgency: 'Aciliyet',
+            stock: 'Stok Durumu',
+          },
+          urgency: {
+            acil: 'Acil',
+            orta: 'Orta',
+            yeterli: 'Yeterli',
+          },
+          shipping: {
+            title: 'Nasıl Gönderebilirsiniz?',
+            description: 'Aşağıdaki yöntemlerle malzeme desteğinde bulunabilirsiniz.',
+            cargo: 'Kargo ile gönderim yapabilirsiniz.',
+            inPerson: 'Elden teslim için bizimle iletişime geçin.',
+            online: 'Online sipariş vererek adresimize gönderebilirsiniz.',
+          },
+          sponsor: {
+            title: 'Mama Sponsoru Ol',
+            description: 'Aylık düzenli mama desteği sağlayarak hayvanlarımızın beslenmesine katkıda bulunun.',
+            cta: 'Destek Ol',
+          },
+          empty: 'Şu anda ihtiyaç listesi bulunmuyor.',
+        },
+      },
+    },
+    // Batch 10: transparency
+    {
+      label: 'transparency',
+      data: {
+        transparency: {
+          meta: {
+            title: 'Şeffaflık Raporları — Paws of Hope',
+            description: 'Gelir ve gider raporlarımızı inceleyin. Bağışlarınızın nereye gittiğini şeffaf olarak paylaşıyoruz.',
+          },
+          title: 'Şeffaflık Raporları',
+          subtitle: 'Tüm gelir ve giderleri düzenli olarak yayınlıyoruz.',
+          report: {
+            expenses: 'Giderler',
+            totalExpense: 'Toplam Gider',
+            donations: 'Bağışlar',
+            totalDonation: 'Toplam Bağış',
+            category: 'Kategori',
+            amount: 'Miktar',
+            comparison: 'Bağış / Gider Oranı',
+            documents: 'Belgeler',
+          },
+          empty: 'Henüz şeffaflık raporu yayınlanmadı.',
+          currency: '₺',
+        },
+      },
+    },
+    // Batch 11: blog
+    {
+      label: 'blog',
+      data: {
+        blog: {
+          meta: {
+            title: 'Günlük — Paws of Hope',
+            description: 'Kurtarma hikayeleri, tedavi süreçleri, duyurular ve etkinliklerimizi takip edin.',
+          },
+          title: 'Günlük',
+          subtitle: 'Hikayelerimizi, duyurularımızı ve güncel gelişmeleri takip edin.',
+          filter: {
+            all: 'Tümü',
+            kurtarma: 'Kurtarma',
+            tedavi: 'Tedavi',
+            gunluk: 'Günlük',
+            duyuru: 'Duyuru',
+            etkinlik: 'Etkinlik',
+          },
+          readMore: 'Devamını Oku',
+          share: {
+            title: 'Paylaş',
+            twitter: "Twitter'da Paylaş",
+            facebook: "Facebook'ta Paylaş",
+            whatsapp: "WhatsApp'ta Paylaş",
+            copy: 'Bağlantıyı Kopyala',
+            copied: 'Kopyalandı!',
+          },
+          tags: 'Etiketler',
+          empty: 'Henüz yazı bulunmuyor.',
+          back: 'Günlüğe Dön',
+        },
+      },
+    },
+    // Batch 12: volunteer
+    {
+      label: 'volunteer',
+      data: {
+        volunteer: {
+          meta: {
+            title: 'Gönüllü Ol — Paws of Hope',
+            description: 'Sokak hayvanları için gönüllü olun. Geçici bakım, sağlık desteği, besleme ve daha fazlası.',
+          },
+          title: 'Gönüllü Ol',
+          subtitle: 'Sokak hayvanlarına yardım etmek için aramıza katılın.',
+          areas: {
+            title: 'Gönüllülük Alanları',
+            fosterTitle: 'Geçici Bakım',
+            fosterDescription: 'Tedavi sürecindeki hayvanlara evinizde geçici bakım sağlayın.',
+            healthTitle: 'Sağlık Desteği',
+            healthDescription: 'Veteriner ziyaretlerinde ve tedavi süreçlerinde yardımcı olun.',
+            feedingTitle: 'Besleme',
+            feedingDescription: 'Günlük besleme turlarına katılın ve besleme noktalarını yönetin.',
+            shelterTitle: 'Barınak Yapımı',
+            shelterDescription: 'Sokak hayvanları için barınak ve kulübe yapımına katkıda bulunun.',
+          },
+          stats: {
+            title: 'Gönüllü Ailemiz',
+            volunteers: 'Aktif Gönüllü',
+            animalsHelped: 'Yardım Edilen Hayvan',
+            feedingPoints: 'Besleme Noktası',
+          },
+        },
+      },
+    },
+    // Batch 13: volunteer (faq + cta)
+    {
+      label: 'volunteer (faq, cta)',
+      data: {
+        volunteer: {
+          faq: {
+            title: 'Sık Sorulan Sorular',
+            q1: 'Gönüllü olmak için ne yapmalıyım?',
+            a1: 'WhatsApp üzerinden bizimle iletişime geçmeniz yeterli. Size uygun alanları birlikte belirleyelim.',
+            q2: 'Gönüllülük için deneyim gerekli mi?',
+            a2: 'Hayır, herhangi bir deneyim gerekmez. Hayvanseverliğiniz yeterli! Gerekli eğitimi biz sağlıyoruz.',
+            q3: 'Ne kadar zaman ayırmalıyım?',
+            a3: 'Tamamen size bağlı. Haftada birkaç saat bile büyük fark yaratır.',
+            q4: 'Geçici bakım için evimde ne gerekli?',
+            a4: 'Temel ihtiyaçları (mama, kum, ilaç) biz karşılıyoruz. Sizden sadece sevgi ve ilgi bekliyoruz.',
+          },
+          cta: {
+            title: 'Aramıza Katılın!',
+            description: 'Gönüllü olmak için WhatsApp üzerinden bizimle iletişime geçin.',
+            whatsappMessage: 'Merhaba, gönüllü olmak istiyorum.',
+          },
+        },
+      },
+    },
+    // Batch 14: vision (meta + top-level + association + shortTerm)
+    {
+      label: 'vision (part 1)',
+      data: {
+        vision: {
+          meta: {
+            title: 'Gelecek Vizyonu — Paws of Hope',
+            description: 'Sokak hayvanları için geleceğe dair hedeflerimizi ve vizyonumuzu keşfedin.',
+          },
+          title: 'Gelecek Vizyonu',
+          subtitle: 'Her adımda daha güzel bir gelecek inşa ediyoruz.',
+          association: {
+            title: 'Dernek Kurma Hedefimiz',
+            description: 'Resmi bir dernek kurarak çalışmalarımızı yasal bir çatı altında sürdürmeyi, bağış toplama kapasitemizi artırmayı ve daha fazla hayvana ulaşmayı hedefliyoruz.',
+          },
+          shortTerm: {
+            title: 'Kısa Vadeli Hedefler (1 Yıl)',
+            shelterTitle: 'Tam Donanımlı Barınak',
+            shelterDescription: 'Tedavi sürecindeki hayvanlar için güvenli ve donanımlı bir barınak kurmak.',
+            spayTitle: '200+ Kısırlaştırma',
+            spayDescription: 'Popülasyon kontrolü için yılda en az 200 hayvanı kısırlaştırmak.',
+            volunteersTitle: '50 Aktif Gönüllü',
+            volunteersDescription: 'Gönüllü ağımızı genişleterek 50 aktif gönüllüye ulaşmak.',
+            clinicTitle: 'Veteriner Kliniği Ortaklığı',
+            clinicDescription: 'İndirimli tedavi için veteriner klinikleriyle kalıcı ortaklıklar kurmak.',
+          },
+        },
+      },
+    },
+    // Batch 15: vision (longTerm + network + cta)
+    {
+      label: 'vision (part 2)',
+      data: {
+        vision: {
+          longTerm: {
+            title: 'Uzun Vadeli Hedefler (3-5 Yıl)',
+            ngoTitle: 'Resmi Dernek Statüsü',
+            ngoDescription: 'Yasal bir dernek kurarak şeffaf ve sürdürülebilir bir yapı oluşturmak.',
+            vetClinicTitle: 'Toplum Destekli Klinik',
+            vetClinicDescription: 'Bağışçılarımızın desteğiyle sokak hayvanlarına özel bir veteriner kliniği açmak.',
+            fosterTitle: 'Şehir Genelinde Geçici Bakım Ağı',
+            fosterDescription: 'Her mahallede geçici bakım gönüllüleri ile kapsamlı bir ağ oluşturmak.',
+            awarenessTitle: 'Ulusal Farkındalık Kampanyası',
+            awarenessDescription: 'Sokak hayvanları hakları için ulusal çapta farkındalık kampanyaları düzenlemek.',
+          },
+          network: {
+            title: 'Büyüyen Gönüllü Ağımız',
+            description: 'Her gün büyüyen gönüllü ailemizle daha fazla hayvana ulaşıyoruz. Siz de bu değişimin parçası olun.',
+          },
+          cta: {
+            title: 'Bu Vizyonu Birlikte Gerçekleştirelim',
+            description: 'Geleceği birlikte inşa etmek için bağış yapın veya gönüllü olun.',
+            donate: 'Destek Ol',
+            volunteer: 'Gönüllü Ol',
+          },
+        },
+      },
+    },
+    // Batch 16: contact + notFound
+    {
+      label: 'contact + notFound',
+      data: {
+        contact: {
+          meta: {
+            title: 'İletişim — Paws of Hope',
+            description: 'Bizimle iletişime geçin. WhatsApp, telefon, e-posta veya Instagram üzerinden ulaşabilirsiniz.',
+          },
+          title: 'İletişim',
+          subtitle: 'Bizimle iletişime geçmekten çekinmeyin.',
+          whatsapp: {
+            label: 'WhatsApp',
+            description: 'Bize WhatsApp üzerinden yazın.',
+            message: 'Merhaba, Paws of Hope hakkında bilgi almak istiyorum.',
+          },
+          phone: {
+            label: 'Telefon',
+            description: 'Bizi arayabilirsiniz.',
+          },
+          email: {
+            label: 'E-posta',
+            description: 'E-posta gönderin.',
+          },
+          instagram: {
+            label: 'Instagram',
+            description: "Bizi Instagram'da takip edin.",
+          },
+        },
+        notFound: {
+          title: 'Sayfa Bulunamadı',
+          message: 'Aradığınız sayfa mevcut değil veya taşınmış olabilir.',
+          goHome: 'Ana Sayfaya Git',
+          viewAnimals: 'Canlarımız',
+          donate: 'Destek Ol',
+        },
+      },
+    },
+    // Batch 17: home + ourWork
+    {
+      label: 'home + ourWork',
+      data: {
+        home: {
+          meta: {
+            title: 'Paws of Hope — Sokak Hayvanlarına Umut',
+            description: 'Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz.',
+          },
+          instagram: {
+            title: "Instagram'da Biz",
+            followUs: 'Takip Et',
+          },
+          volunteerCta: {
+            title: 'Gönüllü Ol',
+            description: 'Sokak hayvanları için bir fark yaratmak ister misiniz? Besleme, tedavi, geçici bakım veya farkındalık çalışmalarımıza katılın.',
+            cta: 'Gönüllü Ol →',
+          },
+        },
+        ourWork: {
+          meta: {
+            title: 'Çalışmalarımız — Paws of Hope',
+            description: 'Besleme, tedavi, kısırlaştırma, acil müdahale, aşılama ve barınma çalışmalarımızı keşfedin.',
+          },
+          title: 'Çalışmalarımız',
+          subtitle: 'Sokak hayvanları için yaptığımız çalışmaları keşfedin.',
+        },
+      },
+    },
+  ]
+
+  for (const batch of uiStringsBatches) {
+    console.log(`  → UIStrings batch: ${batch.label}`)
+    await payload.updateGlobal({
+      slug: 'ui-strings',
+      locale: 'tr',
+      context: { disableRevalidate: true },
+      data: batch.data,
+    })
+  }
+  console.log('  UIStrings (TR) seeded — 17 batches.')
+
+  // UIStrings — blog filter English values
+  console.log('  Seeding UIStrings English blog values...')
   await payload.updateGlobal({
-    slug: 'footer',
-    context: { disableRevalidate: true },
+    slug: 'ui-strings',
+    locale: 'en',
     data: {
-      navItems: [
-        { link: { type: 'custom', url: '/canlarimiz', label: 'Canlarımız' } },
-        { link: { type: 'custom', url: '/acil-vakalar', label: 'Acil Vakalar' } },
-        { link: { type: 'custom', url: '/seffaflik', label: 'Şeffaflık' } },
-        { link: { type: 'custom', url: '/mama-malzeme', label: 'İhtiyaç Listesi' } },
-        { link: { type: 'custom', url: '/gonullu-ol', label: 'Gönüllü Ol' } },
-        { link: { type: 'custom', url: '/destek-ol', label: 'Destek Ol' } },
-      ],
+      blog: {
+        title: 'Blog',
+        subtitle: 'Stories from Paws of Hope',
+        readMore: 'Read More',
+        empty: 'No posts yet.',
+        tags: 'Tags',
+        filter: {
+          all: 'All',
+          kurtarma: 'Rescue',
+          tedavi: 'Treatment',
+          gunluk: 'Daily',
+          duyuru: 'Announcement',
+          etkinlik: 'Event',
+        },
+        share: {
+          title: 'Share',
+          twitter: 'Twitter',
+          facebook: 'Facebook',
+          whatsapp: 'WhatsApp',
+          copy: 'Copy Link',
+          copied: 'Copied!',
+        },
+        meta: {
+          title: 'Blog — Paws of Hope',
+          description: 'Paws of Hope blog posts and news.',
+        },
+      },
     },
   })
-  console.log('  Footer seeded.')
-
-  // UIStrings — skipped (235+ fields exceed PostgreSQL's 100-argument limit;
-  // defaultValues auto-populate on first admin save)
+  console.log('  UIStrings EN blog values seeded.')
 
   // ──────────────────────────────────────────────
   // Done!
@@ -1054,6 +1804,7 @@ async function seed() {
   console.log('\n========================================')
   console.log('Seed complete!')
   console.log('========================================')
+  console.log(`  Media: ${Object.keys(mediaIds).length}/${Object.keys(imageUrls).length}`)
   console.log(`  Animals: ${animalsData.length}`)
   console.log(`  Emergency Cases: ${emergencyCasesData.length}`)
   console.log(`  Vet Records: ${vetRecordsData.length}`)
@@ -1063,7 +1814,7 @@ async function seed() {
   console.log(`  Volunteers: ${volunteersData.length}`)
   console.log(`  Needs List: ${needsData.length}`)
   console.log(`  Transparency Reports: ${reportsData.length}`)
-  console.log(`  Globals: Header, Footer, SiteSettings, UIStrings`)
+  console.log(`  Globals: Header, SiteSettings (bank accounts + statistics), UIStrings (17 TR batches + EN blog)`)
 
   // Revalidate Next.js cache (if dev server is running)
   try {
