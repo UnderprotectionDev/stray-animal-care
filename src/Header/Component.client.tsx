@@ -68,45 +68,66 @@ function getEdgeTransform(edge: 'top' | 'bottom' | 'left' | 'right') {
   }
 }
 
+const NAV_HOVER_COLORS = [
+  { bg: 'var(--cta)',       fg: 'var(--cta-foreground)' },
+  { bg: 'var(--stats)',     fg: 'var(--stats-foreground)' },
+  { bg: 'var(--emergency)', fg: 'var(--emergency-foreground)' },
+  { bg: 'var(--adoption)',  fg: 'var(--adoption-foreground)' },
+  { bg: 'var(--trust)',     fg: 'var(--trust-foreground)' },
+  { bg: 'var(--health)',    fg: 'var(--health-foreground)' },
+  { bg: 'var(--warm)',      fg: 'var(--warm-foreground)' },
+] as const
+
 const NavCellLink: React.FC<{
   href: string
   isActive: boolean
+  colorIndex: number
   children: React.ReactNode
-}> = ({ href, isActive, children }) => {
+}> = ({ href, isActive, colorIndex, children }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const linkRef = useRef<HTMLAnchorElement>(null)
+  const color = NAV_HOVER_COLORS[colorIndex % NAV_HOVER_COLORS.length]
 
   useEffect(() => {
     const overlay = overlayRef.current
-    if (!overlay) return
+    const link = linkRef.current
+    if (!overlay || !link) return
     if (isActive) {
       gsap.set(overlay, { xPercent: 0, yPercent: 0 })
+      link.style.color = color.fg
     } else {
       gsap.set(overlay, { xPercent: -100, yPercent: 0 })
+      link.style.color = ''
     }
-  }, [isActive])
+  }, [isActive, color.fg])
 
   const handleMouseEnter = useCallback((e: React.MouseEvent) => {
     if (isActive) return
     const el = containerRef.current
     const overlay = overlayRef.current
-    if (!el || !overlay) return
+    const link = linkRef.current
+    if (!el || !overlay || !link) return
+    link.style.color = color.fg
     const edge = findClosestEdge4(e, el)
     const from = getEdgeTransform(edge)
     gsap.killTweensOf(overlay)
     gsap.fromTo(overlay, from, { xPercent: 0, yPercent: 0, duration: 0.3, ease: 'power2.out' })
-  }, [isActive])
+  }, [isActive, color.fg])
 
   const handleMouseLeave = useCallback((e: React.MouseEvent) => {
     if (isActive) return
     const el = containerRef.current
     const overlay = overlayRef.current
-    if (!el || !overlay) return
+    const link = linkRef.current
+    if (!el || !overlay || !link) return
     const edge = findClosestEdge4(e, el)
     const to = getEdgeTransform(edge)
     gsap.killTweensOf(overlay)
-    gsap.to(overlay, { ...to, duration: 0.25, ease: 'power2.in' })
-  }, [isActive])
+    gsap.to(overlay, { ...to, duration: 0.25, ease: 'power2.in', onComplete: () => {
+      link.style.color = ''
+    }})
+  }, [isActive, color.fg])
 
   return (
     <div
@@ -117,11 +138,13 @@ const NavCellLink: React.FC<{
     >
       <div
         ref={overlayRef}
-        className="absolute inset-0 bg-[var(--palette-dark-cream)] pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
+        style={{ backgroundColor: color.bg }}
       />
       <Link
+        ref={linkRef}
         href={href}
-        className="relative z-10 flex items-center justify-center py-3 px-2 t-meta font-bold uppercase tracking-wider w-full h-full"
+        className="relative z-10 flex items-center justify-center py-3 px-2 t-meta font-bold uppercase tracking-wider w-full h-full transition-colors duration-200"
       >
         {children}
       </Link>
@@ -212,11 +235,11 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
               </div>
 
               {/* Nav links (excluding home and CTA) */}
-              {barItems.map((item) => {
+              {barItems.map((item, index) => {
                 const href = resolveNavHref(item)
                 const isActive = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
                 return (
-                  <NavCellLink key={item.id || href} href={href} isActive={isActive}>
+                  <NavCellLink key={item.id || href} href={href} isActive={isActive} colorIndex={index}>
                     {item.label || ''}
                   </NavCellLink>
                 )
