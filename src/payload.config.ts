@@ -55,7 +55,24 @@ export default buildConfig({
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
-      beforeDashboard: ['@/components/admin/Dashboard'],
+      afterNavLinks: ['@/components/admin/CustomNavLinks#CustomNavLinks'],
+      views: {
+        dashboard: {
+          Component: '@/components/admin/DashboardView#DashboardView',
+        },
+        'hayvan-takip': {
+          Component: '@/components/admin/views/AnimalTrackingView#AnimalTrackingView',
+          path: '/hayvan-takip',
+        },
+        'vaka-takip': {
+          Component: '@/components/admin/views/CaseTrackingView#CaseTrackingView',
+          path: '/vaka-takip',
+        },
+        'gonullu-yonetim': {
+          Component: '@/components/admin/views/VolunteerManagementView#VolunteerManagementView',
+          path: '/gonullu-yonetim',
+        },
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),

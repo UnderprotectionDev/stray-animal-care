@@ -17,7 +17,7 @@ function ProgressBar({ collected, target }: { collected: number; target: number 
   return (
     <div className="w-full h-2 bg-[var(--muted)] border border-border">
       <div
-        className="h-full bg-[var(--accent)]"
+        className="h-full bg-health"
         style={{ width: `${pct}%` }}
       />
     </div>
@@ -75,7 +75,7 @@ export function SuccessStories({ block, stories }: Props) {
                       </span>
                     )}
                   </h3>
-                  <span className="badge-sys bg-[var(--accent)] text-black">
+                  <span className="badge-sys bg-health text-health-foreground border-health">
                     {labels.completed || 'COMPLETED'}
                   </span>
                 </div>

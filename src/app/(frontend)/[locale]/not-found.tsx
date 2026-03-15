@@ -12,7 +12,7 @@ export default async function NotFound() {
   return (
     <div className="container py-28 text-center">
       <PawPrint className="mx-auto size-16 text-muted-foreground" />
-      <h1 className="mt-4 font-accent text-8xl text-accent">404</h1>
+      <h1 className="mt-4 font-heading text-8xl text-cta">404</h1>
       <p className="mt-4 text-lg text-muted-foreground">{ui?.notFound?.message ?? 'Aradığınız sayfa bulunamadı.'}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-4">
         <Button render={<Link href="/" />}>{ui?.notFound?.goHome ?? 'Ana Sayfa'}</Button>

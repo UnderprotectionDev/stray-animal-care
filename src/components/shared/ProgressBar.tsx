@@ -28,7 +28,7 @@ export function ProgressBar({ current, target, className, label }: ProgressBarPr
         aria-label={label || `${percentage}% complete`}
       >
         <div
-          className="h-full bg-accent transition-all duration-500"
+          className="h-full bg-cta transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>

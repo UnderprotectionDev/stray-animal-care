@@ -113,8 +113,8 @@ export default async function VolunteerPage({ params }: Args) {
                 key={key}
                 className="panel border border-border p-6 text-center"
               >
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center border border-border bg-accent">
-                  <Icon className="h-7 w-7 text-foreground" />
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center border-[1.5px] border-border bg-trust text-trust-foreground">
+                  <Icon className="h-7 w-7" />
                 </div>
                 <h3 className="font-heading mb-2 text-lg font-semibold">
                   {ui?.volunteer?.areas?.[`${key}Title`]}

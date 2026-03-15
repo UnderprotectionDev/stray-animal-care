@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Syne, Space_Mono } from 'next/font/google'
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -9,24 +9,18 @@ import { hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { locales } from '@/i18n/config'
 
-const inter = Inter({
+const syne = Syne({
   subsets: ['latin'],
   variable: '--font-heading',
-  weight: ['400', '500', '900'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 })
 
-const interBody = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-  weight: ['400', '500'],
-  display: 'swap',
-})
-
-const spaceGrotesk = Space_Grotesk({
+const spaceMono = Space_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   weight: ['400', '700'],
+  style: ['normal', 'italic'],
   display: 'swap',
 })
 
@@ -86,7 +80,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html
-      className={cn(inter.variable, interBody.variable, spaceGrotesk.variable)}
+      className={cn(syne.variable, spaceMono.variable)}
       lang={locale}
     >
       <head>

@@ -19,6 +19,7 @@ export const Volunteers: CollectionConfig<'volunteers'> = {
     defaultColumns: ['name', 'email', 'areas', 'applicationStatus', 'createdAt'],
     group: 'Topluluk',
     useAsTitle: 'name',
+    description: 'Gönüllü başvurularını inceleyin ve onaylayın',
   },
   fields: [
     {
@@ -45,6 +46,12 @@ export const Volunteers: CollectionConfig<'volunteers'> = {
       type: 'select',
       hasMany: true,
       options: VOLUNTEER_AREA_OPTIONS,
+      admin: {
+        description: 'Birden fazla alan seçilebilir',
+        components: {
+          Cell: '@/components/admin/cells/TagsCell#TagsCell',
+        },
+      },
     },
     {
       name: 'message',
@@ -60,6 +67,9 @@ export const Volunteers: CollectionConfig<'volunteers'> = {
       options: APPLICATION_STATUS_OPTIONS,
       admin: {
         position: 'sidebar',
+        components: {
+          Cell: '@/components/admin/cells/StatusBadgeCell#StatusBadgeCell',
+        },
       },
     },
     {

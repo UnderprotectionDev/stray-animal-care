@@ -57,7 +57,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
               <Media
                 resource={firstPhoto}
                 fill
-                imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                imgClassName="object-cover transition-all duration-300"
                 priority
               />
             </div>
@@ -115,7 +115,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
               className={`inline-block px-3 py-1 text-[11px] font-bold uppercase tracking-wider border border-border mb-3 ${
                 ec.caseStatus === 'aktif'
                   ? 'bg-destructive text-background'
-                  : 'bg-accent text-foreground'
+                  : 'bg-health text-health-foreground'
               }`}
             >
               {ec.caseStatus === 'aktif' ? 'Aktif' : 'Tamamlandi'}
@@ -133,7 +133,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
               </p>
               <div className="w-full h-4 border border-border bg-background">
                 <div
-                  className="h-full bg-accent"
+                  className="h-full bg-emergency"
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -158,7 +158,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
               </p>
               <Link
                 href={`/canlarimiz/${relatedAnimal.slug}`}
-                className="font-bold text-foreground hover:text-accent transition-colors uppercase tracking-wide text-sm"
+                className="font-bold text-foreground hover:text-cta transition-colors uppercase tracking-wide text-sm"
               >
                 {relatedAnimal.name}
               </Link>
@@ -169,7 +169,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           <div className="p-6">
             <Link
               href="/destek-ol"
-              className="block w-full bg-accent text-foreground text-center font-bold uppercase tracking-widest text-sm py-3 px-6 border border-border hover:bg-foreground hover:text-accent transition-colors"
+              className="block w-full bg-cta text-cta-foreground text-center font-bold uppercase tracking-widest text-sm py-3 px-6 border-[1.5px] border-border hover:bg-foreground hover:text-background transition-colors"
             >
               {ui?.emergency?.donateButton ?? 'Destek Ol'}
             </Link>

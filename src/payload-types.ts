@@ -666,6 +666,8 @@ export interface MissionBlock {
   blockType: 'mission';
 }
 /**
+ * Bakım altındaki sokak hayvanları kayıtları
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "animals".
  */
@@ -674,6 +676,9 @@ export interface Animal {
   _order?: string | null;
   name: string;
   photos?: (number | Media)[] | null;
+  /**
+   * Hayvanın kurtarılma hikayesi — ziyaretçiler bunu okuyacak
+   */
   story?: {
     root: {
       type: string;
@@ -707,10 +712,19 @@ export interface Animal {
   type: 'kedi' | 'kopek';
   age?: string | null;
   gender: 'erkek' | 'disi' | 'bilinmiyor';
+  /**
+   * Tedavide: aktif tedavi | Kalıcı Bakım: barınakta | Acil: acil müdahale
+   */
   animalStatus: 'tedavide' | 'kalici-bakim' | 'acil';
   featured?: boolean | null;
   location?: string | null;
+  /**
+   * Kilogram cinsinden
+   */
   weight?: number | null;
+  /**
+   * 15 haneli mikroçip numarası
+   */
   microchipId?: string | null;
   isSpayed?: boolean | null;
   isVaccinated?: boolean | null;
@@ -733,6 +747,8 @@ export interface Animal {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Acil tedavi gerektiren vaka kampanyaları
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "emergency-cases".
  */
@@ -759,9 +775,18 @@ export interface EmergencyCase {
   photos?: (number | Media)[] | null;
   beforePhoto?: (number | null) | Media;
   afterPhoto?: (number | null) | Media;
+  /**
+   * Toplam hedeflenen bağış miktarı (₺)
+   */
   targetAmount: number;
+  /**
+   * Şu ana kadar toplanan bağış miktarı (₺)
+   */
   collectedAmount?: number | null;
   caseStatus: 'aktif' | 'tamamlandi';
+  /**
+   * Her güncelleme sitede kronolojik olarak gösterilir
+   */
   updates?:
     | {
         date?: string | null;
@@ -833,6 +858,8 @@ export interface VetRecord {
   deletedAt?: string | null;
 }
 /**
+ * Etkinlikleri oluşturun ve yönetin
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
@@ -856,7 +883,13 @@ export interface Event {
   } | null;
   coverImage?: (number | null) | Media;
   location?: string | null;
+  /**
+   * Etkinliğin başlangıç tarih ve saati
+   */
   eventDate: string;
+  /**
+   * Boş bırakılabilir
+   */
   endDate?: string | null;
   eventType?: ('sahiplendirme' | 'mama-toplama' | 'bakim-gunu' | 'egitim' | 'diger') | null;
   eventStatus?: ('yaklasan' | 'devam-ediyor' | 'tamamlandi' | 'iptal') | null;
@@ -880,6 +913,8 @@ export interface Event {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Gönüllü başvurularını inceleyin ve onaylayın
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "volunteers".
  */
@@ -888,6 +923,9 @@ export interface Volunteer {
   name: string;
   email: string;
   phone?: string | null;
+  /**
+   * Birden fazla alan seçilebilir
+   */
   areas?: ('besleme' | 'tedavi' | 'nakliye' | 'sahiplendirme' | 'etkinlik')[] | null;
   message?: string | null;
   applicationStatus?: ('beklemede' | 'onaylandi' | 'reddedildi') | null;
@@ -897,6 +935,8 @@ export interface Volunteer {
   deletedAt?: string | null;
 }
 /**
+ * İhtiyaç duyulan mama ve malzemelerin stok takibi
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "needs-list".
  */
@@ -907,8 +947,17 @@ export interface NeedsList {
   brandDetail?: string | null;
   urgency: 'acil' | 'orta' | 'yeterli';
   stockStatus?: string | null;
+  /**
+   * Mevcut stok miktarı
+   */
   currentStock?: number | null;
+  /**
+   * Hedeflenen minimum stok miktarı
+   */
   targetStock: number;
+  /**
+   * Ürünün ölçü birimi
+   */
   unit?: ('kutu' | 'kg' | 'adet') | null;
   priority?: ('acil' | 'yuksek' | 'orta' | 'dusuk') | null;
   updatedAt: string;

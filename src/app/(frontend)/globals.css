@@ -55,7 +55,7 @@
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 86rem;
-  --font-sans: var(--font-body);
+  --font-sans: var(--font-mono);
   --font-heading: initial;
   --font-mono: initial;
 }
@@ -100,19 +100,19 @@
 
   /* Grid & Panel utilities moved to @utility directives below (for responsive variant support) */
 
-  /* System wrapper: vertical stack with 1px gap + black border */
+  /* System wrapper: vertical stack with 1.5px gap + black border */
   .sys-wrap {
     display: flex;
     flex-direction: column;
-    gap: 1px;
-    background: var(--foreground);
-    border: 1px solid var(--border);
+    gap: 1.5px;
+    background: var(--palette-black);
+    border: 1.5px solid var(--border);
   }
 
   /* ── Typography ── */
   .t-mega {
     font-family: var(--font-heading);
-    font-weight: 900;
+    font-weight: 800;
     font-size: clamp(3rem, 8vw, 7rem);
     line-height: 0.9;
     letter-spacing: -0.03em;
@@ -120,7 +120,7 @@
   }
   .t-h1 {
     font-family: var(--font-heading);
-    font-weight: 900;
+    font-weight: 800;
     font-size: clamp(1.75rem, 4vw, 3rem);
     line-height: 1;
     letter-spacing: -0.02em;
@@ -128,36 +128,55 @@
   }
   .t-h2 {
     font-family: var(--font-heading);
-    font-weight: 900;
+    font-weight: 700;
     font-size: clamp(1.25rem, 2.5vw, 1.75rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
     text-transform: uppercase;
   }
   .t-body {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     font-weight: 400;
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.5;
   }
   .t-meta {
-    font-family: var(--font-mono-display, var(--font-mono));
+    font-family: var(--font-mono);
     font-weight: 400;
     font-size: 0.8125rem;
     line-height: 1.4;
     letter-spacing: 0.02em;
   }
 
+  /* ── Outline Text ── */
+  .t-outline {
+    -webkit-text-stroke: 1.5px var(--foreground);
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ── Comment Prefix ── */
+  .t-comment {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    opacity: 0.6;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+  .t-comment::before {
+    content: '// ';
+  }
+
   /* ── Sys Table ── */
   .sys-table {
     width: 100%;
     border-collapse: collapse;
-    font-family: var(--font-mono-display, var(--font-mono));
+    font-family: var(--font-mono);
     font-size: 0.875rem;
   }
   .sys-table th,
   .sys-table td {
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     padding: 0.75rem 1rem;
     text-align: left;
   }
@@ -177,16 +196,23 @@
     display: inline-flex;
     align-items: center;
     padding: 0.25rem 0.75rem;
-    border: 1px solid var(--border);
-    font-family: var(--font-mono-display, var(--font-mono));
+    border: 1.5px solid var(--border);
+    font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    background: var(--background);
+    background: var(--palette-cream);
+  }
+  .badge-sys.cta {
+    background: var(--cta);
+    color: var(--cta-foreground);
+    border-color: var(--cta);
   }
   .badge-sys.mint {
-    background: var(--accent);
+    background: var(--cta);
+    color: var(--cta-foreground);
+    border-color: var(--cta);
   }
   .badge-sys.critical {
     background: var(--destructive);
@@ -201,10 +227,10 @@
     justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background: var(--accent);
-    color: var(--foreground);
-    border: 1px solid var(--border);
-    font-family: var(--font-mono-display, var(--font-mono));
+    background: var(--cta);
+    color: var(--cta-foreground);
+    border: 1.5px solid var(--border);
+    font-family: var(--font-mono);
     font-weight: 700;
     font-size: 0.875rem;
     text-transform: uppercase;
@@ -213,24 +239,30 @@
     transition: background 0.15s;
   }
   .btn-cta:hover {
-    background: color-mix(in oklch, var(--accent) 80%, var(--foreground));
+    background: color-mix(in oklch, var(--cta) 85%, var(--palette-black));
   }
 
   /* ── Photo Treatment ── */
   .photo-sys {
-    filter: grayscale(100%);
     transition: filter 0.3s;
   }
-  .photo-sys:hover {
-    filter: grayscale(0%);
+
+  /* ── Pill Card (emergency) ── */
+  .pill-card {
+    border-radius: 200px;
+    border: 1.5px solid var(--border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   /* ── Featured Animals Grid ── */
   .featured-animals-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1px;
-    background: var(--foreground);
+    gap: 1.5px;
+    background: var(--palette-black);
   }
   @media (min-width: 48rem) {
     .featured-animals-grid {
@@ -247,8 +279,8 @@
   .needs-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1px;
-    background: var(--foreground);
+    gap: 1.5px;
+    background: var(--palette-black);
   }
   @media (min-width: 48rem) {
     .needs-grid {
@@ -266,8 +298,8 @@
   }
 
   .needs-card-hero {
-    background: #8B0000;
-    color: #fff;
+    background: var(--stats);
+    color: var(--stats-foreground);
     min-height: 16rem;
   }
   @media (min-width: 48rem) {
@@ -280,8 +312,8 @@
   }
 
   .needs-card-high {
-    background: var(--accent);
-    color: var(--foreground);
+    background: var(--emergency);
+    color: var(--emergency-foreground);
   }
   @media (min-width: 48rem) {
     .needs-card-high {
@@ -291,8 +323,8 @@
   }
 
   .needs-card-mid-1 {
-    background: var(--background);
-    color: var(--foreground);
+    background: var(--palette-cream);
+    color: var(--palette-black);
   }
   @media (min-width: 48rem) {
     .needs-card-mid-1 {
@@ -302,8 +334,8 @@
   }
 
   .needs-card-mid-2 {
-    background: var(--muted);
-    color: var(--foreground);
+    background: var(--palette-dark-cream);
+    color: var(--palette-black);
   }
   @media (min-width: 48rem) {
     .needs-card-mid-2 {
@@ -313,8 +345,8 @@
   }
 
   .needs-card-low {
-    background: #1a1a1a;
-    color: #fff;
+    background: var(--palette-black);
+    color: var(--palette-cream);
   }
   @media (min-width: 48rem) {
     .needs-card-low {
@@ -328,7 +360,7 @@
 
   .needs-qty-hero {
     font-size: clamp(8rem, 15vw, 14rem);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 0.85;
     font-family: var(--font-heading);
     letter-spacing: -0.04em;
@@ -336,7 +368,7 @@
 
   .needs-qty-card {
     font-size: clamp(4rem, 8vw, 7rem);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 0.9;
     font-family: var(--font-heading);
     letter-spacing: -0.03em;
@@ -353,7 +385,7 @@
     transition: width 0.3s ease;
   }
   .needs-meter-fill[data-priority="acil"] {
-    background: #FF0000;
+    background: var(--cta);
   }
   .needs-meter-fill[data-priority="yuksek"] {
     background: var(--foreground);
@@ -367,8 +399,8 @@
 
   .badge-sys-dark {
     display: inline-block;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    color: var(--palette-cream);
     padding: 0.125rem 0.5rem;
     font-size: 0.6875rem;
     font-weight: 700;
@@ -385,8 +417,8 @@
   .donate-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1px;
-    background: var(--foreground);
+    gap: 1.5px;
+    background: var(--palette-black);
   }
   @media (min-width: 48rem) {
     .donate-grid {
@@ -401,7 +433,7 @@
     justify-content: space-between;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
   }
 
   .card-index {
@@ -410,9 +442,9 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: 50%;
-    font-family: var(--font-mono-display, var(--font-mono));
+    font-family: var(--font-mono);
     font-size: 0.875rem;
     font-weight: 700;
     flex-shrink: 0;
@@ -428,7 +460,7 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-heading);
-    font-weight: 900;
+    font-weight: 800;
     font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -445,9 +477,9 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.625rem 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
     color: rgba(255, 255, 255, 0.5);
-    font-family: var(--font-mono-display, var(--font-mono));
+    font-family: var(--font-mono);
     font-weight: 700;
     font-size: 0.875rem;
     text-transform: uppercase;
@@ -458,10 +490,10 @@
   /* ── Ticker ── (keep inside @layer utilities — no responsive variants needed) */
   .ticker-wrap {
     overflow: hidden;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--foreground);
-    color: var(--background);
+    border-top: 1.5px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
+    background: var(--palette-black);
+    color: var(--palette-cream);
     padding: 0.75rem 0;
   }
   .ticker-track {
@@ -477,73 +509,91 @@
   }
 }
 
-/* ── Mint System Grid (responsive-variant-ready) ── */
-@utility g-1 { display: grid; grid-template-columns: repeat(1, 1fr); gap: 1px; background: var(--foreground); }
-@utility g-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--foreground); }
-@utility g-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--foreground); }
-@utility g-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--foreground); }
-@utility g-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--foreground); }
-@utility g-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--foreground); }
-@utility g-8 { display: grid; grid-template-columns: repeat(8, 1fr); gap: 1px; background: var(--foreground); }
-@utility panel { background: var(--background); padding: 1.5rem; }
+/* ── Vivid Brutalist Grid (responsive-variant-ready) ── */
+@utility g-1 { display: grid; grid-template-columns: repeat(1, 1fr); gap: 1.5px; background: var(--palette-black); }
+@utility g-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; background: var(--palette-black); }
+@utility g-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--palette-black); }
+@utility g-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5px; background: var(--palette-black); }
+@utility g-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5px; background: var(--palette-black); }
+@utility g-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.5px; background: var(--palette-black); }
+@utility g-8 { display: grid; grid-template-columns: repeat(8, 1fr); gap: 1.5px; background: var(--palette-black); }
+@utility panel { background: var(--palette-cream); padding: 1.5rem; }
 
-/* ── Neo-Brutalist Utilities ── */
-@utility neo-shadow     { box-shadow: 4px 4px 0 0 rgba(0,0,0,1); }
-@utility neo-shadow-sm  { box-shadow: 2px 2px 0 0 rgba(0,0,0,1); }
-
-@utility t-neo-title {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-}
-@utility t-neo-stat {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-}
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0 0 0);
-  --primary: oklch(0 0 0);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.82 0.08 155);
-  --secondary-foreground: oklch(0 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.44 0 0);
-  --accent: oklch(0.82 0.08 155);
-  --accent-foreground: oklch(0 0 0);
-  --destructive: oklch(0.63 0.29 29);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0 0 0);
-  --input: oklch(0 0 0);
-  --ring: oklch(0.82 0.08 155);
-  --chart-1: oklch(0 0 0);
-  --chart-2: oklch(0.82 0.08 155);
-  --chart-3: oklch(0.63 0.29 29);
-  --chart-4: oklch(0.44 0 0);
-  --chart-5: oklch(0.97 0 0);
+  /* ── Palette ── */
+  --palette-cream: #E0DDD4;
+  --palette-red: #EF303B;
+  --palette-blue: #4A46E4;
+  --palette-yellow: #F5B62A;
+  --palette-orange: #F26E41;
+  --palette-lilac: #9E74F9;
+  --palette-black: #111111;
+  --palette-teal: #2D936C;
+  --palette-dark-cream: #C9C4B8;
+  --palette-warm-gray: #A39E93;
+  --palette-coral: #FF6B6B;
+
+  /* ── shadcn Standard Tokens ── */
+  --background: var(--palette-cream);
+  --foreground: var(--palette-black);
+  --card: var(--palette-cream);
+  --card-foreground: var(--palette-black);
+  --popover: var(--palette-cream);
+  --popover-foreground: var(--palette-black);
+  --primary: var(--palette-black);
+  --primary-foreground: var(--palette-cream);
+  --secondary: var(--palette-dark-cream);
+  --secondary-foreground: var(--palette-black);
+  --muted: var(--palette-warm-gray);
+  --muted-foreground: #736E65;
+  --accent: var(--palette-dark-cream);
+  --accent-foreground: var(--palette-black);
+  --destructive: var(--palette-red);
+  --destructive-foreground: var(--palette-cream);
+  --border: var(--palette-black);
+  --input: var(--palette-black);
+  --ring: var(--palette-red);
+
+  /* ── Semantic Tokens ── */
+  --cta: var(--palette-red);
+  --cta-foreground: var(--palette-cream);
+  --stats: var(--palette-blue);
+  --stats-foreground: var(--palette-cream);
+  --emergency: var(--palette-yellow);
+  --emergency-foreground: var(--palette-black);
+  --adoption: var(--palette-orange);
+  --adoption-foreground: var(--palette-black);
+  --trust: var(--palette-lilac);
+  --trust-foreground: var(--palette-cream);
+  --health: var(--palette-teal);
+  --health-foreground: var(--palette-cream);
+  --warm: var(--palette-coral);
+  --warm-foreground: var(--palette-black);
+
+  /* ── Chart Colors ── */
+  --chart-1: var(--palette-red);
+  --chart-2: var(--palette-blue);
+  --chart-3: var(--palette-yellow);
+  --chart-4: var(--palette-teal);
+  --chart-5: var(--palette-lilac);
+
   --radius: 0px;
-  --sidebar: oklch(0.97 0 0);
-  --sidebar-foreground: oklch(0 0 0);
-  --sidebar-primary: oklch(0 0 0);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.82 0.08 155);
-  --sidebar-accent-foreground: oklch(0 0 0);
-  --sidebar-border: oklch(0 0 0);
-  --sidebar-ring: oklch(0.82 0.08 155);
-  --success: oklch(0.82 0.08 155);
-  --warning: oklch(0.83 0.17 85);
-  --error: oklch(0.63 0.29 29);
+
+  /* ── Sidebar ── */
+  --sidebar: var(--palette-cream);
+  --sidebar-foreground: var(--palette-black);
+  --sidebar-primary: var(--palette-black);
+  --sidebar-primary-foreground: var(--palette-cream);
+  --sidebar-accent: var(--palette-dark-cream);
+  --sidebar-accent-foreground: var(--palette-black);
+  --sidebar-border: var(--palette-black);
+  --sidebar-ring: var(--palette-red);
+
+  /* ── Status Colors ── */
+  --success: var(--palette-teal);
+  --warning: var(--palette-yellow);
+  --error: var(--palette-red);
 }
 
 @theme inline {
@@ -590,4 +640,33 @@
   --radius-2xl: calc(var(--radius));
   --radius-3xl: calc(var(--radius));
   --radius-4xl: calc(var(--radius));
+
+  /* ── Palette Colors (bg-palette-cream, text-palette-red, etc.) ── */
+  --color-palette-cream: var(--palette-cream);
+  --color-palette-red: var(--palette-red);
+  --color-palette-blue: var(--palette-blue);
+  --color-palette-yellow: var(--palette-yellow);
+  --color-palette-orange: var(--palette-orange);
+  --color-palette-lilac: var(--palette-lilac);
+  --color-palette-black: var(--palette-black);
+  --color-palette-teal: var(--palette-teal);
+  --color-palette-dark-cream: var(--palette-dark-cream);
+  --color-palette-warm-gray: var(--palette-warm-gray);
+  --color-palette-coral: var(--palette-coral);
+
+  /* ── Semantic Colors (bg-cta, text-cta-foreground, etc.) ── */
+  --color-cta: var(--cta);
+  --color-cta-foreground: var(--cta-foreground);
+  --color-stats: var(--stats);
+  --color-stats-foreground: var(--stats-foreground);
+  --color-emergency: var(--emergency);
+  --color-emergency-foreground: var(--emergency-foreground);
+  --color-adoption: var(--adoption);
+  --color-adoption-foreground: var(--adoption-foreground);
+  --color-trust: var(--trust);
+  --color-trust-foreground: var(--trust-foreground);
+  --color-health: var(--health);
+  --color-health-foreground: var(--health-foreground);
+  --color-warm: var(--warm);
+  --color-warm-foreground: var(--warm-foreground);
 }

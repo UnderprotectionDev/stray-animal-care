@@ -17,6 +17,7 @@ export const Events: CollectionConfig<'events'> = {
     defaultColumns: ['title', 'eventDate', 'eventType', 'eventStatus', 'updatedAt'],
     group: 'Topluluk',
     useAsTitle: 'title',
+    description: 'Etkinlikleri oluşturun ve yönetin',
   },
   fields: [
     {
@@ -62,6 +63,7 @@ export const Events: CollectionConfig<'events'> = {
               type: 'date',
               required: true,
               admin: {
+                description: 'Etkinliğin başlangıç tarih ve saati',
                 date: {
                   pickerAppearance: 'dayAndTime',
                 },
@@ -72,6 +74,7 @@ export const Events: CollectionConfig<'events'> = {
               label: 'Bitiş Tarihi',
               type: 'date',
               admin: {
+                description: 'Boş bırakılabilir',
                 date: {
                   pickerAppearance: 'dayAndTime',
                 },
@@ -98,6 +101,11 @@ export const Events: CollectionConfig<'events'> = {
               index: true,
               defaultValue: 'yaklasan',
               options: EVENT_STATUS_OPTIONS,
+              admin: {
+                components: {
+                  Cell: '@/components/admin/cells/StatusBadgeCell#StatusBadgeCell',
+                },
+              },
             },
           ],
         },

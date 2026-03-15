@@ -17,6 +17,7 @@ import { AdminChartContainer } from './AdminChartContainer'
 import type { AdminChartConfig } from './AdminChartContainer'
 import type { StatusBreakdown } from './types'
 import { ChartCard } from './ChartCard'
+import { CHART_COLORS } from './chart-colors'
 
 interface CommunityChartsProps {
   volunteerStatuses: StatusBreakdown[]
@@ -26,32 +27,32 @@ interface CommunityChartsProps {
 }
 
 const volunteerConfig: AdminChartConfig = {
-  beklemede: { label: 'Beklemede', color: '#eab308' },
-  onaylandi: { label: 'Onaylandı', color: '#22c55e' },
-  reddedildi: { label: 'Reddedildi', color: '#ef4444' },
+  beklemede: { label: 'Beklemede', color: CHART_COLORS.beklemede },
+  onaylandi: { label: 'Onaylandı', color: CHART_COLORS.onaylandi },
+  reddedildi: { label: 'Reddedildi', color: CHART_COLORS.reddedildi },
 }
 
 const eventConfig: AdminChartConfig = {
-  sahiplendirme: { label: 'Sahiplendirme', color: '#8b5cf6' },
-  'mama-toplama': { label: 'Mama Toplama', color: '#14b8a6' },
-  'bakim-gunu': { label: 'Bakım Günü', color: '#f59e0b' },
-  egitim: { label: 'Eğitim', color: '#3b82f6' },
-  diger: { label: 'Diğer', color: '#6b7280' },
+  sahiplendirme: { label: 'Sahiplendirme', color: CHART_COLORS.sahiplendirme },
+  'mama-toplama': { label: 'Mama Toplama', color: CHART_COLORS['mama-toplama'] },
+  'bakim-gunu': { label: 'Bakım Günü', color: CHART_COLORS['bakim-gunu'] },
+  egitim: { label: 'Eğitim', color: CHART_COLORS.egitim },
+  diger: { label: 'Diğer', color: CHART_COLORS.diger },
 }
 
 const vetConfig: AdminChartConfig = {
-  muayene: { label: 'Muayene', color: '#8b5cf6' },
-  asi: { label: 'Aşı', color: '#22c55e' },
-  kisirlastirma: { label: 'Kısırlaştırma', color: '#f59e0b' },
-  ameliyat: { label: 'Ameliyat', color: '#ef4444' },
-  tedavi: { label: 'Tedavi', color: '#3b82f6' },
-  kontrol: { label: 'Kontrol', color: '#6b7280' },
+  muayene: { label: 'Muayene', color: CHART_COLORS.muayene },
+  asi: { label: 'Aşı', color: CHART_COLORS.asi },
+  kisirlastirma: { label: 'Kısırlaştırma', color: CHART_COLORS.kisirlastirma },
+  ameliyat: { label: 'Ameliyat', color: CHART_COLORS.ameliyat },
+  tedavi: { label: 'Tedavi', color: CHART_COLORS.tedavi },
+  kontrol: { label: 'Kontrol', color: CHART_COLORS.kontrol },
 }
 
 const needsConfig: AdminChartConfig = {
-  acil: { label: 'Acil', color: '#ef4444' },
-  orta: { label: 'Orta', color: '#eab308' },
-  yeterli: { label: 'Yeterli', color: '#22c55e' },
+  acil: { label: 'Acil', color: CHART_COLORS['acil-needs'] },
+  orta: { label: 'Orta', color: CHART_COLORS.orta },
+  yeterli: { label: 'Yeterli', color: CHART_COLORS.yeterli },
 }
 
 function hasValues(data: StatusBreakdown[]) {

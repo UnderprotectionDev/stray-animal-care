@@ -31,7 +31,7 @@ export function DonationComparison({
         </div>
         <div className="h-6 w-full border border-border bg-background">
           <div
-            className="h-full bg-accent"
+            className="h-full bg-trust"
             style={{ width: `${percentage}%` }}
           />
         </div>

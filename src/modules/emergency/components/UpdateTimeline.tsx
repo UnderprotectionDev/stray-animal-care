@@ -56,7 +56,7 @@ export function UpdateTimeline({ updates, noUpdatesLabel, locale }: UpdateTimeli
                   <Media
                     resource={photo}
                     fill
-                    imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                    imgClassName="object-cover transition-all duration-300"
                   />
                 </div>
               )}

@@ -16,7 +16,7 @@ export function AnimalCard({ animal, typeLabel, statusLabel }: AnimalCardProps) 
       : null
 
   const badgeClass =
-    animal.animalStatus === 'acil' ? 'badge-sys critical' : 'badge-sys mint'
+    animal.animalStatus === 'acil' ? 'badge-sys critical' : 'badge-sys cta'
 
   return (
     <Link href={`/canlarimiz/${animal.slug}`} className="group block">
@@ -27,7 +27,7 @@ export function AnimalCard({ animal, typeLabel, statusLabel }: AnimalCardProps) 
             <Media
               resource={firstPhoto}
               fill
-              imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+              imgClassName="object-cover transition-all duration-300"
             />
           ) : (
             <div className="flex h-full items-center justify-center text-muted-foreground">

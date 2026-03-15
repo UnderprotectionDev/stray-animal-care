@@ -29,8 +29,8 @@ const financialConfig: AdminChartConfig = {
 }
 
 const fundraisingConfig: AdminChartConfig = {
-  collected: { label: 'Toplanan', color: '#22c55e' },
-  remaining: { label: 'Kalan', color: '#e5e7eb' },
+  collected: { label: 'Toplanan', color: CHART_COLORS.onaylandi },
+  remaining: { label: 'Kalan', color: CHART_COLORS.darkCream },
 }
 
 const currencyFormatter = (value: number) => `₺${value.toLocaleString('tr-TR')}`
@@ -94,8 +94,8 @@ export const FinancialCharts: React.FC<FinancialChartsProps> = ({ monthly, fundr
             />
             <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} width={120} />
             <Tooltip formatter={currencyFormatter} />
-            <Bar dataKey="collected" name="Toplanan" stackId="a" fill="#22c55e" radius={[0, 0, 0, 0]} />
-            <Bar dataKey="remaining" name="Kalan" stackId="a" fill="#e5e7eb" radius={[0, 4, 4, 0]} />
+            <Bar dataKey="collected" name="Toplanan" stackId="a" fill={CHART_COLORS.onaylandi} radius={[0, 0, 0, 0]} />
+            <Bar dataKey="remaining" name="Kalan" stackId="a" fill={CHART_COLORS.darkCream} radius={[0, 4, 4, 0]} />
           </BarChart>
         </AdminChartContainer>
       </ChartCard>

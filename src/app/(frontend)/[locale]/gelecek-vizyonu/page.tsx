@@ -76,8 +76,8 @@ export default async function VisionPage({ params }: Args) {
           {/* Association Goal */}
           <div className="mx-auto mb-16 max-w-3xl">
             <div className="panel border border-border p-8 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center border border-border bg-accent">
-                <Target className="h-8 w-8 text-foreground" />
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center border-[1.5px] border-border bg-stats text-stats-foreground">
+                <Target className="h-8 w-8" />
               </div>
               <Heading as="h2" className="mb-3">
                 {ui?.vision?.association?.title}
@@ -114,8 +114,8 @@ export default async function VisionPage({ params }: Args) {
                   <div key={goal.key} className="relative flex items-center">
                     {/* Mobile layout */}
                     <div className="md:hidden flex w-full items-start gap-4 pl-14">
-                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center border border-border bg-accent">
-                        <Icon className="h-3.5 w-3.5 text-foreground" />
+                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center border-[1.5px] border-border bg-stats text-stats-foreground">
+                        <Icon className="h-3.5 w-3.5 " />
                       </div>
                       <div className="panel border border-border p-5">
                         <h3 className="font-heading mb-1 text-lg font-semibold">
@@ -144,8 +144,8 @@ export default async function VisionPage({ params }: Args) {
                       </div>
 
                       {/* Center dot */}
-                      <div className="relative z-10 flex h-12 w-12 items-center justify-center border-2 border-border bg-accent">
-                        <Icon className="h-5 w-5 text-foreground" />
+                      <div className="relative z-10 flex h-12 w-12 items-center justify-center border-2 border-border bg-stats text-stats-foreground">
+                        <Icon className="h-5 w-5 " />
                       </div>
 
                       {/* Right card */}
@@ -194,8 +194,8 @@ export default async function VisionPage({ params }: Args) {
                   <div key={goal.key} className="relative flex items-center">
                     {/* Mobile layout */}
                     <div className="md:hidden flex w-full items-start gap-4 pl-14">
-                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center border border-border bg-accent">
-                        <Icon className="h-3.5 w-3.5 text-foreground" />
+                      <div className="absolute left-3 top-1 flex h-7 w-7 items-center justify-center border-[1.5px] border-border bg-stats text-stats-foreground">
+                        <Icon className="h-3.5 w-3.5 " />
                       </div>
                       <div className="panel border border-border p-5">
                         <h3 className="font-heading mb-1 text-lg font-semibold">
@@ -224,8 +224,8 @@ export default async function VisionPage({ params }: Args) {
                       </div>
 
                       {/* Center dot */}
-                      <div className="relative z-10 flex h-12 w-12 items-center justify-center border-2 border-border bg-accent">
-                        <Icon className="h-5 w-5 text-foreground" />
+                      <div className="relative z-10 flex h-12 w-12 items-center justify-center border-2 border-border bg-stats text-stats-foreground">
+                        <Icon className="h-5 w-5 " />
                       </div>
 
                       {/* Right card */}
@@ -254,8 +254,8 @@ export default async function VisionPage({ params }: Args) {
       <Section padding="md">
         <Container>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center border border-border bg-accent">
-              <Users className="h-8 w-8 text-foreground" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center border-[1.5px] border-border bg-stats text-stats-foreground">
+              <Users className="h-8 w-8" />
             </div>
             <Heading as="h2" className="mb-3">
               {ui?.vision?.network?.title}

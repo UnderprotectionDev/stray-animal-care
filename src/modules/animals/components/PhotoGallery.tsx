@@ -49,7 +49,7 @@ export function PhotoGallery({ photos, animalName, labels }: PhotoGalleryProps) 
         <Media
           resource={heroPhoto}
           fill
-          imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+          imgClassName="object-cover transition-all duration-300"
           priority
         />
       </button>
@@ -68,7 +68,7 @@ export function PhotoGallery({ photos, animalName, labels }: PhotoGalleryProps) 
               <Media
                 resource={photo}
                 fill
-                imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                imgClassName="object-cover transition-all duration-300"
               />
             </button>
           ))}

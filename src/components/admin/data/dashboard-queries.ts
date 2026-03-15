@@ -42,6 +42,67 @@ function countByField<T>(docs: T[], field: keyof T): Record<string, number> {
   return counts
 }
 
+// --- Alert types ---
+
+export interface AlertItem {
+  type: 'warning' | 'danger'
+  icon: string
+  message: string
+  count: number
+  href: string
+}
+
+export async function getAlerts(payload: Payload): Promise<AlertItem[]> {
+  const [pendingVolunteers, activeEmergencies, urgentNeeds] = await Promise.all([
+    payload.count({
+      collection: 'volunteers',
+      where: { applicationStatus: { equals: 'beklemede' } },
+    }),
+    payload.count({
+      collection: 'emergency-cases',
+      where: { caseStatus: { equals: 'aktif' }, _status: { equals: 'published' } },
+    }),
+    payload.count({
+      collection: 'needs-list',
+      where: { urgency: { equals: 'acil' } },
+    }),
+  ])
+
+  const alerts: AlertItem[] = []
+
+  if (pendingVolunteers.totalDocs > 0) {
+    alerts.push({
+      type: 'warning',
+      icon: '\u{1F91D}',
+      message: `${pendingVolunteers.totalDocs} bekleyen gönüllü başvurusu`,
+      count: pendingVolunteers.totalDocs,
+      href: '/admin/collections/volunteers?where[applicationStatus][equals]=beklemede',
+    })
+  }
+
+  if (activeEmergencies.totalDocs > 0) {
+    alerts.push({
+      type: 'danger',
+      icon: '\u{1F6A8}',
+      message: `${activeEmergencies.totalDocs} aktif acil vaka`,
+      count: activeEmergencies.totalDocs,
+      href: '/admin/collections/emergency-cases?where[caseStatus][equals]=aktif',
+    })
+  }
+
+  if (urgentNeeds.totalDocs > 0) {
+    alerts.push({
+      type: 'danger',
+      icon: '\u{26A0}\u{FE0F}',
+      message: `${urgentNeeds.totalDocs} acil ihtiyaç kalemi`,
+      count: urgentNeeds.totalDocs,
+      href: '/admin/collections/needs-list?where[urgency][equals]=acil',
+    })
+  }
+
+  return alerts
+}
+
 // --- Individual data fetchers for each widget ---
 
 export async function getAnimalChartData(payload: Payload): Promise<{

@@ -33,7 +33,7 @@ export function FilterButtons<K extends string>({
           aria-pressed={current === option.value}
           className={
             current === option.value
-              ? 'badge-sys mint'
+              ? 'badge-sys cta'
               : 'badge-sys'
           }
         >

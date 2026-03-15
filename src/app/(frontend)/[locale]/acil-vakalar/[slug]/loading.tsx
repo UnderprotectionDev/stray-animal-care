@@ -28,7 +28,7 @@ export default function EmergencyCaseLoading() {
               </div>
             </div>
             <div className="p-6">
-              <div className="h-10 w-full bg-accent/30 border border-border animate-pulse" />
+              <div className="h-10 w-full bg-cta/30 border border-border animate-pulse" />
             </div>
           </div>
         </div>

@@ -35,18 +35,18 @@ export function PostsAndTransparency({
 
   return (
     <section>
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] border-4 border-foreground">
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] border-[1.5px] border-border">
         {/* ── Left Column: Posts ── */}
         <div className="flex flex-col">
           {/* Posts Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b-4 border-foreground bg-background">
-            <h2 className="t-neo-title">{postsBlock.sectionTitle}</h2>
+          <div className="flex items-center justify-between px-6 py-4 border-b-[1.5px] border-border bg-background">
+            <h2 className="t-h2">{postsBlock.sectionTitle}</h2>
             {postsBlock.viewAllLabel && postsBlock.viewAllLink && (
               <Link
                 href={postsBlock.viewAllLink}
-                className="border-2 border-foreground bg-accent px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-widest neo-shadow transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+                className="btn-cta text-xs py-2 px-4"
               >
-                {postsBlock.viewAllLabel} →
+                {postsBlock.viewAllLabel}
               </Link>
             )}
           </div>
@@ -55,14 +55,14 @@ export function PostsAndTransparency({
           {hero && (
             <Link
               href={`/gunluk/${hero.slug}`}
-              className="group flex flex-col justify-end p-6 lg:p-8 bg-background border-b-4 border-foreground min-h-[280px] lg:min-h-[340px] flex-1"
+              className="group flex flex-col justify-end p-6 lg:p-8 bg-background border-b-[1.5px] border-border min-h-[280px] lg:min-h-[340px] flex-1"
             >
               {hero.postCategory && (
-                <span className="inline-block w-fit border-2 border-foreground bg-accent px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest neo-shadow-sm mb-4 transition-all group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:shadow-none">
+                <span className="badge-sys text-[10px] mb-4 inline-block w-fit bg-warm text-warm-foreground border-warm">
                   {CATEGORY_LABELS_FALLBACK[hero.postCategory] ?? hero.postCategory}
                 </span>
               )}
-              <h3 className="font-heading font-black text-4xl lg:text-5xl uppercase leading-[0.95] tracking-tight group-hover:text-accent-foreground/70 transition-colors">
+              <h3 className="t-h1 uppercase group-hover:text-muted-foreground transition-colors">
                 {hero.title}
               </h3>
               {hero.excerpt && (
@@ -81,7 +81,7 @@ export function PostsAndTransparency({
           {/* Secondary Posts */}
           {secondary.length > 0 && (
             <div
-              className={`grid ${secondary.length === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} gap-[1px] bg-foreground`}
+              className={`grid ${secondary.length === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} divide-x divide-border`}
             >
               {secondary.map((post) => (
                 <Link
@@ -90,11 +90,11 @@ export function PostsAndTransparency({
                   className="group flex flex-col justify-end p-5 lg:p-6 bg-background min-h-[180px]"
                 >
                   {post.postCategory && (
-                    <span className="inline-block w-fit border-2 border-foreground bg-accent px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest neo-shadow-sm mb-3 transition-all group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:shadow-none">
+                    <span className="badge-sys text-[10px] mb-3 inline-block w-fit bg-warm text-warm-foreground border-warm">
                       {CATEGORY_LABELS_FALLBACK[post.postCategory] ?? post.postCategory}
                     </span>
                   )}
-                  <h3 className="font-heading font-black text-2xl lg:text-3xl uppercase leading-[0.95] tracking-tight group-hover:text-muted-foreground transition-colors">
+                  <h3 className="t-h2 uppercase group-hover:text-muted-foreground transition-colors">
                     {post.title}
                   </h3>
                   {post.excerpt && (
@@ -114,9 +114,9 @@ export function PostsAndTransparency({
         </div>
 
         {/* ── Right Column: Transparency ── */}
-        <div className="flex flex-col border-t-4 lg:border-t-0 lg:border-l-4 border-foreground">
+        <div className="flex flex-col border-t-[1.5px] lg:border-t-0 lg:border-l-[1.5px] border-border">
           {/* Transparency Header */}
-          <div className="px-6 py-5 bg-accent border-b-4 border-foreground">
+          <div className="px-6 py-5 bg-trust border-b-[1.5px] border-border text-trust-foreground">
             <h2 className="t-h2">{transparencyBlock.title}</h2>
             {transparencyBlock.description && (
               <p className="t-meta text-foreground/70 mt-1">
@@ -126,9 +126,9 @@ export function PostsAndTransparency({
             {transparencyBlock.ctaLabel && transparencyBlock.ctaLink && (
               <Link
                 href={transparencyBlock.ctaLink}
-                className="inline-block mt-3 border-2 border-foreground bg-background px-4 py-2 font-mono text-xs font-bold uppercase tracking-widest neo-shadow transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+                className="btn-cta text-xs py-2 px-4 mt-3 inline-flex"
               >
-                {transparencyBlock.ctaLabel} →
+                {transparencyBlock.ctaLabel}
               </Link>
             )}
           </div>
@@ -137,50 +137,31 @@ export function PostsAndTransparency({
           {report && (
             <div className="flex flex-col flex-1">
               {/* Total Income */}
-              <div className="relative flex-1 p-6 bg-background border-b-4 border-foreground overflow-hidden">
-                {/* Faint decorative lines */}
-                <svg
-                  className="absolute inset-0 w-full h-full opacity-[0.04] pointer-events-none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <pattern id="diag" width="20" height="20" patternUnits="userSpaceOnUse">
-                    <path d="M0 20L20 0" stroke="currentColor" strokeWidth="1" />
-                  </pattern>
-                  <rect width="100%" height="100%" fill="url(#diag)" />
-                </svg>
-                <p className="t-meta text-muted-foreground uppercase text-xs relative">
+              <div className="flex-1 p-6 bg-background border-b-[1.5px] border-border">
+                <p className="t-meta text-muted-foreground uppercase text-xs">
                   {locale === 'en' ? 'Total Income' : 'Toplam Gelir'}
                 </p>
-                <p className="t-neo-stat mt-2 relative">
+                <p className="t-mega mt-2">
                   {report.totalDonation != null ? formatCurrency(report.totalDonation) : '—'}
                 </p>
               </div>
 
               {/* Total Expense */}
-              <div className="flex-1 p-6 bg-[#f8f9fa] border-b-4 border-foreground">
+              <div className="flex-1 p-6 bg-palette-dark-cream border-b-[1.5px] border-border">
                 <p className="t-meta text-muted-foreground uppercase text-xs">
                   {locale === 'en' ? 'Total Expense' : 'Toplam Gider'}
                 </p>
-                <p className="t-neo-stat mt-2 text-muted-foreground">
+                <p className="t-mega mt-2 text-muted-foreground">
                   {report.totalExpense != null ? formatCurrency(report.totalExpense) : '—'}
                 </p>
               </div>
 
               {/* Donor Count */}
-              <div className="relative flex-1 p-6 bg-foreground text-background overflow-hidden">
-                {/* Heart SVG decoration */}
-                <svg
-                  className="absolute right-4 bottom-4 w-16 h-16 opacity-10 pointer-events-none"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-                <p className="t-meta text-accent uppercase text-xs relative">
+              <div className="flex-1 p-6 bg-foreground text-background">
+                <p className="t-meta text-palette-coral uppercase text-xs">
                   {locale === 'en' ? 'Donor Count' : 'Bağışçı Sayısı'}
                 </p>
-                <p className="t-neo-stat mt-2 relative">{report.donorList?.length ?? 0}</p>
+                <p className="t-mega mt-2">{report.donorList?.length ?? 0}</p>
               </div>
             </div>
           )}

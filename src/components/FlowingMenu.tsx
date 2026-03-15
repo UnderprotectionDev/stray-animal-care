@@ -36,7 +36,7 @@ function findClosestEdge(
   return topDist < bottomDist ? 'top' : 'bottom'
 }
 
-const PRE_LAYER_COLORS = ['#4AA87A', '#7BC4A0']
+const PRE_LAYER_COLORS = ['#4A46E4', '#EF303B']
 
 const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActive, onClose }) => {
   const itemRef = useRef<HTMLDivElement>(null)
@@ -148,7 +148,7 @@ const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActi
       ref={itemRef}
       className={cn(
         'fm-item flex-1 relative overflow-hidden flex items-center justify-center border-b border-white/30 first:border-t first:border-white/30',
-        item.isCta && 'border-b-[var(--accent)]',
+        item.isCta && 'border-b-[var(--cta)]',
       )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -158,7 +158,7 @@ const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActi
         ref={marqueeRef}
         className="absolute inset-0 z-[1] flex items-center"
         style={{
-          backgroundColor: '#A8D5BA',
+          backgroundColor: '#F5B62A',
           transform: 'translateY(101%)',
         }}
       >
@@ -178,9 +178,9 @@ const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActi
         onClick={onClose}
         className={cn(
           'fm-itemLabel relative z-[2] flex items-center justify-center w-full h-full uppercase no-underline font-[var(--font-heading)] font-[900] text-[clamp(2rem,5vh,4rem)] tracking-[-0.02em] text-white',
-          'focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-[-2px]',
-          isActive && '!text-[var(--accent)]',
-          item.isCta && 'text-[var(--accent)]',
+          'focus-visible:outline-2 focus-visible:outline-[var(--cta)] focus-visible:outline-offset-[-2px]',
+          isActive && '!text-[var(--cta)]',
+          item.isCta && 'text-[var(--cta)]',
         )}
       >
         {item.text}

@@ -32,7 +32,7 @@ export default async function DesignTestPage({ params }: Args) {
           <div className="space-y-4">
             <Heading as="h2">Color Palette</Heading>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-6 bg-accent text-foreground text-center border border-border">Primary (Mint)</div>
+              <div className="p-6 bg-cta text-cta-foreground text-center border border-border">CTA (Red)</div>
               <div className="p-6 bg-background text-foreground text-center border border-border">White (BG)</div>
               <div className="p-6 bg-foreground text-background text-center border border-border">Black (Text)</div>
               <div className="p-6 bg-muted text-foreground text-center border border-border">Muted</div>
@@ -110,7 +110,7 @@ export default async function DesignTestPage({ params }: Args) {
             <Heading as="h2">Panels</Heading>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="panel border border-border p-6 bg-background">Panel Default</div>
-              <div className="panel border border-border p-6 bg-accent">Panel Mint</div>
+              <div className="panel border border-border p-6 bg-stats text-stats-foreground">Panel Stats</div>
               <div className="panel border border-border p-6 bg-muted">Panel Muted</div>
             </div>
           </div>

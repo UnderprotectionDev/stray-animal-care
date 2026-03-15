@@ -21,6 +21,7 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
     defaultColumns: ['title', 'caseStatus', 'collectedAmount', 'targetAmount', 'updatedAt'],
     group: 'Hayvan Bakım',
     useAsTitle: 'title',
+    description: 'Acil tedavi gerektiren vaka kampanyaları',
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({ slug: data?.slug as string, collection: 'emergency-cases', req }),
@@ -85,12 +86,21 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
               label: 'Hedef Miktar',
               type: 'number',
               required: true,
+              admin: {
+                description: 'Toplam hedeflenen bağış miktarı (₺)',
+              },
             },
             {
               name: 'collectedAmount',
               label: 'Toplanan Miktar',
               type: 'number',
               defaultValue: 0,
+              admin: {
+                description: 'Şu ana kadar toplanan bağış miktarı (₺)',
+                components: {
+                  Cell: '@/components/admin/cells/ProgressBarCell#EmergencyProgressCell',
+                },
+              },
             },
             {
               name: 'caseStatus',
@@ -103,6 +113,11 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
                 { label: 'Aktif', value: 'aktif' },
                 { label: 'Tamamlandı', value: 'tamamlandi' },
               ],
+              admin: {
+                components: {
+                  Cell: '@/components/admin/cells/StatusBadgeCell#StatusBadgeCell',
+                },
+              },
             },
           ],
         },
@@ -115,6 +130,7 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
               type: 'array',
               labels: { singular: 'Güncelleme', plural: 'Güncellemeler' },
               admin: {
+                description: 'Her güncelleme sitede kronolojik olarak gösterilir',
                 initCollapsed: true,
                 components: {
                   RowLabel: '@/collections/EmergencyCases/UpdateRowLabel#UpdateRowLabel',

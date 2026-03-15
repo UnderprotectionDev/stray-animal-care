@@ -9,7 +9,7 @@ type Props = {
 } & CalloutBlockProps
 
 const variantStyles = {
-  info: 'border-l-[#A8D5BA]',
+  info: 'border-l-[var(--palette-teal)]',
   warning: 'border-l-amber-500',
   success: 'border-l-green-600',
   error: 'border-l-[#FF0000]',

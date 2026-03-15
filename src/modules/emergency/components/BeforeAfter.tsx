@@ -25,7 +25,7 @@ export function BeforeAfter({ before, after, labels }: BeforeAfterProps) {
             src={beforeUrl}
             alt={before.alt || labels.before}
             fill
-            className="object-cover grayscale"
+            className="object-cover"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         </div>

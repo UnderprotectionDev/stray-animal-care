@@ -35,7 +35,7 @@ export function SupportCards({ block, siteSettings }: Props) {
                   <span className="t-meta font-bold">{account.bankName}</span>
                   <span className="badge-sys">{account.currency || 'TRY'}</span>
                 </div>
-                <div className="flex items-center gap-3 bg-[var(--accent)] border border-border p-3">
+                <div className="flex items-center gap-3 bg-palette-dark-cream border-[1.5px] border-border p-3">
                   <code className="font-mono text-sm break-all flex-1">
                     {account.iban}
                   </code>
@@ -86,14 +86,14 @@ export function SupportCards({ block, siteSettings }: Props) {
             return wa ? (
               <WhatsAppButton
                 phone={wa.url}
-                className="!bg-[var(--accent)] !text-black !rounded-none w-fit font-bold uppercase text-sm tracking-wider"
+                className="!bg-cta !text-cta-foreground !rounded-none w-fit font-bold uppercase text-sm tracking-wider"
               >
                 WHATSAPP →
               </WhatsAppButton>
             ) : (
               <Link
                 href="/gonullu-ol"
-                className="inline-flex items-center bg-[var(--accent)] text-black px-4 py-2.5 text-sm font-bold uppercase tracking-wider"
+                className="inline-flex items-center bg-cta text-cta-foreground px-4 py-2.5 text-sm font-bold uppercase tracking-wider"
               >
                 {block.volunteerTitle} →
               </Link>

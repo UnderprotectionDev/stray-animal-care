@@ -19,6 +19,7 @@ export const Animals: CollectionConfig<'animals'> = {
     defaultColumns: ['name', 'type', 'animalStatus', 'updatedAt'],
     group: 'Hayvan Bakım',
     useAsTitle: 'name',
+    description: 'Bakım altındaki sokak hayvanları kayıtları',
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({ slug: data?.slug as string, collection: 'animals', req }),
@@ -33,6 +34,9 @@ export const Animals: CollectionConfig<'animals'> = {
       type: 'text',
       required: true,
       localized: true,
+      admin: {
+        placeholder: 'örn: Pamuk, Karabaş',
+      },
     },
     {
       type: 'tabs',
@@ -53,6 +57,9 @@ export const Animals: CollectionConfig<'animals'> = {
               type: 'richText',
               localized: true,
               editor: contentRichText(),
+              admin: {
+                description: 'Hayvanın kurtarılma hikayesi — ziyaretçiler bunu okuyacak',
+              },
             },
             {
               name: 'needs',
@@ -73,6 +80,11 @@ export const Animals: CollectionConfig<'animals'> = {
               required: true,
               index: true,
               options: ANIMAL_TYPE_OPTIONS,
+              admin: {
+                components: {
+                  Cell: '@/components/admin/cells/TypeIconCell#TypeIconCell',
+                },
+              },
             },
             {
               name: 'age',
@@ -95,6 +107,12 @@ export const Animals: CollectionConfig<'animals'> = {
               required: true,
               index: true,
               options: ANIMAL_STATUS_OPTIONS,
+              admin: {
+                description: 'Tedavide: aktif tedavi | Kalıcı Bakım: barınakta | Acil: acil müdahale',
+                components: {
+                  Cell: '@/components/admin/cells/StatusBadgeCell#StatusBadgeCell',
+                },
+              },
             },
             {
               name: 'featured',
@@ -121,6 +139,10 @@ export const Animals: CollectionConfig<'animals'> = {
               name: 'weight',
               label: 'Kilo (kg)',
               type: 'number',
+              admin: {
+                description: 'Kilogram cinsinden',
+                placeholder: 'örn: 4.5',
+              },
             },
             {
               name: 'microchipId',
@@ -128,6 +150,9 @@ export const Animals: CollectionConfig<'animals'> = {
               type: 'text',
               unique: true,
               index: true,
+              admin: {
+                description: '15 haneli mikroçip numarası',
+              },
             },
             {
               name: 'isSpayed',

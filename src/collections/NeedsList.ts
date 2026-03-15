@@ -14,9 +14,10 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
   },
   labels: { singular: 'İhtiyaç Listesi', plural: 'İhtiyaç Listeleri' },
   admin: {
-    defaultColumns: ['productName', 'urgency', 'stockStatus'],
+    defaultColumns: ['productName', 'urgency', 'currentStock', 'stockStatus'],
     group: 'Destek & Raporlar',
     useAsTitle: 'productName',
+    description: 'İhtiyaç duyulan mama ve malzemelerin stok takibi',
   },
   fields: [
     {
@@ -43,6 +44,11 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
         { label: 'Orta', value: 'orta' },
         { label: 'Yeterli', value: 'yeterli' },
       ],
+      admin: {
+        components: {
+          Cell: '@/components/admin/cells/StatusBadgeCell#StatusBadgeCell',
+        },
+      },
     },
     {
       name: 'stockStatus',
@@ -56,6 +62,12 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
       type: 'number',
       min: 0,
       defaultValue: 0,
+      admin: {
+        description: 'Mevcut stok miktarı',
+        components: {
+          Cell: '@/components/admin/cells/ProgressBarCell#NeedsProgressCell',
+        },
+      },
     },
     {
       name: 'targetStock',
@@ -63,6 +75,9 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
       type: 'number',
       min: 1,
       required: true,
+      admin: {
+        description: 'Hedeflenen minimum stok miktarı',
+      },
     },
     {
       name: 'unit',
@@ -73,6 +88,9 @@ export const NeedsList: CollectionConfig<'needs-list'> = {
         { label: 'Kg', value: 'kg' },
         { label: 'Adet', value: 'adet' },
       ],
+      admin: {
+        description: 'Ürünün ölçü birimi',
+      },
     },
     {
       name: 'priority',

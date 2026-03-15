@@ -20,7 +20,7 @@ export function HomeHero({ block }: Props) {
           <h2 className="t-mega" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}>
             {block.sectionTitle}
           </h2>
-          <div className="w-24 h-1 mt-3" style={{ background: 'var(--accent)' }} />
+          <div className="w-24 h-1 mt-3" style={{ background: 'var(--cta)' }} />
         </div>
       )}
 
@@ -29,7 +29,7 @@ export function HomeHero({ block }: Props) {
         style={{ height: '60vh' }}
       >
         {/* Left panel */}
-        <div className="relative flex flex-col justify-between p-4 md:p-5 border-r border-border bg-[var(--background)]">
+        <div className="relative flex flex-col justify-between p-4 md:p-5 border-r-[1.5px] border-border bg-[var(--palette-cream)]" style={{ borderBottomRightRadius: '40%' }}>
           {block.content && (
             <div className="my-4 md:my-0">
               <RichText data={block.content} enableGutter={false} enableProse={true} />
@@ -38,22 +38,22 @@ export function HomeHero({ block }: Props) {
         </div>
 
         {/* Right panel */}
-        <div className="min-h-[200px] md:min-h-0 grid grid-rows-[1fr_1fr]">
-          <div className="overflow-hidden relative bg-[var(--muted)]">
+        <div className="min-h-[200px] md:min-h-0 grid grid-rows-[1fr_1fr] bg-cta">
+          <div className="overflow-hidden relative">
             {leftImage && (
               <Media
                 resource={leftImage}
                 fill
-                imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                imgClassName="object-cover transition-all duration-500"
               />
             )}
           </div>
-          <div className="overflow-hidden relative bg-[var(--muted)] border-t border-border">
+          <div className="overflow-hidden relative border-t-[1.5px] border-border">
             {rightImage && (
               <Media
                 resource={rightImage}
                 fill
-                imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                imgClassName="object-cover transition-all duration-500"
               />
             )}
           </div>

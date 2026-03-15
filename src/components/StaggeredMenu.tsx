@@ -26,7 +26,7 @@ export interface StaggeredMenuProps {
   activePathname: string
 }
 
-const PRE_LAYER_COLORS = ['#4AA87A', '#7BC4A0']
+const PRE_LAYER_COLORS = ['#4A46E4', '#EF303B']
 
 export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   items,
@@ -286,7 +286,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                   {/* Background image */}
                   <div
                     className={cn(
-                      'absolute inset-0 bg-cover bg-center grayscale transition-opacity duration-300 z-0',
+                      'absolute inset-0 bg-cover bg-center transition-opacity duration-300 z-0',
                       item.isCta ? 'opacity-[0.2] group-active/item:opacity-[0.5]' : 'opacity-[0.15] group-active/item:opacity-[0.4]',
                     )}
                     style={{ backgroundImage: `url(${item.image})` }}
@@ -297,9 +297,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     className={cn(
                       'relative font-[var(--font-heading)] font-[900] text-[clamp(1.75rem,5vw,3rem)] uppercase tracking-[-0.02em]',
                       'flex items-center justify-center w-full h-full z-[2] no-underline',
-                      'focus-visible:outline-2 focus-visible:outline-[var(--accent)] focus-visible:outline-offset-[-2px]',
-                      isActive ? 'text-[var(--accent)]' : 'text-white',
-                      item.isCta && 'text-[var(--accent)]',
+                      'focus-visible:outline-2 focus-visible:outline-[var(--cta)] focus-visible:outline-offset-[-2px]',
+                      isActive ? 'text-[var(--cta)]' : 'text-white',
+                      item.isCta && 'text-[var(--cta)]',
                     )}
                   >
                     <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
@@ -322,7 +322,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           {/* Social links */}
           {socialItems.length > 0 && (
             <div className="mt-auto p-4 border-t border-white/15" aria-label="Social links">
-              <h3 className="sm-socials-title m-0 text-sm font-medium text-[var(--accent)] mb-2">
+              <h3 className="sm-socials-title m-0 text-sm font-medium text-[var(--cta)] mb-2">
                 Socials
               </h3>
               <ul className="list-none m-0 p-0 flex flex-row items-center gap-4 flex-wrap" role="list">
@@ -332,7 +332,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                       href={s.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="sm-socials-link text-sm font-medium text-white no-underline hover:text-[var(--accent)] transition-colors"
+                      className="sm-socials-link text-sm font-medium text-white no-underline hover:text-[var(--palette-yellow)] transition-colors"
                     >
                       {s.label}
                     </a>

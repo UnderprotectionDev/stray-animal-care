@@ -1,44 +1,48 @@
 export const CHART_COLORS = {
   // Animal types
-  kedi: '#f59e0b',
-  kopek: '#d97706',
+  kedi: '#F5B62A',
+  kopek: '#F26E41',
 
   // Animal statuses
-  tedavide: '#3b82f6',
-  'kalici-bakim': '#10b981',
-  acil: '#ef4444',
+  tedavide: '#4A46E4',
+  'kalici-bakim': '#2D936C',
+  acil: '#EF303B',
 
   // Financial
-  donation: '#059669',
-  expense: '#0ea5e9',
+  donation: '#2D936C',
+  expense: '#F26E41',
 
   // Volunteer statuses
-  beklemede: '#eab308',
-  onaylandi: '#22c55e',
-  reddedildi: '#ef4444',
+  beklemede: '#F5B62A',
+  onaylandi: '#2D936C',
+  reddedildi: '#EF303B',
 
   // Event types
-  sahiplendirme: '#8b5cf6',
-  'mama-toplama': '#14b8a6',
-  'bakim-gunu': '#f59e0b',
-  egitim: '#3b82f6',
-  diger: '#6b7280',
+  sahiplendirme: '#9E74F9',
+  'mama-toplama': '#2D936C',
+  'bakim-gunu': '#F5B62A',
+  egitim: '#4A46E4',
+  diger: '#A39E93',
 
   // Vet record types
-  muayene: '#8b5cf6',
-  asi: '#22c55e',
-  kisirlastirma: '#f59e0b',
-  ameliyat: '#ef4444',
-  tedavi: '#3b82f6',
-  kontrol: '#6b7280',
+  muayene: '#9E74F9',
+  asi: '#2D936C',
+  kisirlastirma: '#F5B62A',
+  ameliyat: '#EF303B',
+  tedavi: '#4A46E4',
+  kontrol: '#A39E93',
 
   // Needs urgency
-  'acil-needs': '#ef4444',
-  orta: '#eab308',
-  yeterli: '#22c55e',
+  'acil-needs': '#EF303B',
+  orta: '#F5B62A',
+  yeterli: '#2D936C',
 
   // Trends
-  trendAnimals: '#d97706',
-  trendPosts: '#059669',
-  trendVolunteers: '#7c3aed',
+  trendAnimals: '#F26E41',
+  trendPosts: '#2D936C',
+  trendVolunteers: '#9E74F9',
+
+  // Additional palette colors
+  darkCream: '#C9C4B8',
+  coral: '#FF6B6B',
 } as const

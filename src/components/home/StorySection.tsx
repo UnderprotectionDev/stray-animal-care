@@ -19,7 +19,7 @@ export function StorySection({ block }: Props) {
           <h2 className="t-mega" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}>
             {block.sectionTitle}
           </h2>
-          <div className="w-24 h-1 mt-3" style={{ background: 'var(--accent)' }} />
+          <div className="w-24 h-1 mt-3" style={{ background: 'var(--cta)' }} />
         </div>
       )}
 
@@ -32,7 +32,7 @@ export function StorySection({ block }: Props) {
             <Media
               resource={founderImage}
               fill
-              imgClassName="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              imgClassName="object-cover transition-all duration-500"
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

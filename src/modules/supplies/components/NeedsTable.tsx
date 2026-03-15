@@ -4,7 +4,7 @@ import type { NeedsList } from '@/payload-types'
 const urgencyClassMap: Record<string, string> = {
   acil: 'badge-sys critical',
   orta: 'badge-sys',
-  yeterli: 'badge-sys mint',
+  yeterli: 'badge-sys cta',
 }
 
 type NeedsTableProps = {

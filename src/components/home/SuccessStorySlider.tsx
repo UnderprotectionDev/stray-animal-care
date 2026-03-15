@@ -23,7 +23,7 @@ export function SuccessStorySlider({
             src={beforeUrl}
             alt={beforeAlt}
             fill
-            className="object-cover grayscale"
+            className="object-cover"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         </div>

@@ -117,7 +117,7 @@ const NavCellLink: React.FC<{
     >
       <div
         ref={overlayRef}
-        className="absolute inset-0 bg-accent pointer-events-none"
+        className="absolute inset-0 bg-[var(--palette-dark-cream)] pointer-events-none"
       />
       <Link
         href={href}
@@ -189,7 +189,7 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
 
   return (
     <>
-      <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border bg-background">
+      <header ref={headerRef} className="sticky top-0 z-50 w-full border-b-[1.5px] border-border bg-palette-cream">
         {/* Desktop: grid nav */}
         {(() => {
           const barItems = items.filter((item) => {

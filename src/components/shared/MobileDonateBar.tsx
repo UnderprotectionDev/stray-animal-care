@@ -12,7 +12,7 @@ export function MobileDonateBar({ label }: Props) {
     <div className="fixed bottom-0 inset-x-0 z-40 md:hidden">
       <Link
         href="/destek-ol"
-        className="flex items-center justify-center gap-2 bg-foreground text-accent py-3 px-4 font-bold text-sm uppercase tracking-wider font-mono border-t border-border"
+        className="flex items-center justify-center gap-2 bg-cta text-cta-foreground py-3 px-4 font-bold text-sm uppercase tracking-wider font-mono border-t-[1.5px] border-border"
       >
         <Heart className="size-4 fill-current" />
         {label || 'Destek Ol'}

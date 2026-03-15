@@ -16,7 +16,7 @@ function AnimalCard({ animal, block }: { animal: Animal; block: FeaturedAnimalsB
     animal.photos && animal.photos.length > 0 ? animal.photos[0] : null
   const photo = firstPhoto && typeof firstPhoto !== 'number' ? firstPhoto : null
   const animalStatus = animal.animalStatus ?? 'tedavide'
-  const statusColor = animalStatus === 'acil' ? 'text-red-500' : 'text-[var(--accent)]'
+  const statusColor = animalStatus === 'acil' ? 'text-palette-red' : 'text-palette-teal'
 
   const statusMap: Record<string, string | null | undefined> = {
     tedavide: block.statusLabels?.tedavide,
@@ -37,7 +37,7 @@ function AnimalCard({ animal, block }: { animal: Animal; block: FeaturedAnimalsB
         <Media
           resource={photo as MediaType}
           fill
-          imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+          imgClassName="object-cover transition-all duration-300"
         />
       )}
       <div className="photo-overlay-gradient absolute inset-0" />

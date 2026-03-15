@@ -43,7 +43,7 @@ export async function AnimalDetail({ animal, siteSettings, locale }: AnimalDetai
     : ''
 
   const badgeClass =
-    status === 'acil' ? 'badge-sys critical' : 'badge-sys mint'
+    status === 'acil' ? 'badge-sys critical' : 'badge-sys cta'
 
   return (
     <div className="sys-wrap">

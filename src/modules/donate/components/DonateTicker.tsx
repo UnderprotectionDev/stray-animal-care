@@ -28,7 +28,7 @@ export function DonateTicker({ stats, labels }: DonateTickerProps) {
 
   const track = items.map((item, i) => (
     <span key={i} className="inline-flex items-center gap-3 font-mono text-sm font-bold uppercase tracking-widest">
-      <span className="text-[var(--accent)]">&#9670;</span>
+      <span className="text-[var(--cta)]">&#9670;</span>
       {item}
     </span>
   ))

@@ -19,6 +19,7 @@ import { AdminChartContainer } from './AdminChartContainer'
 import type { AdminChartConfig } from './AdminChartContainer'
 import type { AnimalTypeDistribution, AnimalStatusDistribution, VaccinationRates } from './types'
 import { ChartCard } from './ChartCard'
+import { CHART_COLORS } from './chart-colors'
 
 interface AnimalStatsChartsProps {
   types: AnimalTypeDistribution[]
@@ -27,19 +28,19 @@ interface AnimalStatsChartsProps {
 }
 
 const typeConfig: AdminChartConfig = {
-  kedi: { label: 'Kedi', color: '#f59e0b' },
-  kopek: { label: 'Köpek', color: '#d97706' },
+  kedi: { label: 'Kedi', color: CHART_COLORS.kedi },
+  kopek: { label: 'Köpek', color: CHART_COLORS.kopek },
 }
 
 const statusConfig: AdminChartConfig = {
-  tedavide: { label: 'Tedavide', color: '#3b82f6' },
-  'kalici-bakim': { label: 'Kalıcı Bakım', color: '#10b981' },
-  acil: { label: 'Acil', color: '#ef4444' },
+  tedavide: { label: 'Tedavide', color: CHART_COLORS.tedavide },
+  'kalici-bakim': { label: 'Kalıcı Bakım', color: CHART_COLORS['kalici-bakim'] },
+  acil: { label: 'Acil', color: CHART_COLORS.acil },
 }
 
 const vaccinationConfig: AdminChartConfig = {
-  vaccinated: { label: 'Aşılı', color: '#22c55e' },
-  spayed: { label: 'Kısır', color: '#3b82f6' },
+  vaccinated: { label: 'Aşılı', color: CHART_COLORS.asi },
+  spayed: { label: 'Kısır', color: CHART_COLORS.tedavide },
 }
 
 export const AnimalStatsCharts: React.FC<AnimalStatsChartsProps> = ({
@@ -54,12 +55,12 @@ export const AnimalStatsCharts: React.FC<AnimalStatsChartsProps> = ({
     {
       name: 'Aşılı',
       value: vaccination.total > 0 ? Math.round((vaccination.vaccinated / vaccination.total) * 100) : 0,
-      fill: '#22c55e',
+      fill: CHART_COLORS.asi,
     },
     {
       name: 'Kısır',
       value: vaccination.total > 0 ? Math.round((vaccination.spayed / vaccination.total) * 100) : 0,
-      fill: '#3b82f6',
+      fill: CHART_COLORS.tedavide,
     },
   ]
 

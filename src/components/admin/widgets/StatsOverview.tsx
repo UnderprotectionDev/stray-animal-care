@@ -7,7 +7,11 @@ import './widget-styles.scss'
 
 const baseClass = 'paws-dashboard'
 
-const StatsOverview = async () => {
+interface StatsOverviewProps {
+  userName?: string
+}
+
+const StatsOverview = async ({ userName }: StatsOverviewProps) => {
   let animals = { totalDocs: 0 }
   let emergencies = { totalDocs: 0 }
   let posts = { totalDocs: 0 }
@@ -44,24 +48,34 @@ const StatsOverview = async () => {
     hasError = true
   }
 
+  const now = new Date()
+  const formattedDate = now.toLocaleDateString('tr-TR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+
   return (
     <div className={baseClass}>
       <div className={`${baseClass}__header`}>
-        <h2 className={`${baseClass}__title`}>Paws of Hope Dashboard</h2>
-        <p className={`${baseClass}__subtitle`}>Site durumunuz bir bakışta</p>
+        <h2 className={`${baseClass}__title`}>
+          {userName ? `Merhaba, ${userName}!` : 'Paws of Hope Dashboard'}
+        </h2>
+        <p className={`${baseClass}__subtitle`}>{formattedDate}</p>
       </div>
 
       {hasError && (
-        <div className={`${baseClass}__empty`} style={{ marginBottom: '1rem', color: '#dc2626' }}>
+        <div className={`${baseClass}__empty`} style={{ marginBottom: '1rem', color: 'var(--paws-red)' }}>
           İstatistikler yüklenemedi. Lütfen sayfayı yenileyin.
         </div>
       )}
       <div className={`${baseClass}__stats`}>
-        <StatCard icon="&#x1F43E;" count={animals.totalDocs} label="Toplam Hayvan" variant="animals" />
-        <StatCard icon="&#x1F6A8;" count={emergencies.totalDocs} label="Aktif Acil Vakalar" variant="emergencies" />
-        <StatCard icon="&#x1F4DD;" count={posts.totalDocs} label="Toplam Yazılar" variant="posts" />
-        <StatCard icon="&#x1F91D;" count={volunteers.totalDocs} label="Gönüllüler" variant="volunteers" />
-        <StatCard icon="&#x1F4C5;" count={events.totalDocs} label="Etkinlikler" variant="events" />
+        <StatCard icon="&#x1F43E;" count={animals.totalDocs} label="Toplam Hayvan" variant="animals" href="/admin/collections/animals" />
+        <StatCard icon="&#x1F6A8;" count={emergencies.totalDocs} label="Aktif Acil Vakalar" variant="emergencies" href="/admin/collections/emergency-cases" />
+        <StatCard icon="&#x1F4DD;" count={posts.totalDocs} label="Toplam Yazılar" variant="posts" href="/admin/collections/posts" />
+        <StatCard icon="&#x1F91D;" count={volunteers.totalDocs} label="Gönüllüler" variant="volunteers" href="/admin/collections/volunteers" />
+        <StatCard icon="&#x1F4C5;" count={events.totalDocs} label="Etkinlikler" variant="events" href="/admin/collections/events" />
       </div>
     </div>
   )

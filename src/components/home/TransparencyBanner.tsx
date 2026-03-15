@@ -19,7 +19,7 @@ function formatMonth(month: string, locale: string): string {
 export function TransparencyBanner({ block, report, locale }: Props) {
   return (
     <section>
-      <div className="panel py-6 px-6 bg-muted">
+      <div className="panel py-6 px-6 bg-trust text-trust-foreground">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <h2 className="t-h2">{block.title}</h2>

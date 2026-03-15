@@ -69,13 +69,13 @@ export function ActiveEmergencies({ block, cases }: Props) {
                     <Media
                       resource={photo}
                       fill
-                      imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                      imgClassName="object-cover transition-all duration-300"
                     />
                   )}
                 </Link>
                 <Link
                   href={`/acil-vakalar/${emergencyCase.slug}`}
-                  className="bg-[#C5F0E8] p-6 flex flex-col justify-center gap-3 hover:bg-[#B0E6DA] transition-colors"
+                  className="bg-emergency p-6 flex flex-col justify-center gap-3 hover:bg-palette-yellow/80 transition-colors"
                 >
                   <span className="t-meta font-bold text-destructive border border-destructive px-2 py-1 w-fit uppercase">
                     {labels.codeRed || 'CODE RED'} {String(89 + i).padStart(3, '0')}
@@ -103,7 +103,7 @@ export function ActiveEmergencies({ block, cases }: Props) {
                 <Link
                   key={emergencyCase.id}
                   href={`/acil-vakalar/${emergencyCase.slug}`}
-                  className="bg-white hover:bg-[#C5F0E8] transition-colors group"
+                  className="bg-palette-cream hover:bg-emergency transition-colors group"
                 >
                   <div className="flex flex-col h-full">
                     <div className="relative aspect-[16/9] overflow-hidden bg-stone-200">
@@ -111,7 +111,7 @@ export function ActiveEmergencies({ block, cases }: Props) {
                         <Media
                           resource={photo}
                           fill
-                          imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                          imgClassName="object-cover transition-all duration-300"
                         />
                       )}
                     </div>

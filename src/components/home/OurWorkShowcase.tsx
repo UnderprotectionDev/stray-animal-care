@@ -46,7 +46,7 @@ export function OurWorkShowcase({ block }: Props) {
                 <Media
                   resource={firstImage}
                   fill
-                  imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                  imgClassName="object-cover transition-all duration-300"
                 />
               )}
               <div className="photo-overlay-gradient absolute inset-0" />

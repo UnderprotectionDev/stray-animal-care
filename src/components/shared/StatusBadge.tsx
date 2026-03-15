@@ -2,10 +2,10 @@ import React from 'react'
 import { cn } from '@/utilities/ui'
 
 const statusStyles = {
-  active: 'badge-sys mint',
+  active: 'badge-sys cta',
   urgent: 'badge-sys critical',
   completed: 'badge-sys',
-  pending: 'badge-sys mint',
+  pending: 'badge-sys cta',
 } as const
 
 type StatusBadgeProps = {

@@ -26,7 +26,7 @@ export function EmergencyCard({ ec }: EmergencyCardProps) {
             <Media
               resource={firstPhoto}
               fill
-              imgClassName="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+              imgClassName="object-cover transition-all duration-300"
             />
           ) : (
             <div className="flex h-full items-center justify-center text-foreground">
@@ -38,7 +38,7 @@ export function EmergencyCard({ ec }: EmergencyCardProps) {
               className={`inline-block px-3 py-1 text-[11px] font-bold uppercase tracking-wider border border-border ${
                 ec.caseStatus === 'aktif'
                   ? 'bg-destructive text-background'
-                  : 'bg-accent text-foreground'
+                  : 'bg-health text-health-foreground'
               }`}
             >
               {ec.caseStatus === 'aktif' ? 'Aktif' : 'Tamamlandi'}
@@ -46,14 +46,14 @@ export function EmergencyCard({ ec }: EmergencyCardProps) {
           </div>
         </div>
         <div className="p-4 space-y-3 border-t border-border">
-          <h3 className="font-bold text-foreground text-base uppercase tracking-wide leading-tight line-clamp-2 group-hover:text-accent transition-colors">
+          <h3 className="font-bold text-foreground text-base uppercase tracking-wide leading-tight line-clamp-2 group-hover:text-cta transition-colors">
             {ec.title}
           </h3>
           {target > 0 && (
             <div className="space-y-1">
               <div className="w-full h-3 border border-border bg-background">
                 <div
-                  className="h-full bg-accent"
+                  className="h-full bg-emergency"
                   style={{ width: `${pct}%` }}
                 />
               </div>

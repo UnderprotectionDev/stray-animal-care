@@ -90,7 +90,7 @@ export default async function DonatePage({ params }: Args) {
       <div className="sys-wrap my-8">
         {/* Hero */}
         <div className="panel p-8 md:p-12 relative overflow-hidden">
-          <span className="badge-sys mint absolute top-6 right-6 rotate-3">
+          <span className="badge-sys cta absolute top-6 right-6 rotate-3">
             {ui?.donate?.hero?.badge ?? 'HAYAT KURTAR'}
           </span>
           <h1 className="t-mega">{ui?.donate?.hero?.title ?? 'BİR CAN KURTAR'}</h1>

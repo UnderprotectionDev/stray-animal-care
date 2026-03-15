@@ -37,10 +37,15 @@ import { CustomButtonWithTranslator as CustomButtonWithTranslator_0754f48e597a64
 import { TagRowLabel as TagRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { FolderTableCell as FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { FolderField as FolderField_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
+import { TypeIconCell as TypeIconCell_a5e2c2d686cfb216ba8193b12f224b71 } from '@/components/admin/cells/TypeIconCell'
+import { StatusBadgeCell as StatusBadgeCell_644e36a56441415614f27ea22c268d4d } from '@/components/admin/cells/StatusBadgeCell'
 import { ExportListMenuItem as ExportListMenuItem_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { ImportListMenuItem as ImportListMenuItem_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
+import { EmergencyProgressCell as EmergencyProgressCell_b1bfd1a20e5267b3dcc86df59e9eca41 } from '@/components/admin/cells/ProgressBarCell'
 import { UpdateRowLabel as UpdateRowLabel_c853539d05a2a6c0e7c3180ad336cb51 } from '@/collections/EmergencyCases/UpdateRowLabel'
 import { MedicationRowLabel as MedicationRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
+import { TagsCell as TagsCell_5a26f49f81677f9f19c2e39e2e0d5a56 } from '@/components/admin/cells/TagsCell'
+import { NeedsProgressCell as NeedsProgressCell_b1bfd1a20e5267b3dcc86df59e9eca41 } from '@/components/admin/cells/ProgressBarCell'
 import { ExpenseRowLabel as ExpenseRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { DonorRowLabel as DonorRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
@@ -70,9 +75,13 @@ import { HeaderRowLabel as HeaderRowLabel_602181e9d445b98d48bce238807017cb } fro
 import { ActivityRowLabel as ActivityRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { BankAccountRowLabel as BankAccountRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { SocialLinkRowLabel as SocialLinkRowLabel_cd4fb962e83ced418ca45390924744c4 } from '@/SiteSettings/SocialLinkRowLabel'
-import { default as default_0e7b23c75ea046975e1784ba01f82886 } from '@/components/admin/Dashboard'
+import { CustomNavLinks as CustomNavLinks_2933d2a8f89709880c8e9b62dfcc7d84 } from '@/components/admin/CustomNavLinks'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
 import { ImportExportProvider as ImportExportProvider_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
+import { DashboardView as DashboardView_8d5ccf53266e3797f61e9453e2f2d431 } from '@/components/admin/DashboardView'
+import { AnimalTrackingView as AnimalTrackingView_8c6afc2729985002fd3cd8c8a907f84c } from '@/components/admin/views/AnimalTrackingView'
+import { CaseTrackingView as CaseTrackingView_c5310ea60800c52f5be5a6fae1c7ed75 } from '@/components/admin/views/CaseTrackingView'
+import { VolunteerManagementView as VolunteerManagementView_c912d0d4add246547e3f51c5d390c318 } from '@/components/admin/views/VolunteerManagementView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -115,10 +124,15 @@ export const importMap = {
   "@/components/admin/RowLabels#TagRowLabel": TagRowLabel_602181e9d445b98d48bce238807017cb,
   "@payloadcms/next/rsc#FolderTableCell": FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/next/rsc#FolderField": FolderField_f9c02e79a4aed9a3924487c0cd4cafb1,
+  "@/components/admin/cells/TypeIconCell#TypeIconCell": TypeIconCell_a5e2c2d686cfb216ba8193b12f224b71,
+  "@/components/admin/cells/StatusBadgeCell#StatusBadgeCell": StatusBadgeCell_644e36a56441415614f27ea22c268d4d,
   "@payloadcms/plugin-import-export/rsc#ExportListMenuItem": ExportListMenuItem_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/plugin-import-export/rsc#ImportListMenuItem": ImportListMenuItem_cdf7e044479f899a31f804427d568b36,
+  "@/components/admin/cells/ProgressBarCell#EmergencyProgressCell": EmergencyProgressCell_b1bfd1a20e5267b3dcc86df59e9eca41,
   "@/collections/EmergencyCases/UpdateRowLabel#UpdateRowLabel": UpdateRowLabel_c853539d05a2a6c0e7c3180ad336cb51,
   "@/components/admin/RowLabels#MedicationRowLabel": MedicationRowLabel_602181e9d445b98d48bce238807017cb,
+  "@/components/admin/cells/TagsCell#TagsCell": TagsCell_5a26f49f81677f9f19c2e39e2e0d5a56,
+  "@/components/admin/cells/ProgressBarCell#NeedsProgressCell": NeedsProgressCell_b1bfd1a20e5267b3dcc86df59e9eca41,
   "@/components/admin/RowLabels#ExpenseRowLabel": ExpenseRowLabel_602181e9d445b98d48bce238807017cb,
   "@/components/admin/RowLabels#DonorRowLabel": DonorRowLabel_602181e9d445b98d48bce238807017cb,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
@@ -148,8 +162,12 @@ export const importMap = {
   "@/components/admin/RowLabels#ActivityRowLabel": ActivityRowLabel_602181e9d445b98d48bce238807017cb,
   "@/components/admin/RowLabels#BankAccountRowLabel": BankAccountRowLabel_602181e9d445b98d48bce238807017cb,
   "@/SiteSettings/SocialLinkRowLabel#SocialLinkRowLabel": SocialLinkRowLabel_cd4fb962e83ced418ca45390924744c4,
-  "@/components/admin/Dashboard#default": default_0e7b23c75ea046975e1784ba01f82886,
+  "@/components/admin/CustomNavLinks#CustomNavLinks": CustomNavLinks_2933d2a8f89709880c8e9b62dfcc7d84,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
   "@payloadcms/plugin-import-export/rsc#ImportExportProvider": ImportExportProvider_cdf7e044479f899a31f804427d568b36,
+  "@/components/admin/DashboardView#DashboardView": DashboardView_8d5ccf53266e3797f61e9453e2f2d431,
+  "@/components/admin/views/AnimalTrackingView#AnimalTrackingView": AnimalTrackingView_8c6afc2729985002fd3cd8c8a907f84c,
+  "@/components/admin/views/CaseTrackingView#CaseTrackingView": CaseTrackingView_c5310ea60800c52f5be5a6fae1c7ed75,
+  "@/components/admin/views/VolunteerManagementView#VolunteerManagementView": VolunteerManagementView_c912d0d4add246547e3f51c5d390c318,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

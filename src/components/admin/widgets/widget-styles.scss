@@ -1,5 +1,37 @@
 @import '~@payloadcms/ui/scss';
 
+:root {
+  /* Palette (same values as globals.css) */
+  --paws-red: #EF303B;
+  --paws-blue: #4A46E4;
+  --paws-yellow: #F5B62A;
+  --paws-orange: #F26E41;
+  --paws-lilac: #9E74F9;
+  --paws-black: #111111;
+  --paws-teal: #2D936C;
+  --paws-cream: #E0DDD4;
+  --paws-dark-cream: #C9C4B8;
+  --paws-warm-gray: #A39E93;
+  --paws-coral: #FF6B6B;
+
+  /* Semantic */
+  --paws-success: var(--paws-teal);
+  --paws-warning: var(--paws-yellow);
+  --paws-error: var(--paws-red);
+
+  /* Status badge pairs (bg at 15% opacity, text at full) */
+  --paws-status-danger-bg: color-mix(in srgb, var(--paws-red) 15%, white);
+  --paws-status-danger-text: var(--paws-red);
+  --paws-status-warning-bg: color-mix(in srgb, var(--paws-yellow) 20%, white);
+  --paws-status-warning-text: #92400e; /* Off-palette: WCAG AA contrast on light-yellow bg — no palette color meets 4.5:1 ratio */
+  --paws-status-success-bg: color-mix(in srgb, var(--paws-teal) 15%, white);
+  --paws-status-success-text: var(--paws-teal);
+  --paws-status-info-bg: color-mix(in srgb, var(--paws-blue) 12%, white);
+  --paws-status-info-text: var(--paws-blue);
+  --paws-status-neutral-bg: var(--paws-cream);
+  --paws-status-neutral-text: var(--paws-warm-gray);
+}
+
 .paws-dashboard {
   margin-bottom: base(2);
 
@@ -50,29 +82,35 @@
     border: 1px solid var(--theme-elevation-150);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 
+    &--clickable {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     &--animals {
-      border-left: 4px solid #d97706;
+      border-left: 4px solid var(--paws-orange);
     }
 
     &--emergencies {
-      border-left: 4px solid #dc2626;
+      border-left: 4px solid var(--paws-red);
     }
 
     &--posts {
-      border-left: 4px solid #059669;
+      border-left: 4px solid var(--paws-teal);
     }
 
     &--volunteers {
-      border-left: 4px solid #7c3aed;
+      border-left: 4px solid var(--paws-lilac);
     }
 
     &--events {
-      border-left: 4px solid #0ea5e9;
+      border-left: 4px solid var(--paws-blue);
     }
   }
 
@@ -248,13 +286,13 @@
     flex-shrink: 0;
 
     &--animal {
-      background: #fef3c7;
-      color: #92400e;
+      background: var(--paws-status-warning-bg);
+      color: var(--paws-status-warning-text);
     }
 
     &--emergency {
-      background: #fee2e2;
-      color: #991b1b;
+      background: var(--paws-status-danger-bg);
+      color: var(--paws-status-danger-text);
     }
   }
 
@@ -337,6 +375,113 @@
       display: flex !important;
       flex-direction: column !important;
       gap: base(1) !important;
+    }
+  }
+
+  // --- Alerts Banner ---
+  &__alerts {
+    display: flex;
+    gap: base(0.75);
+    margin-bottom: base(1.5);
+    flex-wrap: wrap;
+  }
+
+  &__alert-card {
+    display: flex;
+    align-items: center;
+    gap: base(0.5);
+    padding: base(0.6) base(1);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    flex: 1;
+    min-width: 200px;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &--danger {
+      background: var(--paws-status-danger-bg);
+      border: 1px solid color-mix(in srgb, var(--paws-red) 30%, white);
+      color: var(--paws-status-danger-text);
+    }
+
+    &--warning {
+      background: var(--paws-status-warning-bg);
+      border: 1px solid color-mix(in srgb, var(--paws-yellow) 40%, white);
+      color: var(--paws-status-warning-text);
+    }
+
+    &--success {
+      background: var(--paws-status-success-bg);
+      border: 1px solid color-mix(in srgb, var(--paws-teal) 30%, white);
+      color: var(--paws-status-success-text);
+    }
+  }
+
+  &__alert-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  &__alert-message {
+    flex: 1;
+  }
+
+  &__alert-count {
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  // --- Help Banner ---
+  &__help-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: base(1);
+    padding: base(1) base(1.25);
+    margin-bottom: base(1.5);
+    background: var(--paws-status-info-bg);
+    border: 1px solid color-mix(in srgb, var(--paws-blue) 30%, white);
+    border-radius: 8px;
+    color: var(--paws-status-info-text);
+  }
+
+  &__help-content {
+    flex: 1;
+
+    strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: base(0.25);
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      opacity: 0.85;
+    }
+  }
+
+  &__help-dismiss {
+    background: none;
+    border: none;
+    color: var(--paws-status-info-text);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    line-height: 1;
+    flex-shrink: 0;
+
+    &:hover {
+      background: color-mix(in srgb, var(--paws-blue) 10%, transparent);
     }
   }
 }

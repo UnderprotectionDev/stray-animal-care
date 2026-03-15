@@ -35,7 +35,7 @@ export function RecentPosts({ block, posts, locale }: Props) {
               )}
               <div className="p-4 border-t border-border">
                 {post.postCategory && (
-                  <span className="badge-sys mint text-[10px] mb-2 inline-block">
+                  <span className="badge-sys text-[10px] mb-2 inline-block bg-warm text-warm-foreground border-warm">
                     {CATEGORY_LABELS_FALLBACK[post.postCategory] ?? post.postCategory}
                   </span>
                 )}
