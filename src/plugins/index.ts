@@ -11,6 +11,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { CollectionQuickFilterPlugin } from '@shefing/quickfilter'
 import { translator, copyResolver } from '@payload-enchants/translator'
 import { auditLogPlugin } from '@rumess/payload-audit-log'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 import { Animal, EmergencyCase, Event, Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -98,5 +99,12 @@ export const plugins: Plugin[] = [
       { slug: 'vet-records' },
       { slug: 'needs-list' },
     ],
+  }),
+  vercelBlobStorage({
+    enabled: true,
+    collections: {
+      media: true,
+    },
+    token: process.env.BLOB_READ_WRITE_TOKEN || '',
   }),
 ]

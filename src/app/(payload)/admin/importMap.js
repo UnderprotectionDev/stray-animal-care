@@ -78,6 +78,7 @@ import { SocialLinkRowLabel as SocialLinkRowLabel_cd4fb962e83ced418ca45390924744
 import { CustomNavLinks as CustomNavLinks_2933d2a8f89709880c8e9b62dfcc7d84 } from '@/components/admin/CustomNavLinks'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
 import { ImportExportProvider as ImportExportProvider_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
+import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { DashboardView as DashboardView_8d5ccf53266e3797f61e9453e2f2d431 } from '@/components/admin/DashboardView'
 import { AnimalTrackingView as AnimalTrackingView_8c6afc2729985002fd3cd8c8a907f84c } from '@/components/admin/views/AnimalTrackingView'
 import { CaseTrackingView as CaseTrackingView_c5310ea60800c52f5be5a6fae1c7ed75 } from '@/components/admin/views/CaseTrackingView'
@@ -165,6 +166,7 @@ export const importMap = {
   "@/components/admin/CustomNavLinks#CustomNavLinks": CustomNavLinks_2933d2a8f89709880c8e9b62dfcc7d84,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
   "@payloadcms/plugin-import-export/rsc#ImportExportProvider": ImportExportProvider_cdf7e044479f899a31f804427d568b36,
+  "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@/components/admin/DashboardView#DashboardView": DashboardView_8d5ccf53266e3797f61e9453e2f2d431,
   "@/components/admin/views/AnimalTrackingView#AnimalTrackingView": AnimalTrackingView_8c6afc2729985002fd3cd8c8a907f84c,
   "@/components/admin/views/CaseTrackingView#CaseTrackingView": CaseTrackingView_c5310ea60800c52f5be5a6fae1c7ed75,
