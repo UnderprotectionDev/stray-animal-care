@@ -112,7 +112,7 @@
   /* ── Typography ── */
   .t-mega {
     font-family: var(--font-heading);
-    font-weight: 800;
+    font-weight: 400;
     font-size: clamp(3rem, 8vw, 7rem);
     line-height: 0.9;
     letter-spacing: -0.03em;
@@ -120,7 +120,7 @@
   }
   .t-h1 {
     font-family: var(--font-heading);
-    font-weight: 800;
+    font-weight: 400;
     font-size: clamp(1.75rem, 4vw, 3rem);
     line-height: 1;
     letter-spacing: -0.02em;
@@ -128,7 +128,7 @@
   }
   .t-h2 {
     font-family: var(--font-heading);
-    font-weight: 700;
+    font-weight: 400;
     font-size: clamp(1.25rem, 2.5vw, 1.75rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
@@ -162,9 +162,6 @@
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     font-weight: 700;
-  }
-  .t-comment::before {
-    content: '// ';
   }
 
   /* ── Sys Table ── */
@@ -360,7 +357,7 @@
 
   .needs-qty-hero {
     font-size: clamp(8rem, 15vw, 14rem);
-    font-weight: 800;
+    font-weight: 400;
     line-height: 0.85;
     font-family: var(--font-heading);
     letter-spacing: -0.04em;
@@ -368,7 +365,7 @@
 
   .needs-qty-card {
     font-size: clamp(4rem, 8vw, 7rem);
-    font-weight: 800;
+    font-weight: 400;
     line-height: 0.9;
     font-family: var(--font-heading);
     letter-spacing: -0.03em;
@@ -460,7 +457,7 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-heading);
-    font-weight: 800;
+    font-weight: 400;
     font-size: 0.875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;

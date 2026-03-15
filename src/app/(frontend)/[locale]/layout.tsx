@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { Syne, Space_Mono } from 'next/font/google'
+import { Archivo_Black, Space_Mono } from 'next/font/google'
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -9,15 +9,15 @@ import { hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { locales } from '@/i18n/config'
 
-const syne = Syne({
-  subsets: ['latin'],
+const archivoBlack = Archivo_Black({
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-heading',
-  weight: ['400', '500', '600', '700', '800'],
+  weight: '400',
   display: 'swap',
 })
 
 const spaceMono = Space_Mono({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-mono',
   weight: ['400', '700'],
   style: ['normal', 'italic'],
@@ -80,7 +80,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html
-      className={cn(syne.variable, spaceMono.variable)}
+      className={cn(archivoBlack.variable, spaceMono.variable)}
       lang={locale}
     >
       <head>

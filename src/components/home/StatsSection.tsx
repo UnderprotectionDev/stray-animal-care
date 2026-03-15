@@ -63,19 +63,34 @@ const StatCard: React.FC<{
   return (
     <div
       ref={cardRef}
-      className="px-6 py-8 md:py-12 text-center bg-stats text-stats-foreground cursor-default"
+      className="px-8 py-8 md:py-10 flex flex-col justify-between bg-stats text-stats-foreground cursor-default h-56 md:h-64"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <span
-        className="t-mega block"
-        style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1 }}
-      >
-        {prefix && <span>{prefix}</span>}
-        <CountUp to={numericValue} from={0} duration={2} />
-        {suffix && <span>{suffix}</span>}
+      <span className="t-comment block">
+        {String(colorIndex + 1).padStart(2, '0')}
       </span>
-      <span className="t-comment block mt-3 opacity-70">{metric.name}</span>
+      <div>
+        <span
+          className="block"
+          style={{
+            fontFamily: 'var(--font-heading)',
+            fontSize: 'clamp(3rem, 7vw, 5.5rem)',
+            lineHeight: 0.9,
+            letterSpacing: '-0.03em',
+          }}
+        >
+          {prefix && <span>{prefix}</span>}
+          <CountUp to={numericValue} from={0} duration={2} />
+          {suffix && <span>{suffix}</span>}
+        </span>
+        <span
+          className="block mt-2 text-sm font-bold uppercase tracking-wider"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          {metric.name}
+        </span>
+      </div>
     </div>
   )
 }
