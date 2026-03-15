@@ -17,17 +17,17 @@ import config from '../payload.config'
 function richText(text: string) {
   return {
     root: {
-      type: 'root',
+      type: 'root' as const,
       children: text.split('\n\n').map((paragraph) => ({
         type: 'paragraph',
         children: [{ type: 'text', text: paragraph, format: 0, detail: 0, mode: 'normal', style: '', version: 1 }],
-        direction: 'ltr',
-        format: '',
+        direction: 'ltr' as const,
+        format: '' as const,
         indent: 0,
         version: 1,
       })),
-      direction: 'ltr',
-      format: '',
+      direction: 'ltr' as const,
+      format: '' as const,
       indent: 0,
       version: 1,
     },
@@ -143,6 +143,16 @@ async function seed() {
     'post-hero-4': { url: 'https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?w=1200&q=80&fm=webp', alt: 'Gönüllü çalışması' },
     'event-cover-1': { url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
     'event-cover-2': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
+    // Homepage section images
+    'hero-left': { url: 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=1200&q=80&fm=webp', alt: 'Sokak kedilerine mama veriliyor' },
+    'hero-right': { url: 'https://images.unsplash.com/photo-1519052537078-e6302a4968d4?w=1200&q=80&fm=webp', alt: 'Sokak kedisi yakın çekim' },
+    'story-founder': { url: 'https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=1200&q=80&fm=webp', alt: 'Hayvan barınağında gönüllü' },
+    'activity-feeding': { url: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=1200&q=80&fm=webp', alt: 'Sokak hayvanlarını besleme' },
+    'activity-treatment': { url: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1200&q=80&fm=webp', alt: 'Veteriner hayvan tedavisi' },
+    'activity-spaying': { url: 'https://images.unsplash.com/photo-1551717743-49959800-b1db?w=1200&q=80&fm=webp', alt: 'Veteriner ameliyat' },
+    'activity-emergency': { url: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&q=80&fm=webp', alt: 'Acil hayvan kurtarma' },
+    'activity-vaccination': { url: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=1200&q=80&fm=webp', alt: 'Hayvana aşı uygulaması' },
+    'activity-shelter': { url: 'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=1200&q=80&fm=webp', alt: 'Hayvan barınağı' },
   }
 
   const mediaIds: Record<string, number> = {}
@@ -1072,6 +1082,9 @@ async function seed() {
           blockType: 'homeHero',
           enabled: true,
           sectionTitle: 'ANA SAYFA',
+          content: richText('Sokak hayvanlarına umut oluyoruz. Her gün besleme, tedavi ve kurtarma operasyonlarıyla yanlarındayız.\n\nBağışlarınız ve gönüllü desteğinizle daha fazla cana ulaşıyoruz.'),
+          ...(mediaIds['hero-left'] ? { leftImage: mediaIds['hero-left'] } : {}),
+          ...(mediaIds['hero-right'] ? { rightImage: mediaIds['hero-right'] } : {}),
         },
         {
           blockType: 'homeStats',
@@ -1088,6 +1101,8 @@ async function seed() {
           enabled: true,
           sectionTitle: 'HİKAYEMİZ & MİSYON',
           founderCaption: 'AYŞE KAYA, 2019',
+          ...(mediaIds['story-founder'] ? { founderImage: mediaIds['story-founder'] } : {}),
+          content: richText('2019 yılında bir avuç hayvanseverin bir araya gelmesiyle başlayan yolculuğumuz, bugün yüzlerce gönüllüye ulaştı.\n\nAmacımız sokak hayvanlarının sağlıklı ve güvenli bir yaşam sürmesini sağlamak. Besleme, tedavi, kısırlaştırma ve sahiplendirme programlarıyla her gün onlarca cana dokunuyoruz.\n\nHer bağış, her gönüllü saat ve her paylaşım bu hayvanların hayatında fark yaratıyor.'),
         },
         {
           blockType: 'homeOurWork',
@@ -1097,12 +1112,12 @@ async function seed() {
           viewAllLink: '/calismalarimiz',
           photoCountTemplate: '{count} fotoğraf',
           activities: [
-            { key: 'feeding', title: 'Besleme', description: 'Her gün 40+ noktada düzenli besleme yapıyoruz.' },
-            { key: 'treatment', title: 'Tedavi', description: 'Hasta ve yaralı hayvanların tedavilerini karşılıyoruz.' },
-            { key: 'spaying', title: 'Kısırlaştırma', description: 'Popülasyon kontrolü için kampanyalar düzenliyoruz.' },
-            { key: 'emergency', title: 'Acil Müdahale', description: 'Acil durumlarda 7/24 müdahale ediyoruz.' },
-            { key: 'vaccination', title: 'Aşılama', description: 'Düzenli aşılama programı uyguluyoruz.' },
-            { key: 'shelter', title: 'Barınma', description: 'Tedavi sürecinde geçici barınma sağlıyoruz.' },
+            { key: 'feeding', title: 'Besleme', description: 'Her gün 40+ noktada düzenli besleme yapıyoruz.', ...(mediaIds['activity-feeding'] ? { images: [mediaIds['activity-feeding']] } : {}) },
+            { key: 'treatment', title: 'Tedavi', description: 'Hasta ve yaralı hayvanların tedavilerini karşılıyoruz.', ...(mediaIds['activity-treatment'] ? { images: [mediaIds['activity-treatment']] } : {}) },
+            { key: 'spaying', title: 'Kısırlaştırma', description: 'Popülasyon kontrolü için kampanyalar düzenliyoruz.', ...(mediaIds['activity-spaying'] ? { images: [mediaIds['activity-spaying']] } : {}) },
+            { key: 'emergency', title: 'Acil Müdahale', description: 'Acil durumlarda 7/24 müdahale ediyoruz.', ...(mediaIds['activity-emergency'] ? { images: [mediaIds['activity-emergency']] } : {}) },
+            { key: 'vaccination', title: 'Aşılama', description: 'Düzenli aşılama programı uyguluyoruz.', ...(mediaIds['activity-vaccination'] ? { images: [mediaIds['activity-vaccination']] } : {}) },
+            { key: 'shelter', title: 'Barınma', description: 'Tedavi sürecinde geçici barınma sağlıyoruz.', ...(mediaIds['activity-shelter'] ? { images: [mediaIds['activity-shelter']] } : {}) },
           ],
         },
         {
@@ -1750,23 +1765,56 @@ async function seed() {
     },
   ]
 
-  for (const batch of uiStringsBatches) {
-    console.log(`  → UIStrings batch: ${batch.label}`)
-    await payload.updateGlobal({
-      slug: 'ui-strings',
-      locale: 'tr',
-      context: { disableRevalidate: true },
-      data: batch.data,
-    })
+  // Merge all 17 TR batches into a single object
+  function deepMerge(
+    target: Record<string, unknown>,
+    source: Record<string, unknown>,
+  ): Record<string, unknown> {
+    for (const [key, value] of Object.entries(source)) {
+      if (
+        typeof value === 'object' &&
+        value !== null &&
+        !Array.isArray(value) &&
+        typeof target[key] === 'object' &&
+        target[key] !== null &&
+        !Array.isArray(target[key])
+      ) {
+        target[key] = deepMerge(target[key] as Record<string, unknown>, value as Record<string, unknown>)
+      } else {
+        target[key] = value
+      }
+    }
+    return target
   }
-  console.log('  UIStrings (TR) seeded — 17 batches.')
 
-  // UIStrings — blog filter English values
-  console.log('  Seeding UIStrings English blog values...')
-  await payload.updateGlobal({
-    slug: 'ui-strings',
-    locale: 'en',
-    data: {
+  let mergedTR: Record<string, unknown> = {}
+  for (const batch of uiStringsBatches) {
+    mergedTR = deepMerge(mergedTR, batch.data)
+  }
+
+  // Wrap leaf string values with locale key for the DB adapter layer
+  function wrapWithLocale(
+    obj: Record<string, unknown>,
+    locale: string,
+  ): Record<string, unknown> {
+    const result: Record<string, unknown> = {}
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof value === 'string') {
+        result[key] = { [locale]: value }
+      } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        result[key] = wrapWithLocale(value as Record<string, unknown>, locale)
+      } else {
+        result[key] = value
+      }
+    }
+    return result
+  }
+
+  const localizedData = wrapWithLocale(mergedTR, 'tr')
+
+  // Merge EN blog data (locale-wrapped)
+  const enBlogData = wrapWithLocale(
+    {
       blog: {
         title: 'Blog',
         subtitle: 'Stories from Paws of Hope',
@@ -1795,8 +1843,19 @@ async function seed() {
         },
       },
     },
+    'en',
+  )
+  deepMerge(localizedData, enBlogData)
+
+  // Use payload.db.updateGlobal() directly — bypasses getLatestGlobalVersion
+  // which runs a locale-aware SELECT exceeding PostgreSQL's 100-arg limit.
+  await payload.db.updateGlobal({
+    slug: 'ui-strings',
+    data: localizedData,
+    req: { payload, transactionID: undefined },
+    returning: false,
   })
-  console.log('  UIStrings EN blog values seeded.')
+  console.log('  UIStrings seeded (TR + EN blog) via direct DB call.')
 
   // ──────────────────────────────────────────────
   // Done!
@@ -1814,7 +1873,7 @@ async function seed() {
   console.log(`  Volunteers: ${volunteersData.length}`)
   console.log(`  Needs List: ${needsData.length}`)
   console.log(`  Transparency Reports: ${reportsData.length}`)
-  console.log(`  Globals: Header, SiteSettings (bank accounts + statistics), UIStrings (17 TR batches + EN blog)`)
+  console.log(`  Globals: Header, SiteSettings (bank accounts + statistics), UIStrings (TR + EN blog)`)
 
   // Revalidate Next.js cache (if dev server is running)
   try {

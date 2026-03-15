@@ -1,41 +1,10 @@
-import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
+import { createCollectionRevalidateHooks } from '@/hooks/createRevalidateHook'
 
-import { revalidateTag } from 'next/cache'
+const { afterChange, afterDelete } = createCollectionRevalidateHooks({
+  entityName: 'event',
+  tags: ['events-list', 'events-sitemap'],
+  checkStatus: false,
+})
 
-import type { Event } from '../../../payload-types'
-
-export const revalidateEvent: CollectionAfterChangeHook<Event> = ({
-  doc,
-  previousDoc,
-  req: { payload, context },
-}) => {
-  if (!context.disableRevalidate) {
-    if (doc._status === 'published' || previousDoc?._status === 'published') {
-      payload.logger.info(`Revalidating event: ${doc.slug}`)
-
-      try {
-        revalidateTag('events-list')
-        revalidateTag('events-sitemap')
-      } catch (err) {
-        payload.logger.error({ msg: 'Failed to revalidate event', err })
-      }
-    }
-  }
-  return doc
-}
-
-export const revalidateEventDelete: CollectionAfterDeleteHook<Event> = ({
-  doc,
-  req: { payload, context },
-}) => {
-  if (!context.disableRevalidate) {
-    try {
-      revalidateTag('events-list')
-      revalidateTag('events-sitemap')
-    } catch (err) {
-      payload.logger.error({ msg: 'Failed to revalidate deleted event', err })
-    }
-  }
-
-  return doc
-}
+export const revalidateEvent = afterChange
+export const revalidateEventDelete = afterDelete

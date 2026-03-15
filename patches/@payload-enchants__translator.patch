@@ -1,0 +1,49 @@
+diff --git a/dist/client/providers/Translator/TranslatorProvider.js b/dist/client/providers/Translator/TranslatorProvider.js
+index 6fca7a76d31e80ff90abcdefbab05b613712231c..c0a760420e6c789da8c25f78f39d7601b6dbbc37 100644
+--- a/dist/client/providers/Translator/TranslatorProvider.js
++++ b/dist/client/providers/Translator/TranslatorProvider.js
+@@ -63,29 +63,9 @@ export const TranslatorProvider = ({ children })=>{
+             toast.error(resolverT('errorMessage'));
+             return;
+         }
+-        const { state } = await getFormState({
+-            collectionSlug,
+-            data: result.translatedData,
+-            docPermissions: {
+-                fields: true,
+-                update: true
+-            },
+-            docPreferences: await getDocPreferences(),
+-            globalSlug,
+-            locale: locale.code,
+-            operation: 'update',
+-            renderAllFields: true,
+-            schemaPath: collectionSlug || globalSlug || ''
+-        });
+-        if (state) {
+-            dispatch({
+-                state,
+-                type: 'REPLACE_STATE'
+-            });
+-            setModified(true);
+-            toast.success(resolverT('successMessage'));
+-        }
++        toast.success(resolverT('successMessage'));
+         closeTranslator();
++        window.location.reload();
+     };
+     return /*#__PURE__*/ _jsx(TranslatorContext.Provider, {
+         value: {
+diff --git a/dist/translate/endpoint.js b/dist/translate/endpoint.js
+index 55838e1418d399733d4cc18c53444fc508f4490c..dbaeb0d81ba065697677461d9f66dec037455bc3 100644
+--- a/dist/translate/endpoint.js
++++ b/dist/translate/endpoint.js
+@@ -15,7 +15,7 @@ export const translateEndpoint = async (req)=>{
+         overrideAccess: false,
+         req,
+         resolver,
+-        update: false
++        update: true
+     });
+     return Response.json(result);
+ };

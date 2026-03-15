@@ -72,6 +72,13 @@ export const VetRecords: CollectionConfig<'vet-records'> = {
       name: 'medications',
       label: 'İlaçlar',
       type: 'array',
+      labels: { singular: 'İlaç', plural: 'İlaçlar' },
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: '@/components/admin/RowLabels#MedicationRowLabel',
+        },
+      },
       fields: [
         {
           name: 'name',

@@ -1,16 +1,6 @@
-import type { GlobalAfterChangeHook } from 'payload'
+import { createGlobalRevalidateHook } from '@/hooks/createRevalidateHook'
 
-import { revalidateTag } from 'next/cache'
-
-export const revalidateSiteSettings: GlobalAfterChangeHook = ({
-  doc,
-  req: { payload, context },
-}) => {
-  if (!context.disableRevalidate) {
-    payload.logger.info(`Revalidating site settings`)
-
-    revalidateTag('global_site-settings')
-  }
-
-  return doc
-}
+export const revalidateSiteSettings = createGlobalRevalidateHook({
+  entityName: 'site settings',
+  tags: ['global_site-settings'],
+})

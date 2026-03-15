@@ -1,6 +1,6 @@
 import React from 'react'
 import type { SiteSetting, NeedsList as NeedsListType } from '@/payload-types'
-import { Link } from '@/i18n/navigation'
+import { SectionHeader } from './SectionHeader'
 
 type NeedsListBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeNeedsList' }>
 
@@ -87,14 +87,7 @@ export function NeedsList({ block, items }: Props) {
 
   return (
     <section>
-      <div className="panel py-4 px-6 flex items-center justify-between border-b border-border">
-        <h2 className="t-h2">{block.sectionTitle}</h2>
-        {block.viewAllLabel && block.viewAllLink && (
-          <Link href={block.viewAllLink} className="btn-cta text-xs py-2 px-4">
-            {block.viewAllLabel}
-          </Link>
-        )}
-      </div>
+      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
 
       <div className="needs-grid">
         {visibleItems.map((item, i) => {

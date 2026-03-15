@@ -1,36 +1,19 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { accessPresets } from '../../access/presets'
+import { ANIMAL_TYPE_OPTIONS, ANIMAL_GENDER_OPTIONS, ANIMAL_STATUS_OPTIONS } from '../../constants/options'
 import { revalidateAnimal, revalidateAnimalDelete } from './hooks/revalidateAnimal'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
+import { contentRichText } from '../../fields/lexical'
+import { seoTab } from '../../fields/seoTab'
+import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
 export const Animals: CollectionConfig<'animals'> = {
   slug: 'animals',
   orderable: true,
   enableQueryPresets: true,
-  access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
-  },
+  access: accessPresets.publicReadAdminWrite,
   labels: { singular: 'Hayvan', plural: 'Hayvanlar' },
   admin: {
     defaultColumns: ['name', 'type', 'animalStatus', 'updatedAt'],
@@ -69,28 +52,14 @@ export const Animals: CollectionConfig<'animals'> = {
               label: 'Hikaye',
               type: 'richText',
               localized: true,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  ...rootFeatures,
-                  HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                ],
-              }),
+              editor: contentRichText(),
             },
             {
               name: 'needs',
               label: 'İhtiyaçlar',
               type: 'richText',
               localized: true,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  ...rootFeatures,
-                  HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                ],
-              }),
+              editor: contentRichText(),
             },
           ],
         },
@@ -103,10 +72,7 @@ export const Animals: CollectionConfig<'animals'> = {
               type: 'select',
               required: true,
               index: true,
-              options: [
-                { label: 'Kedi', value: 'kedi' },
-                { label: 'Köpek', value: 'kopek' },
-              ],
+              options: ANIMAL_TYPE_OPTIONS,
             },
             {
               name: 'age',
@@ -120,11 +86,7 @@ export const Animals: CollectionConfig<'animals'> = {
               type: 'select',
               required: true,
               index: true,
-              options: [
-                { label: 'Erkek', value: 'erkek' },
-                { label: 'Dişi', value: 'disi' },
-                { label: 'Bilinmiyor', value: 'bilinmiyor' },
-              ],
+              options: ANIMAL_GENDER_OPTIONS,
             },
             {
               name: 'animalStatus',
@@ -132,11 +94,7 @@ export const Animals: CollectionConfig<'animals'> = {
               type: 'select',
               required: true,
               index: true,
-              options: [
-                { label: 'Tedavide', value: 'tedavide' },
-                { label: 'Kalıcı Bakım', value: 'kalici-bakim' },
-                { label: 'Acil', value: 'acil' },
-              ],
+              options: ANIMAL_STATUS_OPTIONS,
             },
             {
               name: 'featured',
@@ -187,49 +145,10 @@ export const Animals: CollectionConfig<'animals'> = {
             },
           ],
         },
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({}),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-            MetaDescriptionField({}),
-            PreviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
-        },
+        seoTab(),
       ],
     },
-    {
-      name: 'publishedAt',
-      label: 'Yayınlanma Tarihi',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayAndTime',
-        },
-        position: 'sidebar',
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
-      },
-    },
+    publishedAtField(),
     slugField({ useAsSlug: 'name' }),
   ],
   hooks: {

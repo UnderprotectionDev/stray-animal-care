@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { cache } from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { unstable_cache } from 'next/cache'
@@ -26,7 +27,7 @@ export function getBlogPosts(locale: Locale) {
   )()
 }
 
-export async function getBlogPostBySlug(slug: string, locale: Locale) {
+export const getBlogPostBySlug = cache(async (slug: string, locale: Locale) => {
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({
     collection: 'posts',
@@ -39,7 +40,7 @@ export async function getBlogPostBySlug(slug: string, locale: Locale) {
     depth: 2,
   })
   return result.docs[0] ?? null
-}
+})
 
 export async function getBlogPostSlugs() {
   const payload = await getPayload({ config: configPromise })

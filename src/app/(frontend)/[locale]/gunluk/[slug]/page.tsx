@@ -66,6 +66,7 @@ export default async function BlogPostPage({ params }: Args) {
           categoryLabel={post.postCategory ? categoryLabels[post.postCategory] : undefined}
           tagsLabel={ui?.blog?.tags ?? 'Etiketler'}
           shareLabels={shareLabels}
+          locale={locale}
         />
       </div>
     </Container>

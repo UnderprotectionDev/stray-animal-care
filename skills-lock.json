@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "e0a851ff26f6ddc213c390556ede39ac8fa43b76076b4a187c8c759128fe9fce"
     },
+    "code-refactoring": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "18da189464fd9a53133a1372599369ac4b7f3a9da653a907762e20e89cdb2102"
+    },
     "payload": {
       "source": "payloadcms/skills",
       "sourceType": "github",

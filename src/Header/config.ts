@@ -33,6 +33,7 @@ export const Header: GlobalConfig = {
       name: 'navItems',
       label: 'Navigasyon Öğeleri',
       type: 'array',
+      labels: { singular: 'Navigasyon Öğesi', plural: 'Navigasyon Öğeleri' },
       fields: [
         link({
           appearances: false,
@@ -68,7 +69,7 @@ export const Header: GlobalConfig = {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/Header/RowLabel#RowLabel',
+          RowLabel: '@/components/admin/RowLabels#HeaderRowLabel',
         },
       },
     },

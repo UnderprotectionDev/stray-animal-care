@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { VOLUNTEER_AREA_OPTIONS, APPLICATION_STATUS_OPTIONS } from '../constants/options'
 
 export const Volunteers: CollectionConfig<'volunteers'> = {
   slug: 'volunteers',
@@ -43,13 +44,7 @@ export const Volunteers: CollectionConfig<'volunteers'> = {
       label: 'İlgi Alanları',
       type: 'select',
       hasMany: true,
-      options: [
-        { label: 'Besleme', value: 'besleme' },
-        { label: 'Tedavi', value: 'tedavi' },
-        { label: 'Nakliye', value: 'nakliye' },
-        { label: 'Sahiplendirme', value: 'sahiplendirme' },
-        { label: 'Etkinlik', value: 'etkinlik' },
-      ],
+      options: VOLUNTEER_AREA_OPTIONS,
     },
     {
       name: 'message',
@@ -62,11 +57,7 @@ export const Volunteers: CollectionConfig<'volunteers'> = {
       type: 'select',
       defaultValue: 'beklemede',
       index: true,
-      options: [
-        { label: 'Beklemede', value: 'beklemede' },
-        { label: 'Onaylandı', value: 'onaylandi' },
-        { label: 'Reddedildi', value: 'reddedildi' },
-      ],
+      options: APPLICATION_STATUS_OPTIONS,
       admin: {
         position: 'sidebar',
       },

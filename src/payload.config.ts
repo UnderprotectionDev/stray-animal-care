@@ -17,7 +17,6 @@ import { TransparencyReports } from './collections/TransparencyReports'
 import { Users } from './collections/Users'
 import { VetRecords } from './collections/VetRecords'
 import { Volunteers } from './collections/Volunteers'
-import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { SiteSettings } from './SiteSettings/config'
 import { UIStrings } from './globals/UIStrings/config'
@@ -40,8 +39,7 @@ export default buildConfig({
           resolver_copy_modalTitle: 'Kopyalanacak dili seçin',
           resolver_copy_submitButtonLabelEmpty: 'Yalnızca boş alanları kopyala',
           resolver_copy_submitButtonLabelFull: 'Tümünü kopyala',
-          resolver_copy_successMessage:
-            'Başarıyla kopyalandı. Değişiklikleri uygulamak için "Kaydet" butonuna basın.',
+          resolver_copy_successMessage: 'Başarıyla kopyalandı. Sayfa yenileniyor...',
         },
       },
     },
@@ -96,7 +94,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, VetRecords, Events, Volunteers, NeedsList, TransparencyReports],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, SiteSettings, UIStrings],
+  globals: [Header, SiteSettings, UIStrings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

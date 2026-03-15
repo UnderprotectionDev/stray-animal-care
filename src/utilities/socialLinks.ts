@@ -16,7 +16,7 @@ const SOCIAL_TYPES = new Set([
 
 const CONTACT_TYPES = new Set(['whatsapp', 'phone', 'email'])
 
-const TYPE_LABELS: Record<string, string> = {
+export const TYPE_LABELS: Record<string, string> = {
   instagram: 'Instagram',
   'x-twitter': 'X (Twitter)',
   facebook: 'Facebook',
@@ -28,6 +28,7 @@ const TYPE_LABELS: Record<string, string> = {
   phone: 'Telefon',
   email: 'E-posta',
   website: 'Web Sitesi',
+  other: 'Diğer',
 }
 
 /** Find a single link by type (e.g. 'whatsapp', 'phone', 'email') */

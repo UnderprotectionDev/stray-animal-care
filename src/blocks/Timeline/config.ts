@@ -19,6 +19,13 @@ export const TimelineBlock: Block = {
       name: 'items',
       type: 'array',
       label: 'Öğeler',
+      labels: { singular: 'Öğe', plural: 'Öğeler' },
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: '@/components/admin/RowLabels#TimelineRowLabel',
+        },
+      },
       fields: [
         {
           name: 'time',

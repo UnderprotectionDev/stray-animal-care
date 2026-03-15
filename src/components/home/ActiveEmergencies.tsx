@@ -2,6 +2,7 @@ import React from 'react'
 import type { EmergencyCase, Media as MediaType, SiteSetting } from '@/payload-types'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
+import { SectionHeader } from './SectionHeader'
 
 type ActiveEmergenciesBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeActiveEmergencies' }>
 
@@ -31,14 +32,7 @@ export function ActiveEmergencies({ block, cases }: Props) {
 
   return (
     <section>
-      <div className="panel flex items-center justify-between py-4 px-6 border-b border-border">
-        <h2 className="t-h2">{block.sectionTitle}</h2>
-        {block.viewAllLabel && block.viewAllLink && (
-          <Link href={block.viewAllLink} className="btn-cta text-xs py-2 px-4">
-            {block.viewAllLabel}
-          </Link>
-        )}
-      </div>
+      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
 
       <div className="ticker-wrap">
         <div className="ticker-track t-meta font-bold uppercase tracking-wider">

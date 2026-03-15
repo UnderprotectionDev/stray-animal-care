@@ -1,21 +1,7 @@
 'use client'
 import type { SiteSetting } from '@/payload-types'
 import { RowLabelProps, useRowLabel } from '@payloadcms/ui'
-
-const TYPE_LABELS: Record<string, string> = {
-  instagram: 'Instagram',
-  'x-twitter': 'X (Twitter)',
-  facebook: 'Facebook',
-  youtube: 'YouTube',
-  tiktok: 'TikTok',
-  linkedin: 'LinkedIn',
-  github: 'GitHub',
-  whatsapp: 'WhatsApp',
-  phone: 'Telefon',
-  email: 'E-posta',
-  website: 'Web Sitesi',
-  other: 'Diğer',
-}
+import { TYPE_LABELS } from '@/utilities/socialLinks'
 
 export const SocialLinkRowLabel: React.FC<RowLabelProps> = () => {
   const { data, rowNumber } = useRowLabel<NonNullable<SiteSetting['socialLinks']>[number]>()

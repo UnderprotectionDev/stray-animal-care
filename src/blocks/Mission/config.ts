@@ -31,6 +31,7 @@ export const MissionBlock: Block = {
       name: 'goals',
       type: 'array',
       label: 'Hedefler',
+      labels: { singular: 'Hedef', plural: 'Hedefler' },
       fields: [
         {
           name: 'text',

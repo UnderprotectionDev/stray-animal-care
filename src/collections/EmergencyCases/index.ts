@@ -1,39 +1,21 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { accessPresets } from '../../access/presets'
 import {
   revalidateEmergencyCase,
   revalidateEmergencyCaseDelete,
 } from './hooks/revalidateEmergencyCase'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
+import { contentRichText } from '../../fields/lexical'
+import { seoTab } from '../../fields/seoTab'
+import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
 export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
   slug: 'emergency-cases',
   orderable: true,
   enableQueryPresets: true,
-  access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
-  },
+  access: accessPresets.publicReadAdminWrite,
   labels: { singular: 'Acil Vaka', plural: 'Acil Vakalar' },
   admin: {
     defaultColumns: ['title', 'caseStatus', 'collectedAmount', 'targetAmount', 'updatedAt'],
@@ -72,14 +54,7 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
               label: 'Açıklama',
               type: 'richText',
               localized: true,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  ...rootFeatures,
-                  HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                ],
-              }),
+              editor: contentRichText(),
             },
             {
               name: 'photos',
@@ -138,6 +113,13 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
               name: 'updates',
               label: 'Güncellemeler',
               type: 'array',
+              labels: { singular: 'Güncelleme', plural: 'Güncellemeler' },
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: '@/collections/EmergencyCases/UpdateRowLabel#UpdateRowLabel',
+                },
+              },
               fields: [
                 {
                   name: 'date',
@@ -160,49 +142,10 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
             },
           ],
         },
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({}),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-            MetaDescriptionField({}),
-            PreviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
-        },
+        seoTab(),
       ],
     },
-    {
-      name: 'publishedAt',
-      label: 'Yayınlanma Tarihi',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayAndTime',
-        },
-        position: 'sidebar',
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
-      },
-    },
+    publishedAtField(),
     slugField(),
   ],
   hooks: {

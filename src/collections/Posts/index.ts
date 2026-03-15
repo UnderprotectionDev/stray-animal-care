@@ -9,34 +9,22 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { accessPresets } from '../../access/presets'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
-
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
+import { seoTab } from '../../fields/seoTab'
+import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   enableQueryPresets: true,
   labels: { singular: 'Yazı', plural: 'Yazılar' },
-  access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
-  },
+  access: accessPresets.publicReadAdminWrite,
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
   // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'posts'>
@@ -149,7 +137,14 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'tags',
               label: 'Etiketler',
               type: 'array',
+              labels: { singular: 'Etiket', plural: 'Etiketler' },
               localized: true,
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: '@/components/admin/RowLabels#TagRowLabel',
+                },
+              },
               fields: [
                 {
                   name: 'tag',
@@ -161,33 +156,7 @@ export const Posts: CollectionConfig<'posts'> = {
           ],
           label: 'Meta',
         },
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-
-            MetaDescriptionField({}),
-            PreviewField({
-              // if the `generateUrl` function is configured
-              hasGenerateFn: true,
-
-              // field paths to match the target field for data
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
-        },
+        seoTab({ hasGenerateFn: true }),
       ],
     },
     {
@@ -205,27 +174,7 @@ export const Posts: CollectionConfig<'posts'> = {
         { label: 'Etkinlik', value: 'etkinlik' },
       ],
     },
-    {
-      name: 'publishedAt',
-      label: 'Yayınlanma Tarihi',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayAndTime',
-        },
-        position: 'sidebar',
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
-      },
-    },
+    publishedAtField(),
     {
       name: 'authors',
       label: 'Yazarlar',

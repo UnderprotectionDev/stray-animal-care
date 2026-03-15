@@ -3,25 +3,21 @@
 import React, { useRef } from 'react'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
+import { formatDate } from '@/utilities/formatDate'
 import type { Post, Media as MediaType } from '@/payload-types'
 
 type BlogCardProps = {
   post: Post
   categoryLabel?: string
   readMoreLabel: string
+  locale?: string
 }
 
-export function BlogCard({ post, categoryLabel, readMoreLabel }: BlogCardProps) {
+export function BlogCard({ post, categoryLabel, readMoreLabel, locale = 'tr' }: BlogCardProps) {
   const linkRef = useRef<HTMLAnchorElement>(null)
   const heroImage = post.heroImage as MediaType | null
 
-  const publishedDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString('tr-TR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : null
+  const publishedDate = post.publishedAt ? formatDate(post.publishedAt, locale) : null
 
   return (
     <div

@@ -13,8 +13,15 @@ export const OurWorkBlock: Block = {
       name: 'activities',
       label: 'Aktiviteler',
       type: 'array',
+      labels: { singular: 'Aktivite', plural: 'Aktiviteler' },
       minRows: 0,
       maxRows: 10,
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: '@/components/admin/RowLabels#ActivityRowLabel',
+        },
+      },
       fields: [
         {
           name: 'key',

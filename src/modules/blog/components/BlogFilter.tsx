@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useQueryState } from 'nuqs'
+import { FilterButtons } from '@/components/shared/FilterButtons'
 
 type BlogFilterProps = {
   labels: {
@@ -24,25 +24,12 @@ const FILTER_OPTIONS = [
 ]
 
 export function BlogFilter({ labels }: BlogFilterProps) {
-  const [category, setCategory] = useQueryState('category', { defaultValue: '' })
-
   return (
-    <div className="flex flex-wrap gap-[1px] bg-foreground border border-border">
-      {FILTER_OPTIONS.map((option) => (
-        <button
-          key={option.value}
-          type="button"
-          onClick={() => setCategory(option.value || null)}
-          aria-pressed={category === option.value}
-          className={
-            category === option.value
-              ? 'badge-sys mint'
-              : 'badge-sys'
-          }
-        >
-          {labels[option.labelKey]}
-        </button>
-      ))}
-    </div>
+    <FilterButtons
+      paramName="category"
+      options={FILTER_OPTIONS}
+      labels={labels}
+      className="flex flex-wrap gap-[1px] bg-foreground border border-border"
+    />
   )
 }

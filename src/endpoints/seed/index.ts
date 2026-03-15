@@ -20,7 +20,7 @@ const collections: CollectionSlug[] = [
   'transparency-reports',
 ]
 
-const _globals: GlobalSlug[] = ['header', 'footer', 'site-settings']
+const _globals: GlobalSlug[] = ['header', 'site-settings']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
@@ -45,18 +45,16 @@ export const seed = async ({
 
   // clear the database
   await Promise.all([
-    ...(['header', 'footer'] as const).map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
+    payload.updateGlobal({
+      slug: 'header',
+      data: {
+        navItems: [],
+      },
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
     payload.updateGlobal({
       slug: 'site-settings',
       data: {},
@@ -245,36 +243,6 @@ export const seed = async ({
             link: { type: 'custom', url: '/destek-ol' },
             label: 'Destek Ol',
             isCta: true,
-          },
-        ],
-      },
-    }),
-    payload.updateGlobal({
-      slug: 'footer',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
           },
         ],
       },

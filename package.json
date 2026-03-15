@@ -111,6 +111,9 @@
       "sharp",
       "esbuild",
       "unrs-resolver"
-    ]
+    ],
+    "patchedDependencies": {
+      "@payload-enchants/translator": "patches/@payload-enchants__translator.patch"
+    }
   }
 }

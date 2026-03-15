@@ -10,9 +10,10 @@ type BlogListProps = {
   categoryLabels: Record<string, string>
   readMoreLabel: string
   emptyLabel: string
+  locale?: string
 }
 
-export function BlogList({ posts, categoryLabels, readMoreLabel, emptyLabel }: BlogListProps) {
+export function BlogList({ posts, categoryLabels, readMoreLabel, emptyLabel, locale }: BlogListProps) {
   const [category] = useQueryState('category', { defaultValue: '' })
 
   const filtered = category
@@ -35,6 +36,7 @@ export function BlogList({ posts, categoryLabels, readMoreLabel, emptyLabel }: B
           post={post}
           categoryLabel={post.postCategory ? categoryLabels[post.postCategory] : undefined}
           readMoreLabel={readMoreLabel}
+          locale={locale}
         />
       ))}
     </div>

@@ -9,6 +9,7 @@ export const StatsBlock: Block = {
       name: 'metrics',
       label: 'Metrikler',
       type: 'array',
+      labels: { singular: 'Metrik', plural: 'Metrikler' },
       minRows: 1,
       maxRows: 8,
       fields: [

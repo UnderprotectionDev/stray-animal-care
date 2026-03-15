@@ -26,6 +26,7 @@ import { TableFeatureClient as TableFeatureClient_e70f5e05f09f93e00b997edb1ef0c8
 import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { TextColorClientFeature as TextColorClientFeature_003d5c6d9acd473d37bf6b1f238eb8d6 } from 'payload-lexical-typography/client'
 import { TextSizeClientFeature as TextSizeClientFeature_003d5c6d9acd473d37bf6b1f238eb8d6 } from 'payload-lexical-typography/client'
+import { TimelineRowLabel as TimelineRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -33,10 +34,15 @@ import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { CustomButtonWithTranslator as CustomButtonWithTranslator_0754f48e597a64286a6ec55277e0e245 } from '@payload-enchants/translator/client'
+import { TagRowLabel as TagRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { FolderTableCell as FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { FolderField as FolderField_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { ExportListMenuItem as ExportListMenuItem_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { ImportListMenuItem as ImportListMenuItem_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
+import { UpdateRowLabel as UpdateRowLabel_c853539d05a2a6c0e7c3180ad336cb51 } from '@/collections/EmergencyCases/UpdateRowLabel'
+import { MedicationRowLabel as MedicationRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
+import { ExpenseRowLabel as ExpenseRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
+import { DonorRowLabel as DonorRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { FormatField as FormatField_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
@@ -60,8 +66,9 @@ import { QueryPresetsColumnsCell as QueryPresetsColumnsCell_2b8867833a34864a02dd
 import { QueryPresetsColumnField as QueryPresetsColumnField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { QueryPresetsGroupByCell as QueryPresetsGroupByCell_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { QueryPresetsGroupByField as QueryPresetsGroupByField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
-import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
-import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
+import { HeaderRowLabel as HeaderRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
+import { ActivityRowLabel as ActivityRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
+import { BankAccountRowLabel as BankAccountRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { SocialLinkRowLabel as SocialLinkRowLabel_cd4fb962e83ced418ca45390924744c4 } from '@/SiteSettings/SocialLinkRowLabel'
 import { default as default_0e7b23c75ea046975e1784ba01f82886 } from '@/components/admin/Dashboard'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
@@ -97,6 +104,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#LinkFeatureClient": LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "payload-lexical-typography/client#TextColorClientFeature": TextColorClientFeature_003d5c6d9acd473d37bf6b1f238eb8d6,
   "payload-lexical-typography/client#TextSizeClientFeature": TextSizeClientFeature_003d5c6d9acd473d37bf6b1f238eb8d6,
+  "@/components/admin/RowLabels#TimelineRowLabel": TimelineRowLabel_602181e9d445b98d48bce238807017cb,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
@@ -104,10 +112,15 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
   "@payload-enchants/translator/client#CustomButtonWithTranslator": CustomButtonWithTranslator_0754f48e597a64286a6ec55277e0e245,
+  "@/components/admin/RowLabels#TagRowLabel": TagRowLabel_602181e9d445b98d48bce238807017cb,
   "@payloadcms/next/rsc#FolderTableCell": FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/next/rsc#FolderField": FolderField_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/plugin-import-export/rsc#ExportListMenuItem": ExportListMenuItem_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/plugin-import-export/rsc#ImportListMenuItem": ImportListMenuItem_cdf7e044479f899a31f804427d568b36,
+  "@/collections/EmergencyCases/UpdateRowLabel#UpdateRowLabel": UpdateRowLabel_c853539d05a2a6c0e7c3180ad336cb51,
+  "@/components/admin/RowLabels#MedicationRowLabel": MedicationRowLabel_602181e9d445b98d48bce238807017cb,
+  "@/components/admin/RowLabels#ExpenseRowLabel": ExpenseRowLabel_602181e9d445b98d48bce238807017cb,
+  "@/components/admin/RowLabels#DonorRowLabel": DonorRowLabel_602181e9d445b98d48bce238807017cb,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-import-export/rsc#FormatField": FormatField_cdf7e044479f899a31f804427d568b36,
@@ -131,8 +144,9 @@ export const importMap = {
   "@payloadcms/next/client#QueryPresetsColumnField": QueryPresetsColumnField_2b8867833a34864a02ddf429b0728a40,
   "@payloadcms/next/client#QueryPresetsGroupByCell": QueryPresetsGroupByCell_2b8867833a34864a02ddf429b0728a40,
   "@payloadcms/next/client#QueryPresetsGroupByField": QueryPresetsGroupByField_2b8867833a34864a02ddf429b0728a40,
-  "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
-  "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
+  "@/components/admin/RowLabels#HeaderRowLabel": HeaderRowLabel_602181e9d445b98d48bce238807017cb,
+  "@/components/admin/RowLabels#ActivityRowLabel": ActivityRowLabel_602181e9d445b98d48bce238807017cb,
+  "@/components/admin/RowLabels#BankAccountRowLabel": BankAccountRowLabel_602181e9d445b98d48bce238807017cb,
   "@/SiteSettings/SocialLinkRowLabel#SocialLinkRowLabel": SocialLinkRowLabel_cd4fb962e83ced418ca45390924744c4,
   "@/components/admin/Dashboard#default": default_0e7b23c75ea046975e1784ba01f82886,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,

@@ -66,6 +66,7 @@ export default async function BlogPage({ params }: Args) {
           categoryLabels={categoryLabels}
           readMoreLabel={ui?.blog?.readMore ?? 'Devamını Oku'}
           emptyLabel={ui?.blog?.empty ?? 'Henüz yazı yok.'}
+          locale={payloadLocale}
         />
       </div>
     </Container>

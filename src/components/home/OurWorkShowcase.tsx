@@ -1,8 +1,8 @@
 import React from 'react'
 import type { SiteSetting, Media as MediaType } from '@/payload-types'
-import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
 import { interpolate } from '@/utilities/interpolate'
+import { SectionHeader } from './SectionHeader'
 
 type OurWorkBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeOurWork' }>
 
@@ -25,14 +25,7 @@ export function OurWorkShowcase({ block }: Props) {
 
   return (
     <section>
-      <div className="panel flex items-center justify-between py-4 px-6 border-b border-border">
-        <h2 className="t-h2">{block.sectionTitle}</h2>
-        {block.viewAllLabel && block.viewAllLink && (
-          <Link href={block.viewAllLink} className="btn-cta text-xs py-2 px-4">
-            {block.viewAllLabel}
-          </Link>
-        )}
-      </div>
+      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {activities.map((activity) => {
           const images = activity.images

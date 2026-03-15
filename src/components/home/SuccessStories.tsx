@@ -1,18 +1,15 @@
 import React from 'react'
 import type { EmergencyCase, Media as MediaType, SiteSetting } from '@/payload-types'
-import { Link } from '@/i18n/navigation'
 import { SuccessStorySlider } from './SuccessStorySlider'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { formatCurrency } from '@/utilities/formatCurrency'
+import { SectionHeader } from './SectionHeader'
 
 type SuccessStoriesBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeSuccessStories' }>
 
 type Props = {
   block: SuccessStoriesBlock
   stories: EmergencyCase[]
-}
-
-function formatCurrency(amount: number): string {
-  return `₺${amount.toLocaleString('tr-TR')}`
 }
 
 function ProgressBar({ collected, target }: { collected: number; target: number }) {
@@ -34,14 +31,7 @@ export function SuccessStories({ block, stories }: Props) {
 
   return (
     <section>
-      <div className="panel flex items-center justify-between py-4 px-6 border-b border-border">
-        <h2 className="t-h2">{block.sectionTitle}</h2>
-        {block.viewAllLabel && block.viewAllLink && (
-          <Link href={block.viewAllLink} className="btn-cta text-xs py-2 px-4">
-            {block.viewAllLabel}
-          </Link>
-        )}
-      </div>
+      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
       <div className="grid grid-cols-1 md:grid-cols-2">
         {stories.map((story) => {
           const beforePhoto =

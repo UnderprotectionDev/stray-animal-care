@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { authenticated } from '../access/authenticated'
+import { SOCIAL_PLATFORM_OPTIONS } from '../constants/options'
 import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
 import {
   HomeHeroBlock,
@@ -63,8 +64,15 @@ export const SiteSettings: GlobalConfig = {
               name: 'bankAccounts',
               label: 'Banka Hesapları',
               type: 'array',
+              labels: { singular: 'Banka Hesabı', plural: 'Banka Hesapları' },
               minRows: 0,
               maxRows: 10,
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: '@/components/admin/RowLabels#BankAccountRowLabel',
+                },
+              },
               fields: [
                 {
                   name: 'bankName',
@@ -106,6 +114,7 @@ export const SiteSettings: GlobalConfig = {
               name: 'socialLinks',
               label: 'Sosyal Medya & İletişim Linkleri',
               type: 'array',
+              labels: { singular: 'Sosyal Link', plural: 'Sosyal Linkler' },
               maxRows: 12,
               fields: [
                 {
@@ -113,20 +122,7 @@ export const SiteSettings: GlobalConfig = {
                   label: 'Platform',
                   type: 'select',
                   required: true,
-                  options: [
-                    { label: 'Instagram', value: 'instagram' },
-                    { label: 'X (Twitter)', value: 'x-twitter' },
-                    { label: 'Facebook', value: 'facebook' },
-                    { label: 'YouTube', value: 'youtube' },
-                    { label: 'TikTok', value: 'tiktok' },
-                    { label: 'LinkedIn', value: 'linkedin' },
-                    { label: 'GitHub', value: 'github' },
-                    { label: 'Web Sitesi', value: 'website' },
-                    { label: 'WhatsApp', value: 'whatsapp' },
-                    { label: 'Telefon', value: 'phone' },
-                    { label: 'E-posta', value: 'email' },
-                    { label: 'Diğer', value: 'other' },
-                  ],
+                  options: SOCIAL_PLATFORM_OPTIONS,
                 },
                 {
                   name: 'customType',

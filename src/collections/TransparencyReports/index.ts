@@ -69,6 +69,13 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
               name: 'expenses',
               label: 'Giderler',
               type: 'array',
+              labels: { singular: 'Gider', plural: 'Giderler' },
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: '@/components/admin/RowLabels#ExpenseRowLabel',
+                },
+              },
               fields: [
                 {
                   name: 'category',
@@ -110,6 +117,13 @@ export const TransparencyReports: CollectionConfig<'transparency-reports'> = {
               name: 'donorList',
               label: 'Bağışçı Listesi',
               type: 'array',
+              labels: { singular: 'Bağışçı', plural: 'Bağışçılar' },
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: '@/components/admin/RowLabels#DonorRowLabel',
+                },
+              },
               fields: [
                 {
                   name: 'name',

@@ -10,6 +10,7 @@ type BlogDetailProps = {
   shareUrl: string
   categoryLabel?: string
   tagsLabel: string
+  locale?: string
   shareLabels: {
     title: string
     twitter: string
@@ -20,11 +21,11 @@ type BlogDetailProps = {
   }
 }
 
-export function BlogDetail({ post, shareUrl, categoryLabel, tagsLabel, shareLabels }: BlogDetailProps) {
+export function BlogDetail({ post, shareUrl, categoryLabel, tagsLabel, shareLabels, locale = 'tr' }: BlogDetailProps) {
   const heroImage = post.heroImage as MediaType | null
 
   const publishedDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString('tr-TR', {
+    ? new Date(post.publishedAt).toLocaleDateString(locale === 'en' ? 'en-US' : 'tr-TR', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',

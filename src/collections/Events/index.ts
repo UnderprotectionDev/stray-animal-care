@@ -1,34 +1,17 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { accessPresets } from '../../access/presets'
+import { EVENT_TYPE_OPTIONS, EVENT_STATUS_OPTIONS } from '../../constants/options'
 import { revalidateEvent, revalidateEventDelete } from './hooks/revalidateEvent'
-
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
+import { contentRichText } from '../../fields/lexical'
+import { seoTab } from '../../fields/seoTab'
+import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
 export const Events: CollectionConfig<'events'> = {
   slug: 'events',
   enableQueryPresets: true,
-  access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
-  },
+  access: accessPresets.publicReadAdminWrite,
   labels: { singular: 'Etkinlik', plural: 'Etkinlikler' },
   admin: {
     defaultColumns: ['title', 'eventDate', 'eventType', 'eventStatus', 'updatedAt'],
@@ -54,14 +37,7 @@ export const Events: CollectionConfig<'events'> = {
               label: 'Açıklama',
               type: 'richText',
               localized: true,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => [
-                  ...rootFeatures,
-                  HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-                  FixedToolbarFeature(),
-                  InlineToolbarFeature(),
-                ],
-              }),
+              editor: contentRichText(),
             },
             {
               name: 'coverImage',
@@ -113,13 +89,7 @@ export const Events: CollectionConfig<'events'> = {
               label: 'Etkinlik Türü',
               type: 'select',
               index: true,
-              options: [
-                { label: 'Sahiplendirme', value: 'sahiplendirme' },
-                { label: 'Mama Toplama', value: 'mama-toplama' },
-                { label: 'Bakım Günü', value: 'bakim-gunu' },
-                { label: 'Eğitim', value: 'egitim' },
-                { label: 'Diğer', value: 'diger' },
-              ],
+              options: EVENT_TYPE_OPTIONS,
             },
             {
               name: 'eventStatus',
@@ -127,58 +97,14 @@ export const Events: CollectionConfig<'events'> = {
               type: 'select',
               index: true,
               defaultValue: 'yaklasan',
-              options: [
-                { label: 'Yaklaşan', value: 'yaklasan' },
-                { label: 'Devam Ediyor', value: 'devam-ediyor' },
-                { label: 'Tamamlandı', value: 'tamamlandi' },
-                { label: 'İptal', value: 'iptal' },
-              ],
+              options: EVENT_STATUS_OPTIONS,
             },
           ],
         },
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({}),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-            MetaDescriptionField({}),
-            PreviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
-        },
+        seoTab(),
       ],
     },
-    {
-      name: 'publishedAt',
-      label: 'Yayınlanma Tarihi',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayAndTime',
-        },
-        position: 'sidebar',
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
-      },
-    },
+    publishedAtField(),
     slugField({ useAsSlug: 'title' }),
   ],
   hooks: {
