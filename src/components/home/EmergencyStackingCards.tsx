@@ -2,9 +2,9 @@
 
 import React, { useRef } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform } from 'motion/react'
 import { Link } from '@/i18n/navigation'
-import { ProgressBar } from '@/components/shared/ProgressBar'
+import { cn } from '@/utilities/ui'
+import StackingCards, { StackingCardItem } from '@/components/fancy/blocks/stacking-cards'
 
 export type EmergencyCardData = {
   id: number
@@ -18,106 +18,90 @@ export type EmergencyCardData = {
 
 type Props = {
   cards: EmergencyCardData[]
-  codeRedLabel?: string | null
 }
 
-const SCALE_MULTIPLIER = 0.04
+const CARD_COLORS = [
+  'bg-[#f97316]',
+  'bg-[#0015ff]',
+  'bg-[#ff5941]',
+  'bg-[#1f464d]',
+  'bg-[#0015ff]',
+]
 
-function EmergencyCardItem({
-  card,
-  index,
-  totalCards,
-  codeRedLabel,
-}: {
-  card: EmergencyCardData
-  index: number
-  totalCards: number
-  codeRedLabel?: string | null
-}) {
-  const cardRef = useRef<HTMLDivElement>(null)
+export default function EmergencyStackingCards({ cards }: Props) {
+  if (cards.length === 0) return null
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start start', 'end start'],
-  })
-
-  const scaleTo = 1 - (totalCards - index) * SCALE_MULTIPLIER
-  const scale = useTransform(scrollYProgress, [0, 1], [1, scaleTo])
-
-  const label = codeRedLabel || 'CODE RED'
-  const amountText =
-    card.targetAmount > 0
-      ? `${card.collectedAmount.toLocaleString('tr-TR')} / ${card.targetAmount.toLocaleString('tr-TR')} TL`
-      : ''
+  const container = useRef<HTMLDivElement>(null)
 
   return (
     <div
-      ref={cardRef}
-      className="sticky top-0 pt-[calc(var(--card-index)*2rem)]"
-      style={{ '--card-index': index } as React.CSSProperties}
+      className="h-[620px] bg-palette-cream overflow-auto text-white"
+      ref={container}
     >
-      <motion.div style={{ scale, transformOrigin: 'top center' }} className="bg-palette-cream">
-        <Link
-          href={`/acil-vakalar/${card.slug}`}
-          className="block border-[1.5px] border-[var(--border)] overflow-hidden group"
-        >
-          {/* Top accent bar */}
-          <div className="h-1 bg-emergency" />
+      <StackingCards
+        totalCards={cards.length}
+        scrollOptions={{ container: container }}
+        stickyTop="40px"
+      >
+        {cards.map((card, index) => {
+          const bgColor = CARD_COLORS[index % CARD_COLORS.length]
+          const percentage =
+            card.targetAmount > 0
+              ? Math.min(Math.round((card.collectedAmount / card.targetAmount) * 100), 100)
+              : 0
 
-          <div className="flex flex-col md:flex-row min-h-[280px] md:min-h-[340px]">
-            {/* Image or solid background */}
-            {card.imageUrl ? (
-              <div className="relative w-full md:w-[45%] min-h-[200px] md:min-h-full overflow-hidden">
-                <Image
-                  src={card.imageUrl}
-                  alt={card.imageAlt}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 45vw"
-                />
-              </div>
-            ) : (
-              <div className="w-full md:w-[45%] min-h-[200px] md:min-h-full bg-emergency" />
-            )}
+          return (
+            <StackingCardItem key={card.id} index={index} className="h-[620px]">
+              <Link
+                href={`/acil-vakalar/${card.slug}`}
+                className={cn(
+                  bgColor,
+                  'h-[80%] sm:h-[70%] flex-col sm:flex-row pl-8 pr-0 py-10 flex w-11/12 rounded-3xl mx-auto relative overflow-hidden',
+                )}
+              >
+                <div className="flex-1 flex flex-col justify-center pr-6 sm:pr-8">
+                  <h3 className="font-bold text-2xl mb-5">{card.title}</h3>
 
-            {/* Content panel */}
-            <div className="flex-1 p-6 md:p-8 flex flex-col justify-center gap-4">
-              <span className="t-meta font-bold text-destructive border border-destructive px-2 py-1 w-fit uppercase">
-                {label} {String(index + 1).padStart(3, '0')}
-              </span>
+                  {card.targetAmount > 0 && (
+                    <div className="space-y-3">
+                      <span className="text-4xl sm:text-5xl font-black tabular-nums">
+                        %{percentage}
+                      </span>
+                      <div
+                        className="h-4 w-full bg-white/20"
+                        role="progressbar"
+                        aria-valuenow={card.collectedAmount}
+                        aria-valuemin={0}
+                        aria-valuemax={card.targetAmount}
+                      >
+                        <div
+                          className="h-full bg-white transition-all duration-500"
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                      <p className="text-sm font-mono text-white/80">
+                        {card.collectedAmount.toLocaleString('tr-TR')} / {card.targetAmount.toLocaleString('tr-TR')} TL
+                      </p>
+                    </div>
+                  )}
+                </div>
 
-              <h3 className="font-heading text-2xl md:text-3xl font-bold text-[var(--palette-black)] uppercase leading-tight">
-                {card.title}
-              </h3>
-
-              {card.targetAmount > 0 && (
-                <>
-                  <ProgressBar current={card.collectedAmount} target={card.targetAmount} />
-                  <p className="t-meta font-bold text-[var(--palette-black)]">{amountText}</p>
-                </>
-              )}
-            </div>
-          </div>
-        </Link>
-      </motion.div>
-    </div>
-  )
-}
-
-export default function EmergencyStackingCards({ cards, codeRedLabel }: Props) {
-  if (cards.length === 0) return null
-
-  return (
-    <div className="relative">
-      {cards.map((card, index) => (
-        <EmergencyCardItem
-          key={card.id}
-          card={card}
-          index={index}
-          totalCards={cards.length}
-          codeRedLabel={codeRedLabel}
-        />
-      ))}
+                {card.imageUrl && (
+                  <div className="w-full -ml-8 -mb-10 sm:ml-0 sm:mb-0 sm:w-1/2 sm:h-auto h-48 relative overflow-hidden">
+                    <Image
+                      src={card.imageUrl}
+                      alt={card.imageAlt}
+                      className="object-cover"
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                  </div>
+                )}
+              </Link>
+            </StackingCardItem>
+          )
+        })}
+      </StackingCards>
     </div>
   )
 }

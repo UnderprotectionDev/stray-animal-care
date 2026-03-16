@@ -43,6 +43,7 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
 
   // Pass 1: Collect rendered elements
   const rendered: React.ReactElement[] = []
+  const bandIndices = new Set<number>()
 
   for (const block of blocks) {
     if (block.enabled === false) continue
@@ -85,6 +86,7 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
             velocity={50}
           />,
         )
+        bandIndices.add(rendered.length - 1)
         break
       case 'homeOurWork':
         rendered.push(<OurWorkShowcase key={block.id} block={block} />)
@@ -106,6 +108,7 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
             velocity={40}
           />,
         )
+        bandIndices.add(rendered.length - 1)
         break
       case 'homeNeedsList':
         rendered.push(<NeedsList key={block.id} block={block} items={data.needsItems} />)
@@ -122,11 +125,15 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
   }
 
   // Pass 2: Interleave ElasticDividers between every pair of elements
+  // Skip elastic dividers adjacent to SectionDividerBand (already a strong visual separator)
   const interleaved: React.ReactNode[] = []
   for (let i = 0; i < rendered.length; i++) {
     interleaved.push(rendered[i])
     if (i < rendered.length - 1) {
-      interleaved.push(<ElasticDivider key={`elastic-${i}`} />)
+      const isBandAdjacent = bandIndices.has(i) || bandIndices.has(i + 1)
+      if (!isBandAdjacent) {
+        interleaved.push(<ElasticDivider key={`elastic-${i}`} />)
+      }
     }
   }
 

@@ -10,7 +10,6 @@ export function ElasticDivider() {
         height: '40px',
         background: 'var(--background)',
         color: 'var(--foreground)',
-        margin: '-0.75px 0',
         position: 'relative',
         zIndex: 1,
       }}

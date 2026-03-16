@@ -15,7 +15,21 @@ type TextNode = {
   version: 1
 }
 
-type InlineNode = TextNode
+type LinkNode = {
+  type: 'link'
+  children: TextNode[]
+  direction: 'ltr'
+  fields: {
+    linkType: 'custom'
+    newTab: boolean
+    url: string
+  }
+  format: ''
+  indent: 0
+  version: 3
+}
+
+type InlineNode = TextNode | LinkNode
 
 type ParagraphNode = {
   type: 'paragraph'
@@ -73,7 +87,39 @@ type HorizontalRuleNode = {
   version: 1
 }
 
-type BlockNode = ParagraphNode | HeadingNode | ListNode | QuoteNode | HorizontalRuleNode
+type BannerBlockNode = {
+  type: 'block'
+  fields: {
+    blockName: string
+    blockType: 'banner'
+    content: RootNode
+    style: 'info' | 'warning' | 'error' | 'success'
+  }
+  format: ''
+  version: 2
+}
+
+type CalloutBlockNode = {
+  type: 'block'
+  fields: {
+    blockName: string
+    blockType: 'callout'
+    variant: 'info' | 'warning' | 'success' | 'error'
+    title?: string
+    content: RootNode
+  }
+  format: ''
+  version: 2
+}
+
+type BlockNode =
+  | ParagraphNode
+  | HeadingNode
+  | ListNode
+  | QuoteNode
+  | HorizontalRuleNode
+  | BannerBlockNode
+  | CalloutBlockNode
 
 type RootNode = {
   root: {
@@ -88,7 +134,7 @@ type RootNode = {
 
 // ─── Leaf Nodes ──────────────────────────────────────────────
 
-/** Create a text node. format: 0=normal, 1=bold, 2=italic, 8=underline */
+/** Create a text node. format bitmask: 1=bold, 2=italic, 4=strikethrough, 8=underline, 16=code, 32=subscript, 64=superscript */
 export function text(content: string, format: number = 0): TextNode {
   return { type: 'text', detail: 0, format, mode: 'normal', style: '', text: content, version: 1 }
 }
@@ -109,13 +155,47 @@ export function underline(content: string): TextNode {
   return text(content, 8)
 }
 
-// ─── Block Nodes ─────────────────────────────────────────────
+export function strikethrough(content: string): TextNode {
+  return text(content, 4)
+}
 
-type InlineInput = string | TextNode
+export function inlineCode(content: string): TextNode {
+  return text(content, 16)
+}
+
+export function superscript(content: string): TextNode {
+  return text(content, 64)
+}
+
+export function subscriptText(content: string): TextNode {
+  return text(content, 32)
+}
+
+// ─── Inline Nodes ───────────────────────────────────────────
+
+type InlineInput = string | TextNode | LinkNode
 
 function toInlineNodes(children: InlineInput[]): InlineNode[] {
   return children.map((child) => (typeof child === 'string' ? text(child) : child))
 }
+
+export function link(url: string, children: InlineInput[], newTab = false): LinkNode {
+  return {
+    type: 'link',
+    children: toInlineNodes(children) as TextNode[],
+    direction: 'ltr',
+    fields: {
+      linkType: 'custom',
+      newTab,
+      url,
+    },
+    format: '',
+    indent: 0,
+    version: 3,
+  }
+}
+
+// ─── Block Nodes ─────────────────────────────────────────────
 
 export function paragraph(...children: InlineInput[]): ParagraphNode {
   return {
@@ -198,6 +278,35 @@ export function ol(...items: InlineInput[][]): ListNode {
 
 export function hr(): HorizontalRuleNode {
   return { type: 'horizontalrule', version: 1 }
+}
+
+export function banner(style: 'info' | 'warning' | 'error' | 'success', content: RootNode): BannerBlockNode {
+  return {
+    type: 'block',
+    fields: {
+      blockName: '',
+      blockType: 'banner',
+      content,
+      style,
+    },
+    format: '',
+    version: 2,
+  }
+}
+
+export function callout(variant: 'info' | 'warning' | 'success' | 'error', content: RootNode, title?: string): CalloutBlockNode {
+  return {
+    type: 'block',
+    fields: {
+      blockName: '',
+      blockType: 'callout',
+      variant,
+      content,
+      ...(title ? { title } : {}),
+    },
+    format: '',
+    version: 2,
+  }
 }
 
 // ─── Root Wrapper ────────────────────────────────────────────

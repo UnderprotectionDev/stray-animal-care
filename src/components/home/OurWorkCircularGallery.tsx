@@ -39,7 +39,7 @@ export default function OurWorkCircularGallery({ activities }: Props) {
   if (items.length === 0) return null
 
   return (
-    <div className="relative w-full h-[clamp(420px,55vw,700px)] border-[1.5px] border-[var(--border)] bg-background overflow-hidden cursor-grab active:cursor-grabbing">
+    <div className="relative w-full h-[clamp(420px,55vw,700px)] bg-background overflow-hidden cursor-grab active:cursor-grabbing">
       <CircularGallery
         items={items}
         bend={3}

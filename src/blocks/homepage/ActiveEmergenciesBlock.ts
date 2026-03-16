@@ -15,8 +15,7 @@ export const ActiveEmergenciesBlock: Block = {
       label: 'Etiketler',
       type: 'group',
       fields: [
-        { name: 'codeRed', type: 'text', localized: true, defaultValue: 'KOD KIZIL: VAKA', label: 'Kod Kızıl' },
-        { name: 'case', type: 'text', localized: true, defaultValue: 'Vaka', label: 'Vaka' },
+{ name: 'case', type: 'text', localized: true, defaultValue: 'Vaka', label: 'Vaka' },
         { name: 'active', type: 'text', localized: true, defaultValue: 'AKTİF', label: 'Aktif' },
       ],
     },

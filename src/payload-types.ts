@@ -2363,10 +2363,6 @@ export interface SiteSetting {
             viewAllLabel?: string | null;
             viewAllLink?: string | null;
             limit?: number | null;
-            /**
-             * Hayvan kartlarının görüntülenme şekli
-             */
-            galleryVariant?: ('grid' | 'masonry' | 'circular') | null;
             adoptCta?: string | null;
             adoptCtaSecondaryLabel?: string | null;
             typeLabels?: {
@@ -2401,7 +2397,6 @@ export interface SiteSetting {
             tickerText?: string | null;
             limit?: number | null;
             labels?: {
-              codeRed?: string | null;
               case?: string | null;
               active?: string | null;
             };
@@ -3044,7 +3039,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               viewAllLabel?: T;
               viewAllLink?: T;
               limit?: T;
-              galleryVariant?: T;
               adoptCta?: T;
               adoptCtaSecondaryLabel?: T;
               typeLabels?:
@@ -3090,7 +3084,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               labels?:
                 | T
                 | {
-                    codeRed?: T;
                     case?: T;
                     active?: T;
                   };

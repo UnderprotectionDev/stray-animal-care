@@ -522,7 +522,7 @@
 @utility g-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5px; background: var(--palette-black); }
 @utility g-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.5px; background: var(--palette-black); }
 @utility g-8 { display: grid; grid-template-columns: repeat(8, 1fr); gap: 1.5px; background: var(--palette-black); }
-@utility panel { background: var(--palette-cream); padding: 1.5rem; }
+@utility panel { background: var(--background); padding: 1.5rem; }
 
 
 :root {

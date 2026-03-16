@@ -12,7 +12,7 @@ import * as path from 'path'
 import type { File } from 'payload'
 import { getPayload } from 'payload'
 import config from '../payload.config'
-import { bold, boldItalic, heading, hr, italic, lexicalRoot, ol, paragraph, quote, text, ul, underline } from './lexical-builders'
+import { banner, bold, boldItalic, callout, heading, hr, inlineCode, italic, lexicalRoot, link, ol, paragraph, quote, strikethrough, subscriptText, superscript, text, ul, underline } from './lexical-builders'
 
 // Fetch remote image and return Payload File object
 async function fetchFileByURL(url: string): Promise<File & { data: Buffer }> {
@@ -201,6 +201,7 @@ async function seed() {
           ['Karma aşı rapeli (yıllık)'],
           ['Diş kontrolü planlanıyor'],
         ),
+        paragraph('Pamuk\'un bakımına katkıda bulunmak ister misiniz? ', link('/destek-ol', [bold('Bağış yaparak destekleyin')]), '.'),
       ),
     },
     {
@@ -227,12 +228,14 @@ async function seed() {
       needs: lexicalRoot(
         heading('h4', 'Devam Eden Tedavi'),
         paragraph('Karamel\'in iyileşme süreci çok olumlu ilerliyor ancak düzenli takip gerekiyor.'),
+        paragraph(strikethrough('Yoğun bakım — tamamlandı'), ' ', bold('(iyileşti!)')),
         ul(
           ['Fizik tedavi seansları (haftada 2 kez)'],
           ['Aylık ortopedi kontrolü'],
           ['Platin çıkarma değerlendirmesi (1 ay sonra)'],
-          ['Eklem takviyesi (günlük)'],
+          ['Eklem takviyesi — Glukozamin 500mg/gün', superscript('1')],
         ),
+        paragraph(superscript('1'), italic(' Dozaj veteriner kontrolünde ayarlanmaktadır.')),
       ),
     },
     {
@@ -257,6 +260,7 @@ async function seed() {
       ),
       needs: lexicalRoot(
         heading('h4', 'Devam Eden Tedavi'),
+        paragraph('İlaç takip kodu: ', inlineCode('CONJ-ABX-2024')),
         ul(
           ['Göz enfeksiyonu (konjunktivit) — antibiyotikli damla 2x3/gün'],
           ['Oral antibiyotik kürü (7 gün kaldı)'],
@@ -288,6 +292,7 @@ async function seed() {
       ),
       needs: lexicalRoot(
         paragraph(bold('Durum: Sağlıklı'), ' — Boncuk fiziksel olarak tamamen iyileşti.'),
+        paragraph(strikethrough('Boyun yarası tedavisi — iyileşti'), ' ', bold('(tam iyileşme)')),
         paragraph('Kalıcı yuva arayışı sürüyor. Kısırlaştırılmış, aşıları tam ve mikroçipli. ', bold('Bahçeli bir ev'), ' ideal olacaktır.'),
       ),
     },
@@ -307,7 +312,7 @@ async function seed() {
       story: lexicalRoot(
         heading('h3', 'Tekir — Acil Vaka'),
         paragraph('Tekir, ', bold('Şişli\'de 5. kattan düşme'), ' sonucu ağır yaralı olarak getirildi. Yapılan muayenede ', bold('pelvis kırığı ve iç kanama'), ' tespit edildi. Durumu kritikti.'),
-        paragraph('Derhal ameliyata alındı. Pelvis fiksasyonu ve iç kanama kontrolü başarıyla yapıldı. Ameliyat 4 saat sürdü. Şu an yoğun bakım sürecinde — durumu ciddi ama stabil.'),
+        paragraph('Derhal ', link('/acil-vakalar', [bold('İstanbul Veteriner Cerrahi Merkezi')]), '\'ne götürüldü. Pelvis fiksasyonu ve iç kanama kontrolü başarıyla yapıldı. Ameliyat 4 saat sürdü. Şu an yoğun bakım sürecinde — durumu ciddi ama stabil.'),
         quote('Veteriner ekibimiz gece boyunca başından ayrılmadı. Tekir güçlü bir savaşçı.'),
       ),
       needs: lexicalRoot(
@@ -344,11 +349,12 @@ async function seed() {
         heading('h4', 'Devam Eden Tedavi'),
         paragraph('Eklem iltihabı (', bold('osteoartrit'), ') nedeniyle sürekli tedavi altında.'),
         ul(
-          ['Karprofen — 4mg/kg günde 1 (anti-inflamatuar)'],
+          ['Karprofen — 4mg/kg', superscript('*'), ' günde 1 (anti-inflamatuar)'],
           ['Glukozamin takviyesi — günlük 1 tablet'],
           ['Aylık veteriner kontrolü'],
           ['Kilo takibi (eklem yükünü azaltmak için)'],
         ),
+        paragraph(superscript('*'), italic(' mg/kg = miligram per kilogram vücut ağırlığı')),
       ),
     },
     {
@@ -402,7 +408,8 @@ async function seed() {
       ),
       needs: lexicalRoot(
         heading('h4', 'Devam Eden Tedavi'),
-        paragraph('Zehirlenme sonrası ', bold('karaciğer tedavisi'), ' devam ediyor.'),
+        paragraph('Zehirlenme sonrası ', bold('karaciğer tedavisi'), ' devam ediyor. Bol temiz H', subscriptText('2'), 'O (su) içmesi sağlanıyor.'),
+        paragraph('Son lab sonuçları: ', inlineCode('AST: 120 U/L'), ', ', inlineCode('ALT: 95 U/L'), ' — düşüş trendinde.'),
         ul(
           ['Silibinin (karaciğer koruyucu) — 20mg/kg, 14 gün'],
           ['Özel karaciğer diyeti uygulanıyor'],
@@ -456,7 +463,8 @@ async function seed() {
         quote('Çöp konteynerinden çıkardığımızda gözleri kapanıktı, nefes almaya çalışıyordu. Şimdi her geçen gün biraz daha güçleniyor.'),
       ),
       needs: lexicalRoot(
-        paragraph(bold('ACİL:'), ' Solunum yolu enfeksiyonu tedavisi devam ediyor. İlaç ve veteriner masrafları için destek gerekiyor.'),
+        paragraph(bold('ACİL:'), ' Solunum yolu enfeksiyonu tedavisi devam ediyor. İlaç ve veteriner masrafları için ', link('/destek-ol', [bold('acil destek')]), ' gerekiyor.'),
+        paragraph('İlaç takip kodu: ', inlineCode('RESP-DOX-2024'), ' / ', inlineCode('RESP-LYS-2024')),
         ul(
           ['Doksisiklin — 10mg/kg 2x1, 14 gün'],
           ['L-Lizin — 250mg 2x1, 21 gün'],
@@ -524,7 +532,7 @@ async function seed() {
             paragraph(bold('Yoğun bakımda 2. gün.'), ' Olumlu gelişmeler:'),
             ul(
               ['Kendi başına su içmeye başladı'],
-              ['Kan değerleri iyileşme trendinde'],
+              ['Kan değerleri iyileşme trendinde — ', inlineCode('HGB: 8.2 g/dL'), ', ', inlineCode('WBC: 14.3 K/µL')],
               ['Ağrı kesici dozajı düşürüldü'],
             ),
           ),
@@ -611,10 +619,11 @@ async function seed() {
         paragraph('Paşa, trafik kazası sonrası sağ ön bacağında ', bold('açık kırık'), ' tespit edildi. Acil ameliyata alındı ve bacağına platin takıldı.'),
         heading('h4', 'Tedavi Süreci'),
         ul(
-          ['Acil ameliyat — platin fiksasyonu'],
-          ['6 hafta yoğun bakım + fizik tedavi'],
-          ['Haftalık röntgen kontrolleri'],
+          [strikethrough('Acil ameliyat — platin fiksasyonu'), ' ', bold('(tamamlandı)')],
+          [strikethrough('6 hafta yoğun bakım + fizik tedavi'), ' ', bold('(tamamlandı)')],
+          [strikethrough('Haftalık röntgen kontrolleri'), ' ', bold('(tamamlandı)')],
         ),
+        paragraph(strikethrough('Hedef: 12.000 ₺'), ' — ', bold('hedefe ulaşıldı!')),
         paragraph(bold('Sonuç: Tam iyileşme!'), ' 6 haftalık tedavi sürecinin ardından Paşa tamamen iyileşti. Koşuyor, oynuyor ve yeni yuvasında mutlu bir şekilde yaşıyor.'),
         quote('Paşa\'nın ilk koşusu, tüm ekip için en güzel ödüldü.'),
       ),
@@ -651,9 +660,9 @@ async function seed() {
         paragraph('Duman, her iki gözünde de ', bold('ileri derece enfeksiyon'), ' ile getirildi. Gözleri neredeyse tamamen kapanmıştı. Durumu acildi.'),
         heading('h4', 'Tedavi Süreci'),
         ul(
-          ['Sol göz kurtarılamadı — enükleasyon (göz çıkarma) ameliyatı'],
-          ['Sağ göz ameliyatla tedavi edildi'],
-          ['Antibiyotik ve anti-inflamatuar tedavi'],
+          [strikethrough('Sol göz — enükleasyon ameliyatı'), ' ', bold('(tamamlandı)')],
+          [strikethrough('Sağ göz ameliyatla tedavi'), ' ', bold('(tamamlandı)')],
+          [strikethrough('Antibiyotik ve anti-inflamatuar tedavi'), ' ', bold('(tamamlandı)')],
         ),
         paragraph(bold('Sonuç: Başarılı iyileşme!'), ' Duman tek gözüyle gayet iyi görüyor ve mutlu bir şekilde yaşamını sürdürüyor. Kalıcı bakımda.'),
         quote('Duman\'ın tek gözüyle dünyayı keşfetmesi, yaşam sevgisinin en güzel kanıtı.'),
@@ -675,6 +684,48 @@ async function seed() {
           date: '2026-03-05',
           text: lexicalRoot(
             paragraph(bold('Tam iyileşme!'), ' Duman tek gözüyle harika görüyor, oynuyor ve mutlu. Kalıcı bakımda devam edecek.'),
+          ),
+        },
+      ],
+    },
+    {
+      title: 'Boncuk — Cilt Hastalığı Tedavisi',
+      animal: animalIds[3], // Boncuk
+      caseStatus: 'aktif' as const,
+      targetAmount: 6000,
+      collectedAmount: 1800,
+      photos: mediaIds['dog-2'] ? [mediaIds['dog-2']] : [],
+      description: lexicalRoot(
+        heading('h3', 'Yaygın Uyuz — Ciddi Cilt Hastalığı'),
+        paragraph('Boncuk, Bakırköy sokaklarında ', bold('yaygın uyuz (demodikoz)'), ' nedeniyle tüyleri dökülmüş ve cildinde açık yaralar oluşmuş halde bulundu. Vücudunun %60\'ından fazlası etkilenmişti.'),
+        heading('h4', 'Tedavi Planı'),
+        ul(
+          ['Cilt kazıntısı ve kan testi — demodikoz tespiti'],
+          ['İvermektin tedavisi (haftalık, 8-12 hafta)'],
+          ['Antibiyotik (sekonder enfeksiyonlar için)'],
+          ['Özel medicinal şampuan ile haftalık banyo'],
+          ['Bağışıklık güçlendirici vitamin takviyesi'],
+        ),
+        heading('h4', 'Mevcut Durum'),
+        paragraph('Tedavinin 1. haftası tamamlandı. Kaşıntı biraz azaldı ancak tüy dökülmesi devam ediyor. ', bold('Tam iyileşme 2-3 ay sürebilir.'), ' Uzun süreli ilaç ve bakım masrafları yüksek.'),
+        quote('Boncuk çok sakin ve sevecen bir köpek. Tedavi sürecinde hiç huysuzluk yapmıyor.'),
+      ),
+      updates: [
+        {
+          date: '2026-03-13',
+          text: lexicalRoot(
+            paragraph(bold('Boncuk sokakta bulundu.'), ' Ciddi tüy dökülmesi ve cilt yaraları vardı. Cilt kazıntısı sonucu demodikoz tespit edildi. İvermektin ve antibiyotik tedavisi başlatıldı.'),
+          ),
+        },
+        {
+          date: '2026-03-15',
+          text: lexicalRoot(
+            paragraph(bold('Tedavi 2. günü:'), ' Olumlu gelişmeler var.'),
+            ul(
+              ['Kaşıntı azalmaya başladı'],
+              ['İştahı iyi, mama yiyor'],
+              ['İlk medicinal banyo yapıldı — cilt yaraları temizlendi'],
+            ),
           ),
         },
       ],
@@ -845,7 +896,7 @@ async function seed() {
         heading('h2', 'Bugün: Yeni Bir Hayat'),
         paragraph('Şimdi Karamel, en enerjik köpeğimiz. Her sabah bizi karşılıyor, parkta saatlerce oynuyor. Onun hikayesi, ', bold('umudun asla bitmediğinin kanıtı.')),
         hr(),
-        paragraph(italic('Karamel gibi yüzlerce can sizin desteğinizi bekliyor. Bağışlarınız hayat kurtarıyor.')),
+        paragraph(italic('Karamel gibi yüzlerce can sizin desteğinizi bekliyor. '), link('/canlarimiz', [italic('Tüm canlarımızı tanıyın')]), '.'),
       ),
       tags: [{ tag: 'kurtarma' }, { tag: 'köpek' }, { tag: 'başarı' }],
     },
@@ -856,8 +907,12 @@ async function seed() {
       categories: [categories['gonullu-yazilari']],
       heroImage: mediaIds['post-hero-2'] || undefined,
       content: lexicalRoot(
+        banner('warning', lexicalRoot(
+          paragraph(bold('Soğuk hava uyarısı:'), ' Sıcaklık 0°C altına düştüğünde sokak hayvanları için hipotermi riski ciddi şekilde artar. Lütfen çevrenizdeki hayvanlara dikkat edin.'),
+        )),
         heading('h2', 'Kış Ayları Neden Bu Kadar Zor?'),
         paragraph('Kış ayları sokak hayvanları için en zorlu dönemdir. Soğuk, açlık ve hastalık riski katlanarak artar. Ama ', bold('birkaç basit adımla'), ' büyük fark yaratabilirsiniz.'),
+        paragraph(strikethrough('"Sokak hayvanlarının kürkleri onları yeterince korur"'), ' — Bu yaygın bir ', bold('yanılgıdır.'), ' Özellikle ıslak ve rüzgarlı havada kürk yeterli koruma sağlamaz.'),
         heading('h2', '5 Basit Ama Etkili Adım'),
         ol(
           [bold('Su kapları koyun'), ' — Soğukta su kaynakları donar. Kapılarınızın önüne her gün taze su bırakın. Donmayı engellemek için derin kaplar tercih edin.'],
@@ -878,6 +933,9 @@ async function seed() {
       categories: [categories['duyurular']],
       heroImage: mediaIds['post-hero-3'] || undefined,
       content: lexicalRoot(
+        banner('info', lexicalRoot(
+          paragraph(bold('Kampanya aktif!'), ' Mart ayı boyunca ücretsiz kısırlaştırma yapılıyor. Bölgenizde kısırlaştırılmamış sokak hayvanı varsa bize bildirin.'),
+        )),
         heading('h2', 'Mart 2026 Kısırlaştırma Kampanyası'),
         paragraph('Mart ayı boyunca ', bold('Kadıköy ve Üsküdar bölgelerinde'), ' ücretsiz kısırlaştırma kampanyası düzenliyoruz. Hedefimiz bu ay içinde en az ', bold('50 sokak hayvanını'), ' kısırlaştırmak.'),
         heading('h2', 'Kampanya Detayları'),
@@ -891,7 +949,7 @@ async function seed() {
         heading('h2', 'Gönüllü Çağrısı'),
         paragraph('Gönüllü ihtiyacımız var! Özellikle nakliye ve yakalama konusunda yardıma ihtiyacımız var.'),
         quote('Kısırlaştırma, sokak hayvanı popülasyonunu insancıl yollarla kontrol etmenin en etkili yöntemidir. Her kısırlaştırma, yüzlerce yavrunun sokakta kalmasını önler.'),
-        paragraph(italic('Başvurmak için gönüllü formunu doldurun veya bize ulaşın.')),
+        paragraph('Başvurmak için ', link('/gonullu-ol', [bold('gönüllü formunu doldurun')]), ' veya bize ulaşın.'),
       ),
       tags: [{ tag: 'kampanya' }, { tag: 'kısırlaştırma' }, { tag: 'duyuru' }],
     },
@@ -909,7 +967,7 @@ async function seed() {
         paragraph('Onları sıcak battaniyelere sardık, biberonla besledik ve kliniğe götürdük.'),
         quote('O gece uyumadım — her 2 saatte bir mama verdim. Ellerimde uyuyakalan o minik bedenleri hâlâ hatırlıyorum. Yorgunluktan değil, heyecandan uyuyamadım.'),
         heading('h2', 'Şimdi Neredeler?'),
-        paragraph('Şimdi 4\'ü de sağlıklı ve yuva arıyor. En küçüğü Fıstık, en oyuncu olan — her şeyi tırmalıyor!'),
+        paragraph('Şimdi 4\'ü de sağlıklı ve yuva arıyor. En küçüğü Fıstık, en oyuncu olan — her şeyi tırmalıyor! ', link('/canlarimiz', ['Tüm canlarımızı tanıyın'], false), '.'),
         paragraph(italic('Bu deneyim hayatımı değiştirdi. Bir cana dokunmanın verdiği mutluluk tarif edilemez. Siz de gönüllü olabilirsiniz.')),
       ),
       tags: [{ tag: 'gönüllü' }, { tag: 'deneyim' }, { tag: 'hikaye' }],
@@ -921,6 +979,9 @@ async function seed() {
       categories: [categories['sahiplendirme'], categories['kurtarma-hikayeleri']],
       heroImage: mediaIds['post-hero-1'] || undefined,
       content: lexicalRoot(
+        banner('success', lexicalRoot(
+          paragraph(bold('Mutlu haber!'), ' Pamuk kalıcı yuvasını buldu! Sahiplendirme başarıyla tamamlandı.'),
+        )),
         heading('h2', 'Özel Bir Gün'),
         paragraph('Bugün çok özel bir gün. ', bold('8 aydır bakımımızda olan Pamuk'), ', sonunda kalıcı yuvasını buldu!'),
         heading('h2', 'Pamuk\'un Yolculuğu'),
@@ -931,7 +992,7 @@ async function seed() {
         heading('h2', 'Mutlu Son'),
         paragraph(bold('Pamuk, yeni evinde çoktan kendine favori pencereyi seçmiş!'), ' Ayşe\'den gelen fotoğraflara bakınca yüzümüz gülüyor. İşte bu anlar için çalışıyoruz.'),
         hr(),
-        paragraph(italic('Sizin de evinizde bir Pamuk\'a yer var mı? Sahiplendirme başvurusu için bize ulaşın.')),
+        paragraph('Sizin de evinizde bir Pamuk\'a yer var mı? ', link('/canlarimiz', [italic('Sahiplendirme bekleyen canlarımızı tanıyın')]), '.'),
       ),
       tags: [{ tag: 'sahiplendirme' }, { tag: 'kedi' }, { tag: 'mutlu son' }],
     },
@@ -995,7 +1056,7 @@ async function seed() {
       description: lexicalRoot(
         heading('h3', 'Bahar Sahiplendirme Günü Detayları'),
         paragraph('Bahar geldi, yeni yuvalar arıyoruz! ', bold('Kadıköy Sahil Parkı\'nda'), ' büyük sahiplendirme günümüze davetlisiniz.'),
-        paragraph(bold('20\'den fazla kedi ve köpek'), ' yeni ailelerini bekliyor. Tüm hayvanlarımız kısırlaştırılmış, aşılı ve mikroçipli.'),
+        paragraph(bold('20\'den fazla kedi ve köpek'), ' yeni ailelerini bekliyor. Tüm hayvanlarımız kısırlaştırılmış, aşılı ve mikroçipli. ', link('/canlarimiz', ['Canlarımızı önceden tanıyın'], false), '.'),
         heading('h3', 'Etkinlik Programı'),
         ul(
           [bold('10:00-12:00'), ' — Sahiplendirme başvuruları ve tanışma'],
@@ -1060,7 +1121,8 @@ async function seed() {
           ['Hijyen ve kişisel güvenlik kuralları'],
         ),
         paragraph(bold('Süre:'), ' 3 saat (14:00 - 17:00)', text(' | '), bold('Platform:'), ' Zoom'),
-        paragraph(italic('Seminere katılmak için gönüllü başvurusu yapmanız yeterli.')),
+        paragraph('Toplantı bilgisi: ', inlineCode('Meeting ID: 123-456-789')),
+        paragraph('Seminere katılmak için ', link('/gonullu-ol', [bold('gönüllü başvurusu yapın')]), '.'),
       ),
     },
     {
@@ -1073,9 +1135,10 @@ async function seed() {
       description: lexicalRoot(
         heading('h3', 'Kış Besleme Maratonu — Tamamlandı!'),
         paragraph('Şubat ayı boyunca süren kış besleme maratonumuz ', bold('başarıyla tamamlandı!')),
+        paragraph(strikethrough('Hedef: 2.000 kg'), ' — ', bold('AŞILDI!'), ' Toplam ', bold('2.400 kg'), ' mama dağıtıldı.'),
         ul(
           [bold('40'), ' farklı noktada günlük besleme yapıldı'],
-          [bold('2.400 kg'), ' mama dağıtıldı'],
+          [bold('2.400 kg'), ' mama dağıtıldı ', strikethrough('(hedef: 2.000 kg)')],
           [bold('150'), ' gönüllü katıldı'],
           [bold('28'), ' gün boyunca kesintisiz sürdürüldü'],
         ),
@@ -1422,6 +1485,25 @@ async function seed() {
               bold('2019'), '\'dan bu yana ', underline('yüzlerce hayvanın'),
               ' hayatına dokunduk.',
             ),
+            heading('h3', 'Neler Yapıyoruz?'),
+            ul(
+              [bold('Kurtarma & Tedavi'), ' — Yaralı ve hasta sokak hayvanlarını bulup veteriner bakımı sağlıyoruz.'],
+              [bold('Kısırlaştırma'), ' — Kontrolsüz popülasyon artışını önlemek için düzenli kısırlaştırma kampanyaları yürütüyoruz.'],
+              [bold('Besleme Noktaları'), ' — Şehir genelinde ', italic('düzenli besleme noktaları'), ' kurarak hiçbir canın aç kalmamasını hedefliyoruz.'],
+              [bold('Yuva Bul'), ' — Sağlığına kavuşan hayvanları sevgi dolu ailelerle buluşturuyoruz.'],
+            ),
+            quote(
+              italic('"Her sokak hayvanı bir '),
+              boldItalic('umut'),
+              italic(' hak eder. Biz o umudu gerçeğe dönüştürmek için buradayız."'),
+            ),
+            paragraph(
+              '🐾 ', link('/tr/canlarimiz', [bold('Canlarımızı Tanıyın')]),
+              ' · ',
+              link('/tr/gonullu-ol', [bold('Gönüllü Olun')]),
+              ' · ',
+              link('/tr/destek-ol', [bold('Destek Olun')]),
+            ),
           ),
           rotatingWords: [
             { word: 'Besliyoruz' },
@@ -1465,7 +1547,7 @@ async function seed() {
             hr(),
             heading('h3', 'Rakamlarla Etkimiz'),
             paragraph(
-              'Bugüne kadar ', bold('347 hayvan'), ' kurtardık, ', bold('89 sahiplendirme'), ' gerçekleştirdik ve ',
+              'Bugüne kadar ', bold('347 hayvan'), ' kurtardık', superscript('*'), ', ', bold('89 sahiplendirme'), ' gerçekleştirdik ve ',
               bold('2.400+'), ' cana düzenli beslenme sağladık. Ama bu sadece başlangıç.',
             ),
             ul(
@@ -1473,13 +1555,16 @@ async function seed() {
               ['Gönüllü ağımız her ay büyüyor — şu an ', bold('200+'), ' aktif gönüllümüz var'],
               [bold('4 aktif besleme noktası'), ' 7 gün 24 saat erişilebilir durumda'],
             ),
+            callout('info', lexicalRoot(
+              paragraph(superscript('*'), ' Tüm istatistikler aylık şeffaflık raporlarımızda detaylı olarak paylaşılmaktadır. Raporlarımızı inceleyerek bağışlarınızın nasıl kullanıldığını görebilirsiniz.'),
+            ), 'İstatistik Notu'),
             hr(),
             quote(
               italic('"Her canlı sevgiyi, bakımı ve güvenli bir yaşamı hak eder."'),
               ' — Bu inançla yola çıktık, bu inançla devam ediyoruz.',
             ),
             paragraph(
-              'Siz de bu harekete katılın: ', bold('bağış yapın'), ', ',
+              'Siz de bu harekete katılın: ', link('/destek-ol', [bold('bağış yapın')]), ', ',
               bold('gönüllü olun'), ' veya sadece ',
               italic('bu sayfayı paylaşarak'),
               ' sokak hayvanlarının sesini duyurun. ', bold('Birlikte daha güçlüyüz.'),
@@ -1510,7 +1595,6 @@ async function seed() {
           viewAllLabel: 'Tümünü Gör',
           viewAllLink: '/canlarimiz',
           limit: 10,
-          galleryVariant: 'masonry',
           typeLabels: { kedi: 'Kedi', kopek: 'Köpek' },
           statusLabels: { tedavide: 'Tedavide', kaliciBakim: 'Kalıcı Bakım', acil: 'Acil' },
         },
@@ -1523,7 +1607,6 @@ async function seed() {
           tickerText: 'ACİL MÜDAHALE GEREKİYOR /// KLİNİK DESTEĞİ BEKLİYOR /// DESTEK OLUN',
           limit: 5,
           labels: {
-            codeRed: 'KOD KIZIL: VAKA',
             case: 'Vaka',
             active: 'AKTİF',
           },

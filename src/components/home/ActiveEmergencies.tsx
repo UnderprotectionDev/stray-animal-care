@@ -72,7 +72,7 @@ export function ActiveEmergencies({ block, cases }: Props) {
         texts={[tickerText, ...cases.map((c) => c.title).filter(Boolean)] as string[]}
       />
 
-      <EmergencyStackingCards cards={serializedCards} codeRedLabel={labels.codeRed} />
+      <EmergencyStackingCards cards={serializedCards} />
     </section>
   )
 }

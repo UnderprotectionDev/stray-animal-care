@@ -44,7 +44,7 @@ export function IBANCopy({ bankAccounts, labels }: IBANCopyProps) {
                   <span className="badge-sys text-xs">{account.currency}</span>
                 )}
               </div>
-              <div className="flex items-center justify-between gap-3 border border-border bg-palette-dark-cream p-3">
+              <div className="flex items-center justify-between gap-3 border border-border bg-background p-3">
                 <code className="font-mono text-sm font-bold break-all">{account.iban}</code>
                 <CopyButton text={account.iban} label={labels.copy} className="shrink-0" />
               </div>

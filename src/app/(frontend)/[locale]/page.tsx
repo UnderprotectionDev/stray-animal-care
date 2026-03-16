@@ -40,7 +40,7 @@ export default async function HomePage({ params }: Args) {
           limit: 10,
           locale: payloadLocale,
           depth: 1,
-          select: { name: true, slug: true, photos: true, type: true, animalStatus: true, featured: true },
+          select: { name: true, slug: true, photos: true, type: true, animalStatus: true, featured: true, age: true, gender: true, isSpayed: true, isVaccinated: true, location: true },
         })
       : Promise.resolve({ docs: [] }),
     blockTypes.has('homeActiveEmergencies')
@@ -87,7 +87,7 @@ export default async function HomePage({ params }: Args) {
   ])
 
   return (
-    <div className="sys-wrap">
+    <div className="sys-wrap" style={{ gap: 0 }}>
       <RenderHomepageBlocks
         blocks={blocks}
         data={{

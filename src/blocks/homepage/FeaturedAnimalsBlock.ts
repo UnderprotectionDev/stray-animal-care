@@ -9,19 +9,7 @@ export const FeaturedAnimalsBlock: Block = {
     { name: 'viewAllLabel', type: 'text', localized: true, defaultValue: 'Tümünü Gör', label: 'Tümünü Gör Etiketi' },
     { name: 'viewAllLink', type: 'text', defaultValue: '/canlarimiz', label: 'Tümünü Gör Linki' },
     { name: 'limit', type: 'number', defaultValue: 6, min: 1, max: 12, label: 'Gösterilecek Sayı' },
-    {
-      name: 'galleryVariant',
-      label: 'Galeri Görünümü',
-      type: 'select',
-      defaultValue: 'masonry',
-      options: [
-        { label: 'Izgara', value: 'grid' },
-        { label: 'Masonry — Varsayılan (Animasyonlu)', value: 'masonry' },
-        { label: 'Dairesel Galeri (3D)', value: 'circular' },
-      ],
-      admin: { description: 'Hayvan kartlarının görüntülenme şekli' },
-    },
-    { name: 'adoptCta', type: 'text', localized: true, defaultValue: 'YUVA OLUN', label: 'Sahiplen CTA Metni' },
+{ name: 'adoptCta', type: 'text', localized: true, defaultValue: 'YUVA OLUN', label: 'Sahiplen CTA Metni' },
     { name: 'adoptCtaSecondaryLabel', type: 'text', localized: true, defaultValue: 'TÜM LİSTEYİ GÖR →', label: 'Sahiplen İkincil CTA' },
     {
       name: 'typeLabels',

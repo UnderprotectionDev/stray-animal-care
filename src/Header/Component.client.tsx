@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { SearchIcon, Menu, X, Heart } from 'lucide-react'
 import gsap from 'gsap'
 
+import { findClosestEdge4, getEdgeTransform } from '@/utilities/edgeDetection'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { SearchModal } from '@/components/shared/SearchModal'
 import FlowingMenu from '@/components/FlowingMenu'
@@ -43,29 +44,6 @@ function resolveNavImage(item: NavItem): string {
     return (item.image as Media).url || '/images/menu/placeholder.jpg'
   }
   return '/images/menu/placeholder.jpg'
-}
-
-function findClosestEdge4(e: React.MouseEvent, el: HTMLElement): 'top' | 'bottom' | 'left' | 'right' {
-  const rect = el.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
-  const w = rect.width
-  const h = rect.height
-  const nx = (x / w - 0.5) * 2
-  const ny = (y / h - 0.5) * 2
-  if (Math.abs(nx) > Math.abs(ny)) {
-    return nx > 0 ? 'right' : 'left'
-  }
-  return ny > 0 ? 'bottom' : 'top'
-}
-
-function getEdgeTransform(edge: 'top' | 'bottom' | 'left' | 'right') {
-  switch (edge) {
-    case 'left': return { xPercent: -100, yPercent: 0 }
-    case 'right': return { xPercent: 100, yPercent: 0 }
-    case 'top': return { xPercent: 0, yPercent: -100 }
-    case 'bottom': return { xPercent: 0, yPercent: 100 }
-  }
 }
 
 const NAV_HOVER_COLORS = [

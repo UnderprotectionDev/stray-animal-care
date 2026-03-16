@@ -12,7 +12,7 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
 import config from '../payload.config'
-import { bold, boldItalic, heading, hr, italic, lexicalRoot, paragraph, quote, ul, underline } from './lexical-builders'
+import { bold, boldItalic, heading, hr, italic, lexicalRoot, link, paragraph, quote, ul, underline } from './lexical-builders'
 
 async function seed() {
   const payload = await getPayload({ config: await config })
@@ -66,6 +66,25 @@ async function seed() {
               ' ve tüm sokak canlıları için kurulmuş bir gönüllü hareketidir. ',
               bold('2019'), '\'dan bu yana ', underline('yüzlerce hayvanın'),
               ' hayatına dokunduk.',
+            ),
+            heading('h3', 'Neler Yapıyoruz?'),
+            ul(
+              [bold('Kurtarma & Tedavi'), ' — Yaralı ve hasta sokak hayvanlarını bulup veteriner bakımı sağlıyoruz.'],
+              [bold('Kısırlaştırma'), ' — Kontrolsüz popülasyon artışını önlemek için düzenli kısırlaştırma kampanyaları yürütüyoruz.'],
+              [bold('Besleme Noktaları'), ' — Şehir genelinde ', italic('düzenli besleme noktaları'), ' kurarak hiçbir canın aç kalmamasını hedefliyoruz.'],
+              [bold('Yuva Bul'), ' — Sağlığına kavuşan hayvanları sevgi dolu ailelerle buluşturuyoruz.'],
+            ),
+            quote(
+              italic('"Her sokak hayvanı bir '),
+              boldItalic('umut'),
+              italic(' hak eder. Biz o umudu gerçeğe dönüştürmek için buradayız."'),
+            ),
+            paragraph(
+              '🐾 ', link('/tr/canlarimiz', [bold('Canlarımızı Tanıyın')]),
+              ' · ',
+              link('/tr/gonullu-ol', [bold('Gönüllü Olun')]),
+              ' · ',
+              link('/tr/destek-ol', [bold('Destek Olun')]),
             ),
           ),
         },
@@ -157,7 +176,6 @@ async function seed() {
           tickerText: 'ACİL MÜDAHALE GEREKİYOR /// KLİNİK DESTEĞİ BEKLİYOR /// DESTEK OLUN',
           limit: 5,
           labels: {
-            codeRed: 'KOD KIZIL: VAKA',
             case: 'Vaka',
             active: 'AKTİF',
           },
