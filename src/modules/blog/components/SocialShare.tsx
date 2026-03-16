@@ -45,7 +45,7 @@ export function SocialShare({ url, title, labels, className }: SocialShareProps)
         <Share2 className="size-4" />
         {labels.title}
       </div>
-      <div className="flex flex-wrap gap-[1px] bg-foreground">
+      <div className="flex flex-wrap gap-2">
         <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
           {labels.twitter}
         </a>

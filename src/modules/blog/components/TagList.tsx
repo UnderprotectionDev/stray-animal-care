@@ -12,7 +12,7 @@ export function TagList({ tags, label }: TagListProps) {
   return (
     <div className="space-y-2">
       <p className="t-meta font-medium">{label}</p>
-      <div className="flex flex-wrap gap-[1px] bg-foreground">
+      <div className="flex flex-wrap gap-2">
         {validTags.map((tag, index) => (
           <span key={tag.id ?? index} className="badge-sys">
             {tag.tag}
