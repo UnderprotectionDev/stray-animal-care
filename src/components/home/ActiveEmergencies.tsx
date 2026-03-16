@@ -1,10 +1,28 @@
-import React from 'react'
-import type { EmergencyCase, Media as MediaType, SiteSetting } from '@/payload-types'
-import { Link } from '@/i18n/navigation'
-import { Media } from '@/components/Media'
-import { SectionHeader } from './SectionHeader'
+'use client'
 
-type ActiveEmergenciesBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeActiveEmergencies' }>
+import React from 'react'
+import dynamic from 'next/dynamic'
+import type { EmergencyCase, Media as MediaType, SiteSetting } from '@/payload-types'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { AnimatedSectionHeader } from './AnimatedSectionHeader'
+import { EmergencyScrollBand } from './EmergencyScrollBand'
+import type { EmergencyCardData } from './EmergencyStackingCards'
+
+const EmergencyStackingCards = dynamic(() => import('./EmergencyStackingCards'), {
+  ssr: false,
+  loading: () => (
+    <div className="space-y-4">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="h-[340px] border-[1.5px] border-[var(--border)] bg-palette-cream animate-pulse" />
+      ))}
+    </div>
+  ),
+})
+
+type ActiveEmergenciesBlock = Extract<
+  NonNullable<SiteSetting['homepageBlocks']>[number],
+  { blockType: 'homeActiveEmergencies' }
+>
 
 type Props = {
   block: ActiveEmergenciesBlock
@@ -20,122 +38,41 @@ function getFirstPhoto(c: EmergencyCase): MediaType | null {
   return null
 }
 
+function serializeCards(cases: EmergencyCase[]): EmergencyCardData[] {
+  return cases.map((c) => {
+    const photo = getFirstPhoto(c)
+    return {
+      id: c.id,
+      title: c.title,
+      slug: c.slug || '',
+      targetAmount: c.targetAmount ?? 0,
+      collectedAmount: c.collectedAmount ?? 0,
+      imageUrl: photo ? getMediaUrl(photo.url) : '',
+      imageAlt: photo?.alt || c.title,
+    }
+  })
+}
+
 export function ActiveEmergencies({ block, cases }: Props) {
   if (cases.length === 0) return null
 
   const labels = block.labels ?? {}
   const tickerText = block.tickerText || ''
-  const tickerItems = [...cases.map((c) => c.title).filter(Boolean), tickerText].flatMap((item) => [item, item])
-
-  const bigItems = cases.slice(0, 2)
-  const smallItems = cases.slice(2, block.limit ?? 5)
+  const serializedCards = serializeCards(cases)
 
   return (
     <section>
-      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
+      <AnimatedSectionHeader
+        title={block.sectionTitle}
+        viewAllLabel={block.viewAllLabel}
+        viewAllLink={block.viewAllLink}
+      />
 
-      <div className="ticker-wrap">
-        <div className="ticker-track t-meta font-bold uppercase tracking-wider">
-          {tickerItems.map((title, i) => (
-            <span key={i} className="flex items-center gap-4">
-              <span className="text-destructive">{'///'}</span>
-              {title}
-            </span>
-          ))}
-        </div>
-      </div>
+      <EmergencyScrollBand
+        texts={[tickerText, ...cases.map((c) => c.title).filter(Boolean)] as string[]}
+      />
 
-      <div
-        className="grid grid-cols-1"
-        style={{ gap: '1px', background: 'var(--foreground)' }}
-      >
-        <div
-          className="grid grid-cols-1 md:grid-cols-2"
-          style={{ gap: '1px', background: 'var(--foreground)' }}
-        >
-          {bigItems.map((emergencyCase, i) => {
-            const photo = getFirstPhoto(emergencyCase)
-            return (
-              <div
-                key={emergencyCase.id}
-                className="grid grid-cols-1 md:grid-cols-2"
-                style={{ gap: '1px', background: 'var(--foreground)' }}
-              >
-                <Link
-                  href={`/acil-vakalar/${emergencyCase.slug}`}
-                  className="relative aspect-square overflow-hidden bg-stone-200 group"
-                >
-                  {photo && (
-                    <Media
-                      resource={photo}
-                      fill
-                      imgClassName="object-cover transition-all duration-300"
-                    />
-                  )}
-                </Link>
-                <Link
-                  href={`/acil-vakalar/${emergencyCase.slug}`}
-                  className="bg-emergency p-6 flex flex-col justify-center gap-3 hover:bg-palette-yellow/80 transition-colors"
-                >
-                  <span className="t-meta font-bold text-destructive border border-destructive px-2 py-1 w-fit uppercase">
-                    {labels.codeRed || 'CODE RED'} {String(89 + i).padStart(3, '0')}
-                  </span>
-                  <h3 className="t-h2">{emergencyCase.title}</h3>
-                  <p className="t-body text-foreground/70">
-                    {emergencyCase.targetAmount > 0
-                      ? `${(emergencyCase.collectedAmount ?? 0).toLocaleString('tr-TR')} / ${emergencyCase.targetAmount.toLocaleString('tr-TR')} TL`
-                      : ''}
-                  </p>
-                </Link>
-              </div>
-            )
-          })}
-        </div>
-
-        {smallItems.length > 0 && (
-          <div
-            className="grid grid-cols-1 md:grid-cols-3"
-            style={{ gap: '1px', background: 'var(--foreground)' }}
-          >
-            {smallItems.map((emergencyCase, i) => {
-              const photo = getFirstPhoto(emergencyCase)
-              return (
-                <Link
-                  key={emergencyCase.id}
-                  href={`/acil-vakalar/${emergencyCase.slug}`}
-                  className="bg-palette-cream hover:bg-emergency transition-colors group"
-                >
-                  <div className="flex flex-col h-full">
-                    <div className="relative aspect-[16/9] overflow-hidden bg-stone-200">
-                      {photo && (
-                        <Media
-                          resource={photo}
-                          fill
-                          imgClassName="object-cover transition-all duration-300"
-                        />
-                      )}
-                    </div>
-                    <div className="flex flex-col gap-1 p-4 flex-1">
-                      <span className="t-meta font-bold text-destructive uppercase">
-                        {labels.codeRed || 'CODE RED'} {String(91 + i).padStart(3, '0')}
-                      </span>
-                      <h3 className="t-body font-bold line-clamp-2">
-                        {emergencyCase.title}
-                      </h3>
-                      {emergencyCase.targetAmount > 0 && (
-                        <p className="t-meta text-foreground/70">
-                          {(emergencyCase.collectedAmount ?? 0).toLocaleString('tr-TR')} /{' '}
-                          {emergencyCase.targetAmount.toLocaleString('tr-TR')} TL
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        )}
-      </div>
+      <EmergencyStackingCards cards={serializedCards} codeRedLabel={labels.codeRed} />
     </section>
   )
 }

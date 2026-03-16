@@ -4,6 +4,7 @@ import React, { useCallback, useRef } from 'react'
 import gsap from 'gsap'
 import type { SiteSetting } from '@/payload-types'
 import CountUp from '@/components/CountUp'
+import BlurText from '@/components/BlurText'
 
 type StatsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeStats' }>
 
@@ -84,12 +85,20 @@ const StatCard: React.FC<{
           <CountUp to={numericValue} from={0} duration={2} />
           {suffix && <span>{suffix}</span>}
         </span>
-        <span
-          className="block mt-2 text-sm font-bold uppercase tracking-wider"
-          style={{ fontFamily: 'var(--font-mono)' }}
-        >
-          {metric.name}
-        </span>
+        {metric.name && (
+          <BlurText
+            text={metric.name}
+            tag="span"
+            className="block mt-2 text-sm font-bold uppercase tracking-wider"
+            animateBy="words"
+            delay={80}
+            stepDuration={0.3}
+            direction="bottom"
+            threshold={0.3}
+            animationFrom={{ filter: 'blur(6px)', opacity: 0, y: 15 }}
+            animationTo={[{ filter: 'blur(0px)', opacity: 1, y: 0 }]}
+          />
+        )}
       </div>
     </div>
   )

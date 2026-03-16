@@ -1,8 +1,21 @@
+'use client'
+
 import React from 'react'
+import dynamic from 'next/dynamic'
 import type { Animal, Media as MediaType, SiteSetting } from '@/payload-types'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
-import { SectionHeader } from './SectionHeader'
+import { AnimatedSectionHeader } from './AnimatedSectionHeader'
+import { AnimatedCardTitle } from './AnimatedCardTitle'
+
+const AnimalMasonryGallery = dynamic(() => import('./AnimalMasonryGallery'), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: '400px' }} />,
+})
+const AnimalCircularGallery = dynamic(() => import('./AnimalCircularGallery'), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: '400px' }} />,
+})
 
 type FeaturedAnimalsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeFeaturedAnimals' }>
 
@@ -45,7 +58,7 @@ function AnimalCard({ animal, block }: { animal: Animal; block: FeaturedAnimalsB
         <span className={`t-meta font-bold uppercase ${statusColor}`}>
           {statusMap[animalStatus] || animalStatus}
         </span>
-        <span className="t-h2 text-white">{animal.name}</span>
+        <AnimatedCardTitle text={animal.name} className="t-h2 text-white" />
         <div className="flex gap-3">
           {animal.type && (
             <span className="t-meta text-white/70">
@@ -65,15 +78,22 @@ export function FeaturedAnimals({ block, animals }: Props) {
   if (animals.length === 0) return null
 
   const cards = animals.slice(0, block.limit ?? 6)
+  const variant = block.galleryVariant ?? 'grid'
 
   return (
     <section>
-      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
-      <div className="featured-animals-grid">
-        {cards.map((animal) => (
-          <AnimalCard key={animal.id} animal={animal} block={block} />
-        ))}
-      </div>
+      <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
+      {variant === 'masonry' ? (
+        <AnimalMasonryGallery animals={cards} block={block} />
+      ) : variant === 'circular' ? (
+        <AnimalCircularGallery animals={cards} />
+      ) : (
+        <div className="featured-animals-grid">
+          {cards.map((animal) => (
+            <AnimalCard key={animal.id} animal={animal} block={block} />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

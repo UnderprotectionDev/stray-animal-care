@@ -12,6 +12,7 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
 import config from '../payload.config'
+import { bold, boldItalic, heading, hr, italic, lexicalRoot, paragraph, quote, ul, underline } from './lexical-builders'
 
 async function seed() {
   const payload = await getPayload({ config: await config })
@@ -57,6 +58,16 @@ async function seed() {
           blockType: 'homeHero',
           enabled: true,
           sectionTitle: 'ANA SAYFA',
+          content: lexicalRoot(
+            heading('h2', 'Sokak Hayvanlarına ', boldItalic('Umut'), ' Oluyoruz'),
+            paragraph(
+              bold('Paws of Hope'), ', İstanbul sokaklarında yaşam mücadelesi veren ',
+              italic('kediler'), ', ', italic('köpekler'),
+              ' ve tüm sokak canlıları için kurulmuş bir gönüllü hareketidir. ',
+              bold('2019'), '\'dan bu yana ', underline('yüzlerce hayvanın'),
+              ' hayatına dokunduk.',
+            ),
+          ),
         },
         {
           blockType: 'homeStats',
@@ -73,6 +84,43 @@ async function seed() {
           enabled: true,
           sectionTitle: 'HİKAYEMİZ & MİSYON',
           founderCaption: 'AYŞE KAYA, 2019',
+          content: lexicalRoot(
+            heading('h3', 'Ne Yapıyoruz?'),
+            paragraph(
+              'Her gün sahada aktif çalışıyoruz. Faaliyetlerimiz yalnızca besleme ile sınırlı değil — ',
+              bold('kapsamlı bir bakım ağı'),
+              ' oluşturduk:',
+            ),
+            ul(
+              [bold('Günlük Besleme'), ' — İstanbul genelinde ', bold('40+'), ' noktada düzenli mama ve su bırakıyoruz'],
+              [bold('Acil Kurtarma'), ' — Yaralı, hasta veya tehlike altındaki hayvanları ', bold('7/24'), ' müdahaleyle kurtarıyoruz'],
+              [bold('Veteriner Tedavi'), ' — Ameliyatlar, aşılar ve kronik tedavi masraflarını karşılıyoruz'],
+              [bold('Kısırlaştırma'), ' — İnsancıl popülasyon kontrolü için kampanyalar düzenliyoruz'],
+              [bold('Sahiplendirme'), ' — Tedavisi tamamlanan canlarımıza kalıcı yuva buluyoruz'],
+            ),
+            hr(),
+            heading('h3', 'Rakamlarla Etkimiz'),
+            paragraph(
+              'Bugüne kadar ', bold('347 hayvan'), ' kurtardık, ', bold('89 sahiplendirme'), ' gerçekleştirdik ve ',
+              bold('2.400+'), ' cana düzenli beslenme sağladık. Ama bu sadece başlangıç.',
+            ),
+            ul(
+              ['Her hafta ortalama ', bold('12 yeni vaka'), ' ile ilgileniyoruz'],
+              ['Gönüllü ağımız her ay büyüyor — şu an ', bold('200+'), ' aktif gönüllümüz var'],
+              [bold('4 aktif besleme noktası'), ' 7 gün 24 saat erişilebilir durumda'],
+            ),
+            hr(),
+            quote(
+              italic('"Her canlı sevgiyi, bakımı ve güvenli bir yaşamı hak eder."'),
+              ' — Bu inançla yola çıktık, bu inançla devam ediyoruz.',
+            ),
+            paragraph(
+              'Siz de bu harekete katılın: ', bold('bağış yapın'), ', ',
+              bold('gönüllü olun'), ' veya sadece ',
+              italic('bu sayfayı paylaşarak'),
+              ' sokak hayvanlarının sesini duyurun. ', bold('Birlikte daha güçlüyüz.'),
+            ),
+          ),
         },
         {
           blockType: 'homeOurWork',
@@ -96,25 +144,9 @@ async function seed() {
           sectionTitle: 'Canlarımız',
           viewAllLabel: 'Tümünü Gör',
           viewAllLink: '/canlarimiz',
-          limit: 6,
+          limit: 10,
           typeLabels: { kedi: 'Kedi', kopek: 'Köpek' },
           statusLabels: { tedavide: 'Tedavide', kaliciBakim: 'Kalıcı Bakım', acil: 'Acil' },
-        },
-        {
-          blockType: 'homeSuccessStories',
-          enabled: true,
-          sectionTitle: 'Başarı Hikayeleri',
-          viewAllLabel: 'Tümünü Gör',
-          viewAllLink: '/acil-vakalar',
-          limit: 4,
-          labels: {
-            before: 'Önce',
-            after: 'Sonra',
-            completed: 'TAMAMLANDI',
-            collected: 'Toplanan',
-            target: 'Hedef',
-            funded: 'fonlandı',
-          },
         },
         {
           blockType: 'homeActiveEmergencies',

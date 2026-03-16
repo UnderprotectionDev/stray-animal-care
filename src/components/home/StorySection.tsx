@@ -2,6 +2,8 @@ import React from 'react'
 import type { SiteSetting, Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import { AnimatedMegaHeading } from './AnimatedMegaHeading'
+import BlurText from '@/components/BlurText'
 
 type StoryBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeStory' }>
 
@@ -16,9 +18,11 @@ export function StorySection({ block }: Props) {
     <section>
       {block.sectionTitle && (
         <div className="bg-[var(--background)] border-b border-border py-6 px-6 md:px-8">
-          <h2 className="t-mega" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}>
-            {block.sectionTitle}
-          </h2>
+          <AnimatedMegaHeading
+            text={block.sectionTitle}
+            tag="h2"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}
+          />
           <div className="w-24 h-1 mt-3" style={{ background: 'var(--cta)' }} />
         </div>
       )}
@@ -38,7 +42,18 @@ export function StorySection({ block }: Props) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-6">
             {block.founderCaption && (
-              <span className="t-meta text-white block mt-2">{block.founderCaption}</span>
+              <BlurText
+                text={block.founderCaption}
+                tag="span"
+                className="t-meta text-white block mt-2"
+                animateBy="words"
+                delay={60}
+                stepDuration={0.3}
+                direction="bottom"
+                threshold={0.2}
+                animationFrom={{ filter: 'blur(6px)', opacity: 0, y: 15 }}
+                animationTo={[{ filter: 'blur(0px)', opacity: 1, y: 0 }]}
+              />
             )}
           </div>
         </div>

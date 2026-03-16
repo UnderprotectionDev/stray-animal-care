@@ -1,9 +1,13 @@
+'use client'
+
 import React from 'react'
 import type { SiteSetting } from '@/payload-types'
-import { CopyButton } from '@/components/shared/CopyButton'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 import { Link } from '@/i18n/navigation'
 import { getSocialLink } from '@/utilities/socialLinks'
+import TextHighlighter from '@/components/TextHighlighter'
+import StackingBankCards from './StackingBankCards'
+import BlurText from '@/components/BlurText'
 
 type SupportCardsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeSupportCards' }>
 
@@ -20,39 +24,39 @@ export function SupportCards({ block, siteSettings }: Props) {
   return (
     <section>
       <div className="panel py-6 px-6 border-b border-border">
-        <h2 className="t-mega uppercase">{block.slogan}</h2>
+        {block.slogan ? (
+          <TextHighlighter
+            highlightColor="var(--cta)"
+            triggerType="inView"
+            direction="ltr"
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+            useInViewOptions={{ once: true, amount: 0.3 }}
+          >
+            <h2 className="t-mega uppercase">{block.slogan}</h2>
+          </TextHighlighter>
+        ) : (
+          <h2 className="t-mega uppercase" />
+        )}
       </div>
 
       <div className="panel border-b border-border">
         <div className="px-6 py-4 border-b border-border">
-          <h3 className="t-h2 uppercase">{block.ibanTitle}</h3>
+          {block.ibanTitle ? (
+            <TextHighlighter
+              highlightColor="var(--cta)"
+              triggerType="inView"
+              direction="ltr"
+              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+              useInViewOptions={{ once: true, amount: 0.5 }}
+            >
+              <h3 className="t-h2 uppercase">{block.ibanTitle}</h3>
+            </TextHighlighter>
+          ) : (
+            <h3 className="t-h2 uppercase" />
+          )}
         </div>
         {bankAccounts.length > 0 ? (
-          <div className="divide-y divide-border">
-            {bankAccounts.map((account) => (
-              <div key={account.id} className="px-6 py-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="t-meta font-bold">{account.bankName}</span>
-                  <span className="badge-sys">{account.currency || 'TRY'}</span>
-                </div>
-                <div className="flex items-center gap-3 bg-palette-dark-cream border-[1.5px] border-border p-3">
-                  <code className="font-mono text-sm break-all flex-1">
-                    {account.iban}
-                  </code>
-                  <CopyButton
-                    text={account.iban}
-                    label={labels.copy || 'Copy'}
-                    className="shrink-0"
-                  />
-                </div>
-                {account.accountHolder && (
-                  <p className="t-meta text-muted-foreground">
-                    {account.accountHolder}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
+          <StackingBankCards accounts={bankAccounts} labels={labels} />
         ) : (
           <div className="px-6 py-8 text-center">
             <p className="t-meta text-muted-foreground">
@@ -77,7 +81,23 @@ export function SupportCards({ block, siteSettings }: Props) {
         </div>
 
         <div className="panel !bg-black text-white">
-          <h3 className="t-h2 uppercase mb-4">{block.volunteerTitle}</h3>
+          {block.volunteerTitle ? (
+            <BlurText
+              text={block.volunteerTitle}
+              tag="h3"
+              className="t-h2 uppercase mb-4"
+              animateBy="words"
+              delay={50}
+              stepDuration={0.25}
+              direction="top"
+              threshold={0.2}
+              animationFrom={{ filter: 'blur(8px)', opacity: 0, y: -25 }}
+              animationTo={[{ filter: 'blur(0px)', opacity: 1, y: 0 }]}
+              easing={[0.25, 0.46, 0.45, 0.94]}
+            />
+          ) : (
+            <h3 className="t-h2 uppercase mb-4" />
+          )}
           <p className="t-body text-white/70 mb-4">
             {block.volunteerDescription}
           </p>

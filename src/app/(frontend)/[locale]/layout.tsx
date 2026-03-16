@@ -91,21 +91,23 @@ export default async function RootLayout({ children, params }: Props) {
         <Providers>
           <NextIntlClientProvider messages={{}}>
             <NuqsAdapter>
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:border focus:border-border"
-            >
-              {layoutLabels?.skipToContent || 'İçeriğe geç'}
-            </a>
-            <AdminBar
-              adminBarProps={{
-                preview: isEnabled,
-              }}
-            />
-            <Header locale={locale} headerLabels={headerLabels} searchLabels={searchLabels} siteSettings={siteSettings} />
-            <main id="main-content" className="flex-1 pb-20 md:pb-0">
-              {children}
-            </main>
+            <div className="content-above-footer">
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:border focus:border-border"
+              >
+                {layoutLabels?.skipToContent || 'İçeriğe geç'}
+              </a>
+              <AdminBar
+                adminBarProps={{
+                  preview: isEnabled,
+                }}
+              />
+              <Header locale={locale} headerLabels={headerLabels} searchLabels={searchLabels} siteSettings={siteSettings} />
+              <main id="main-content" className="flex-1 pb-20 md:pb-0">
+                {children}
+              </main>
+            </div>
             <Footer siteSettings={siteSettings} labels={footerLabels} headerLabels={headerLabels} />
             <MobileDonateBar label={mobileDonateLabel} />
             </NuqsAdapter>

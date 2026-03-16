@@ -10,6 +10,18 @@ export const OurWorkBlock: Block = {
     { name: 'viewAllLink', type: 'text', defaultValue: '/calismalarimiz', label: 'Tümünü Gör Linki' },
     { name: 'photoCountTemplate', type: 'text', localized: true, defaultValue: '{count} fotoğraf', label: 'Fotoğraf Sayısı Şablonu' },
     {
+      name: 'galleryVariant',
+      label: 'Galeri Görünümü',
+      type: 'select',
+      defaultValue: 'stacking',
+      options: [
+        { label: 'Izgara', value: 'grid' },
+        { label: 'Dairesel Galeri (3D)', value: 'circular' },
+        { label: 'Yığın Kartlar (Varsayılan)', value: 'stacking' },
+      ],
+      admin: { description: 'Aktivite kartlarının görüntülenme şekli' },
+    },
+    {
       name: 'activities',
       label: 'Aktiviteler',
       type: 'array',

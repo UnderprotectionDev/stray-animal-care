@@ -32,12 +32,12 @@ export default async function HomePage({ params }: Args) {
   const blockTypes = new Set(blocks.filter((b) => b.enabled !== false).map((b) => b.blockType))
   const payload = await getPayload({ config: configPromise })
 
-  const [animals, cases, completedCases, posts, needsItems, latestReport] = await Promise.all([
+  const [animals, cases, posts, needsItems, latestReport] = await Promise.all([
     blockTypes.has('homeFeaturedAnimals')
       ? payload.find({
           collection: 'animals',
           where: { featured: { equals: true }, _status: { equals: 'published' } },
-          limit: 6,
+          limit: 10,
           locale: payloadLocale,
           depth: 1,
           select: { name: true, slug: true, photos: true, type: true, animalStatus: true, featured: true },
@@ -51,22 +51,6 @@ export default async function HomePage({ params }: Args) {
           locale: payloadLocale,
           depth: 1,
           select: { title: true, slug: true, targetAmount: true, collectedAmount: true, photos: true, caseStatus: true },
-        })
-      : Promise.resolve({ docs: [] }),
-    blockTypes.has('homeSuccessStories')
-      ? payload.find({
-          collection: 'emergency-cases',
-          where: {
-            caseStatus: { equals: 'tamamlandi' },
-            _status: { equals: 'published' },
-            beforePhoto: { exists: true },
-            afterPhoto: { exists: true },
-          },
-          limit: 4,
-          sort: '-updatedAt',
-          locale: payloadLocale,
-          depth: 1,
-          select: { title: true, slug: true, beforePhoto: true, afterPhoto: true, collectedAmount: true, targetAmount: true, caseStatus: true },
         })
       : Promise.resolve({ docs: [] }),
     blockTypes.has('homeRecentPosts')
@@ -109,7 +93,6 @@ export default async function HomePage({ params }: Args) {
         data={{
           animals: animals.docs as Animal[],
           activeCases: cases.docs as EmergencyCase[],
-          completedCases: completedCases.docs as EmergencyCase[],
           posts: posts.docs as Post[],
           needsItems: needsItems.docs as NeedsListType[],
           siteSettings,

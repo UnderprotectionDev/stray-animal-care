@@ -484,11 +484,19 @@
     cursor: not-allowed;
   }
 
+  /* ── Sticky Footer Reveal ── */
+  .content-above-footer {
+    position: relative;
+    z-index: 1;
+    background-color: var(--background);
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
   /* ── Ticker ── (keep inside @layer utilities — no responsive variants needed) */
   .ticker-wrap {
     overflow: hidden;
-    border-top: 1.5px solid var(--border);
-    border-bottom: 1.5px solid var(--border);
     background: var(--palette-black);
     color: var(--palette-cream);
     padding: 0.75rem 0;
@@ -519,7 +527,7 @@
 
 :root {
   /* ── Palette ── */
-  --palette-cream: #E0DDD4;
+  --palette-cream: #FFFFFF;
   --palette-red: #EF303B;
   --palette-blue: #4A46E4;
   --palette-yellow: #F5B62A;
@@ -530,6 +538,7 @@
   --palette-dark-cream: #C9C4B8;
   --palette-warm-gray: #A39E93;
   --palette-coral: #FF6B6B;
+  --palette-forest: #0F5257;
 
   /* ── shadcn Standard Tokens ── */
   --background: var(--palette-cream);
@@ -650,6 +659,7 @@
   --color-palette-dark-cream: var(--palette-dark-cream);
   --color-palette-warm-gray: var(--palette-warm-gray);
   --color-palette-coral: var(--palette-coral);
+  --color-palette-forest: var(--palette-forest);
 
   /* ── Semantic Colors (bg-cta, text-cta-foreground, etc.) ── */
   --color-cta: var(--cta);

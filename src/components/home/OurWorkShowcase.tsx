@@ -1,8 +1,18 @@
+'use client'
+
 import React from 'react'
+import dynamic from 'next/dynamic'
 import type { SiteSetting, Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { interpolate } from '@/utilities/interpolate'
-import { SectionHeader } from './SectionHeader'
+import { AnimatedSectionHeader } from './AnimatedSectionHeader'
+import { AnimatedCardTitle } from './AnimatedCardTitle'
+import OurWorkCircularGallery from './OurWorkCircularGallery'
+
+const OurWorkStackingCards = dynamic(() => import('./OurWorkStackingCards'), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: '400px' }} />,
+})
 
 type OurWorkBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeOurWork' }>
 
@@ -15,6 +25,15 @@ const ACTIVITY_NUMBERS: Record<string, string> = {
   shelter: '06',
 }
 
+const ACTIVITY_COLORS: Record<string, string> = {
+  feeding: 'var(--health)',
+  treatment: 'var(--stats)',
+  spaying: 'var(--trust)',
+  emergency: 'var(--emergency)',
+  vaccination: 'var(--adoption)',
+  shelter: 'var(--warm)',
+}
+
 type Props = {
   block: OurWorkBlock
 }
@@ -23,9 +42,16 @@ export function OurWorkShowcase({ block }: Props) {
   const activities = block.activities ?? []
   if (activities.length === 0) return null
 
+  const variant = block.galleryVariant ?? 'stacking'
+
   return (
     <section>
-      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
+      <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
+      {variant === 'stacking' ? (
+        <OurWorkStackingCards activities={activities} photoCountTemplate={block.photoCountTemplate} />
+      ) : variant === 'circular' ? (
+        <OurWorkCircularGallery activities={activities} />
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {activities.map((activity) => {
           const images = activity.images
@@ -41,6 +67,7 @@ export function OurWorkShowcase({ block }: Props) {
             <div
               key={activity.id || activity.key}
               className="relative group overflow-hidden bg-[var(--muted)] border-b border-r border-border h-[280px]"
+              style={{ borderLeftWidth: '4px', borderLeftColor: ACTIVITY_COLORS[activity.key] || 'var(--border)' }}
             >
               {firstImage && (
                 <Media
@@ -54,9 +81,7 @@ export function OurWorkShowcase({ block }: Props) {
                 <span className="t-meta text-white/50 font-mono">
                   {ACTIVITY_NUMBERS[activity.key] || '00'} {'// '}{activity.title?.toUpperCase() ?? ''}
                 </span>
-                <span className="t-h2 text-white">
-                  {activity.title}
-                </span>
+                <AnimatedCardTitle text={activity.title} className="t-h2 text-white" />
                 {activity.description && (
                   <span className="t-meta text-white/70">
                     {activity.description}
@@ -72,6 +97,7 @@ export function OurWorkShowcase({ block }: Props) {
           )
         })}
       </div>
+      )}
     </section>
   )
 }

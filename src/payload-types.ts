@@ -2284,6 +2284,12 @@ export interface SiteSetting {
               };
               [k: string]: unknown;
             } | null;
+            rotatingWords?:
+              | {
+                  word: string;
+                  id?: string | null;
+                }[]
+              | null;
             leftImage?: (number | null) | Media;
             rightImage?: (number | null) | Media;
             id?: string | null;
@@ -2334,6 +2340,10 @@ export interface SiteSetting {
             viewAllLabel?: string | null;
             viewAllLink?: string | null;
             photoCountTemplate?: string | null;
+            /**
+             * Aktivite kartlarının görüntülenme şekli
+             */
+            galleryVariant?: ('grid' | 'circular' | 'stacking') | null;
             activities?:
               | {
                   key: 'feeding' | 'treatment' | 'spaying' | 'emergency' | 'vaccination' | 'shelter';
@@ -2353,6 +2363,10 @@ export interface SiteSetting {
             viewAllLabel?: string | null;
             viewAllLink?: string | null;
             limit?: number | null;
+            /**
+             * Hayvan kartlarının görüntülenme şekli
+             */
+            galleryVariant?: ('grid' | 'masonry' | 'circular') | null;
             adoptCta?: string | null;
             adoptCtaSecondaryLabel?: string | null;
             typeLabels?: {
@@ -2364,27 +2378,20 @@ export interface SiteSetting {
               kaliciBakim?: string | null;
               acil?: string | null;
             };
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'homeFeaturedAnimals';
-          }
-        | {
-            enabled?: boolean | null;
-            sectionTitle?: string | null;
-            viewAllLabel?: string | null;
-            viewAllLink?: string | null;
-            limit?: number | null;
-            labels?: {
-              before?: string | null;
-              after?: string | null;
-              completed?: string | null;
-              collected?: string | null;
-              target?: string | null;
-              funded?: string | null;
+            genderLabels?: {
+              erkek?: string | null;
+              disi?: string | null;
+              bilinmiyor?: string | null;
+            };
+            booleanLabels?: {
+              spayedYes?: string | null;
+              spayedNo?: string | null;
+              vaccinatedYes?: string | null;
+              vaccinatedNo?: string | null;
             };
             id?: string | null;
             blockName?: string | null;
-            blockType: 'homeSuccessStories';
+            blockType: 'homeFeaturedAnimals';
           }
         | {
             enabled?: boolean | null;
@@ -2971,6 +2978,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               enabled?: T;
               sectionTitle?: T;
               content?: T;
+              rotatingWords?:
+                | T
+                | {
+                    word?: T;
+                    id?: T;
+                  };
               leftImage?: T;
               rightImage?: T;
               id?: T;
@@ -3010,6 +3023,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               viewAllLabel?: T;
               viewAllLink?: T;
               photoCountTemplate?: T;
+              galleryVariant?: T;
               activities?:
                 | T
                 | {
@@ -3030,6 +3044,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               viewAllLabel?: T;
               viewAllLink?: T;
               limit?: T;
+              galleryVariant?: T;
               adoptCta?: T;
               adoptCtaSecondaryLabel?: T;
               typeLabels?:
@@ -3045,26 +3060,20 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     kaliciBakim?: T;
                     acil?: T;
                   };
-              id?: T;
-              blockName?: T;
-            };
-        homeSuccessStories?:
-          | T
-          | {
-              enabled?: T;
-              sectionTitle?: T;
-              viewAllLabel?: T;
-              viewAllLink?: T;
-              limit?: T;
-              labels?:
+              genderLabels?:
                 | T
                 | {
-                    before?: T;
-                    after?: T;
-                    completed?: T;
-                    collected?: T;
-                    target?: T;
-                    funded?: T;
+                    erkek?: T;
+                    disi?: T;
+                    bilinmiyor?: T;
+                  };
+              booleanLabels?:
+                | T
+                | {
+                    spayedYes?: T;
+                    spayedNo?: T;
+                    vaccinatedYes?: T;
+                    vaccinatedNo?: T;
                   };
               id?: T;
               blockName?: T;

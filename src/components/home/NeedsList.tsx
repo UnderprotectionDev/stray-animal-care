@@ -1,6 +1,7 @@
 import React from 'react'
 import type { SiteSetting, NeedsList as NeedsListType } from '@/payload-types'
-import { SectionHeader } from './SectionHeader'
+import { AnimatedSectionHeader } from './AnimatedSectionHeader'
+import { AnimatedCardTitle } from './AnimatedCardTitle'
 
 type NeedsListBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeNeedsList' }>
 
@@ -87,7 +88,7 @@ export function NeedsList({ block, items }: Props) {
 
   return (
     <section>
-      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
+      <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
 
       <div className="needs-grid">
         {visibleItems.map((item, i) => {
@@ -104,12 +105,20 @@ export function NeedsList({ block, items }: Props) {
                 <span className={PRIORITY_BADGE_CLASS[priority] || 'badge-sys'}>
                   {priorityLabel(priority)}
                 </span>
-                <h3
-                  className={`${isHero ? 'text-2xl md:text-3xl mt-3' : 'text-lg mt-2'} font-black uppercase tracking-tight`}
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  {item.productName}
-                </h3>
+                {isHero ? (
+                  <AnimatedCardTitle
+                    text={item.productName}
+                    tag="h3"
+                    className="text-2xl md:text-3xl mt-3 font-black uppercase tracking-tight"
+                  />
+                ) : (
+                  <h3
+                    className="text-lg mt-2 font-black uppercase tracking-tight"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    {item.productName}
+                  </h3>
+                )}
                 {item.brandDetail && (
                   <p className={`${isHero ? 'text-sm mt-1' : 't-meta mt-0.5'}`} style={isHero ? { color: 'rgba(255,255,255,0.7)' } : undefined}>
                     {item.brandDetail}
