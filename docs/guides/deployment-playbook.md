@@ -1,6 +1,6 @@
 # Deployment Playbook
 
-> Last updated: 2026-03-10
+> Last updated: 2026-03-16
 
 ---
 
@@ -77,37 +77,21 @@ openssl rand -hex 32
 
 ---
 
-## Database Migrations
+## Database Schema Sync
 
-PayloadCMS 3.x handles migrations automatically.
+This project uses `push: true` in the database adapter configuration. PayloadCMS automatically syncs the database schema on startup — **no migration files are used**.
 
 | Event                | Behavior                                          |
 | -------------------- | ------------------------------------------------- |
 | First deploy         | PayloadCMS creates all tables from collection schemas |
-| Schema change deploy | PayloadCMS runs auto-migration during build       |
-| Rollback             | Manual — PayloadCMS does not auto-rollback        |
+| Schema change deploy | PayloadCMS auto-syncs schema on startup (`push: true`) |
+| Rollback             | Manual — schema changes are not automatically reversed |
 
-### Manual Migration Commands
-
-```bash
-# Generate migration file from schema changes
-pnpm run payload migrate:create
-
-# Run pending migrations
-pnpm run payload migrate
-
-# Check migration status
-pnpm run payload migrate:status
-
-# Reset database (DESTRUCTIVE — development only)
-pnpm run payload migrate:reset
-```
-
-### Migration Safety
+### Safety Notes
 
 - Always test schema changes on the Neon `preview` branch first
-- Review auto-generated migration files before deploying to production
 - Back up the database before deploying destructive schema changes (column drops, type changes)
+- The `payload_migrations` table exists but is empty — all migrations were removed in favor of `push: true`
 
 ---
 

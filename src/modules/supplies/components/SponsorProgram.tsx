@@ -16,7 +16,7 @@ export function SponsorProgram({ labels }: SponsorProgramProps) {
       <Heart className="mx-auto mb-4 size-10 text-foreground" />
       <h2 className="t-h1 mb-3">{labels.title}</h2>
       <p className="t-meta mx-auto mb-6 max-w-lg">{labels.description}</p>
-      <Link href="/destek-ol" className="btn-cta inline-block">
+      <Link href="/destek-ol" className="btn-health inline-block">
         {labels.cta}
       </Link>
     </div>

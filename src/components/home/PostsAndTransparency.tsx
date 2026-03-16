@@ -1,12 +1,14 @@
 import React from 'react'
 import type { Post, SiteSetting, TransparencyReport } from '@/payload-types'
 import { Link } from '@/i18n/navigation'
-import { formatCurrency } from '@/utilities/formatCurrency'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { CATEGORY_LABELS_FALLBACK } from '@/utilities/categoryLabels'
 import { ArrowUp, ArrowDown, Users } from 'lucide-react'
-import BlogCardsInteractive from './BlogCardsInteractive'
-import type { BlogCardData } from './BlogCardsInteractive'
+import BlogCardsBento from './BlogCardsBento'
+import type { BentoCardData } from './BlogCardsBento'
+import { AnimatedMegaHeading } from './AnimatedMegaHeading'
+import { CountUpCurrency } from './CountUpCurrency'
+import { CountUpNumber } from './CountUpNumber'
 
 type RecentPostsBlock = Extract<
   NonNullable<SiteSetting['homepageBlocks']>[number],
@@ -36,8 +38,8 @@ function getPostImage(post: Post): { url: string; alt: string } {
   return { url: '', alt: post.title }
 }
 
-function serializeBlogCards(posts: Post[]): BlogCardData[] {
-  return posts.slice(0, 3).map((post) => {
+function serializeBlogCards(posts: Post[]): BentoCardData[] {
+  return posts.map((post) => {
     const image = getPostImage(post)
     return {
       id: post.id,
@@ -69,26 +71,22 @@ export function PostsAndTransparency({
       {/* ═══════════ BLOG SECTION ═══════════ */}
       <section>
         {/* Header bar */}
-        <div
-          className="grid grid-cols-1 lg:grid-cols-[1fr_auto]"
-          style={{ gap: '1.5px', background: 'var(--palette-black)' }}
-        >
-          <div className="bg-background px-6 py-5 lg:px-8 lg:py-6">
-            <p className="t-comment mb-1">{'// BLOG & HABERLER'}</p>
-            <h2 className="t-mega">{postsBlock.sectionTitle}</h2>
+        <div className="panel py-5 px-6 lg:px-8 flex flex-col gap-1 border-b-[1.5px] border-border">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="t-comment mb-1">{'// BLOG & HABERLER'}</p>
+              <AnimatedMegaHeading text={postsBlock.sectionTitle} enableColorFlash />
+            </div>
+            {postsBlock.viewAllLabel && postsBlock.viewAllLink && (
+              <Link href={postsBlock.viewAllLink} className="btn-stats text-xs py-2 px-5 shrink-0">
+                {postsBlock.viewAllLabel}
+              </Link>
+            )}
           </div>
-          {postsBlock.viewAllLabel && postsBlock.viewAllLink && (
-            <Link
-              href={postsBlock.viewAllLink}
-              className="flex items-center justify-center bg-cta text-cta-foreground px-8 py-4 font-bold uppercase tracking-wider text-sm hover:opacity-90 transition-opacity"
-            >
-              {postsBlock.viewAllLabel}
-            </Link>
-          )}
         </div>
 
-        {/* Interactive blog cards */}
-        <BlogCardsInteractive cards={serializedCards} locale={locale} />
+        {/* Bento blog cards */}
+        <BlogCardsBento cards={serializedCards} locale={locale} />
       </section>
 
       {/* ═══════════ TRANSPARENCY SECTION ═══════════ */}
@@ -100,7 +98,7 @@ export function PostsAndTransparency({
         >
           <div className="bg-foreground text-background px-6 py-5 lg:px-8 lg:py-6">
             <p className="t-comment mb-1">{'// AÇIK DEFTER'}</p>
-            <h2 className="t-mega">{transparencyBlock.title}</h2>
+            <AnimatedMegaHeading text={transparencyBlock.title} style={{ color: 'var(--background)' }} />
           </div>
           {transparencyBlock.ctaLabel && transparencyBlock.ctaLink && (
             <Link
@@ -121,7 +119,7 @@ export function PostsAndTransparency({
             {/* Income */}
             <div className="bg-foreground text-background py-8 lg:py-12 p-6 lg:p-8 flex flex-col justify-end">
               <p className="t-mega text-health">
-                {report.totalDonation != null ? formatCurrency(report.totalDonation) : '—'}
+                <CountUpCurrency value={report.totalDonation} />
               </p>
               <div className="border-t border-background/20 mt-4 pt-4 flex items-center justify-between">
                 <p className="font-heading font-bold uppercase tracking-wider text-sm">
@@ -134,7 +132,7 @@ export function PostsAndTransparency({
             {/* Expense */}
             <div className="bg-foreground text-background py-8 lg:py-12 p-6 lg:p-8 flex flex-col justify-end">
               <p className="t-mega text-emergency">
-                {report.totalExpense != null ? formatCurrency(report.totalExpense) : '—'}
+                <CountUpCurrency value={report.totalExpense} />
               </p>
               <div className="border-t border-background/20 mt-4 pt-4 flex items-center justify-between">
                 <p className="font-heading font-bold uppercase tracking-wider text-sm">
@@ -147,7 +145,7 @@ export function PostsAndTransparency({
             {/* Donors */}
             <div className="bg-foreground text-background py-8 lg:py-12 p-6 lg:p-8 flex flex-col justify-end">
               <p className="t-mega text-background">
-                {report.donorList?.length ?? 0}
+                <CountUpNumber target={report.donorList?.length ?? 0} />
               </p>
               <div className="border-t border-background/20 mt-4 pt-4 flex items-center justify-between">
                 <p className="font-heading font-bold uppercase tracking-wider text-sm">

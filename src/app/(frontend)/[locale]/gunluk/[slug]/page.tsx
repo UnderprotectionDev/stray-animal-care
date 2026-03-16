@@ -49,7 +49,7 @@ export default async function BlogPostPage({ params }: Args) {
 
   return (
     <Container>
-      <div className="sys-wrap my-8">
+      <article className="sys-wrap my-8">
         <div className="panel p-4">
           <PageBreadcrumb
             items={[
@@ -68,7 +68,7 @@ export default async function BlogPostPage({ params }: Args) {
           shareLabels={shareLabels}
           locale={locale}
         />
-      </div>
+      </article>
     </Container>
   )
 }

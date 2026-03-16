@@ -2,6 +2,7 @@ import React from 'react'
 import type { SiteSetting, NeedsList as NeedsListType } from '@/payload-types'
 import { AnimatedSectionHeader } from './AnimatedSectionHeader'
 import { AnimatedCardTitle } from './AnimatedCardTitle'
+import { CountUpNumber } from './CountUpNumber'
 
 type NeedsListBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeNeedsList' }>
 
@@ -18,6 +19,11 @@ const PRIORITY_BADGE_CLASS: Record<Priority, string> = {
   orta: 'badge-sys',
   dusuk: 'badge-sys-dark',
 }
+
+// Cards with light backgrounds need high-contrast (black) badges
+const LIGHT_BG_CARDS = new Set(['mid1', 'mid2'])
+// Cards with dark backgrounds always use the dark badge variant
+const DARK_BG_CARDS = new Set(['hero', 'high', 'low'])
 
 const CARD_CLASS: Record<string, string> = {
   hero: 'needs-card needs-card-hero',
@@ -102,18 +108,26 @@ export function NeedsList({ block, items }: Props) {
           return (
             <div key={item.id} className={CARD_CLASS[cardKey] || CARD_CLASS.low}>
               <div>
-                <span className={PRIORITY_BADGE_CLASS[priority] || 'badge-sys'}>
-                  {priorityLabel(priority)}
-                </span>
+                <div className="mb-2">
+                  <span className={
+                    LIGHT_BG_CARDS.has(cardKey)
+                      ? 'badge-sys-contrast'
+                      : DARK_BG_CARDS.has(cardKey)
+                        ? 'badge-sys-dark'
+                        : (PRIORITY_BADGE_CLASS[priority] || 'badge-sys')
+                  }>
+                    {priorityLabel(priority)}
+                  </span>
+                </div>
                 {isHero ? (
                   <AnimatedCardTitle
                     text={item.productName}
                     tag="h3"
-                    className="text-2xl md:text-3xl mt-3 font-black uppercase tracking-tight"
+                    className="text-2xl md:text-3xl font-black uppercase tracking-tight"
                   />
                 ) : (
                   <h3
-                    className="text-lg mt-2 font-black uppercase tracking-tight"
+                    className="text-lg font-black uppercase tracking-tight"
                     style={{ fontFamily: 'var(--font-heading)' }}
                   >
                     {item.productName}
@@ -127,7 +141,7 @@ export function NeedsList({ block, items }: Props) {
               </div>
               <div>
                 <div className={isHero ? 'needs-qty-hero' : 'needs-qty-card'}>
-                  {targetStock}
+                  <CountUpNumber target={targetStock} />
                 </div>
                 <p className={`text-xs font-bold uppercase tracking-widest ${isHero ? 'mt-1' : ''}`} style={{ fontFamily: 'var(--font-mono)' }}>
                   {unitLabel(unit)} {labels.needed || 'needed'}

@@ -9,30 +9,29 @@
 | Framework           | Next.js 15 (App Router)                                        |
 | Language            | TypeScript                                                     |
 | Styling             | Tailwind CSS 4                                                 |
-| UI Library          | shadcn/ui                                                      |
+| UI Library          | shadcn/ui (base-vega style, @base-ui/react)                    |
 | CMS                 | PayloadCMS 3.x (embedded in Next.js)                           |
 | Database            | PostgreSQL (Neon — serverless, @payloadcms/db-postgres)        |
 | Hosting             | Vercel                                                         |
+| Media Storage       | Vercel Blob (@payloadcms/storage-vercel-blob)                  |
 | Analytics           | Vercel Analytics                                               |
-| Animation           | GSAP + @gsap/react (primary) + motion (secondary)              |
-| i18n (Frontend)     | next-intl (middleware, server/client component, type-safe)     |
-| i18n (CMS)          | PayloadCMS i18n (collection field localization)                |
+| Animation           | GSAP + @gsap/react (primary) + motion (secondary) + OGL (WebGL)|
+| i18n (Routing)      | next-intl (middleware, routing only — no JSON translation files)|
+| i18n (Content)      | PayloadCMS localization (tr default, en with fallback)         |
+| i18n (UI Text)      | UIStrings global (~235 localized fields, 12 tabs)              |
 | SEO                 | Next.js Metadata API + PayloadCMS SEO Plugin                   |
 | Form Validation     | Zod + TanStack Form                                            |
 | Package Manager     | pnpm                                                           |
-| Linting/Formatting  | ESLint (next/core-web-vitals + next/typescript)                |
+| Linting             | ESLint (next/core-web-vitals + next/typescript)                |
+| Rich Text           | Lexical (@payloadcms/richtext-lexical) + TextColorFeature + TextSizeFeature |
 | Search              | PayloadCMS fullText search + Nuqs (URL state)                  |
-| State Management    | Nuqs (search/filter URL state), global state added later if needed |
+| State Management    | Nuqs (search/filter URL state)                                 |
 
 ---
 
 ## 3.2 Architecture
 
-### Modular File Structure
-
-The project uses a page-based module architecture. Each page maps 1:1 to a module. CMS collection definitions are co-located inside the relevant module as a `collection.ts` file. Global definitions are kept in the `settings` module as a `global.ts` file.
-
-> **Note (actual implementation):** The codebase uses `src/collections/` for collection definitions (not `src/modules/<name>/collection.ts`), `src/Header/` and `src/Footer/` for layout components, `src/components/` for shared components, and `src/SiteSettings/` for the SiteSettings global. The module tree below documents the original design intent.
+### File Structure
 
 ```
 stray-animal-care/
@@ -40,26 +39,27 @@ stray-animal-care/
 │   ├── app/
 │   │   ├── (frontend)/
 │   │   │   ├── [locale]/
-│   │   │   │   ├── page.tsx                      # → modules/home
-│   │   │   │   ├── hikayem/page.tsx              # → modules/story
-│   │   │   │   ├── calismalarimiz/page.tsx       # → modules/our-work
+│   │   │   │   ├── page.tsx                      # Homepage (block-driven)
+│   │   │   │   ├── hikayem/page.tsx              # My Story
+│   │   │   │   ├── calismalarimiz/page.tsx       # Our Work
 │   │   │   │   ├── canlarimiz/
-│   │   │   │   │   ├── page.tsx                  # → modules/animals
-│   │   │   │   │   └── [slug]/page.tsx           # → modules/animals
-│   │   │   │   ├── destek-ol/page.tsx            # → modules/donate
-│   │   │   │   ├── mama-malzeme/page.tsx         # → modules/supplies
+│   │   │   │   │   ├── page.tsx                  # Our Animals
+│   │   │   │   │   └── [slug]/page.tsx           # Animal Detail
+│   │   │   │   ├── destek-ol/page.tsx            # Support Us
+│   │   │   │   ├── mama-malzeme/page.tsx         # Food & Supplies
 │   │   │   │   ├── acil-vakalar/
-│   │   │   │   │   ├── page.tsx                  # → modules/emergency
-│   │   │   │   │   └── [slug]/page.tsx           # → modules/emergency
-│   │   │   │   ├── seffaflik/page.tsx            # → modules/transparency
-│   │   │   │   ├── gunluk/
-│   │   │   │   │   ├── page.tsx                  # → modules/blog
-│   │   │   │   │   └── [slug]/page.tsx           # → modules/blog
-│   │   │   │   ├── gonullu-ol/page.tsx           # → modules/volunteer
-│   │   │   │   ├── gelecek-vizyonu/page.tsx      # → modules/vision
-│   │   │   │   ├── iletisim/page.tsx             # → modules/contact
+│   │   │   │   │   ├── page.tsx                  # Emergency Cases
+│   │   │   │   │   └── [slug]/page.tsx           # Case Detail
+│   │   │   │   ├── seffaflik/page.tsx            # Transparency
+│   │   │   │   ├── posts/
+│   │   │   │   │   ├── page.tsx                  # Blog List
+│   │   │   │   │   └── [slug]/page.tsx           # Blog Detail
+│   │   │   │   ├── gonullu-ol/page.tsx           # Volunteer
+│   │   │   │   ├── gelecek-vizyonu/page.tsx      # Future Vision
+│   │   │   │   ├── [slug]/page.tsx               # CMS Pages (catch-all)
 │   │   │   │   └── not-found.tsx                 # Custom 404
-│   │   │   └── layout.tsx                        # → modules/layout
+│   │   │   ├── layout.tsx                        # Frontend layout
+│   │   │   └── globals.css                       # Global styles + design tokens
 │   │   ├── (payload)/
 │   │   │   ├── admin/[[...segments]]/
 │   │   │   │   ├── page.tsx
@@ -68,80 +68,113 @@ stray-animal-care/
 │   │   │   └── layout.tsx
 │   │   ├── layout.tsx                            # Root layout
 │   │   ├── error.tsx                             # Error boundary
-│   │   ├── global-error.tsx                      # Global error boundary
-│   │   └── globals.css
+│   │   └── global-error.tsx                      # Global error boundary
 │   │
-│   ├── modules/                # Feature modules (page-based 1:1)
-│   │   ├── home/               # Home Page
-│   │   ├── story/              # My Story
-│   │   ├── our-work/           # Our Work
-│   │   ├── animals/            # Our Animals
-│   │   │   └── collection.ts   #   → Animals collection
-│   │   ├── donate/             # Support Us
-│   │   ├── supplies/           # Food & Supplies
-│   │   │   └── collection.ts   #   → NeedsList collection
-│   │   ├── emergency/          # Emergency Cases
-│   │   │   └── collection.ts   #   → EmergencyCases collection
-│   │   ├── transparency/       # Transparency Corner
-│   │   │   └── collection.ts   #   → TransparencyReports collection
-│   │   ├── blog/               # Blog
-│   │   │   └── collection.ts   #   → BlogPosts collection
-│   │   ├── volunteer/          # Volunteer
-│   │   ├── vision/             # Future Vision
-│   │   ├── contact/            # Contact
-│   │   ├── layout/             # Header + Footer
-│   │   ├── instagram/          # Instagram API integration
-│   │   ├── search/             # Site-wide search
-│   │   ├── media/              # Media management
-│   │   │   └── collection.ts   #   → Media collection
-│   │   ├── settings/           # Site settings
-│   │   │   └── global.ts       #   → SiteSettings global
-│   │   └── shared/             # Shared components
+│   ├── collections/              # PayloadCMS collection definitions
+│   │   ├── Animals/
+│   │   ├── EmergencyCases/
+│   │   ├── VetRecords/
+│   │   ├── Events/
+│   │   ├── Volunteers/
+│   │   ├── Pages/
+│   │   ├── Posts/
+│   │   ├── Categories/
+│   │   ├── NeedsList/
+│   │   ├── TransparencyReports/
+│   │   ├── Media/
+│   │   └── Users/
+│   │
+│   ├── modules/                  # Feature modules (domain-based)
+│   │   ├── animals/              # components/ + lib/ + index.ts
+│   │   ├── blog/
+│   │   ├── donate/
+│   │   ├── emergency/
+│   │   ├── our-work/
+│   │   ├── supplies/
+│   │   └── transparency/
 │   │
 │   ├── components/
-│   │   └── ui/                 # shadcn/ui components
+│   │   ├── home/                 # Homepage section components
+│   │   ├── shared/               # Reusable components (Section, Container, etc.)
+│   │   ├── fancy/                # Animation components (FlowingMenu, etc.)
+│   │   └── ui/                   # shadcn/ui components
 │   │
-│   ├── i18n/                   # Translations
-│   │   ├── tr.json
-│   │   ├── en.json
-│   │   └── config.ts
+│   ├── blocks/
+│   │   ├── homepage/             # 10 homepage block type definitions
+│   │   ├── ArchiveBlock/
+│   │   ├── Banner/
+│   │   ├── CallToAction/
+│   │   ├── Code/
+│   │   ├── Content/
+│   │   ├── MediaBlock/
+│   │   ├── Mission/
+│   │   ├── RelatedPosts/
+│   │   └── Timeline/
 │   │
-│   ├── lib/                    # General utilities
-│   │   └── utils.ts            # cn() etc.
+│   ├── globals/
+│   │   └── UIStrings/            # UIStrings global (12 tabs, ~235 localized fields)
 │   │
+│   ├── Header/                   # Header global config + components
+│   ├── Footer/                   # Footer component
+│   ├── SiteSettings/             # SiteSettings global config
+│   │
+│   ├── fields/                   # Reusable field configs (defaultLexical, link, linkGroup)
+│   ├── hooks/                    # Payload lifecycle hooks
+│   ├── access/                   # Access control functions
+│   ├── search/                   # Search field overrides and sync hooks
+│   ├── heros/                    # Hero section components
+│   ├── utilities/                # Utility functions (shadcn utils alias: @/utilities/ui)
+│   ├── providers/                # React context providers
+│   │
+│   ├── i18n/                     # next-intl config (routing only, no JSON translations)
+│   │   ├── config.ts
+│   │   ├── request.ts
+│   │   └── navigation.ts         # Link, redirect, usePathname, useRouter
+│   │
+│   ├── middleware.ts              # next-intl middleware
 │   ├── payload.config.ts
-│   └── payload-types.ts        # Auto-generated types
+│   └── payload-types.ts          # Auto-generated types
+│
+├── tests/
+│   ├── int/                      # Integration tests (*.int.spec.ts)
+│   ├── e2e/                      # E2E tests (Playwright)
+│   └── helpers/                  # Shared test helpers
 │
 ├── public/
 │   ├── images/
-│   ├── fonts/
 │   └── favicon.ico
 ├── docs/
-│   ├── PRD.md                  # Index
-│   └── prd/                    # Modular PRD files
 ├── next.config.ts
 ├── tailwind.config.mjs
-├── tsconfig.json
 ├── .eslintrc.json
+├── tsconfig.json
 ├── package.json
-└── .env.local
+└── .env
 ```
 
-Each module has the following structure (as needed):
+### Module Structure
+
+Each module in `src/modules/` contains:
 ```
 modules/<module-name>/
 ├── components/           # React components
-│   └── skeletons/       # Loading state components (optional)
-├── hooks/               # Custom React hooks (optional)
-├── lib/                 # Utility functions, queries, constants (optional)
-├── collection.ts        # PayloadCMS collection definition (optional, CMS modules only)
-├── global.ts            # PayloadCMS global definition (optional, settings module only)
-└── index.ts             # Barrel exports (REQUIRED)
+├── lib/                  # Utility functions, queries, constants
+└── index.ts              # Barrel exports (REQUIRED)
 ```
 
-> **Note:** Collection definitions are co-located inside the relevant module, not in a separate `src/collections/` directory. This approach ensures modules are self-contained units. All collections and globals are imported and registered in the `payload.config.ts` file.
+> **Note:** Collection definitions live in `src/collections/`, NOT inside modules. Modules contain only frontend components and query logic.
 
-page.tsx files are kept thin — import + data fetch only, UI lives in the module.
+### Homepage Block System
+
+The homepage uses a CMS-driven block builder configured in `SiteSettings.homepageBlocks`. 10 block types defined in `src/blocks/homepage/`:
+
+`homeHero`, `homeStats`, `homeStory`, `homeOurWork`, `homeFeaturedAnimals`, `homeActiveEmergencies`, `homeSupportCards`, `homeNeedsList`, `homeRecentPosts`, `homeTransparencyBanner`
+
+`RenderHomepageBlocks.tsx` maps blocks to components with special behavior:
+- Each block has an `enabled` flag — disabled blocks render nothing
+- `homeRecentPosts` + `homeTransparencyBanner` are combined into a single `PostsAndTransparency` component when both enabled
+- `SectionDividerBand` components are injected programmatically after `homeStory` and `homeSupportCards`
+- Data is fetched optimistically in `page.tsx` — only collections needed by active blocks are queried
 
 ### Routing Structure
 
@@ -157,68 +190,77 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 | `/[locale]/acil-vakalar`        | Emergency Cases    | No      |
 | `/[locale]/acil-vakalar/[slug]` | Case Detail        | Yes     |
 | `/[locale]/seffaflik`           | Transparency       | No      |
-| `/[locale]/gunluk`              | Blog List          | No      |
-| `/[locale]/gunluk/[slug]`       | Blog Detail        | Yes     |
+| `/[locale]/posts`               | Blog List          | No      |
+| `/[locale]/posts/[slug]`        | Blog Detail        | Yes     |
 | `/[locale]/gonullu-ol`          | Volunteer          | No      |
 | `/[locale]/gelecek-vizyonu`     | Future Vision      | No      |
-| `/[locale]/iletisim`            | Contact            | No      |
+| `/[locale]/[slug]`              | CMS Pages          | Yes     |
 | `/admin`                        | CMS Admin Panel    | —       |
+| `/admin/hayvan-takip`           | Animal Tracking    | —       |
+| `/admin/vaka-takip`             | Case Tracking      | —       |
+| `/admin/gonullu-yonetim`        | Volunteer Mgmt     | —       |
 
 ---
 
 ## 3.3 PayloadCMS Collection Schemas
 
-> **Note:** All collections automatically include `createdAt` and `updatedAt` fields added by PayloadCMS.
+> **Note:** All collections automatically include `createdAt` and `updatedAt` fields added by PayloadCMS. Database uses `push: true` — schema changes are auto-synced, no migration workflow.
 
-### Collection 1: Animals
+### Collection: Animals
 
 ```typescript
 {
   slug: 'animals',
   labels: { singular: 'Hayvan', plural: 'Hayvanlar' },
   fields: [
+    // General tab
     { name: 'name', type: 'text', required: true, localized: true },
     { name: 'slug', type: 'text', unique: true, required: true },
     { name: 'type', type: 'select', options: ['kedi', 'kopek'], required: true },
     { name: 'age', type: 'text', localized: true },
     { name: 'gender', type: 'select', options: ['erkek', 'disi'], required: true },
-    { name: 'status', type: 'select', options: ['tedavide', 'kalici-bakim', 'acil'], required: true },
+    { name: 'animalStatus', type: 'select', options: ['tedavide', 'kalici-bakim', 'acil'], required: true },
     { name: 'photos', type: 'upload', relationTo: 'media', hasMany: true },
     { name: 'story', type: 'richText', localized: true },
     { name: 'needs', type: 'richText', localized: true },
     { name: 'featured', type: 'checkbox', defaultValue: false },
+    // Health tab
+    { name: 'location', type: 'text', localized: true },
+    { name: 'weight', type: 'number' },
+    { name: 'microchipId', type: 'text' },
+    { name: 'isSpayed', type: 'checkbox' },
+    { name: 'isVaccinated', type: 'checkbox' },
   ]
 }
 ```
 
-### Collection 2: Blog Posts
+### Collection: Posts
 
 ```typescript
 {
-  slug: 'blog-posts',
-  labels: { singular: 'Blog Yazisi', plural: 'Blog Yazilari' },
+  slug: 'posts',
+  labels: { singular: 'Yazi', plural: 'Yazilar' },
+  // versions/drafts enabled, SEO plugin
   fields: [
     { name: 'title', type: 'text', required: true, localized: true },
     { name: 'slug', type: 'text', unique: true, required: true },
-    { name: 'category', type: 'select', options: ['kurtarma', 'tedavi', 'gunluk', 'duyuru', 'etkinlik'], localized: false },
-    { name: 'tags', type: 'array', fields: [
-      { name: 'tag', type: 'text' },
-    ]},
-    { name: 'date', type: 'date', required: true },
+    { name: 'categories', type: 'relationship', relationTo: 'categories', hasMany: true },
+    { name: 'publishedAt', type: 'date' },
     { name: 'content', type: 'richText', required: true, localized: true },
-    { name: 'coverImage', type: 'upload', relationTo: 'media' },
+    { name: 'heroImage', type: 'upload', relationTo: 'media' },
     { name: 'excerpt', type: 'textarea', localized: true },
-    { name: 'published', type: 'checkbox', defaultValue: false },
+    { name: 'relatedPosts', type: 'relationship', relationTo: 'posts', hasMany: true },
   ]
 }
 ```
 
-### Collection 3: Emergency Cases
+### Collection: Emergency Cases
 
 ```typescript
 {
   slug: 'emergency-cases',
   labels: { singular: 'Acil Vaka', plural: 'Acil Vakalar' },
+  // trash: true enabled
   fields: [
     { name: 'title', type: 'text', required: true, localized: true },
     { name: 'animal', type: 'relationship', relationTo: 'animals' },
@@ -226,7 +268,8 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
     { name: 'description', type: 'richText', required: true, localized: true },
     { name: 'targetAmount', type: 'number', required: true },
     { name: 'collectedAmount', type: 'number', defaultValue: 0 },
-    { name: 'status', type: 'select', options: ['aktif', 'tamamlandi'], required: true },
+    { name: 'caseStatus', type: 'select', options: ['aktif', 'tamamlandi'], required: true },
+    // Note: uses `caseStatus` (not `status`) to avoid conflict with Payload's _status enum
     { name: 'updates', type: 'array', fields: [
       { name: 'date', type: 'date' },
       { name: 'text', type: 'richText', localized: true },
@@ -239,7 +282,7 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 }
 ```
 
-### Collection 4: Needs List
+### Collection: Needs List
 
 ```typescript
 {
@@ -248,19 +291,22 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
   fields: [
     { name: 'productName', type: 'text', required: true, localized: true },
     { name: 'brandDetail', type: 'text', localized: true },
-    { name: 'urgency', type: 'select', options: ['acil', 'orta', 'yeterli'], required: true },
-    { name: 'stockStatus', type: 'text', localized: true },
+    { name: 'priority', type: 'select', options: ['acil', 'yuksek', 'orta', 'dusuk'], required: true },
+    { name: 'currentStock', type: 'number' },
+    { name: 'targetStock', type: 'number', required: true },
+    { name: 'unit', type: 'select', options: ['kutu', 'kg', 'adet'] },
     { name: 'order', type: 'number' },
   ]
 }
 ```
 
-### Collection 5: Transparency Reports
+### Collection: Transparency Reports
 
 ```typescript
 {
   slug: 'transparency-reports',
   labels: { singular: 'Seffaflik Raporu', plural: 'Seffaflik Raporlari' },
+  // trash: true enabled
   fields: [
     { name: 'month', type: 'date', required: true },
     { name: 'title', type: 'text', localized: true },
@@ -278,13 +324,97 @@ page.tsx files are kept thin — import + data fetch only, UI lives in the modul
 }
 ```
 
-### Collection 6: Media
+### Collection: VetRecords
+
+```typescript
+{
+  slug: 'vet-records',
+  labels: { singular: 'Veteriner Kaydi', plural: 'Veteriner Kayitlari' },
+  // admin-only, trash: true
+  fields: [
+    { name: 'animal', type: 'relationship', relationTo: 'animals', required: true },
+    { name: 'recordType', type: 'select', options: ['muayene', 'ameliyat', 'asilama', 'tedavi'] },
+    { name: 'date', type: 'date', required: true },
+    { name: 'description', type: 'richText', localized: true },
+    { name: 'medications', type: 'array', fields: [
+      { name: 'name', type: 'text' },
+      { name: 'dosage', type: 'text' },
+    ]},
+    { name: 'documents', type: 'upload', relationTo: 'media', hasMany: true },
+  ]
+}
+```
+
+### Collection: Events
+
+```typescript
+{
+  slug: 'events',
+  labels: { singular: 'Etkinlik', plural: 'Etkinlikler' },
+  // versions/drafts, SEO, trash: true, revalidation hooks
+  fields: [
+    { name: 'title', type: 'text', required: true, localized: true },
+    { name: 'slug', type: 'text', unique: true },
+    { name: 'date', type: 'date', required: true },
+    { name: 'description', type: 'richText', localized: true },
+    { name: 'location', type: 'text', localized: true },
+    { name: 'image', type: 'upload', relationTo: 'media' },
+  ]
+}
+```
+
+### Collection: Volunteers
+
+```typescript
+{
+  slug: 'volunteers',
+  labels: { singular: 'Gonullu', plural: 'Gonulluler' },
+  // public create (anyone can submit), trash: true
+  fields: [
+    { name: 'name', type: 'text', required: true },
+    { name: 'email', type: 'email' },
+    { name: 'phone', type: 'text' },
+    { name: 'applicationStatus', type: 'select', options: ['beklemede', 'onaylandi', 'reddedildi'] },
+    { name: 'appliedAt', type: 'date' }, // auto-set on create
+    { name: 'areas', type: 'select', hasMany: true, options: ['besleme', 'saglik', 'gecici-bakim'] },
+  ]
+}
+```
+
+### Collection: Pages
+
+```typescript
+{
+  slug: 'pages',
+  // CMS page builder with blocks, versions/drafts, SEO
+  fields: [
+    { name: 'title', type: 'text', required: true, localized: true },
+    { name: 'slug', type: 'text', unique: true, required: true },
+    { name: 'layout', type: 'blocks', blocks: [/* ArchiveBlock, Banner, CallToAction, Code, Content, MediaBlock, Mission, RelatedPosts, Timeline */] },
+  ]
+}
+```
+
+### Collection: Categories
+
+```typescript
+{
+  slug: 'categories',
+  // nested docs plugin enabled
+  fields: [
+    { name: 'title', type: 'text', required: true, localized: true },
+    { name: 'slug', type: 'text', unique: true },
+  ]
+}
+```
+
+### Collection: Media
 
 ```typescript
 {
   slug: 'media',
+  // Uses Vercel Blob storage via @payloadcms/storage-vercel-blob
   upload: {
-    staticDir: 'media',
     mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'application/pdf'],
     imageSizes: [
       { name: 'thumbnail', width: 300, height: 300, position: 'centre' },
@@ -305,10 +435,22 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
 ```typescript
 {
   slug: 'site-settings',
-  label: 'Site Ayarları',
+  label: 'Site Ayarlari',
   fields: [
     { type: 'tabs', tabs: [
-      // Tab 1: Banka Bilgileri
+      // Tab 1: Ana Sayfa (Homepage)
+      {
+        label: 'Ana Sayfa',
+        fields: [
+          { name: 'homepageBlocks', type: 'blocks', blocks: [
+            // 10 block types: homeHero, homeStats, homeStory, homeOurWork,
+            // homeFeaturedAnimals, homeActiveEmergencies, homeSupportCards,
+            // homeNeedsList, homeRecentPosts, homeTransparencyBanner
+            // Each block has an `enabled` flag
+          ]},
+        ],
+      },
+      // Tab 2: Banka Bilgileri (Bank Info)
       {
         label: 'Banka Bilgileri',
         fields: [
@@ -318,12 +460,11 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
             { name: 'iban', type: 'text', required: true },
             { name: 'currency', type: 'select', options: ['TRY', 'USD', 'EUR'] },
           ]},
-          // Legacy flat fields (bankName, accountHolder, iban) kept for backwards compat
         ],
       },
-      // Tab 2: İletişim
+      // Tab 3: Sosyal Medya (Social Media)
       {
-        label: 'İletişim',
+        label: 'Sosyal Medya',
         fields: [
           { name: 'phone', type: 'text' },
           { name: 'email', type: 'text' },
@@ -331,27 +472,9 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
           { name: 'instagram', type: 'text' },
         ],
       },
-      // Tab 3: Uluslararası
+      // Tab 4: Istatistikler (Statistics)
       {
-        label: 'Uluslararası',
-        fields: [
-          { name: 'paypalLink', type: 'text' },
-          { name: 'wiseLink', type: 'text' },
-        ],
-      },
-      // Tab 4: Çalışmalarımız
-      {
-        label: 'Çalışmalarımız',
-        fields: [
-          { name: 'ourWorkActivities', type: 'array', maxRows: 10, fields: [
-            { name: 'key', type: 'select', options: ['feeding', 'treatment', 'spaying', 'emergency', 'vaccination', 'shelter'] },
-            { name: 'images', type: 'upload', relationTo: 'media', hasMany: true },
-          ]},
-        ],
-      },
-      // Tab 5: İstatistikler (flat fields, not grouped)
-      {
-        label: 'İstatistikler',
+        label: 'Istatistikler',
         fields: [
           { name: 'catsCount', type: 'number' },
           { name: 'dogsCount', type: 'number' },
@@ -365,19 +488,46 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
 }
 ```
 
+### Global: Header
+
+CMS-driven navigation (`src/Header/config.ts`):
+
+```typescript
+{
+  slug: 'header',
+  fields: [
+    { name: 'brand', type: 'text' },
+    { name: 'logo', type: 'upload', relationTo: 'media' },
+    { name: 'navItems', type: 'array', fields: [
+      { name: 'link', type: 'group', /* link fields */ },
+    ]},
+    { name: 'socialLinks', type: 'array', fields: [/* platform, url */] },
+  ]
+}
+```
+
+### Global: UIStrings
+
+All user-facing text managed in CMS (`src/globals/UIStrings/config.ts`):
+
+```typescript
+{
+  slug: 'ui-strings',
+  label: 'UI Strings',
+  // 12 tabs covering every frontend page/section
+  // ~235 localized fields total
+  // Tabs: Genel (General), Ana Sayfa (Home), Header, Footer,
+  //   Hayvanlar (Animals), Acil Vakalar (Emergency), Destek (Donate),
+  //   Seffaflik (Transparency), Blog, Gonullu (Volunteer),
+  //   Mama Malzeme (Supplies), Arama (Search)
+}
+```
+
+> **Note:** next-intl is used for **routing only** (locale prefix handling). All user-facing text comes from the UIStrings global — there are no JSON translation files.
+
 ---
 
 ## 3.4 Integration Details
-
-### Instagram Basic Display API
-
-- **Purpose:** Display live Instagram posts on the home page and relevant pages
-- **Endpoint:** `https://graph.instagram.com/me/media`
-- **Fields:** `id, caption, media_type, media_url, permalink, timestamp`
-- **Token Renewal:** Long-lived token (60 days), automatic renewal mechanism
-- **Cache:** ISR (Incremental Static Regeneration) with 1-hour cache
-- **Fallback:** Static placeholder images displayed if API fails
-- **Display:** 6-9 posts, grid layout, clicking redirects to Instagram
 
 ### WhatsApp Integration
 
@@ -389,11 +539,15 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
   - Contact page: General communication
 - **Behavior:** Opens WhatsApp app on mobile, WhatsApp Web on desktop
 
+### Instagram Integration
+
+> **Note:** Instagram API integration is **not implemented**. Instagram links are provided as external links to the Instagram profile. Full API integration is deferred/placeholder.
+
 ### SEO
 
 - **Next.js Metadata API:** Dynamic meta tags via `generateMetadata()` for each page
 - **PayloadCMS SEO Plugin:** Collection-level SEO metadata management (title, description, OG image)
-- **Sitemap:** Auto-generated via `next-sitemap` or Next.js App Router sitemap.ts
+- **Sitemap:** Auto-generated via Next.js App Router sitemap.ts
 - **Structured Data:** JSON-LD (Organization, Article, BreadcrumbList)
 - **robots.txt:** Generated via Next.js App Router robots.ts
 
@@ -416,7 +570,6 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
 | Emergency cases                      | ISR      | 30 seconds (urgent updates)     |
 | Transparency                         | ISR      | 3600 seconds (rarely changes)   |
 | Static pages (my story, vision)      | Static   | Build time                      |
-| Instagram feed                       | ISR      | 3600 seconds (1 hour)           |
 
 ---
 
@@ -425,7 +578,6 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
 | Scenario                  | Behavior                                              |
 | ------------------------- | ----------------------------------------------------- |
 | PayloadCMS API error      | Error boundary + user-friendly message                |
-| Instagram API down        | Placeholder image grid fallback                       |
 | Network error             | Retry button + offline message                        |
 | 404 Not Found             | Custom-designed "lost paw" page                       |
 | 500 Server Error          | Custom-designed error page + contact redirect         |
@@ -444,10 +596,9 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
 | Area                | Measure                                                      |
 | ------------------- | ------------------------------------------------------------ |
 | CMS Access          | PayloadCMS admin panel protected by email/password           |
-| Environment Vars    | All API keys and DB connection in `.env.local` file          |
+| Environment Vars    | All API keys and DB connection in `.env` file                |
 | CSRF                | PayloadCMS built-in CSRF protection                          |
 | Content Security    | CSP (Content Security Policy) headers                        |
-| Rate Limiting       | Rate limits on Instagram API and form submissions            |
 | XSS                 | Rich text content is sanitized (PayloadCMS built-in)         |
 | SQL Injection       | PayloadCMS ORM layer used (no direct SQL)                    |
 | Image Upload        | MIME type validation, file size limit (max 5MB)              |
@@ -475,45 +626,55 @@ Uses a tabs-based layout (`src/SiteSettings/config.ts`):
 - ISR (Incremental Static Regeneration) for dynamic pages
 - Font optimization (self-hosted via next/font)
 - Critical CSS inlining (Tailwind purge)
-- Instagram API result caching (1 hour)
 - PayloadCMS local API usage (no HTTP request, direct DB query)
+- Vercel Blob for media storage (CDN-backed)
 
 ---
 
 ## 3.9 PayloadCMS Admin Panel Customization
 
-### Dashboard Widgets
+### Custom Admin Views
 
-- Active emergency case count
-- Total animal count (cat/dog breakdown)
-- Latest published blog post
+| View Path               | Purpose                                |
+| ----------------------- | -------------------------------------- |
+| `/admin/hayvan-takip`   | Animal tracking dashboard              |
+| `/admin/vaka-takip`     | Emergency case tracking                |
+| `/admin/gonullu-yonetim`| Volunteer management                   |
 
 ### Rich Text Editor Configuration
 
-Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List (ordered/unordered)
+Lexical editor (`@payloadcms/richtext-lexical`) with:
+- Standard formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List (ordered/unordered)
+- Custom features: TextColorFeature, TextSizeFeature (via `payload-lexical-typography`)
 
 ### Admin Navigation Grouping
 
 | Group (Turkish)       | Collections                                     |
 | --------------------- | ----------------------------------------------- |
-| İçerik Yönetimi       | Pages, Posts, Categories                        |
-| Hayvan Bakım          | Animals, EmergencyCases, VetRecords             |
+| Icerik Yonetimi       | Pages, Posts, Categories                        |
+| Hayvan Bakim          | Animals, EmergencyCases, VetRecords             |
 | Topluluk              | Events, Volunteers                              |
 | Destek & Raporlar     | NeedsList, TransparencyReports                  |
 | Sistem                | Media, Users                                    |
-| Ayarlar               | SiteSettings (global)                           |
+
+### Globals
+
+| Global        | Purpose                                          |
+| ------------- | ------------------------------------------------ |
+| Header        | CMS-driven navigation, brand, logo, social links |
+| SiteSettings  | Homepage blocks, bank info, social media, stats  |
+| UIStrings     | All frontend UI text (~235 localized fields)     |
 
 ---
 
 ## 3.10 Testing Strategy
 
-- **Unit tests**: Vitest + Testing Library for components and utilities
-- **Integration tests**: Testing Library for module-level flows
-- **E2E tests**: Playwright for critical user journeys (donation flow, animal browsing, emergency case view)
+- **Integration tests**: `tests/int/**/*.int.spec.ts` — Vitest with jsdom, tsconfig paths resolved
+- **E2E tests**: `tests/e2e/` — Playwright (Chromium), auto-starts dev server
+- **Test helpers**: `tests/helpers/`
 - **Coverage targets**: 80% for utilities/lib, 60% for components, critical paths 100%
-- **CI config**: Run unit/integration on every PR, E2E nightly + before release
-- **Accessibility testing**: axe-core integration in Vitest, Lighthouse CI for accessibility score
-- Include a test directory structure: `__tests__/` co-located in each module
+- **CI config**: Run integration on every PR, E2E nightly + before release
+- **Accessibility testing**: axe-core integration, Lighthouse CI for accessibility score
 
 ---
 
@@ -521,12 +682,12 @@ Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List 
 
 - **Platform**: Vercel (automatic deployments from main branch)
 - **Preview deployments**: Every PR gets a preview URL
-- **Environment variables**: Managed via Vercel dashboard (DATABASE_URL, PAYLOAD_SECRET, INSTAGRAM_TOKEN, etc.)
-- **Database migrations**: PayloadCMS handles migrations automatically on deployment
+- **Environment variables**: Managed via Vercel dashboard (DATABASE_URL, PAYLOAD_SECRET, BLOB_READ_WRITE_TOKEN, etc.)
+- **Database schema sync**: Uses `push: true` — PayloadCMS auto-syncs schema on startup (no migration files)
 - **Monitoring**: Vercel Analytics + Vercel Speed Insights
 - **Rollback**: Vercel instant rollback to previous deployment
 - **Branch strategy**: main (production), feature branches → PR → merge
-- **CI pipeline**: ESLint check → Type check → Unit tests → Build → Deploy
+- **CI pipeline**: ESLint check → Type check → Integration tests → Build → Deploy
 
 ---
 
@@ -534,33 +695,25 @@ Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List 
 
 - **PayloadCMS REST API**: Auto-generated at `/api/{collection-slug}` (GET list, GET by ID, POST create, PATCH update, DELETE)
 - **PayloadCMS Local API**: Used in server components for direct DB access (no HTTP overhead) — `payload.find()`, `payload.findByID()`, `payload.create()`
-- **Custom API routes**:
-  - `POST /api/contact` — Contact form submission (rate limited: 5/min per IP)
-  - `GET /api/instagram/feed` — Cached Instagram feed proxy (1hr cache)
-  - Future: `POST /api/payment/create`, `POST /api/payment/webhook` (M11)
-- **Rate limiting**: Apply to all public-facing custom endpoints
 - **Authentication**: PayloadCMS admin routes require JWT auth; public API is read-only
 
 ---
 
 ## 3.13 UI State Patterns
 
-- **Loading states**: Skeleton components co-located in each module's `components/skeletons/` dir. Use Next.js `loading.tsx` for route-level loading.
+- **Loading states**: Skeleton components. Use Next.js `loading.tsx` for route-level loading.
   - Animal cards: Gray shimmer boxes matching card layout
   - Blog list: Title + excerpt placeholder lines
   - Emergency cases: Progress bar skeleton
-- **Error states**: Module-level error boundaries with friendly messages + retry button + link to home. Use the project's Mint System design language.
-- **Empty states**: Custom illustrations (paw-themed) with helpful messages:
-  - No animals found: "No animals match your filter. Try adjusting your search."
-  - No emergency cases: "Great news! No active emergency cases right now."
-  - No blog posts: "New stories coming soon. Follow us on Instagram!"
+- **Error states**: Module-level error boundaries with friendly messages + retry button + link to home. Use the project's Vivid Brutalist design language.
+- **Empty states**: Custom illustrations (paw-themed) with helpful messages
 - **Toast notifications**: For IBAN copy success, form submissions, errors. Use shadcn/ui Toast component.
 
 ---
 
 ## 3.14 SEO Strategy (Expanded)
 
-- **Target keywords (TR)**: sokak hayvanları, sokak kedisi yardım, hayvan bağışı, hayvan koruma, deprem hayvanları, mama bağışı
+- **Target keywords (TR)**: sokak hayvanlari, sokak kedisi yardim, hayvan bagisi, hayvan koruma, deprem hayvanlari, mama bagisi
 - **Target keywords (EN)**: stray animal donation turkey, animal rescue hatay, stray cat help turkey
 - **Structured data** (JSON-LD):
   - Organization: site-wide (name, logo, contact, social profiles)
@@ -580,10 +733,10 @@ Supported formats: Heading (H2-H4), Bold, Italic, Link, Image, Blockquote, List 
 | Component | Mobile (<640px) | Tablet (640-1024px) | Desktop (>1024px) |
 |-----------|----------------|--------------------|--------------------|
 | Navigation | Hamburger menu | Hamburger or compact | Full horizontal nav |
-| Hero section | Stacked (image top, text bottom) | Side-by-side | Side-by-side with parallax |
+| Hero section | Stacked (image top, text bottom) | Side-by-side | Side-by-side editorial split |
 | Animal cards | 1 column | 2 columns | 3-4 columns |
 | Emergency cards | 1 column, full width | 2 columns | 3 columns |
-| Blog grid | 1 column | 2 columns | 3 columns |
+| Blog grid | 1 column | 2 columns | Bento grid (featured 2col×2row + small cards) |
 | Footer | Stacked sections | 2-column grid | 4-column grid |
 | IBAN display | Full width, large tap target | Inline with copy button | Inline with copy button |
 | Stats counters | 2x2 grid | 4 inline | 4 inline with animations |

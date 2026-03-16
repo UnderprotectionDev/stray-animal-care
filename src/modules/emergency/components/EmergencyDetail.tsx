@@ -158,7 +158,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
               </p>
               <Link
                 href={`/canlarimiz/${relatedAnimal.slug}`}
-                className="font-bold text-foreground hover:text-cta transition-colors uppercase tracking-wide text-sm"
+                className="font-bold text-foreground hover:text-emergency transition-colors uppercase tracking-wide text-sm"
               >
                 {relatedAnimal.name}
               </Link>
@@ -169,7 +169,7 @@ export async function EmergencyDetail({ ec, locale }: EmergencyDetailProps) {
           <div className="p-6">
             <Link
               href="/destek-ol"
-              className="block w-full bg-cta text-cta-foreground text-center font-bold uppercase tracking-widest text-sm py-3 px-6 border-[1.5px] border-border hover:bg-foreground hover:text-background transition-colors"
+              className="block w-full bg-emergency text-emergency-foreground text-center font-bold uppercase tracking-widest text-sm py-3 px-6 border-[1.5px] border-border hover:bg-foreground hover:text-background transition-colors"
             >
               {ui?.emergency?.donateButton ?? 'Destek Ol'}
             </Link>

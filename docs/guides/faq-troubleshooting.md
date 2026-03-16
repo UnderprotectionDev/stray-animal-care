@@ -1,6 +1,6 @@
 # FAQ & Troubleshooting
 
-> Last updated: 2026-03-10
+> Last updated: 2026-03-16
 
 ---
 
@@ -11,7 +11,7 @@
 1. Create the module directory with the standard structure:
 
 ```bash
-mkdir -p src/modules/my-module/{components,hooks,lib,__tests__}
+mkdir -p src/modules/my-module/{components,lib}
 ```
 
 2. Create a barrel export file:
@@ -21,7 +21,7 @@ mkdir -p src/modules/my-module/{components,hooks,lib,__tests__}
 export { MyComponent } from "./components/my-component";
 ```
 
-3. If the module needs CMS data, add a `collection.ts` and register it in `payload.config.ts`.
+3. If the module needs CMS data, add a collection in `src/collections/` and register it in `payload.config.ts`.
 
 4. Create the page at `src/app/(frontend)/[locale]/my-slug/page.tsx` that imports from the module.
 
@@ -31,10 +31,10 @@ See [Quick Start — Module Development Workflow](./quick-start.md#module-develo
 
 ### How do I create a new collection?
 
-1. Define the collection in your module:
+1. Define the collection in `src/collections/`:
 
 ```ts
-// src/modules/my-module/collection.ts
+// src/collections/MyCollection/index.ts
 import type { CollectionConfig } from "payload";
 
 export const MyCollection: CollectionConfig = {
@@ -52,7 +52,7 @@ export const MyCollection: CollectionConfig = {
 2. Register it in `payload.config.ts`:
 
 ```ts
-import { MyCollection } from "@/modules/my-module/collection";
+import { MyCollection } from "@/collections/MyCollection";
 
 export default buildConfig({
   collections: [
@@ -62,13 +62,14 @@ export default buildConfig({
 });
 ```
 
-3. Regenerate types:
+3. Regenerate types and import map:
 
 ```bash
-pnpm run payload:generate-types
+pnpm run generate:types
+pnpm run generate:importmap
 ```
 
-4. Restart the dev server. PayloadCMS will auto-create the database table.
+4. Restart the dev server. PayloadCMS will auto-create the database table (`push: true`).
 
 ---
 
@@ -103,51 +104,23 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 
 ---
 
-### How do I add translations?
+### How do I add or update translations?
 
-1. Add keys to both locale files:
+All user-facing text is managed through the **UIStrings** global in the CMS admin panel:
 
-```json
-// src/messages/tr.json
-{
-  "my-module": {
-    "title": "Baslik",
-    "description": "Aciklama metni"
-  }
-}
-```
+1. Go to `/admin` and navigate to **UI Strings**
+2. Find the relevant tab (there are 12 tabs covering all frontend sections)
+3. Use the locale switcher in the admin panel to edit TR and EN versions
+4. Save — changes propagate to the frontend via ISR
 
-```json
-// src/messages/en.json
-{
-  "my-module": {
-    "title": "Title",
-    "description": "Description text"
-  }
-}
-```
+> **Note:** There are no JSON translation files. next-intl is used only for locale routing. All ~235 localized text fields live in the UIStrings CMS global.
 
-2. Use in components:
+To add a **new** UI string field:
 
-```tsx
-import { useTranslations } from "next-intl";
-
-export function MyComponent() {
-  const t = useTranslations("my-module");
-  return <h1>{t("title")}</h1>;
-}
-```
-
-3. For server components, use `getTranslations`:
-
-```tsx
-import { getTranslations } from "next-intl/server";
-
-export default async function MyPage() {
-  const t = await getTranslations("my-module");
-  return <h1>{t("title")}</h1>;
-}
-```
+1. Add the field to `src/globals/UIStrings/config.ts` under the appropriate tab
+2. Run `pnpm run generate:types` to update TypeScript types
+3. Fetch the value in your component via the PayloadCMS local API
+4. Set both TR and EN values in the CMS admin panel
 
 ---
 
@@ -174,7 +147,7 @@ See [Deployment Playbook](./deployment-playbook.md) for full details.
 3. Find the last working deployment
 4. Click the three-dot menu and select **Promote to Production**
 
-This is instant and does not require a rebuild. Note that database migrations are not reversed automatically. See [Deployment Playbook — Rollback Procedure](./deployment-playbook.md#rollback-procedure).
+This is instant and does not require a rebuild. Note that database schema changes are not reversed automatically (the project uses `push: true`, so schema is auto-synced on startup).
 
 ---
 
@@ -205,24 +178,22 @@ The animal appears on the `/canlarimiz` page after ISR revalidation (typically w
 
 ### How do I create a blog post?
 
-1. Go to `/admin` and click **Blog Yazilari** (Blog Posts)
+1. Go to `/admin` and click **Yazilar** (Posts)
 2. Click **Create New**
-3. Write the title and content using the rich text editor
-4. Add tags (e.g., `kurtarma`, `tedavi`, `gunluk`)
-5. Upload a featured image
-6. Fill in SEO fields (meta title, description)
-7. Set publish status: **Draft** (saves but not public) or **Published**
-8. Click **Save**
+3. Write the title and content using the Lexical rich text editor
+4. Add categories and set the hero image
+5. Fill in SEO fields (meta title, description)
+6. Set publish status: **Draft** (saves but not public) or **Published**
+7. Click **Save**
 
 ---
 
 ### How do I update the IBAN?
 
 1. Go to `/admin` and click **Site Ayarlari** (Site Settings)
-2. Find the **IBAN** field and update it
-3. Update the **Account Holder Name** if needed
-4. For international donations, update the **SWIFT/BIC** and **Bank Name** fields
-5. Click **Save**
+2. Go to the **Banka Bilgileri** tab
+3. Update bank accounts (name, holder, IBAN, currency)
+4. Click **Save**
 
 Changes are reflected on the site after ISR revalidation.
 
@@ -249,9 +220,9 @@ Each module maps to a page or a distinct section of the site. This creates a cle
 - Developers know exactly where to find code for any page
 - No ambiguity about where a component belongs
 - Easy to understand the project scope by listing modules
-- Co-located collections keep CMS definitions close to their consumers
+- Collections are defined in `src/collections/` for centralized CMS management
 
-The 18 modules cover all pages plus cross-cutting concerns (layout, shared, media, settings).
+The 7 feature modules (animals, blog, donate, emergency, our-work, supplies, transparency) cover the main frontend domains, while shared/home components live in `src/components/`.
 
 ---
 
@@ -262,16 +233,6 @@ The 18 modules cover all pages plus cross-cutting concerns (layout, shared, medi
 - **Strict dependency resolution** — prevents phantom dependency issues
 - **Drop-in replacement** — compatible with npm packages and `node_modules`
 - **Vercel support** — Vercel natively supports pnpm as a package manager
-
----
-
-### Why Biome over ESLint?
-
-- **Performance** — written in Rust, 10-100x faster than ESLint + Prettier
-- **Unified tool** — linting and formatting in a single tool
-- **Zero config** — sensible defaults, minimal configuration needed
-- **No plugin fatigue** — no need to install and configure dozens of ESLint plugins
-- **Consistent formatting** — deterministic output, no Prettier disagreements
 
 ---
 
@@ -292,13 +253,13 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 
 ### PayloadCMS type generation fails
 
-**Symptom:** `pnpm run payload:generate-types` throws an error.
+**Symptom:** `pnpm run generate:types` throws an error.
 
 **Solutions:**
 
 1. Ensure the database is running and `DATABASE_URL` is correct
 2. Check for syntax errors in collection definitions
-3. Run `pnpm run dev` first to verify PayloadCMS initializes, then run type generation in a separate terminal
+3. Run `pnpm dev` first to verify PayloadCMS initializes, then run type generation in a separate terminal
 4. Clear the `.next` cache: `rm -rf .next`
 
 ---
@@ -311,21 +272,8 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 
 1. **Check environment variables** — all required vars must be set in Vercel project settings. Missing `DATABASE_URL` or `PAYLOAD_SECRET` will cause build failure.
 2. **Check build logs** — Vercel dashboard shows the full build output.
-3. **Test locally:** `pnpm run build` — if it builds locally but not on Vercel, the issue is likely environment variables.
+3. **Test locally:** `pnpm build` — if it builds locally but not on Vercel, the issue is likely environment variables.
 4. **Memory issues** — if the build runs out of memory, check for circular imports or excessive static generation.
-
----
-
-### Translations missing / showing keys instead of text
-
-**Symptom:** UI shows `my-module.title` instead of the translated string.
-
-**Solutions:**
-
-1. Verify the key exists in both `src/messages/tr.json` and `src/messages/en.json`
-2. Check that the namespace matches: `useTranslations("my-module")` needs keys under `"my-module"` in the JSON
-3. Restart the dev server after adding new locale files
-4. Check for JSON syntax errors in locale files (trailing commas, missing quotes)
 
 ---
 
@@ -336,7 +284,7 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 **Solutions:**
 
 1. **Local dev:** Ensure the `public/` directory exists and images are in the correct path
-2. **CMS uploads:** Check that `BLOB_READ_WRITE_TOKEN` is configured (if using Vercel Blob)
+2. **CMS uploads:** Check that `BLOB_READ_WRITE_TOKEN` is configured (required for Vercel Blob media storage)
 3. **Next.js Image:** Verify the domain is listed in `next.config.ts` under `images.remotePatterns`
 4. **Format:** Ensure images are in WebP or a supported format
 
@@ -349,7 +297,7 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 **Solutions:**
 
 1. Check the terminal for compilation errors
-2. Clear the `.next` cache: `rm -rf .next && pnpm run dev`
+2. Clear the `.next` cache: `rm -rf .next && pnpm dev`
 3. Hard refresh the browser: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R` (Windows/Linux)
 4. Check that the file is saved and inside the `src/` directory
 
@@ -377,7 +325,7 @@ Used for: animal filters (species, status), blog filters (tags, category), searc
 1. Check the browser console for JavaScript errors
 2. Ensure `PAYLOAD_SECRET` is set and at least 32 characters
 3. Clear browser cache and cookies for localhost
-4. Delete `.next` and rebuild: `rm -rf .next && pnpm run dev`
+4. Delete `.next` and rebuild: `rm -rf .next && pnpm dev`
 5. Check that `payload.config.ts` has no syntax or import errors
 
 ---

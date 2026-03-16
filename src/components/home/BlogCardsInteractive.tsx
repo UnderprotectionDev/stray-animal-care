@@ -140,7 +140,7 @@ export default function BlogCardsInteractive({ cards, locale }: Props) {
                   <div className="border-t border-border mt-6 pt-6">
                     <Link
                       href={`/gunluk/${active.slug}`}
-                      className="btn-cta inline-flex items-center gap-2"
+                      className="btn-health inline-flex items-center gap-2"
                     >
                       {locale === 'en' ? 'Read More' : 'Devamını Oku'}
                       <ArrowRight className="w-4 h-4" />

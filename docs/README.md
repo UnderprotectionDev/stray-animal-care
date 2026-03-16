@@ -1,6 +1,6 @@
 # Paws of Hope — Project Documentation
 
-> Last updated: 2026-03-13 — All milestones complete (M1-M10, M13). Design system: Mint System (March 2026).
+> Last updated: 2026-03-16 — All milestones complete (M1-M10, M13). Design system: Vivid Brutalist.
 
 ---
 

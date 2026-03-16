@@ -81,8 +81,8 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
           <SectionDividerBand
             key={`divider-story-${block.id}`}
             texts={['BESLEME', 'TEDAVİ', 'KISIRLAŞTIRMA', 'ACİL MÜDAHALE', 'AŞILAMA', 'BARINMA']}
-            bgColor="var(--cta)"
-            textColor="var(--cta-foreground)"
+            bgColor="var(--palette-forest)"
+            textColor="var(--palette-cream)"
             velocity={50}
           />,
         )

@@ -6,9 +6,10 @@ type ProgressBarProps = {
   target: number
   className?: string
   label?: string
+  colorClass?: string
 }
 
-export function ProgressBar({ current, target, className, label }: ProgressBarProps) {
+export function ProgressBar({ current, target, className, label, colorClass = 'bg-health' }: ProgressBarProps) {
   const percentage = target > 0 ? Math.min(Math.round((current / target) * 100), 100) : 0
 
   return (
@@ -28,7 +29,7 @@ export function ProgressBar({ current, target, className, label }: ProgressBarPr
         aria-label={label || `${percentage}% complete`}
       >
         <div
-          className="h-full bg-cta transition-all duration-500"
+          className={`h-full ${colorClass} transition-all duration-500`}
           style={{ width: `${percentage}%` }}
         />
       </div>

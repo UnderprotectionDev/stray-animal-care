@@ -2540,6 +2540,8 @@ export interface UiString {
       blog?: string | null;
       donate?: string | null;
       volunteer?: string | null;
+      vision?: string | null;
+      supplies?: string | null;
       openMenu?: string | null;
       closeMenu?: string | null;
     };
@@ -2551,13 +2553,17 @@ export interface UiString {
     };
     footer?: {
       copyright?: string | null;
-      bankInfo?: string | null;
       contactUs?: string | null;
-      quickLinks?: string | null;
-      international?: string | null;
-      copyIban?: string | null;
+      explore?: string | null;
+      support?: string | null;
       followUs?: string | null;
       description?: string | null;
+      missionTitle?: string | null;
+      missionText?: string | null;
+      donateButton?: string | null;
+      volunteerButton?: string | null;
+      emergencyLine?: string | null;
+      madeWithLove?: string | null;
     };
     breadcrumb?: {
       home?: string | null;
@@ -3218,6 +3224,8 @@ export interface UiStringsSelect<T extends boolean = true> {
               blog?: T;
               donate?: T;
               volunteer?: T;
+              vision?: T;
+              supplies?: T;
               openMenu?: T;
               closeMenu?: T;
             };
@@ -3235,13 +3243,17 @@ export interface UiStringsSelect<T extends boolean = true> {
           | T
           | {
               copyright?: T;
-              bankInfo?: T;
               contactUs?: T;
-              quickLinks?: T;
-              international?: T;
-              copyIban?: T;
+              explore?: T;
+              support?: T;
               followUs?: T;
               description?: T;
+              missionTitle?: T;
+              missionText?: T;
+              donateButton?: T;
+              volunteerButton?: T;
+              emergencyLine?: T;
+              madeWithLove?: T;
             };
         breadcrumb?:
           | T

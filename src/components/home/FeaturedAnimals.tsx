@@ -48,7 +48,7 @@ export function FeaturedAnimals({ block, animals }: Props) {
 
   return (
     <section className="bg-white">
-      <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
+      <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} accentColor="adoption" />
       <Carousel items={carouselCards} />
     </section>
   )

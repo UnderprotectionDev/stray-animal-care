@@ -24,7 +24,7 @@ export function HomeHero({ block }: Props) {
             tag="h2"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}
           />
-          <div className="w-24 h-1 mt-3" style={{ background: 'var(--cta)' }} />
+          <div className="w-24 h-1 mt-3" style={{ background: 'var(--health)' }} />
           {block.rotatingWords && block.rotatingWords.length > 0 && (
             <HeroRotatingSubtitle
               texts={block.rotatingWords.map((w) => w.word).filter(Boolean) as string[]}
@@ -48,7 +48,7 @@ export function HomeHero({ block }: Props) {
         </div>
 
         {/* Right panel */}
-        <div className="min-h-[200px] md:min-h-0 grid grid-rows-[1fr_1fr] bg-cta">
+        <div className="min-h-[200px] md:min-h-0 grid grid-rows-[1fr_1fr] bg-health">
           <div className="overflow-hidden relative">
             {leftImage && (
               <Media

@@ -23,7 +23,7 @@ export function StorySection({ block }: Props) {
             tag="h2"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}
           />
-          <div className="w-24 h-1 mt-3" style={{ background: 'var(--cta)' }} />
+          <div className="w-24 h-1 mt-3" style={{ background: 'var(--trust)' }} />
         </div>
       )}
 

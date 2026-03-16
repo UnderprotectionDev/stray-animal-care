@@ -1,10 +1,10 @@
 import React from 'react'
 import type { Post, SiteSetting } from '@/payload-types'
-import { Link } from '@/i18n/navigation'
-import { Media } from '@/components/Media'
-import { formatDate } from '@/utilities/formatDate'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { CATEGORY_LABELS_FALLBACK } from '@/utilities/categoryLabels'
-import { SectionHeader } from './SectionHeader'
+import { AnimatedSectionHeader } from './AnimatedSectionHeader'
+import BlogCardsBento from './BlogCardsBento'
+import type { BentoCardData } from './BlogCardsBento'
 
 type RecentPostsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeRecentPosts' }>
 
@@ -14,45 +14,36 @@ type Props = {
   locale: string
 }
 
+function serializePosts(posts: Post[]): BentoCardData[] {
+  return posts.map((post) => {
+    const img = post.heroImage ?? post.meta?.image
+    const imageUrl = img && typeof img !== 'number' ? getMediaUrl(img.url) : ''
+    const imageAlt = img && typeof img !== 'number' ? (img.alt || post.title) : post.title
+    return {
+      id: post.id,
+      title: post.title,
+      slug: post.slug || '',
+      excerpt: post.excerpt || null,
+      category: post.postCategory || null,
+      categoryLabel: post.postCategory
+        ? (CATEGORY_LABELS_FALLBACK[post.postCategory] ?? post.postCategory)
+        : '',
+      publishedAt: post.publishedAt || null,
+      imageUrl,
+      imageAlt,
+    }
+  })
+}
+
 export function RecentPosts({ block, posts, locale }: Props) {
   if (!posts.length) return null
 
+  const cards = serializePosts(posts)
+
   return (
     <section>
-      <SectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
-      <div className="g-1 md:g-3">
-        {posts.map((post) => {
-          const image = post.heroImage ?? post.meta?.image
-          return (
-            <Link key={post.id} href={`/gunluk/${post.slug}`} className="panel p-0 group">
-              {image && typeof image !== 'number' && (
-                <div className="aspect-video overflow-hidden">
-                  <Media
-                    resource={image}
-                    className="h-full w-full object-cover photo-sys"
-                  />
-                </div>
-              )}
-              <div className="p-4 border-t border-border">
-                {post.postCategory && (
-                  <span className="badge-sys text-[10px] mb-2 inline-block bg-warm text-warm-foreground border-warm">
-                    {CATEGORY_LABELS_FALLBACK[post.postCategory] ?? post.postCategory}
-                  </span>
-                )}
-                <h3 className="t-meta font-bold uppercase">{post.title}</h3>
-                {post.excerpt && (
-                  <p className="t-meta text-muted-foreground mt-1 line-clamp-2">{post.excerpt}</p>
-                )}
-                {post.publishedAt && (
-                  <p className="t-meta text-muted-foreground mt-2 text-xs">
-                    {formatDate(post.publishedAt, locale)}
-                  </p>
-                )}
-              </div>
-            </Link>
-          )
-        })}
-      </div>
+      <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} accentColor="stats" />
+      <BlogCardsBento cards={cards} locale={locale} />
     </section>
   )
 }

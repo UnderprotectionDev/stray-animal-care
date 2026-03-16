@@ -63,9 +63,9 @@ M1 ──┬── M2 ──┐
 - All milestone files are written in **English**
 - Each task includes: description, relevant file paths, and acceptance criteria
 - File paths follow the project architecture defined in `docs/prd/03-technical.md`
-- Collections are co-located in modules as `collection.ts`
-- Globals are co-located in the settings module as `global.ts`
-- Module structure: `src/modules/<name>/components/`, `hooks/`, `lib/`, `collection.ts`, `index.ts`
+- Collections are defined in `src/collections/` (centralized, not inside modules)
+- Globals: Header (`src/Header/`), SiteSettings (`src/SiteSettings/`), UIStrings (`src/globals/UIStrings/`)
+- Module structure: `src/modules/<name>/components/`, `lib/`, `index.ts` (7 feature modules)
 
 ---
 

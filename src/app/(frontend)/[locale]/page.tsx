@@ -57,7 +57,7 @@ export default async function HomePage({ params }: Args) {
       ? payload.find({
           collection: 'posts',
           where: { _status: { equals: 'published' } },
-          limit: 3,
+          limit: (blocks.find(b => b.blockType === 'homeRecentPosts' && b.enabled !== false) as { limit?: number } | undefined)?.limit ?? 6,
           sort: '-publishedAt',
           locale: payloadLocale,
           depth: 1,

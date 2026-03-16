@@ -85,7 +85,7 @@ export function AnimalCarouselCardContent({ animal, block }: Props) {
       {/* CTA */}
       <Link
         href={`/canlarimiz/${animal.slug}`}
-        className="btn-cta inline-block text-sm py-3 px-6"
+        className="btn-adoption inline-block text-sm py-3 px-6"
       >
         {block.adoptCta || 'DETAYLARI GÖR'}
       </Link>

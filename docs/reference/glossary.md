@@ -1,6 +1,6 @@
 # Glossary — Turkish / English Term Reference
 
-> Last updated: 2026-03-10
+> Last updated: 2026-03-16
 
 This document maps Turkish terms used throughout the codebase, URL slugs, CMS fields, and UI to their English equivalents. It serves as a reference for developers who may not be familiar with Turkish.
 
@@ -45,13 +45,18 @@ These are the Turkish URL paths used in the `[locale]` route structure.
 
 ## CMS Field Values — Status
 
-| Turkish          | English              | Used In                    |
-| ---------------- | -------------------- | -------------------------- |
-| `tedavide`       | In treatment         | Animals: status            |
-| `kalici-bakim`   | Permanent care       | Animals: status            |
-| `acil`           | Emergency / Urgent   | Emergency: priority        |
-| `aktif`          | Active               | Emergency: status          |
-| `tamamlandi`     | Completed            | Emergency: status          |
+| Turkish          | English              | Used In                           |
+| ---------------- | -------------------- | --------------------------------- |
+| `tedavide`       | In treatment         | Animals: `animalStatus`           |
+| `kalici-bakim`   | Permanent care       | Animals: `animalStatus`           |
+| `acil`           | Emergency / Urgent   | NeedsList: `priority`             |
+| `aktif`          | Active               | EmergencyCases: `caseStatus`      |
+| `tamamlandi`     | Completed            | EmergencyCases: `caseStatus`      |
+| `beklemede`      | Pending              | Volunteers: `applicationStatus`   |
+| `onaylandi`      | Approved             | Volunteers: `applicationStatus`   |
+| `reddedildi`     | Rejected             | Volunteers: `applicationStatus`   |
+
+> **Note:** Animals uses `animalStatus` (not `status`) and EmergencyCases uses `caseStatus` (not `status`) to avoid conflict with Payload's internal `_status` enum in Drizzle.
 
 ---
 
@@ -76,17 +81,25 @@ These appear in the PayloadCMS admin sidebar and throughout the admin UI.
 | Turkish Singular | Turkish Plural   | English Singular    | English Plural       | Collection Slug         |
 | ---------------- | ---------------- | ------------------- | -------------------- | ----------------------- |
 | Hayvan           | Hayvanlar        | Animal              | Animals              | `animals`               |
-| Blog Yazisi      | Blog Yazilari    | Blog Post           | Blog Posts           | `blog-posts`            |
+| Yazi             | Yazilar          | Post                | Posts                | `posts`                 |
 | Acil Vaka        | Acil Vakalar     | Emergency Case      | Emergency Cases      | `emergency-cases`       |
 | Ihtiyac          | Ihtiyac Listesi  | Need                | Needs List           | `needs-list`            |
 | Seffaflik Raporu | Seffaflik Raporlari | Transparency Report | Transparency Reports | `transparency-reports` |
 | Medya            | Medyalar         | Media               | Media                | `media`                 |
+| Sayfa            | Sayfalar         | Page                | Pages                | `pages`                 |
+| Kategori         | Kategoriler      | Category            | Categories           | `categories`            |
+| Veteriner Kaydi  | Veteriner Kayitlari | Vet Record       | Vet Records          | `vet-records`           |
+| Etkinlik         | Etkinlikler      | Event               | Events               | `events`                |
+| Gonullu          | Gonulluler       | Volunteer           | Volunteers           | `volunteers`            |
+| Kullanici        | Kullanicilar     | User                | Users                | `users`                 |
 
-### Global Label
+### Global Labels
 
 | Turkish          | English          | Global Slug      |
 | ---------------- | ---------------- | ---------------- |
 | Site Ayarlari    | Site Settings    | `site-settings`  |
+| Header           | Header           | `header`         |
+| UI Strings       | UI Strings       | `ui-strings`     |
 
 ---
 

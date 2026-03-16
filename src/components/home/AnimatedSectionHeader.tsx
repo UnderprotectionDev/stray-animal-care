@@ -4,13 +4,26 @@ import React from 'react'
 import { Link } from '@/i18n/navigation'
 import BlurText from '@/components/BlurText'
 
+type AccentColor = 'cta' | 'adoption' | 'health' | 'trust' | 'warm' | 'stats' | 'emergency'
+
+const accentButtonStyles: Record<AccentColor, string> = {
+  cta: 'btn-cta',
+  adoption: 'btn-adoption',
+  health: 'btn-health',
+  trust: 'btn-trust',
+  warm: 'btn-warm',
+  stats: 'btn-stats',
+  emergency: 'btn-emergency',
+}
+
 type Props = {
   title: string | null | undefined
   viewAllLabel?: string | null
   viewAllLink?: string | null
+  accentColor?: AccentColor
 }
 
-export function AnimatedSectionHeader({ title, viewAllLabel, viewAllLink }: Props) {
+export function AnimatedSectionHeader({ title, viewAllLabel, viewAllLink, accentColor = 'cta' }: Props) {
   return (
     <div className="panel py-4 px-6 flex items-center justify-between border-b-[1.5px] border-border">
       {title ? (
@@ -32,7 +45,7 @@ export function AnimatedSectionHeader({ title, viewAllLabel, viewAllLink }: Prop
         <h2 className="t-h2" />
       )}
       {viewAllLabel && viewAllLink && (
-        <Link href={viewAllLink} className="btn-cta text-xs py-2 px-4">
+        <Link href={viewAllLink} className={`${accentButtonStyles[accentColor]} text-xs py-2 px-4`}>
           {viewAllLabel}
         </Link>
       )}

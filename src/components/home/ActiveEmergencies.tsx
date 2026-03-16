@@ -66,6 +66,7 @@ export function ActiveEmergencies({ block, cases }: Props) {
         title={block.sectionTitle}
         viewAllLabel={block.viewAllLabel}
         viewAllLink={block.viewAllLink}
+        accentColor="emergency"
       />
 
       <EmergencyScrollBand

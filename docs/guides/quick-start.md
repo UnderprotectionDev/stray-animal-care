@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-> Last updated: 2026-03-10
+> Last updated: 2026-03-16
 
 ---
 
@@ -46,10 +46,10 @@ DATABASE_URL=postgresql://user:password@host:5432/paws_of_hope
 PAYLOAD_SECRET=your-secret-key-min-32-characters
 
 # Site URL — use localhost for development
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 
-# Optional — Instagram feed (leave empty for development)
-INSTAGRAM_TOKEN=
+# Optional — Vercel Blob for media uploads (leave empty for local dev)
+BLOB_READ_WRITE_TOKEN=
 ```
 
 ### 4. Set Up the Database
@@ -60,12 +60,12 @@ If using a local PostgreSQL:
 createdb paws_of_hope
 ```
 
-PayloadCMS creates all tables automatically on first run.
+PayloadCMS creates all tables automatically on first run (uses `push: true` — no migration files needed).
 
 ### 5. Start the Development Server
 
 ```bash
-pnpm run dev
+pnpm dev
 ```
 
 The application starts at `http://localhost:3000`. The PayloadCMS admin panel is available at `http://localhost:3000/admin`.
@@ -76,64 +76,91 @@ On first visit to `/admin`, you will be prompted to create an admin user.
 
 ## Key Commands
 
-| Command                        | Description                            |
-| ------------------------------ | -------------------------------------- |
-| `pnpm run dev`                  | Start development server               |
-| `pnpm run build`                | Production build                       |
-| `pnpm run start`                | Start production server                |
-| `pnpm run lint`                 | Run Biome linter                       |
-| `pnpm run format`               | Run Biome formatter                    |
-| `pnpm run biome:check`          | Lint + format check (CI mode)          |
-| `pnpm run typecheck`            | TypeScript type checking               |
-| `pnpm run test`                 | Run unit tests (Vitest)                |
-| `pnpm run test:watch`           | Run tests in watch mode                |
-| `pnpm run test:integration`     | Run integration tests                  |
-| `pnpm run test:e2e`             | Run Playwright E2E tests               |
-| `pnpm run test:coverage`        | Run tests with coverage report         |
-| `pnpm run payload:generate-types` | Generate TypeScript types from collections |
-| `pnpm run payload:migrate`      | Run database migrations                |
+| Command                          | Description                              |
+| -------------------------------- | ---------------------------------------- |
+| `pnpm dev`                        | Start development server                 |
+| `pnpm build`                      | Production build                         |
+| `pnpm start`                      | Start production server                  |
+| `pnpm lint`                       | Run ESLint                               |
+| `pnpm lint:fix`                   | Run ESLint with auto-fix                 |
+| `tsc --noEmit`                    | TypeScript type checking                 |
+| `pnpm run generate:types`         | Generate PayloadCMS TypeScript types     |
+| `pnpm run generate:importmap`     | Regenerate Payload admin import map      |
+| `pnpm run test:int`               | Run integration tests (Vitest)           |
+| `pnpm run test:e2e`               | Run Playwright E2E tests                 |
+| `pnpm test`                       | Run both int + e2e                       |
+| `pnpm run seed`                   | Seed database (destructive)              |
+| `pnpm run seed:cms`               | Seed CMS content only                    |
+
+### Running a Single Test
+
+```bash
+# Integration (Vitest) — single file
+pnpm vitest run --config ./vitest.config.mts tests/int/path/to/file.int.spec.ts
+
+# E2E (Playwright) — single file
+pnpm playwright test tests/e2e/path/to/file.spec.ts
+```
 
 ---
 
 ## Project Structure Overview
 
 ```
-paws-of-hope/
+stray-animal-care/
   docs/                          # Project documentation
   public/                        # Static assets (favicon, images)
+  tests/
+    int/                         # Integration tests (*.int.spec.ts)
+    e2e/                         # E2E tests (Playwright)
+    helpers/                     # Shared test helpers
   src/
     app/
       (frontend)/
         [locale]/                # Internationalized pages (TR/EN)
-          page.tsx               # Home page
-          hikayem/page.tsx       # My Story
+          page.tsx               # Home page (block-driven)
           canlarimiz/page.tsx    # Our Animals
+          posts/[slug]/page.tsx  # Blog detail
           ...
-        not-found.tsx            # Custom 404
+        globals.css              # Global styles + design tokens
       (payload)/
         admin/                   # PayloadCMS admin UI
-      api/                       # API routes
-      error.tsx                  # Error boundary
-      global-error.tsx           # Global error boundary
-      layout.tsx                 # Root layout
-    components/
-      ui/                        # shadcn/ui components
-    lib/
-      payload.ts                 # PayloadCMS client helper
-      utils.ts                   # General utilities
-      format.ts                  # Formatting helpers
-    modules/                     # Feature modules (18 total)
-      home/
-      animals/
-      donate/
+    collections/                 # PayloadCMS collection definitions
+      Animals/
+      Posts/
+      EmergencyCases/
       ...
-    types/
-      common.ts                  # Shared TypeScript types
-      payload-types.ts           # Auto-generated PayloadCMS types
+    modules/                     # Feature modules (7 total)
+      animals/                   # components/ + lib/ + index.ts
+      blog/
+      donate/
+      emergency/
+      our-work/
+      supplies/
+      transparency/
+    components/
+      home/                      # Homepage section components
+      shared/                    # Reusable (Section, Container, Heading, etc.)
+      fancy/                     # Animation components (FlowingMenu, etc.)
+      ui/                        # shadcn/ui components
+    blocks/
+      homepage/                  # 10 homepage block types
+    globals/
+      UIStrings/                 # UIStrings global (~235 localized fields)
+    Header/                      # Header global + components
+    Footer/                      # Footer component
+    SiteSettings/                # SiteSettings global
+    fields/                      # Reusable field configs
+    hooks/                       # Payload lifecycle hooks
+    access/                      # Access control functions
+    search/                      # Search field overrides
+    i18n/                        # next-intl config (routing only)
+    utilities/                   # Utility functions
+    providers/                   # React context providers
   payload.config.ts              # PayloadCMS configuration
   next.config.ts                 # Next.js configuration
-  tailwind.config.ts             # Tailwind CSS configuration
-  biome.json                     # Biome linter/formatter config
+  tailwind.config.mjs            # Tailwind CSS configuration
+  .eslintrc.json                 # ESLint config
   tsconfig.json                  # TypeScript configuration
 ```
 
@@ -148,19 +175,15 @@ Each module in `src/modules/` follows this pattern:
 ```
 src/modules/animals/
   components/
-    animal-card.tsx
-    animal-grid.tsx
-    animal-detail.tsx
-  hooks/
-    use-animal-filters.ts
+    AnimalCard.tsx
+    AnimalGrid.tsx
+    AnimalDetail.tsx
   lib/
-    animal-utils.ts
-  __tests__/
-    animal-utils.test.ts
-    animal-card.spec.tsx
-  collection.ts                  # PayloadCMS collection (if CMS-backed)
+    queries.ts
   index.ts                       # Barrel export
 ```
+
+> **Note:** Collection definitions live in `src/collections/`, NOT inside modules. Modules contain only frontend components and query logic.
 
 ---
 
@@ -171,7 +194,7 @@ src/modules/animals/
 1. **Create the module directory:**
 
 ```bash
-mkdir -p src/modules/my-module/{components,hooks,lib,__tests__}
+mkdir -p src/modules/my-module/{components,lib}
 ```
 
 2. **Add components:**
@@ -183,10 +206,10 @@ export function MyComponent() {
 }
 ```
 
-3. **Add a collection (if CMS-backed):**
+3. **Add a collection (if CMS-backed) — in `src/collections/`:**
 
 ```ts
-// src/modules/my-module/collection.ts
+// src/collections/MyCollection/index.ts
 import type { CollectionConfig } from "payload";
 
 export const MyCollection: CollectionConfig = {
@@ -203,7 +226,7 @@ export const MyCollection: CollectionConfig = {
 
 ```ts
 // payload.config.ts
-import { MyCollection } from "@/modules/my-module/collection";
+import { MyCollection } from "@/collections/MyCollection";
 
 export default buildConfig({
   collections: [
@@ -235,7 +258,8 @@ export { MyComponent } from "./components/my-component";
 7. **Generate types (if collection was added):**
 
 ```bash
-pnpm run payload:generate-types
+pnpm run generate:types
+pnpm run generate:importmap
 ```
 
 ---
@@ -252,17 +276,17 @@ pnpm run payload:generate-types
 
 ### Create a Blog Post
 
-1. Go to `/admin` and navigate to **Blog Yazilari (Blog Posts)**
+1. Go to `/admin` and navigate to **Yazilar (Posts)**
 2. Click **Create New**
-3. Write content in the rich text editor
-4. Add tags, set featured image
+3. Write content in the rich text editor (Lexical)
+4. Add categories, set hero image
 5. Choose to publish immediately or save as draft
 
 ### Update the Needs List
 
 1. Go to `/admin` and navigate to **Ihtiyac Listesi (Needs List)**
 2. Edit existing items or create new entries
-3. Set priority levels and current stock status
+3. Set priority levels and current/target stock
 
 ### Update IBAN / Contact Info
 
@@ -270,18 +294,16 @@ pnpm run payload:generate-types
 2. Edit the IBAN, phone, email, or social media fields
 3. Save — changes appear on the site immediately via ISR
 
-### Add Translations
+### Update UI Text / Translations
 
-1. Open the relevant locale file in `src/messages/`:
-   - `tr.json` for Turkish
-   - `en.json` for English
-2. Add the new key-value pair in both files
-3. Use in components via `useTranslations`:
+All user-facing text is managed through the **UIStrings** global in the CMS:
 
-```tsx
-const t = useTranslations("my-module");
-return <p>{t("myNewKey")}</p>;
-```
+1. Go to `/admin` and navigate to **UI Strings**
+2. Find the relevant tab (e.g., Ana Sayfa, Hayvanlar, Destek)
+3. Edit the text for both TR and EN locales using the locale switcher
+4. Save — changes propagate to the frontend via ISR
+
+> **Note:** There are no JSON translation files. All UI text lives in the CMS UIStrings global (~235 localized fields across 12 tabs). next-intl is used only for routing (locale prefix handling).
 
 ---
 

@@ -46,7 +46,7 @@ export function EmergencyCard({ ec }: EmergencyCardProps) {
           </div>
         </div>
         <div className="p-4 space-y-3 border-t border-border">
-          <h3 className="font-bold text-foreground text-base uppercase tracking-wide leading-tight line-clamp-2 group-hover:text-cta transition-colors">
+          <h3 className="font-bold text-foreground text-base uppercase tracking-wide leading-tight line-clamp-2 group-hover:text-emergency transition-colors">
             {ec.title}
           </h3>
           {target > 0 && (

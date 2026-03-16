@@ -183,14 +183,16 @@
 - [x] Hamburger menu works on mobile
 - [x] Sticky "Bagis Yap" (Donate) CTA is visible on mobile
 - [x] 2-column grid on tablet, 3-4 column grid on desktop
-- [x] Custom cursor is active only on desktop, disabled on mobile
 
 ### AC-7: Instagram Integration
 
-- [x] Recent posts are fetched via Instagram Basic Display API
-- [x] At least 6-9 posts are displayed as a grid
-- [x] Each post redirects to Instagram when clicked
-- [x] Graceful fallback on API error (static images or hide)
+> **Note:** Instagram API integration is deferred/placeholder. The site links to the Instagram profile but does not fetch posts via API.
+
+- [x] Instagram link is provided as an external link
+- [ ] Recent posts are fetched via Instagram API (deferred)
+- [ ] At least 6-9 posts are displayed as a grid (deferred)
+- [x] Each link redirects to Instagram when clicked
+- [x] Graceful fallback when API is not configured
 
 ### AC-8: WhatsApp Redirect
 
@@ -209,10 +211,10 @@
 
 ### AC-10: Site-Wide Search
 
-- [ ] Search bar is accessible in the header or as a modal
-- [ ] Animals, blog posts, and emergency cases are searchable
-- [ ] Search results are synchronized with URL state (Nuqs)
-- [ ] A user-friendly message is shown when no results are found
+- [x] Search modal accessible via Cmd+K shortcut or header search button
+- [x] Animals, blog posts, and emergency cases are searchable
+- [x] Search results are synchronized with URL state (Nuqs)
+- [x] A user-friendly message is shown when no results are found
 
 ---
 

@@ -2,8 +2,10 @@
 
 > **Project**: Paws of Hope
 > **Date**: 2026-03-10
-> **Status**: Confirmed
+> **Status**: Historical Reference
 > **Scope**: Deferred technology choices from milestone planning, now finalized
+
+> **Important:** TDR-001, 003, 004, 005, and 006 reference milestones (M15-M18) that have been **removed from project scope**. These decisions are retained for historical reference only. If any of these milestones are revisited in the future, the technology choices documented here remain valid starting points.
 
 This document records the technology decisions that were deferred during initial milestone planning and have since been evaluated and confirmed. Each decision follows an Architecture Decision Record (ADR) format with context, rationale, and consequences.
 

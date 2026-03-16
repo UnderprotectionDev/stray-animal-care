@@ -68,8 +68,8 @@
 - [x] Gonullu Ol (Volunteer)
 - [x] Gelecek Vizyonu (Future Vision)
 - [x] Instagram placeholder (no API token)
-- [x] Custom cursor (paw print, desktop only)
-- [x] Scroll animations (Motion / Framer Motion)
+- [x] ~~Custom cursor (paw print, desktop only)~~ — removed in Vivid Brutalist redesign
+- [x] Scroll animations (GSAP + Motion)
 - [x] SEO (dynamic sitemap, robots.ts, JSON-LD helpers)
 - [x] Breadcrumb navigation (animal, case, blog detail pages)
 - [x] Accessibility improvements (skip nav, focus, ARIA)
@@ -80,6 +80,16 @@
 - [x] Admin dashboard enhancements (custom widgets, quick actions, recent activity)
 - [ ] Uploading real images to CMS
 - [ ] UI improvements based on user feedback
+
+### Removed Milestones
+
+The following milestones have been **removed from project scope**:
+- M11 — Online Payments (iyzico/Stripe integration)
+- M12 — Email Notifications
+- M14 — A/B Testing
+- M15-M18 — PWA, Social Media Automation, Analytics Dashboard, Community Forum
+
+See [Tech Decisions](../reference/tech-decisions.md) for historical context on deferred technology choices.
 
 ### Phase 3: Maturity — 3-6 Months After Launch
 

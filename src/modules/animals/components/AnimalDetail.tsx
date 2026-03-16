@@ -103,7 +103,7 @@ export async function AnimalDetail({ animal, siteSettings, locale }: AnimalDetai
 
             {/* CTA buttons */}
             <div className="p-4 space-y-3">
-              <Link href="/destek-ol" className="btn-cta block w-full text-center">
+              <Link href="/destek-ol" className="btn-adoption block w-full text-center">
                 {ui?.animals?.detail?.donate ?? 'Destek Ol'}
               </Link>
 

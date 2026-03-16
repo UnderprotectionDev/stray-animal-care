@@ -39,9 +39,9 @@ export function BlogDetail({ post, shareUrl, categoryLabel, tagsLabel, shareLabe
       .join(', ') || null
 
   return (
-    <article>
+    <>
       {heroImage && typeof heroImage === 'object' && (
-        <div className="relative aspect-video w-full bg-muted border-b border-border">
+        <div className="panel p-0 relative aspect-video w-full bg-muted">
           <Media
             resource={heroImage}
             fill
@@ -50,8 +50,8 @@ export function BlogDetail({ post, shareUrl, categoryLabel, tagsLabel, shareLabe
         </div>
       )}
 
-      <div className="mx-auto max-w-3xl px-4 py-8 md:px-8 md:py-12">
-        <div className="mb-8">
+      <div className="panel p-6 md:p-8">
+        <div className="mx-auto max-w-3xl">
           <div className="mb-4 flex flex-wrap items-center gap-3">
             {post.postCategory && (
               <span className="badge-sys">
@@ -65,27 +65,33 @@ export function BlogDetail({ post, shareUrl, categoryLabel, tagsLabel, shareLabe
               <span className="t-meta">{authorNames}</span>
             )}
           </div>
-          <h1 className="t-mega">{post.title}</h1>
+          <h1 className="t-h1">{post.title}</h1>
         </div>
+      </div>
 
-        {post.content && (
-          <div className="panel border border-border p-6 mb-8">
+      {post.content && (
+        <div className="panel p-6 md:p-8">
+          <div className="mx-auto max-w-3xl prose-blog">
             <RichText data={post.content} enableGutter={false} />
           </div>
-        )}
+        </div>
+      )}
 
-        {post.tags && post.tags.length > 0 && (
-          <TagList tags={post.tags} label={tagsLabel} />
-        )}
+      {((post.tags && post.tags.length > 0) || shareUrl) && (
+        <div className="panel p-6 md:p-8">
+          <div className="mx-auto max-w-3xl">
+            {post.tags && post.tags.length > 0 && (
+              <TagList tags={post.tags} label={tagsLabel} />
+            )}
 
-        <hr className="my-8 border-border" />
-
-        <SocialShare
-          url={shareUrl}
-          title={post.title}
-          labels={shareLabels}
-        />
-      </div>
-    </article>
+            <SocialShare
+              url={shareUrl}
+              title={post.title}
+              labels={shareLabels}
+            />
+          </div>
+        </div>
+      )}
+    </>
   )
 }

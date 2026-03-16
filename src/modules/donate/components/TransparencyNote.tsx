@@ -20,7 +20,7 @@ export function TransparencyNote({ labels }: TransparencyNoteProps) {
           <p className="t-meta">{labels.description}</p>
           <Link
             href="/seffaflik"
-            className="btn-cta inline-block mt-2"
+            className="btn-trust inline-block mt-2"
           >
             {labels.reports}
           </Link>

@@ -24,6 +24,12 @@ const config = {
                 fontWeight: '800',
                 marginBottom: '0.25em',
               },
+              p: {
+                lineHeight: '1.75',
+              },
+              li: {
+                lineHeight: '1.75',
+              },
             },
           ],
         },
