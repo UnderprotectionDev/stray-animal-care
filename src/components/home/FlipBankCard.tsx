@@ -120,7 +120,7 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
         className="relative w-full"
         style={{
           transformStyle: 'preserve-3d',
-          height: '200px',
+          height: '240px',
         }}
       >
         {/* ── Front Face ── */}

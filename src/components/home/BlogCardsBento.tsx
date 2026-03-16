@@ -1,10 +1,9 @@
 'use client'
 
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react'
-import { AnimatePresence, motion, useMotionValue, useSpring } from 'motion/react'
-import { ArrowRight, X } from 'lucide-react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { motion, useMotionValue, useSpring } from 'motion/react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
-import { useOutsideClick } from '@/hooks/use-outside-click'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -22,19 +21,38 @@ export type BentoCardData = {
   imageAlt: string
 }
 
-const CATEGORY_COLORS: Record<string, string> = {
-  kurtarma: 'bg-cta text-cta-foreground',
-  tedavi: 'bg-health text-health-foreground',
-  'gunluk-hayat': 'bg-warm text-warm-foreground',
-  gunluk: 'bg-warm text-warm-foreground',
-  duyuru: 'bg-emergency text-emergency-foreground',
-  etkinlik: 'bg-trust text-trust-foreground',
-  sahiplendirme: 'bg-adoption text-adoption-foreground',
+/** Maps category slug → [bg CSS var, fg CSS var] for inline styles (avoids Tailwind purge issues) */
+const CATEGORY_STYLE_MAP: Record<string, [string, string]> = {
+  kurtarma: ['var(--cta)', 'var(--cta-foreground)'],
+  tedavi: ['var(--health)', 'var(--health-foreground)'],
+  'gunluk-hayat': ['var(--warm)', 'var(--warm-foreground)'],
+  gunluk: ['var(--warm)', 'var(--warm-foreground)'],
+  duyuru: ['var(--emergency)', 'var(--emergency-foreground)'],
+  etkinlik: ['var(--trust)', 'var(--trust-foreground)'],
+  sahiplendirme: ['var(--adoption)', 'var(--adoption-foreground)'],
 }
 
-function getCategoryColor(category: string | null): string {
-  if (!category) return 'bg-palette-black text-palette-cream'
-  return CATEGORY_COLORS[category] || 'bg-palette-black text-palette-cream'
+const DEFAULT_BADGE_STYLE: [string, string] = ['var(--palette-black)', 'var(--palette-cream)']
+
+function getCategoryStyle(category: string | null): React.CSSProperties {
+  const [bg, fg] = (category && CATEGORY_STYLE_MAP[category]) || DEFAULT_BADGE_STYLE
+  return { background: bg, color: fg, border: '1.5px solid var(--palette-black)' }
+}
+
+/** Maps category slug → CSS var name for accent border */
+const CATEGORY_SEMANTIC_TOKENS: Record<string, string> = {
+  kurtarma: 'cta',
+  tedavi: 'health',
+  'gunluk-hayat': 'warm',
+  gunluk: 'warm',
+  duyuru: 'emergency',
+  etkinlik: 'trust',
+  sahiplendirme: 'adoption',
+}
+
+function getCategorySemanticToken(category: string | null): string {
+  if (!category) return 'palette-black'
+  return CATEGORY_SEMANTIC_TOKENS[category] || 'palette-black'
 }
 
 type Props = {
@@ -92,12 +110,7 @@ function SpotlightCard({
 /* ═══════════ Main Component ═══════════ */
 
 export default function BlogCardsBento({ cards, locale }: Props) {
-  const [expandedId, setExpandedId] = useState<number | null>(null)
-  const expandedRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
-  const triggerRefs = useRef<Map<number, HTMLElement>>(new Map())
-  const closeButtonRef = useRef<HTMLButtonElement>(null)
-  const uniqueId = useId()
 
   const prefersReducedMotion = useRef(false)
   useEffect(() => {
@@ -136,64 +149,6 @@ export default function BlogCardsBento({ cards, locale }: Props) {
     }
   }, [cards])
 
-  // Escape key
-  useEffect(() => {
-    if (expandedId === null) return
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') setExpandedId(null)
-    }
-    document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
-  }, [expandedId])
-
-  // Outside click
-  useOutsideClick(
-    expandedRef,
-    useCallback(() => setExpandedId(null), []),
-  )
-
-  // Focus management
-  useEffect(() => {
-    if (expandedId !== null) {
-      // Focus close button after expand
-      requestAnimationFrame(() => {
-        closeButtonRef.current?.focus()
-      })
-    } else {
-      // Return focus to the card that was expanded
-      // triggerRefs tracks the last expanded card
-    }
-  }, [expandedId])
-
-  const handleCollapse = useCallback(
-    (id: number) => {
-      setExpandedId(null)
-      // Return focus to trigger card
-      requestAnimationFrame(() => {
-        triggerRefs.current.get(id)?.focus()
-      })
-    },
-    [],
-  )
-
-  const handleToggle = useCallback(
-    (card: BentoCardData, el: HTMLElement) => {
-      triggerRefs.current.set(card.id, el)
-      if (expandedId === card.id) {
-        handleCollapse(card.id)
-      } else {
-        setExpandedId(card.id)
-        // Scroll into view after animation
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            expandedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-          }, 350)
-        })
-      }
-    },
-    [expandedId, handleCollapse],
-  )
-
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return null
     return new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'tr-TR', {
@@ -207,8 +162,6 @@ export default function BlogCardsBento({ cards, locale }: Props) {
 
   const [featured, ...allRest] = cards
   const rest = allRest.slice(0, 3)
-  const expandedFeatured = expandedId === featured.id
-  const expandedBottomCard = rest.find((c) => c.id === expandedId) ?? null
 
   return (
     <div
@@ -219,59 +172,28 @@ export default function BlogCardsBento({ cards, locale }: Props) {
       {/* ─── Featured Card ─── */}
       <FeaturedCard
         card={featured}
-        uniqueId={uniqueId}
         locale={locale}
-        isExpanded={expandedFeatured}
-        dimmed={expandedId !== null && !expandedFeatured}
-        onToggle={handleToggle}
-        onCollapse={handleCollapse}
         formatDate={formatDate}
-        expandedRef={expandedFeatured ? expandedRef : undefined}
-        closeButtonRef={expandedFeatured ? closeButtonRef : undefined}
         reducedMotion={prefersReducedMotion}
       />
 
-      {/* ─── Expanded Bottom Card Panel ─── */}
-      <AnimatePresence>
-        {expandedBottomCard && (
-          <motion.div
-            ref={expandedRef}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-            className="overflow-hidden"
-          >
-            <ExpandedContent
-              card={expandedBottomCard}
+      {/* ─── Bottom Card Grid ─── */}
+      {rest.length > 0 && (
+        <div
+          className={`grid grid-cols-1 ${rest.length === 1 ? '' : rest.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'}`}
+          style={{ gap: '1.5px', background: 'var(--palette-black)' }}
+        >
+          {rest.map((card) => (
+            <SmallCard
+              key={card.id}
+              card={card}
               locale={locale}
               formatDate={formatDate}
-              onClose={() => handleCollapse(expandedBottomCard.id)}
-              closeButtonRef={closeButtonRef}
+              reducedMotion={prefersReducedMotion}
             />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ─── Bottom 3-Card Grid ─── */}
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-        style={{ gap: '1.5px', background: 'var(--palette-black)' }}
-      >
-        {rest.map((card) => (
-          <SmallCard
-            key={card.id}
-            card={card}
-            uniqueId={uniqueId}
-            locale={locale}
-            isExpanded={expandedId === card.id}
-            dimmed={expandedId !== null && expandedId !== card.id}
-            onToggle={handleToggle}
-            formatDate={formatDate}
-            reducedMotion={prefersReducedMotion}
-          />
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -318,27 +240,13 @@ function useParallaxImage(opts: {
 
 function FeaturedCard({
   card,
-  uniqueId: _uniqueId,
   locale,
-  isExpanded,
-  dimmed,
-  onToggle,
-  onCollapse,
   formatDate,
-  expandedRef,
-  closeButtonRef,
   reducedMotion,
 }: {
   card: BentoCardData
-  uniqueId: string
   locale: string
-  isExpanded: boolean
-  dimmed: boolean
-  onToggle: (card: BentoCardData, el: HTMLElement) => void
-  onCollapse: (id: number) => void
   formatDate: (d: string | null) => string | null
-  expandedRef?: React.Ref<HTMLDivElement>
-  closeButtonRef?: React.RefObject<HTMLButtonElement | null>
   reducedMotion: React.RefObject<boolean>
 }) {
   const { springX, springY, springScale, handleMouseMove, handleMouseLeave } =
@@ -350,155 +258,77 @@ function FeaturedCard({
       reducedMotion,
     })
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      onToggle(card, e.currentTarget)
-    }
-  }
+  const postHref = `/gunluk/${card.slug}` as const
 
   return (
     <SpotlightCard radius={800}>
-      <motion.div
-        ref={expandedRef}
-        data-blog-card
-        role="button"
-        tabIndex={0}
-        aria-expanded={isExpanded}
-        onClick={(e) => onToggle(card, e.currentTarget)}
-        onKeyDown={handleKeyDown}
-        animate={{
-          opacity: dimmed ? 0.3 : 1,
-          scale: dimmed ? 0.95 : 1,
-        }}
-        transition={{ duration: 0.3 }}
-        className="bg-background cursor-pointer group relative"
-      >
-        {/* Image with parallax */}
-        {card.imageUrl && (
+      <Link href={postHref} data-blog-card className="bg-background group relative block">
+        {/* Split layout: image left, text right */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr]"
+          style={{ gap: '1.5px', background: 'var(--palette-black)' }}
+        >
+          {/* Image panel with parallax */}
+          {card.imageUrl && (
+            <div
+              className="relative min-h-[280px] md:min-h-[320px] overflow-hidden bg-background"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              <motion.img
+                src={card.imageUrl}
+                alt={card.imageAlt}
+                className="absolute inset-0 w-full h-full object-cover transition-[filter] duration-300 group-hover:brightness-110"
+                style={{ x: springX, y: springY, scale: springScale }}
+                loading="eager"
+              />
+              {/* Light vignette only */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+            </div>
+          )}
+
+          {/* Text panel on cream */}
           <div
-            className="relative h-[280px] md:h-[360px] lg:h-[420px] overflow-hidden"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            className="bg-background p-6 lg:p-8 flex flex-col justify-center"
+            style={{
+              borderLeft: card.category
+                ? `4px solid var(--${getCategorySemanticToken(card.category)})`
+                : undefined,
+            }}
           >
-            <motion.img
-              src={card.imageUrl}
-              alt={card.imageAlt}
-              className="absolute inset-0 w-full h-full object-cover transition-[filter] duration-300 group-hover:brightness-110"
-              style={{ x: springX, y: springY, scale: springScale }}
-              loading="eager"
-            />
-            {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            {/* Overlaid content */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
-              {card.categoryLabel && (
-                <span
-                  className={`badge-sys mb-3 inline-block backdrop-blur-sm ${getCategoryColor(card.category)}`}
-                  style={{ border: '1.5px solid var(--palette-black)' }}
-                >
-                  {card.categoryLabel}
-                </span>
-              )}
-              <h3 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold uppercase">
-                {card.title}
-              </h3>
-              {card.excerpt && (
-                <p className="t-body mt-2 text-white/80 max-w-xl">
-                  {card.excerpt}
+            {card.categoryLabel && (
+              <span
+                className="badge-sys mb-3 inline-block w-fit"
+                style={getCategoryStyle(card.category)}
+              >
+                {card.categoryLabel}
+              </span>
+            )}
+            <h3 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold uppercase">
+              {card.title}
+            </h3>
+            {card.excerpt && (
+              <p className="t-body mt-3 text-muted-foreground max-w-xl">
+                {card.excerpt}
+              </p>
+            )}
+            <div
+              className="flex items-center gap-4 mt-5 pt-4"
+              style={{ borderTop: '1.5px solid var(--border)' }}
+            >
+              {card.publishedAt && (
+                <p className="t-meta text-muted-foreground text-xs">
+                  {formatDate(card.publishedAt)}
                 </p>
               )}
-              <div className="flex items-center gap-4 mt-4">
-                {card.publishedAt && (
-                  <p className="text-xs text-white/60">{formatDate(card.publishedAt)}</p>
-                )}
-                <span className="font-heading text-xs font-bold uppercase tracking-wider flex items-center gap-1 text-white/80 group-hover:text-white transition-colors underline-offset-4 group-hover:underline">
-                  OKU
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                </span>
-              </div>
+              <span className="btn-stats inline-flex items-center gap-1.5 text-xs ml-auto">
+                {locale === 'en' ? 'READ' : 'OKU'}
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </span>
             </div>
           </div>
-        )}
-
-        {/* Expanded featured content panel */}
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="p-6 lg:p-8 flex flex-col md:flex-row gap-6">
-                {/* Larger image preview */}
-                {card.imageUrl && (
-                  <div className="w-full md:w-1/2 h-[240px] md:h-[300px] overflow-hidden flex-shrink-0">
-                    <img
-                      src={card.imageUrl}
-                      alt={card.imageAlt}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <div className="flex flex-col justify-between flex-1">
-                  {card.categoryLabel && (
-                    <span
-                      className={`badge-sys mb-3 inline-block w-fit ${getCategoryColor(card.category)}`}
-                      style={{ border: '1.5px solid var(--palette-black)' }}
-                    >
-                      {card.categoryLabel}
-                    </span>
-                  )}
-                  <h3 className="font-heading text-2xl lg:text-3xl font-bold uppercase">
-                    {card.title}
-                  </h3>
-                  {card.excerpt && (
-                    <p className="t-body text-muted-foreground mt-3">{card.excerpt}</p>
-                  )}
-                  {card.publishedAt && (
-                    <p className="t-meta text-muted-foreground text-xs mt-4">
-                      {formatDate(card.publishedAt)}
-                    </p>
-                  )}
-                  <div className="mt-6">
-                    <Link
-                      href={`/gunluk/${card.slug}`}
-                      className="btn-stats inline-flex items-center gap-2"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {locale === 'en' ? 'Read More' : 'Devamını Oku'}
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Close button — brutalist offset */}
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.button
-              ref={closeButtonRef}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              onClick={(e) => {
-                e.stopPropagation()
-                onCollapse(card.id)
-              }}
-              className="absolute -top-3 -right-3 z-20 bg-foreground text-background w-9 h-9 flex items-center justify-center hover:opacity-80 transition-opacity"
-              style={{ border: '1.5px solid var(--palette-black)' }}
-              aria-label="Kapat"
-            >
-              <X className="w-4 h-4" />
-            </motion.button>
-          )}
-        </AnimatePresence>
-      </motion.div>
+        </div>
+      </Link>
     </SpotlightCard>
   )
 }
@@ -507,20 +337,12 @@ function FeaturedCard({
 
 function SmallCard({
   card,
-  uniqueId: _uniqueId,
-  locale: _locale,
-  isExpanded,
-  dimmed,
-  onToggle,
+  locale,
   formatDate,
   reducedMotion,
 }: {
   card: BentoCardData
-  uniqueId: string
   locale: string
-  isExpanded: boolean
-  dimmed: boolean
-  onToggle: (card: BentoCardData, el: HTMLElement) => void
   formatDate: (d: string | null) => string | null
   reducedMotion: React.RefObject<boolean>
 }) {
@@ -533,29 +355,11 @@ function SmallCard({
       reducedMotion,
     })
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      onToggle(card, e.currentTarget)
-    }
-  }
+  const postHref = `/gunluk/${card.slug}` as const
 
   return (
     <SpotlightCard>
-      <motion.div
-        data-blog-card
-        role="button"
-        tabIndex={0}
-        aria-expanded={isExpanded}
-        onClick={(e) => onToggle(card, e.currentTarget)}
-        onKeyDown={handleKeyDown}
-        animate={{
-          opacity: dimmed ? 0.3 : 1,
-          scale: dimmed ? 0.95 : 1,
-        }}
-        transition={{ duration: 0.3 }}
-        className="bg-background flex flex-col cursor-pointer group h-full"
-      >
+      <Link href={postHref} data-blog-card className="bg-background flex flex-col group h-full">
         {/* Image with parallax or placeholder */}
         {card.imageUrl ? (
           <div
@@ -582,8 +386,8 @@ function SmallCard({
         <div className="p-4 lg:p-5 flex flex-col flex-1">
           {card.categoryLabel && (
             <span
-              className={`badge-sys mb-2 inline-block w-fit ${getCategoryColor(card.category)}`}
-              style={{ border: '1.5px solid var(--palette-black)' }}
+              className="badge-sys mb-2 inline-block w-fit"
+              style={getCategoryStyle(card.category)}
             >
               {card.categoryLabel}
             </span>
@@ -605,91 +409,13 @@ function SmallCard({
                 {formatDate(card.publishedAt)}
               </p>
             )}
-            <span className="font-heading text-xs font-bold uppercase tracking-wider flex items-center gap-1 text-muted-foreground group-hover:text-foreground transition-colors">
-              OKU
+            <span className="font-heading text-xs font-bold uppercase tracking-wider flex items-center gap-1 text-muted-foreground group-hover:text-foreground transition-colors underline-offset-4 group-hover:underline">
+              {locale === 'en' ? 'READ' : 'OKU'}
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </span>
           </div>
         </div>
-      </motion.div>
+      </Link>
     </SpotlightCard>
-  )
-}
-
-/* ═══════════ Expanded Content (Bottom Cards) ═══════════ */
-
-function ExpandedContent({
-  card,
-  locale,
-  formatDate,
-  onClose,
-  closeButtonRef,
-}: {
-  card: BentoCardData
-  locale: string
-  formatDate: (d: string | null) => string | null
-  onClose: () => void
-  closeButtonRef: React.RefObject<HTMLButtonElement | null>
-}) {
-  return (
-    <div
-      className="bg-background relative p-6 lg:p-8"
-      style={{ border: '1.5px solid var(--palette-black)' }}
-    >
-      {/* Close button — brutalist offset */}
-      <button
-        ref={closeButtonRef}
-        onClick={onClose}
-        className="absolute -top-3 -right-3 z-20 bg-foreground text-background w-9 h-9 flex items-center justify-center hover:opacity-80 transition-opacity"
-        style={{ border: '1.5px solid var(--palette-black)' }}
-        aria-label="Kapat"
-      >
-        <X className="w-4 h-4" />
-      </button>
-
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Larger image */}
-        {card.imageUrl && (
-          <div className="w-full md:w-1/2 h-[240px] md:h-[300px] overflow-hidden flex-shrink-0">
-            <img
-              src={card.imageUrl}
-              alt={card.imageAlt}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
-
-        <div className="flex flex-col justify-between flex-1">
-          {card.categoryLabel && (
-            <span
-              className={`badge-sys mb-3 inline-block w-fit ${getCategoryColor(card.category)}`}
-              style={{ border: '1.5px solid var(--palette-black)' }}
-            >
-              {card.categoryLabel}
-            </span>
-          )}
-          <h3 className="font-heading text-2xl lg:text-3xl font-bold uppercase">
-            {card.title}
-          </h3>
-          {card.excerpt && (
-            <p className="t-body text-muted-foreground mt-3">{card.excerpt}</p>
-          )}
-          {card.publishedAt && (
-            <p className="t-meta text-muted-foreground text-xs mt-4">
-              {formatDate(card.publishedAt)}
-            </p>
-          )}
-          <div className="mt-6">
-            <Link
-              href={`/gunluk/${card.slug}`}
-              className="btn-stats inline-flex items-center gap-2"
-            >
-              {locale === 'en' ? 'Read More' : 'Devamını Oku'}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
   )
 }

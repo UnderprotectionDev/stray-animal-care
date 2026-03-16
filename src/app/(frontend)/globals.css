@@ -463,8 +463,8 @@
   }
 
   .needs-card-mid-2 {
-    background: var(--palette-dark-cream);
-    color: var(--palette-black);
+    background: var(--health);
+    color: var(--health-foreground);
   }
   @media (min-width: 48rem) {
     .needs-card-mid-2 {

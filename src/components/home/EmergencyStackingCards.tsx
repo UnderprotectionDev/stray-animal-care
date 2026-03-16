@@ -29,9 +29,9 @@ const CARD_COLORS = [
 ]
 
 export default function EmergencyStackingCards({ cards }: Props) {
-  if (cards.length === 0) return null
-
   const container = useRef<HTMLDivElement>(null)
+
+  if (cards.length === 0) return null
 
   return (
     <div

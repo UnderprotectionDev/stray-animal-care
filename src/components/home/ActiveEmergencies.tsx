@@ -56,7 +56,7 @@ function serializeCards(cases: EmergencyCase[]): EmergencyCardData[] {
 export function ActiveEmergencies({ block, cases }: Props) {
   if (cases.length === 0) return null
 
-  const labels = block.labels ?? {}
+  const _labels = block.labels ?? {}
   const tickerText = block.tickerText || ''
   const serializedCards = serializeCards(cases)
 
