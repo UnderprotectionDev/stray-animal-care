@@ -173,27 +173,30 @@ export function Card({ card, index, layout = false }: { card: Card; index: numbe
               exit={{ opacity: 0 }}
               ref={containerRef}
               layoutId={layout ? `card-${card.title}-${index}` : undefined}
-              className="max-w-5xl mx-auto bg-[var(--surface)] border-[1.5px] border-[var(--border)] z-[60] my-10 p-0 relative"
+              className="max-w-5xl mx-auto bg-background border-[1.5px] border-[var(--border)] z-[60] my-10 p-0 relative overflow-hidden"
             >
-              <button
-                className="sticky top-4 right-0 ml-auto h-10 w-10 flex items-center justify-center border-[1.5px] border-[var(--border)] bg-[var(--surface)] z-10 mr-4 mt-4"
-                onClick={handleClose}
-              >
-                <X className="h-5 w-5 text-[var(--foreground)]" />
-              </button>
-              <motion.p
-                layoutId={layout ? `category-${card.title}-${index}` : undefined}
-                className="font-mono text-xs uppercase tracking-widest text-[var(--muted-foreground)] px-8 -mt-4"
-              >
-                {card.category}
-              </motion.p>
-              <motion.p
-                layoutId={layout ? `title-${card.title}-${index}` : undefined}
-                className="font-heading text-2xl md:text-4xl font-bold text-[var(--foreground)] mt-2 px-8"
-              >
-                {card.title}
-              </motion.p>
-              <div className="py-8">{card.content}</div>
+              {/* Solid background overlay to prevent image bleed from layoutId animation */}
+              <div className="relative z-10 bg-background">
+                <button
+                  className="sticky top-4 right-0 ml-auto h-10 w-10 flex items-center justify-center border-[1.5px] border-[var(--border)] bg-background z-10 mr-4 mt-4"
+                  onClick={handleClose}
+                >
+                  <X className="h-5 w-5 text-[var(--foreground)]" />
+                </button>
+                <motion.p
+                  layoutId={layout ? `category-${card.title}-${index}` : undefined}
+                  className="font-mono text-xs uppercase tracking-widest text-[var(--muted-foreground)] px-8 -mt-4"
+                >
+                  {card.category}
+                </motion.p>
+                <motion.p
+                  layoutId={layout ? `title-${card.title}-${index}` : undefined}
+                  className="font-heading text-2xl md:text-4xl font-bold text-[var(--foreground)] mt-2 px-8"
+                >
+                  {card.title}
+                </motion.p>
+                <div className="py-8">{card.content}</div>
+              </div>
             </motion.div>
           </div>
         )}

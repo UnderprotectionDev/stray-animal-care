@@ -6,18 +6,13 @@ import { unstable_cache } from 'next/cache'
 
 type Global = keyof Config['globals']
 
-// UIStrings has 235+ localized fields. PostgreSQL's json_build_array is limited
-// to FUNC_MAX_ARGS (100). We batch-fetch using `select` to keep each query
-// under the limit, then merge the results.
 const UI_STRINGS_BATCHES: string[][] = [
-  // Batch 1: ~69 localized fields
-  ['common', 'layout', 'search', 'posts', 'home', 'ourWork', 'notFound', 'contact'],
-  // Batch 2: ~64 localized fields
+  ['common', 'layout', 'search', 'posts', 'home', 'notFound', 'contact'],
   ['animals', 'emergency', 'blog'],
-  // Batch 3: ~80 localized fields
-  ['donate', 'supplies', 'transparency'],
-  // Batch 4: ~59 localized fields
+  ['donate'],
+  ['supplies', 'transparency'],
   ['volunteer', 'vision'],
+  ['ourWork'],
 ]
 
 async function getUIStrings(depth: number, locale?: string) {

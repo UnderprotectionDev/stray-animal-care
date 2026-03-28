@@ -9,6 +9,7 @@ type Props = {
   text: string
   tag?: Tag
   className?: string
+  style?: React.CSSProperties
   splitBy?: 'words' | 'characters'
   staggerDelay?: number
   threshold?: number
@@ -21,6 +22,7 @@ export function VerticalCutReveal({
   text,
   tag: Tag = 'h3',
   className,
+  style,
   splitBy = 'words',
   staggerDelay = 0.06,
   threshold = 0.3,
@@ -31,7 +33,7 @@ export function VerticalCutReveal({
   const parts = splitBy === 'characters' ? text.split('') : text.split(/\s+/)
 
   return (
-    <Tag ref={ref as React.Ref<HTMLHeadingElement>} className={className} aria-label={text}>
+    <Tag ref={ref as React.Ref<HTMLHeadingElement>} className={className} style={style} aria-label={text}>
       {parts.map((part, i) => (
         <span
           key={`${part}-${i}`}

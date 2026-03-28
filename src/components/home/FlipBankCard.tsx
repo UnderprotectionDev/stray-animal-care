@@ -25,7 +25,9 @@ type Props = {
 }
 
 export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
+  const cardRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
+  const tlRef = useRef<gsap.core.Timeline | null>(null)
   const [flipped, setFlipped] = useState(false)
   const [copied, setCopied] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
@@ -40,16 +42,33 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
 
   const flipTo = useCallback(
     (show: boolean) => {
-      if (!innerRef.current) return
+      if (!innerRef.current || !cardRef.current) return
       if (reducedMotion) {
         setFlipped(show)
         return
       }
-      gsap.to(innerRef.current, {
-        rotateY: show ? 180 : 0,
-        duration: 0.5,
-        ease: 'power2.inOut',
-      })
+
+      if (tlRef.current) tlRef.current.kill()
+
+      const tl = gsap.timeline()
+      tlRef.current = tl
+
+      if (show) {
+        tl.set(cardRef.current, { zIndex: 20 })
+        tl.to(innerRef.current, {
+          rotateY: 180,
+          duration: 0.5,
+          ease: 'power2.inOut',
+        }, 0)
+      } else {
+        tl.to(innerRef.current, {
+          rotateY: 0,
+          duration: 0.5,
+          ease: 'power2.inOut',
+        }, 0)
+        tl.set(cardRef.current, { zIndex: 'auto' })
+      }
+
       setFlipped(show)
       flippedRef.current = show
     },
@@ -81,13 +100,11 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
       } catch {
-        // noop
       }
     },
     [account.iban],
   )
 
-  // Detect touch device for click vs hover behavior
   const isTouchRef = useRef(false)
   useEffect(() => {
     isTouchRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0
@@ -107,7 +124,8 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
 
   return (
     <div
-      className="relative"
+      ref={cardRef}
+      className="relative w-full h-full"
       style={{ perspective: '800px' }}
       {...hoverProps}
       onKeyDown={handleKeyDown}
@@ -117,44 +135,77 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
     >
       <div
         ref={innerRef}
-        className="relative w-full"
+        className="relative w-full h-full"
         style={{
           transformStyle: 'preserve-3d',
-          height: '240px',
+          minHeight: '270px',
         }}
       >
         {/* ── Front Face ── */}
         <div
-          className="absolute inset-0 border-[1.5px] border-border p-6 overflow-hidden"
+          className="absolute inset-0 border-[1.5px] border-border p-5 overflow-hidden flex flex-col"
           style={{
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'translateZ(1px)',
             backgroundColor: color.bg,
             ...(reducedMotion
-              ? { display: flipped ? 'none' : 'block' }
+              ? { display: flipped ? 'none' : 'flex' }
               : {}),
           }}
         >
-          {/* Currency badge */}
-          <span
-            className="absolute top-4 right-4 badge-sys text-xs font-bold"
+          {/* Bank name + currency */}
+          <div className="flex items-start justify-between mb-3 relative z-10">
+            <h4 className="t-h2 uppercase" style={{ color: color.fg }}>
+              {account.bankName}
+            </h4>
+            <span
+              className="badge-sys text-xs font-bold shrink-0 ml-3"
+              style={{
+                backgroundColor: 'var(--background)',
+                color: 'var(--foreground)',
+                borderColor: 'var(--foreground)',
+              }}
+            >
+              {account.currency || 'TRY'}
+            </span>
+          </div>
+
+          {/* Account holder */}
+          {account.accountHolder && (
+            <p
+              className="font-mono text-xs uppercase tracking-wider mb-3 relative z-10 opacity-70"
+              style={{ color: color.fg }}
+            >
+              {account.accountHolder}
+            </p>
+          )}
+
+          {/* Decorative cross-hatch pattern */}
+          <div
+            className="relative z-10 mb-auto"
             style={{
-              backgroundColor: 'var(--background)',
-              color: 'var(--foreground)',
-              borderColor: 'var(--foreground)',
+              height: '48px',
+              backgroundImage: `
+                repeating-linear-gradient(45deg, transparent, transparent 3px, ${color.fg} 3px, ${color.fg} 4.5px),
+                repeating-linear-gradient(-45deg, transparent, transparent 3px, ${color.fg} 3px, ${color.fg} 4.5px)
+              `,
+              opacity: 0.15,
             }}
-          >
-            {account.currency || 'TRY'}
-          </span>
+            aria-hidden="true"
+          />
 
-          {/* Bank name */}
-          <h4
-            className="t-h2 uppercase mt-2 relative z-10"
-            style={{ color: color.fg }}
-          >
-            {account.bankName}
-          </h4>
+          {/* Flip hint */}
+          <div className="flex items-center gap-2 relative z-10 mt-3">
+            <span
+              className="font-mono text-xs uppercase tracking-wider opacity-50"
+              style={{ color: color.fg }}
+            >
+              IBAN için çevir →
+            </span>
+          </div>
 
-          {/* Decorative initial watermark */}
+          {/* Watermark */}
           <span
             className="absolute -bottom-6 -right-2 text-[10rem] leading-none font-heading select-none pointer-events-none"
             style={{ color: color.fg, opacity: 0.08 }}
@@ -169,6 +220,7 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
           className="absolute inset-0 border-[1.5px] border-border bg-background overflow-hidden"
           style={{
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
             ...(reducedMotion
               ? { display: flipped ? 'block' : 'none', transform: 'none' }
@@ -181,14 +233,14 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
             style={{ backgroundColor: color.bg }}
           />
 
-          <div className="p-6 pl-8 space-y-3">
-            {/* Header row */}
-            <div className="flex items-center justify-between">
-              <span className="t-meta font-bold font-heading text-lg uppercase">
+          <div className="p-6 pl-8 pb-8 space-y-3">
+            {/* Header */}
+            <div className="flex items-center justify-between gap-3">
+              <span className="t-meta font-bold font-heading text-lg uppercase truncate">
                 {account.bankName}
               </span>
               <span
-                className="badge-sys text-xs"
+                className="badge-sys text-xs shrink-0"
                 style={{
                   backgroundColor: color.bg,
                   color: color.fg,
@@ -209,7 +261,7 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
               <p className="t-meta text-muted-foreground">{account.accountHolder}</p>
             )}
 
-            {/* Copy button */}
+            {/* Copy */}
             <button
               type="button"
               onClick={copyIban}

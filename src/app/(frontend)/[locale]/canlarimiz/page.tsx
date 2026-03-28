@@ -74,7 +74,6 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   try {
     ui = (await getCachedGlobal('ui-strings', 0, payloadLocale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
   return {
     title: ui?.animals?.meta?.title ?? 'Canlarımız — Paws of Hope',

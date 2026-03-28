@@ -3,8 +3,6 @@
  * Produces valid Lexical editor state JSON matching PayloadCMS's rich text format.
  */
 
-// ─── Types ───────────────────────────────────────────────────
-
 type TextNode = {
   type: 'text'
   detail: 0
@@ -132,8 +130,6 @@ type RootNode = {
   }
 }
 
-// ─── Leaf Nodes ──────────────────────────────────────────────
-
 /** Create a text node. format bitmask: 1=bold, 2=italic, 4=strikethrough, 8=underline, 16=code, 32=subscript, 64=superscript */
 export function text(content: string, format: number = 0): TextNode {
   return { type: 'text', detail: 0, format, mode: 'normal', style: '', text: content, version: 1 }
@@ -171,8 +167,6 @@ export function subscriptText(content: string): TextNode {
   return text(content, 32)
 }
 
-// ─── Inline Nodes ───────────────────────────────────────────
-
 type InlineInput = string | TextNode | LinkNode
 
 function toInlineNodes(children: InlineInput[]): InlineNode[] {
@@ -194,8 +188,6 @@ export function link(url: string, children: InlineInput[], newTab = false): Link
     version: 3,
   }
 }
-
-// ─── Block Nodes ─────────────────────────────────────────────
 
 export function paragraph(...children: InlineInput[]): ParagraphNode {
   return {
@@ -308,8 +300,6 @@ export function callout(variant: 'info' | 'warning' | 'success' | 'error', conte
     version: 2,
   }
 }
-
-// ─── Root Wrapper ────────────────────────────────────────────
 
 export function lexicalRoot(...children: BlockNode[]): RootNode {
   return {

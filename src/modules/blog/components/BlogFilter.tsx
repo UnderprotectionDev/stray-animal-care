@@ -1,7 +1,9 @@
 'use client'
 
 import React from 'react'
-import { FilterButtons } from '@/components/shared/FilterButtons'
+import { motion } from 'motion/react'
+import { useQueryState } from 'nuqs'
+import { CATEGORY_SEMANTIC_TOKENS } from '@/utilities/categoryTokens'
 
 type BlogFilterProps = {
   labels: {
@@ -12,6 +14,7 @@ type BlogFilterProps = {
     duyuru: string
     etkinlik: string
   }
+  postCounts?: Record<string, number>
 }
 
 const FILTER_OPTIONS = [
@@ -23,13 +26,55 @@ const FILTER_OPTIONS = [
   { value: 'etkinlik', labelKey: 'etkinlik' as const },
 ]
 
-export function BlogFilter({ labels }: BlogFilterProps) {
+export function BlogFilter({ labels, postCounts }: BlogFilterProps) {
+  const [current, setCurrent] = useQueryState('category', { defaultValue: '' })
+
+  const activeToken = current
+    ? CATEGORY_SEMANTIC_TOKENS[current] || 'palette-black'
+    : 'palette-black'
+
   return (
-    <FilterButtons
-      paramName="category"
-      options={FILTER_OPTIONS}
-      labels={labels}
-      className="flex flex-wrap gap-[1px] bg-foreground border border-border"
-    />
+    <div className="flex flex-wrap gap-2">
+      {FILTER_OPTIONS.map((option) => {
+        const isActive = current === option.value
+        const count = option.value
+          ? postCounts?.[option.value]
+          : postCounts
+            ? Object.values(postCounts).reduce((sum, n) => sum + n, 0)
+            : undefined
+
+        return (
+          <button
+            key={option.value}
+            type="button"
+            onClick={() => setCurrent(option.value || null)}
+            aria-pressed={isActive}
+            className={`relative px-4 py-2 font-heading text-xs font-bold uppercase tracking-wider transition-colors duration-200 ${
+              isActive
+                ? 'text-[var(--palette-cream)]'
+                : 'bg-background border border-border/30 hover:bg-muted/40 text-foreground'
+            }`}
+          >
+            {isActive && (
+              <motion.div
+                layoutId="blog-filter-active"
+                className="absolute inset-0 z-0"
+                style={{ background: `var(--${activeToken})` }}
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
+
+            <span className="relative z-10 flex items-center gap-1.5">
+              {labels[option.labelKey]}
+              {typeof count === 'number' && (
+                <span className="font-mono text-[10px] opacity-60">
+                  ({count})
+                </span>
+              )}
+            </span>
+          </button>
+        )
+      })}
+    </div>
   )
 }

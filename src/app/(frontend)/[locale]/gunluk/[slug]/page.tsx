@@ -5,7 +5,9 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Container } from '@/components/shared/Container'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { BlogDetail } from '@/modules/blog'
+import { BlogDetailClient } from '@/modules/blog/components/BlogDetailClient'
 import { getBlogPostBySlug, getBlogPostSlugs } from '@/modules/blog/lib/queries'
+import { getCategorySemanticToken } from '@/utilities/categoryTokens'
 import { locales, type Locale } from '@/i18n/config'
 import { getServerSideURL } from '@/utilities/getURL'
 import type { Media as MediaType, UiString } from '@/payload-types'
@@ -29,6 +31,7 @@ export default async function BlogPostPage({ params }: Args) {
   if (!post) notFound()
 
   const shareUrl = `${getServerSideURL()}/${locale}/gunluk/${post.slug}`
+  const categoryToken = getCategorySemanticToken(post.postCategory ?? null)
 
   const categoryLabels: Record<string, string> = {
     kurtarma: ui?.blog?.filter?.kurtarma ?? 'Kurtarma',
@@ -47,10 +50,12 @@ export default async function BlogPostPage({ params }: Args) {
     copied: ui?.blog?.share?.copied ?? 'Kopyalandı!',
   }
 
+  const relatedPostsLabel = locale === 'en' ? 'Related Posts' : 'İlgili Yazılar'
+
   return (
     <Container>
-      <article className="sys-wrap my-8">
-        <div className="panel p-4">
+      <article className="my-8">
+        <div className="px-4 md:px-6 mb-6">
           <PageBreadcrumb
             items={[
               { label: ui?.layout?.breadcrumb?.home ?? 'Ana Sayfa', href: '/' },
@@ -60,14 +65,18 @@ export default async function BlogPostPage({ params }: Args) {
           />
         </div>
 
-        <BlogDetail
-          post={post}
-          shareUrl={shareUrl}
-          categoryLabel={post.postCategory ? categoryLabels[post.postCategory] : undefined}
-          tagsLabel={ui?.blog?.tags ?? 'Etiketler'}
-          shareLabels={shareLabels}
-          locale={locale}
-        />
+        <BlogDetailClient categoryToken={categoryToken}>
+          <BlogDetail
+            post={post}
+            shareUrl={shareUrl}
+            categoryLabel={post.postCategory ? categoryLabels[post.postCategory] : undefined}
+            tagsLabel={ui?.blog?.tags ?? 'Etiketler'}
+            shareLabels={shareLabels}
+            locale={locale}
+            categoryLabels={categoryLabels}
+            relatedPostsLabel={relatedPostsLabel}
+          />
+        </BlogDetailClient>
       </article>
     </Container>
   )

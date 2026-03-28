@@ -37,7 +37,6 @@ export function MagneticTilt({
     const rect = el.getBoundingClientRect()
     const cx = rect.left + rect.width / 2
     const cy = rect.top + rect.height / 2
-    // Map cursor offset to rotation: Y-axis rotates on horizontal movement, X-axis on vertical
     rawY.set(((e.clientX - cx) / (rect.width / 2)) * maxRotation)
     rawX.set(((cy - e.clientY) / (rect.height / 2)) * maxRotation)
   }

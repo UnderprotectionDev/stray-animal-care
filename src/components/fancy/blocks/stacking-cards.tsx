@@ -1,4 +1,3 @@
-// author: Khoa Phan <https://www.pldkhoa.dev>
 
 'use client'
 

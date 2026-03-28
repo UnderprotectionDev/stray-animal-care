@@ -14,6 +14,7 @@ import { TransparencyBanner } from './TransparencyBanner'
 import { PostsAndTransparency } from './PostsAndTransparency'
 import { SectionDividerBand } from './SectionDividerBand'
 import { ElasticDivider } from './ElasticDivider'
+import { ScrollAnimationTrigger } from '@/components/ui/scroll-animation-trigger'
 
 type Props = {
   blocks: SiteSetting['homepageBlocks']
@@ -31,7 +32,6 @@ type Props = {
 export function RenderHomepageBlocks({ blocks, data }: Props) {
   if (!blocks || blocks.length === 0) return null
 
-  // Pre-scan: can we combine posts + transparency into one section?
   const postsBlock = blocks.find(
     (b) => b.blockType === 'homeRecentPosts' && b.enabled,
   )
@@ -41,14 +41,12 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
   const shouldCombine = !!(postsBlock && transpBlock)
   let combinedRendered = false
 
-  // Pass 1: Collect rendered elements
   const rendered: React.ReactElement[] = []
   const bandIndices = new Set<number>()
 
   for (const block of blocks) {
     if (!block.enabled) continue
 
-    // Combined layout: render once, skip the second block
     if (
       shouldCombine &&
       (block.blockType === 'homeRecentPosts' || block.blockType === 'homeTransparencyBanner')
@@ -56,14 +54,15 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
       if (combinedRendered) continue
       combinedRendered = true
       rendered.push(
-        <PostsAndTransparency
-          key={`combined-${postsBlock!.id}-${transpBlock!.id}`}
-          postsBlock={postsBlock as Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeRecentPosts' }>}
-          transparencyBlock={transpBlock as Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeTransparencyBanner' }>}
-          posts={data.posts}
-          report={data.latestReport}
-          locale={data.locale}
-        />,
+        <ScrollAnimationTrigger key={`combined-${postsBlock!.id}-${transpBlock!.id}`} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true}>
+          <PostsAndTransparency
+            postsBlock={postsBlock as Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeRecentPosts' }>}
+            transparencyBlock={transpBlock as Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeTransparencyBanner' }>}
+            posts={data.posts}
+            report={data.latestReport}
+            locale={data.locale}
+          />
+        </ScrollAnimationTrigger>,
       )
       continue
     }
@@ -73,7 +72,11 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
         rendered.push(<HomeHero key={block.id} block={block} />)
         break
       case 'homeStats':
-        rendered.push(<StatsSection key={block.id} block={block} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true}>
+            <StatsSection block={block} />
+          </ScrollAnimationTrigger>,
+        )
         break
       case 'homeStory':
         rendered.push(<StorySection key={block.id} block={block} />)
@@ -89,16 +92,32 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
         bandIndices.add(rendered.length - 1)
         break
       case 'homeOurWork':
-        rendered.push(<OurWorkShowcase key={block.id} block={block} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true} delay={0.05}>
+            <OurWorkShowcase block={block} />
+          </ScrollAnimationTrigger>,
+        )
         break
       case 'homeFeaturedAnimals':
-        rendered.push(<FeaturedAnimals key={block.id} block={block} animals={data.animals} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true} delay={0.1}>
+            <FeaturedAnimals block={block} animals={data.animals} />
+          </ScrollAnimationTrigger>,
+        )
         break
       case 'homeActiveEmergencies':
-        rendered.push(<ActiveEmergencies key={block.id} block={block} cases={data.activeCases} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true}>
+            <ActiveEmergencies block={block} cases={data.activeCases} />
+          </ScrollAnimationTrigger>,
+        )
         break
       case 'homeSupportCards':
-        rendered.push(<SupportCards key={block.id} block={block} siteSettings={data.siteSettings} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true} delay={0.05}>
+            <SupportCards block={block} siteSettings={data.siteSettings} />
+          </ScrollAnimationTrigger>,
+        )
         rendered.push(
           <SectionDividerBand
             key={`divider-support-${block.id}`}
@@ -111,21 +130,31 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
         bandIndices.add(rendered.length - 1)
         break
       case 'homeNeedsList':
-        rendered.push(<NeedsList key={block.id} block={block} items={data.needsItems} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true}>
+            <NeedsList block={block} items={data.needsItems} />
+          </ScrollAnimationTrigger>,
+        )
         break
       case 'homeRecentPosts':
-        rendered.push(<RecentPosts key={block.id} block={block} posts={data.posts} locale={data.locale} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true}>
+            <RecentPosts block={block} posts={data.posts} locale={data.locale} />
+          </ScrollAnimationTrigger>,
+        )
         break
       case 'homeTransparencyBanner':
-        rendered.push(<TransparencyBanner key={block.id} block={block} report={data.latestReport} locale={data.locale} />)
+        rendered.push(
+          <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true}>
+            <TransparencyBanner block={block} report={data.latestReport} locale={data.locale} />
+          </ScrollAnimationTrigger>,
+        )
         break
       default:
         break
     }
   }
 
-  // Pass 2: Interleave ElasticDividers between every pair of elements
-  // Skip elastic dividers adjacent to SectionDividerBand (already a strong visual separator)
   const interleaved: React.ReactNode[] = []
   for (let i = 0; i < rendered.length; i++) {
     interleaved.push(rendered[i])

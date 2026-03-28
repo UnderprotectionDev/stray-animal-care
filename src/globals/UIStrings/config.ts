@@ -33,9 +33,6 @@ export const UIStrings: GlobalConfig = {
     {
       type: 'tabs',
       tabs: [
-        // ═══════════════════════════════════════════════
-        // TAB 1: Common & Layout
-        // ═══════════════════════════════════════════════
         {
           label: 'Ortak & Düzen',
           fields: [
@@ -135,9 +132,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 2: Search & Posts
-        // ═══════════════════════════════════════════════
         {
           label: 'Arama & Yazılar',
           fields: [
@@ -174,9 +168,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 3: Animals
-        // ═══════════════════════════════════════════════
         {
           label: 'Hayvanlar',
           fields: [
@@ -247,9 +238,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 4: Emergency
-        // ═══════════════════════════════════════════════
         {
           label: 'Acil Vakalar',
           fields: [
@@ -294,9 +282,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 5: Donate
-        // ═══════════════════════════════════════════════
         {
           label: 'Destek Ol',
           fields: [
@@ -419,9 +404,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 6: Supplies
-        // ═══════════════════════════════════════════════
         {
           label: 'Mama & Malzeme',
           fields: [
@@ -441,6 +423,47 @@ export const UIStrings: GlobalConfig = {
                 },
                 t('title', 'Sayfa Başlığı', 'Mama & Malzeme İhtiyaçları'),
                 ta('subtitle', 'Alt Başlık', 'Hayvanlarımızın güncel ihtiyaç listesini burada bulabilirsiniz.'),
+                {
+                  name: 'hero',
+                  label: 'Hero',
+                  type: 'group',
+                  fields: [
+                    t('rotatingWord1', 'Dönen Kelime 1', 'MAMA'),
+                    t('rotatingWord2', 'Dönen Kelime 2', 'İLAÇ'),
+                    t('rotatingWord3', 'Dönen Kelime 3', 'KUM'),
+                    t('badgeLabel', 'Badge Etiketi', 'Aktif İhtiyaç'),
+                  ],
+                },
+                {
+                  name: 'stats',
+                  label: 'İstatistikler',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'Stok Durumu'),
+                    t('totalItems', 'Toplam Ürün', 'Toplam Ürün'),
+                    t('urgentItems', 'Acil İhtiyaç', 'Acil İhtiyaç'),
+                    t('coverage', 'Stok Karşılama', 'Stok Karşılama'),
+                  ],
+                },
+                {
+                  name: 'divider',
+                  label: 'Bant Yazıları',
+                  type: 'group',
+                  fields: [
+                    t('text1', 'Metin 1', 'MAMA'),
+                    t('text2', 'Metin 2', 'İLAÇ'),
+                    t('text3', 'Metin 3', 'KEDİ KUMU'),
+                    t('text4', 'Metin 4', 'DESTEK OL'),
+                  ],
+                },
+                {
+                  name: 'needsSection',
+                  label: 'İhtiyaç Bölümü',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'İhtiyaç Listesi'),
+                  ],
+                },
                 {
                   name: 'table',
                   label: 'Tablo',
@@ -490,9 +513,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 7: Transparency
-        // ═══════════════════════════════════════════════
         {
           label: 'Şeffaflık',
           fields: [
@@ -513,6 +533,28 @@ export const UIStrings: GlobalConfig = {
                 t('title', 'Sayfa Başlığı', 'Şeffaflık Raporları'),
                 t('subtitle', 'Alt Başlık', 'Tüm gelir ve giderleri düzenli olarak yayınlıyoruz.'),
                 {
+                  name: 'hero',
+                  label: 'Hero',
+                  type: 'group',
+                  fields: [
+                    t('rotatingWord1', 'Dönen Kelime 1', 'Şeffaflık'),
+                    t('rotatingWord2', 'Dönen Kelime 2', 'Güven'),
+                    t('rotatingWord3', 'Dönen Kelime 3', 'Hesap Verebilirlik'),
+                    t('badgeLabel', 'Badge Etiketi', 'Rapor Yayınlandı'),
+                  ],
+                },
+                {
+                  name: 'stats',
+                  label: 'İstatistikler',
+                  type: 'group',
+                  fields: [
+                    t('totalIncome', 'Toplam Gelir', 'Toplam Gelir'),
+                    t('totalExpenses', 'Toplam Gider', 'Toplam Gider'),
+                    t('donorCount', 'Bağışçı Sayısı', 'Bağışçı Sayısı'),
+                    t('reportCount', 'Rapor Sayısı', 'Rapor Sayısı'),
+                  ],
+                },
+                {
                   name: 'report',
                   label: 'Rapor',
                   type: 'group',
@@ -525,8 +567,11 @@ export const UIStrings: GlobalConfig = {
                     t('amount', 'Miktar', 'Miktar'),
                     t('comparison', 'Karşılaştırma', 'Bağış / Gider Oranı'),
                     t('documents', 'Belgeler', 'Belgeler'),
+                    t('surplus', 'Fazla', 'Fazla'),
+                    t('deficit', 'Açık', 'Açık'),
                   ],
                 },
+                t('reportsHeading', 'Raporlar Başlığı', 'Aylık Raporlar'),
                 t('empty', 'Boş', 'Henüz şeffaflık raporu yayınlanmadı.'),
                 t('currency', 'Para Birimi', '₺'),
               ],
@@ -534,9 +579,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 8: Blog
-        // ═══════════════════════════════════════════════
         {
           label: 'Blog',
           fields: [
@@ -591,9 +633,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 9: Volunteer
-        // ═══════════════════════════════════════════════
         {
           label: 'Gönüllü',
           fields: [
@@ -657,6 +696,48 @@ export const UIStrings: GlobalConfig = {
                   ],
                 },
                 {
+                  name: 'timeline',
+                  label: 'Süreç',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'Gönüllü Süreci'),
+                    t('step1Title', 'Adım 1 Başlık', 'Başvuru'),
+                    ta('step1Desc', 'Adım 1 Açıklama', 'WhatsApp üzerinden iletişime geçin, ilgi alanınızı birlikte belirleyelim.'),
+                    t('step2Title', 'Adım 2 Başlık', 'Eğitim'),
+                    ta('step2Desc', 'Adım 2 Açıklama', 'Kısa bir oryantasyon eğitimi ile saha çalışmalarımızı tanıyın.'),
+                    t('step3Title', 'Adım 3 Başlık', 'Aktif Gönüllü'),
+                    ta('step3Desc', 'Adım 3 Açıklama', 'Ekibimize katılarak sahadaki faaliyetlerde aktif rol alın.'),
+                  ],
+                },
+                {
+                  name: 'testimonials',
+                  label: 'Hikayeler',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'Gönüllü Hikayeleri'),
+                    ta('t1Quote', 'Hikaye 1 Alıntı', 'İlk besleme turumda 12 kediye mama verdim. O anki mutluluk tarif edilemez. Artık her hafta sonu sahada oluyorum.'),
+                    t('t1Name', 'Hikaye 1 İsim', 'Ayşe K.'),
+                    t('t1Role', 'Hikaye 1 Alan', 'Besleme Gönüllüsü'),
+                    ta('t2Quote', 'Hikaye 2 Alıntı', 'Geçici bakım verdiğim yavru kedinin sahiplenildiğini görmek hayatımın en güzel anlarından biriydi.'),
+                    t('t2Name', 'Hikaye 2 İsim', 'Mehmet A.'),
+                    t('t2Role', 'Hikaye 2 Alan', 'Geçici Bakım Gönüllüsü'),
+                    ta('t3Quote', 'Hikaye 3 Alıntı', 'Veteriner ziyaretlerinde yardımcı oluyorum. Her iyileşen hayvan bize güç veriyor.'),
+                    t('t3Name', 'Hikaye 3 İsim', 'Zeynep D.'),
+                    t('t3Role', 'Hikaye 3 Alan', 'Sağlık Desteği Gönüllüsü'),
+                  ],
+                },
+                {
+                  name: 'divider',
+                  label: 'Bant Yazıları',
+                  type: 'group',
+                  fields: [
+                    t('text1', 'Yazı 1', 'GÖNÜLLÜ OL'),
+                    t('text2', 'Yazı 2', 'HAYAT KURTAR'),
+                    t('text3', 'Yazı 3', 'FARK YARAT'),
+                    t('text4', 'Yazı 4', 'BİRLİKTE GÜÇLÜYÜZ'),
+                  ],
+                },
+                {
                   name: 'cta',
                   label: 'CTA',
                   type: 'group',
@@ -664,6 +745,7 @@ export const UIStrings: GlobalConfig = {
                     t('title', 'Başlık', 'Aramıza Katılın!'),
                     ta('description', 'Açıklama', 'Gönüllü olmak için WhatsApp üzerinden bizimle iletişime geçin.'),
                     t('whatsappMessage', 'WhatsApp Mesajı', 'Merhaba, gönüllü olmak istiyorum.'),
+                    t('buttonLabel', 'Buton Yazısı', 'WHATSAPP İLE BAŞVUR'),
                   ],
                 },
               ],
@@ -671,9 +753,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 10: Vision
-        // ═══════════════════════════════════════════════
         {
           label: 'Vizyon',
           fields: [
@@ -759,9 +838,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 11: Contact & NotFound
-        // ═══════════════════════════════════════════════
         {
           label: 'İletişim & 404',
           fields: [
@@ -835,9 +911,6 @@ export const UIStrings: GlobalConfig = {
           ],
         },
 
-        // ═══════════════════════════════════════════════
-        // TAB 12: Home (extra labels)
-        // ═══════════════════════════════════════════════
         {
           label: 'Ana Sayfa (Ek)',
           fields: [
@@ -892,6 +965,74 @@ export const UIStrings: GlobalConfig = {
                 },
                 t('title', 'Sayfa Başlığı', 'Çalışmalarımız'),
                 ta('subtitle', 'Alt Başlık', 'Sokak hayvanları için yaptığımız çalışmaları keşfedin.'),
+                {
+                  name: 'stats',
+                  label: 'İstatistikler',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'Etkimiz'),
+                    t('treated', 'Tedavi Edilen', 'Tedavi Edilen'),
+                    t('spayed', 'Kısırlaştırılan', 'Kısırlaştırılan'),
+                    t('vaccinated', 'Aşılanan', 'Aşılanan'),
+                    t('feedingPoints', 'Besleme Noktası', 'Besleme Noktası'),
+                    t('cats', 'Kedi', 'Kedi'),
+                    t('dogs', 'Köpek', 'Köpek'),
+                  ],
+                },
+                {
+                  name: 'process',
+                  label: 'Süreç',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'Nasıl Çalışıyoruz'),
+                    t('step1Title', 'Adım 1 Başlık', 'Bildirim'),
+                    ta('step1Desc', 'Adım 1 Açıklama', 'Vatandaşlardan gelen bildirimlerle ihtiyaç sahibi hayvanları tespit ediyoruz.'),
+                    t('step2Title', 'Adım 2 Başlık', 'Müdahale'),
+                    ta('step2Desc', 'Adım 2 Açıklama', 'Ekibimiz en kısa sürede bildirilen lokasyona giderek müdahale ediyor.'),
+                    t('step3Title', 'Adım 3 Başlık', 'Tedavi'),
+                    ta('step3Desc', 'Adım 3 Açıklama', 'Veteriner hekimlerle iş birliği içinde gerekli tedaviyi sağlıyoruz.'),
+                    t('step4Title', 'Adım 4 Başlık', 'Takip'),
+                    ta('step4Desc', 'Adım 4 Açıklama', 'Tedavi sonrasında uzun vadeli takip ve bakım sürecini yönetiyoruz.'),
+                  ],
+                },
+                {
+                  name: 'faq',
+                  label: 'SSS',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'Sık Sorulan Sorular'),
+                    t('q1', 'Soru 1', 'Ne tür hayvanlara yardım ediyorsunuz?'),
+                    ta('a1', 'Cevap 1', 'Başta kediler ve köpekler olmak üzere tüm sokak hayvanlarına yardım ediyoruz.'),
+                    t('q2', 'Soru 2', 'Acil bir hayvan gördüm, ne yapmalıyım?'),
+                    ta('a2', 'Cevap 2', 'WhatsApp hattımızdan bize ulaşarak hayvanın konumunu ve durumunu bildirin.'),
+                    t('q3', 'Soru 3', 'Çalışmalarınızı nasıl destekleyebilirim?'),
+                    ta('a3', 'Cevap 3', 'Bağış yapabilir, gönüllü olabilir veya ihtiyaç listemizdeki malzemeleri temin edebilirsiniz.'),
+                    t('q4', 'Soru 4', 'Tedavi masraflarını nasıl karşılıyorsunuz?'),
+                    ta('a4', 'Cevap 4', 'Bağışçılarımızın desteği ve veteriner ortaklıklarımız sayesinde tedavi masraflarını karşılıyoruz.'),
+                  ],
+                },
+                {
+                  name: 'divider',
+                  label: 'Bant Yazıları',
+                  type: 'group',
+                  fields: [
+                    t('text1', 'Yazı 1', 'BESLEME'),
+                    t('text2', 'Yazı 2', 'TEDAVİ'),
+                    t('text3', 'Yazı 3', 'KISIRLAŞTIRMA'),
+                    t('text4', 'Yazı 4', 'AŞILAMA'),
+                  ],
+                },
+                {
+                  name: 'cta',
+                  label: 'CTA',
+                  type: 'group',
+                  fields: [
+                    t('title', 'Başlık', 'Birlikte Daha Güçlüyüz'),
+                    ta('description', 'Açıklama', 'Her katkı bir hayat kurtarır. Çalışmalarımıza destek olun.'),
+                    t('donateLabel', 'Bağış Butonu', 'DESTEK OL'),
+                    t('volunteerLabel', 'Gönüllü Butonu', 'GÖNÜLLÜ OL'),
+                  ],
+                },
               ],
             },
           ],

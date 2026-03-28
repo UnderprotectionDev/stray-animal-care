@@ -3,20 +3,19 @@ import { setRequestLocale } from 'next-intl/server'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Section } from '@/components/shared/Section'
-import { Container } from '@/components/shared/Container'
-import { Heading } from '@/components/shared/Heading'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
-import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from '@/components/ui/accordion'
-import type { SiteSetting, UiString } from '@/payload-types'
-import { Heart, Stethoscope, UtensilsCrossed, Home } from 'lucide-react'
+import { AnimatedSectionHeader } from '@/components/home/AnimatedSectionHeader'
+import { SectionDividerBand } from '@/components/home/SectionDividerBand'
 import { getSocialLink } from '@/utilities/socialLinks'
+import type { SiteSetting, UiString } from '@/payload-types'
+
+import { VolunteerHero } from './components/VolunteerHero'
+import { VolunteerAreaCard } from './components/VolunteerAreaCard'
+import { VolunteerTimeline } from './components/VolunteerTimeline'
+import { VolunteerStats } from './components/VolunteerStats'
+import { VolunteerTestimonials } from './components/VolunteerTestimonials'
+import { VolunteerFAQ } from './components/VolunteerFAQ'
+import { VolunteerCTA } from './components/VolunteerCTA'
 
 export const revalidate = 3600
 
@@ -25,10 +24,10 @@ type Args = {
 }
 
 const volunteerAreas = [
-  { key: 'foster', icon: Heart },
-  { key: 'health', icon: Stethoscope },
-  { key: 'feeding', icon: UtensilsCrossed },
-  { key: 'shelter', icon: Home },
+  { key: 'foster' as const, color: 'var(--warm)', fg: 'var(--warm-foreground)' },
+  { key: 'health' as const, color: 'var(--health)', fg: 'var(--health-foreground)' },
+  { key: 'feeding' as const, color: 'var(--adoption)', fg: 'var(--adoption-foreground)' },
+  { key: 'shelter' as const, color: 'var(--trust)', fg: 'var(--trust-foreground)' },
 ] as const
 
 export default async function VolunteerPage({ params }: Args) {
@@ -40,12 +39,10 @@ export default async function VolunteerPage({ params }: Args) {
   try {
     siteSettings = (await getCachedGlobal('site-settings', 1, locale)()) as SiteSetting
   } catch {
-    // site-settings fetch failed
   }
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
 
   let volunteerCount = 0
@@ -65,15 +62,14 @@ export default async function VolunteerPage({ params }: Args) {
     volunteerCount = volunteers.totalDocs
     animalsHelpedCount = animals.totalDocs
   } catch {
-    // count queries failed — fallback to 0
   }
 
   const feedingPointsCount = siteSettings?.feedingPointsCount ?? 0
 
   const stats = [
-    { key: 'volunteers' as const, value: `${volunteerCount}+` },
-    { key: 'animalsHelped' as const, value: `${animalsHelpedCount}+` },
-    { key: 'feedingPoints' as const, value: `${feedingPointsCount}+` },
+    { value: volunteerCount, suffix: '+', label: ui?.volunteer?.stats?.volunteers || 'Aktif Gönüllü' },
+    { value: animalsHelpedCount, suffix: '+', label: ui?.volunteer?.stats?.animalsHelped || 'Yardım Edilen Hayvan' },
+    { value: feedingPointsCount, suffix: '+', label: ui?.volunteer?.stats?.feedingPoints || 'Besleme Noktası' },
   ]
 
   const faqItems = [
@@ -81,109 +77,170 @@ export default async function VolunteerPage({ params }: Args) {
     { q: ui?.volunteer?.faq?.q2, a: ui?.volunteer?.faq?.a2 },
     { q: ui?.volunteer?.faq?.q3, a: ui?.volunteer?.faq?.a3 },
     { q: ui?.volunteer?.faq?.q4, a: ui?.volunteer?.faq?.a4 },
-  ].filter(item => item.q && item.a)
+  ].filter((item): item is { q: string; a: string } => Boolean(item.q && item.a))
+
+  const timelineSteps = [
+    {
+      number: '01',
+      title: ui?.volunteer?.timeline?.step1Title || 'Başvuru',
+      description: ui?.volunteer?.timeline?.step1Desc || '',
+    },
+    {
+      number: '02',
+      title: ui?.volunteer?.timeline?.step2Title || 'Eğitim',
+      description: ui?.volunteer?.timeline?.step2Desc || '',
+    },
+    {
+      number: '03',
+      title: ui?.volunteer?.timeline?.step3Title || 'Aktif Gönüllü',
+      description: ui?.volunteer?.timeline?.step3Desc || '',
+    },
+  ]
+
+  const testimonials = [
+    {
+      quote: ui?.volunteer?.testimonials?.t1Quote || '',
+      name: ui?.volunteer?.testimonials?.t1Name || '',
+      role: ui?.volunteer?.testimonials?.t1Role || '',
+      roleColor: 'var(--warm)',
+    },
+    {
+      quote: ui?.volunteer?.testimonials?.t2Quote || '',
+      name: ui?.volunteer?.testimonials?.t2Name || '',
+      role: ui?.volunteer?.testimonials?.t2Role || '',
+      roleColor: 'var(--trust)',
+    },
+    {
+      quote: ui?.volunteer?.testimonials?.t3Quote || '',
+      name: ui?.volunteer?.testimonials?.t3Name || '',
+      role: ui?.volunteer?.testimonials?.t3Role || '',
+      roleColor: 'var(--health)',
+    },
+  ].filter((t) => t.quote && t.name)
+
+  const dividerTexts = [
+    ui?.volunteer?.divider?.text1 || 'GÖNÜLLÜ OL',
+    ui?.volunteer?.divider?.text2 || 'HAYAT KURTAR',
+    ui?.volunteer?.divider?.text3 || 'FARK YARAT',
+    ui?.volunteer?.divider?.text4 || 'BİRLİKTE GÜÇLÜYÜZ',
+  ]
+
+  const rotatingAreaNames = [
+    ui?.volunteer?.areas?.fosterTitle,
+    ui?.volunteer?.areas?.healthTitle,
+    ui?.volunteer?.areas?.feedingTitle,
+    ui?.volunteer?.areas?.shelterTitle,
+  ].filter(Boolean) as string[]
+
+  const wa = getSocialLink(siteSettings?.socialLinks, 'whatsapp')
 
   return (
-    <Section padding="lg">
-      <Container>
-        {/* Breadcrumb */}
+    <>
+      {/* Breadcrumb */}
+      <div className="panel px-4 md:px-8 py-3">
         <PageBreadcrumb
           items={[
-            { label: ui?.layout?.breadcrumb?.home || '', href: '/' },
-            { label: ui?.volunteer?.title || '' },
+            { label: ui?.layout?.breadcrumb?.home || 'Ana Sayfa', href: '/' },
+            { label: ui?.volunteer?.title || 'Gönüllü Ol' },
           ]}
+          className="mb-0"
+        />
+      </div>
+
+      {/* ── Main content in sys-wrap ── */}
+      <div className="sys-wrap">
+        {/* 1. Hero */}
+        <VolunteerHero
+          title={ui?.volunteer?.title || 'Gönüllü Ol'}
+          subtitle={ui?.volunteer?.subtitle || 'Sokak hayvanlarına yardım etmek için aramıza katılın.'}
+          volunteerCount={volunteerCount}
+          volunteerCountLabel={ui?.volunteer?.stats?.volunteers || 'Aktif Gönüllü'}
+          rotatingAreaNames={rotatingAreaNames}
         />
 
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <Heading as="h1" className="mb-3">
-            {ui?.volunteer?.title}
-          </Heading>
-          <p className="t-body text-lg">{ui?.volunteer?.subtitle}</p>
-        </div>
-
-        {/* Volunteer Areas */}
-        <div className="mb-16">
-          <Heading as="h2" className="mb-8 text-center">
-            {ui?.volunteer?.areas?.title}
-          </Heading>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {volunteerAreas.map(({ key, icon: Icon }) => (
-              <div
+        {/* 2. Volunteer Areas */}
+        <section>
+          <AnimatedSectionHeader
+            title={ui?.volunteer?.areas?.title || 'Gönüllülük Alanları'}
+            accentColor="warm"
+            comment=""
+          />
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+            style={{ gap: '1.5px', background: 'var(--palette-black)' }}
+          >
+            {volunteerAreas.map(({ key, color, fg }) => (
+              <VolunteerAreaCard
                 key={key}
-                className="panel border border-border p-6 text-center"
-              >
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center border-[1.5px] border-border bg-trust text-trust-foreground">
-                  <Icon className="h-7 w-7" />
-                </div>
-                <h3 className="font-heading mb-2 text-lg font-semibold">
-                  {ui?.volunteer?.areas?.[`${key}Title`]}
-                </h3>
-                <p className="t-body text-sm">
-                  {ui?.volunteer?.areas?.[`${key}Description`]}
-                </p>
-              </div>
+                iconKey={key}
+                title={ui?.volunteer?.areas?.[`${key}Title`] || ''}
+                description={ui?.volunteer?.areas?.[`${key}Description`] || ''}
+                accentColor={color}
+                accentForeground={fg}
+              />
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Volunteer Stats */}
-        <div className="mb-16 border border-border bg-background px-6 py-10">
-          <Heading as="h2" className="mb-8 text-center">
-            {ui?.volunteer?.stats?.title}
-          </Heading>
-          <div className="grid gap-8 sm:grid-cols-3">
-            {stats.map(({ key, value }) => (
-              <div key={key} className="text-center">
-                <p className="font-heading text-4xl font-bold text-foreground">
-                  {value}
-                </p>
-                <p className="t-body mt-1 text-sm font-medium">
-                  {ui?.volunteer?.stats?.[key]}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* 3. Timeline */}
+        <section>
+          <AnimatedSectionHeader
+            title={ui?.volunteer?.timeline?.title || 'Gönüllü Süreci'}
+            accentColor="trust"
+            comment=""
+          />
+          <VolunteerTimeline steps={timelineSteps} />
+        </section>
 
-        {/* FAQ */}
-        <div className="mx-auto mb-16 max-w-2xl">
-          <Heading as="h2" className="mb-6 text-center">
-            {ui?.volunteer?.faq?.title}
-          </Heading>
-          <Accordion>
-            {faqItems.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger>{item.q}</AccordionTrigger>
-                <AccordionContent>{item.a}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
+        {/* 4. Divider Band */}
+        <SectionDividerBand texts={dividerTexts} />
 
-        {/* CTA */}
-        <div className="border border-border bg-background px-6 py-10 text-center">
-          <Heading as="h2" className="mb-3">
-            {ui?.volunteer?.cta?.title}
-          </Heading>
-          <p className="t-body mb-6 text-lg">
-            {ui?.volunteer?.cta?.description}
-          </p>
-          {(() => {
-            const wa = getSocialLink(siteSettings?.socialLinks, 'whatsapp')
-            return wa ? (
-              <WhatsAppButton
-                phone={wa.url}
-                message={ui?.volunteer?.cta?.whatsappMessage || ''}
-                className="text-base px-6 py-3"
-              >
-                WhatsApp
-              </WhatsAppButton>
-            ) : null
-          })()}
-        </div>
-      </Container>
-    </Section>
+        {/* 5. Stats */}
+        <section>
+          <AnimatedSectionHeader
+            title={ui?.volunteer?.stats?.title || 'Gönüllü Ailemiz'}
+            accentColor="stats"
+            comment=""
+          />
+          <VolunteerStats stats={stats} />
+        </section>
+
+        {/* 6. Testimonials */}
+        {testimonials.length > 0 && (
+          <section>
+            <AnimatedSectionHeader
+              title={ui?.volunteer?.testimonials?.title || 'Gönüllü Hikayeleri'}
+              accentColor="trust"
+              comment=""
+            />
+            <VolunteerTestimonials testimonials={testimonials} />
+          </section>
+        )}
+
+        {/* 7. FAQ */}
+        {faqItems.length > 0 && (
+          <section>
+            <AnimatedSectionHeader
+              title={ui?.volunteer?.faq?.title || 'Sık Sorulan Sorular'}
+              accentColor="warm"
+              comment=""
+            />
+            <VolunteerFAQ items={faqItems} />
+          </section>
+        )}
+
+        {/* 8. CTA */}
+        {wa && (
+          <VolunteerCTA
+            title={ui?.volunteer?.cta?.title || 'Aramıza Katılın!'}
+            description={ui?.volunteer?.cta?.description || 'Gönüllü olmak için WhatsApp üzerinden bizimle iletişime geçin.'}
+            phone={wa.url}
+            whatsappMessage={ui?.volunteer?.cta?.whatsappMessage || 'Merhaba, gönüllü olmak istiyorum.'}
+            buttonLabel={ui?.volunteer?.cta?.buttonLabel || 'WHATSAPP İLE BAŞVUR'}
+          />
+        )}
+      </div>
+    </>
   )
 }
 
@@ -197,7 +254,6 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
   return {
     title: ui?.volunteer?.meta?.title || 'Gönüllü Ol — Paws of Hope',

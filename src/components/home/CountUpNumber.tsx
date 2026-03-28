@@ -26,7 +26,6 @@ export function CountUpNumber({ target, duration = 2000, className }: CountUpNum
           const animate = (currentTime: number) => {
             const elapsed = currentTime - startTime
             const progress = Math.min(elapsed / duration, 1)
-            // Ease-out cubic
             const eased = 1 - Math.pow(1 - progress, 3)
             setCount(Math.round(eased * target))
 

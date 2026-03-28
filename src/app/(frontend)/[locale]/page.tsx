@@ -24,11 +24,9 @@ export default async function HomePage({ params }: Args) {
   try {
     siteSettings = (await getCachedGlobal('site-settings', 2, payloadLocale)()) as SiteSetting
   } catch {
-    // site-settings fetch failed — continue with empty blocks
   }
   const blocks = siteSettings?.homepageBlocks ?? []
 
-  // Determine which collections to query based on active blocks
   const blockTypes = new Set(blocks.filter((b) => b.enabled).map((b) => b.blockType))
   const payload = await getPayload({ config: configPromise })
 

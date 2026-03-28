@@ -15,7 +15,6 @@ async function fetchOurWorkData(locale?: string) {
     ...(locale ? { locale: locale as 'tr' | 'en' } : {}),
   })
 
-  // Find the OurWork block from homepage blocks
   const ourWorkBlock = settings.homepageBlocks?.find(
     (block): block is OurWorkBlock => block.blockType === 'homeOurWork',
   )

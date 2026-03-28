@@ -43,7 +43,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const busyRef = useRef(false)
   const wasOpenRef = useRef(false)
 
-  // Initialize off-screen positions
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const panel = panelRef.current
@@ -197,7 +196,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     })
   }, [])
 
-  // React to isOpen changes
   useEffect(() => {
     if (isOpen && !wasOpenRef.current) {
       wasOpenRef.current = true
@@ -208,7 +206,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     }
   }, [isOpen, playOpen, playClose])
 
-  // Body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -218,7 +215,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     }
   }, [isOpen])
 
-  // Escape key
   useEffect(() => {
     if (!isOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {

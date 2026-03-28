@@ -77,7 +77,6 @@ export function InteractiveBankCard({ account, colorIndex, copyLabel }: Props) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // Fallback: noop
     }
   }, [account.iban])
 

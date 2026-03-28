@@ -7,8 +7,6 @@ import type {
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { locales } from '@/i18n/config'
 
-// ── Collection hooks ─────────────────────────────────────
-
 type CollectionRevalidateConfig = {
   entityName: string
   tags: string[]
@@ -101,8 +99,6 @@ export function createCollectionRevalidateHooks({
 
   return { afterChange, afterDelete }
 }
-
-// ── Global hooks ─────────────────────────────────────────
 
 type GlobalRevalidateConfig = {
   entityName: string

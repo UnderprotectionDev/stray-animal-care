@@ -79,7 +79,7 @@ export function OurWorkShowcase({ block }: Props) {
               <div className="photo-overlay-gradient absolute inset-0" />
               <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-1">
                 <span className="t-meta text-white/50 font-mono">
-                  {ACTIVITY_NUMBERS[activity.key] || '00'} {'// '}{activity.title?.toUpperCase() ?? ''}
+                  {ACTIVITY_NUMBERS[activity.key] || '00'} {activity.title?.toUpperCase() ?? ''}
                 </span>
                 <AnimatedCardTitle text={activity.title} className="t-h2 text-white" />
                 {activity.description && (

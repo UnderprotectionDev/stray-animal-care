@@ -1,5 +1,7 @@
 export { EmergencyCard } from './components/EmergencyCard'
+export { EmergencyHero } from './components/EmergencyHero'
 export { EmergencyList } from './components/EmergencyList'
+export { EmergencyCTA } from './components/EmergencyCTA'
 export { EmergencyDetail } from './components/EmergencyDetail'
 export { BeforeAfter } from './components/BeforeAfter'
 export { UpdateTimeline } from './components/UpdateTimeline'

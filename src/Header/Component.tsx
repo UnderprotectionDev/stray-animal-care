@@ -18,7 +18,6 @@ export async function Header({ locale, headerLabels, searchLabels, siteSettings 
   try {
     headerData = (await getCachedGlobal('header', 2, locale)()) as HeaderType
   } catch {
-    // header global fetch failed — continue with null
   }
 
   return (

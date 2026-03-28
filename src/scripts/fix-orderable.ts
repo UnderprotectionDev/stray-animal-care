@@ -7,12 +7,9 @@
  */
 import type { Payload } from 'payload'
 
-// Fractional indexing: generates sequential keys like a0, a1, a2, ...
 function generateOrderKeys(count: number): string[] {
   const keys: string[] = []
   for (let i = 0; i < count; i++) {
-    // Simple hex-based sequential keys: a0, a1, a2, ..., a9, aA, aB, ...
-    // This matches Payload's fractional indexing format
     keys.push(`a${i.toString(36)}`)
   }
   return keys
@@ -25,7 +22,6 @@ export async function fixOrderableValues(payload: Payload): Promise<{
   const results: Record<string, { updated: number; skipped: number }> = {}
 
   for (const slug of collectionsToFix) {
-    // Find all docs, sorted by createdAt to maintain original order
     const { docs } = await payload.find({
       collection: slug,
       depth: 0,
@@ -48,7 +44,6 @@ export async function fixOrderableValues(payload: Payload): Promise<{
       continue
     }
 
-    // Find the highest existing _order to continue from
     let startIndex = docsWithOrder.length
     const keys = generateOrderKeys(startIndex + docsWithoutOrder.length)
 
@@ -64,7 +59,6 @@ export async function fixOrderableValues(payload: Payload): Promise<{
           } as Record<string, unknown>,
           depth: 0,
           overrideAccess: true,
-          // Don't trigger hooks that might interfere
           context: {
             skipRevalidate: true,
           },

@@ -33,7 +33,6 @@ export function AnimatedMegaHeading({ text, className, tag = 'h2', style, enable
     const chars = wrapperRef.current.querySelectorAll<HTMLElement>('.split-char')
     if (chars.length === 0) return
 
-    // Pick 3-4 random unique indices
     const count = Math.min(chars.length, Math.floor(Math.random() * 2) + 3)
     const indices = new Set<number>()
     while (indices.size < count) {

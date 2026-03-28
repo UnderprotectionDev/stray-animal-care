@@ -2,12 +2,11 @@ import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import type { UiString } from '@/payload-types'
-import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
-import { Heading } from '@/components/shared/Heading'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
-import { ReportList } from '@/modules/transparency'
-import { getReports } from '@/modules/transparency/lib/queries'
+import { AnimatedMegaHeading } from '@/components/home/AnimatedMegaHeading'
+import { AnimatedSectionHeader } from '@/components/home/AnimatedSectionHeader'
+import { ReportList, TransparencyStats, getReports } from '@/modules/transparency'
 import { locales, defaultLocale, type Locale } from '@/i18n/config'
 
 export const revalidate = 3600
@@ -37,33 +36,96 @@ export default async function TransparencyPage({ params }: Args) {
     amount: ui?.transparency?.report?.amount || '',
     comparison: ui?.transparency?.report?.comparison || '',
     documents: ui?.transparency?.report?.documents || '',
+    surplusLabel: ui?.transparency?.report?.surplus || 'Fazla',
+    deficitLabel: ui?.transparency?.report?.deficit || 'Açık',
   }
 
-  return (
-    <>
-      <Section padding="lg">
-        <Container>
-          <PageBreadcrumb
-            items={[
-              { label: ui?.layout?.breadcrumb?.home || '', href: '/' },
-              { label: ui?.transparency?.title || '' },
-            ]}
-          />
-          <div className="mb-8 text-center">
-            <Heading as="h1" className="mb-3">
-              {ui?.transparency?.title || 'Şeffaflık'}
-            </Heading>
-            <p className="t-body text-lg">{ui?.transparency?.subtitle || ''}</p>
-          </div>
+  // Compute aggregate stats across all reports
+  const aggregateIncome = reports.reduce((sum, r) => sum + (r.totalDonation ?? 0), 0)
+  const aggregateExpense = reports.reduce((sum, r) => sum + (r.totalExpense ?? 0), 0)
+  const uniqueDonors = new Set(
+    reports.flatMap((r) => (r.donorList ?? []).map((d) => d.name).filter(Boolean)),
+  ).size
 
-          {reports.length > 0 ? (
-            <ReportList reports={reports} labels={reportLabels} currency={ui?.transparency?.currency || ''} />
-          ) : (
-            <div className="py-16 text-center t-body">{ui?.transparency?.empty || 'Henüz rapor bulunmuyor.'}</div>
-          )}
-        </Container>
-      </Section>
-    </>
+  // Stats data
+  const statsData = [
+    {
+      value: aggregateIncome,
+      label: ui?.transparency?.stats?.totalIncome || 'Toplam Gelir',
+      color: 'var(--health)',
+      colorFg: 'var(--health-foreground)',
+      isCurrency: true,
+    },
+    {
+      value: aggregateExpense,
+      label: ui?.transparency?.stats?.totalExpenses || 'Toplam Gider',
+      color: 'var(--emergency)',
+      colorFg: 'var(--emergency-foreground)',
+      isCurrency: true,
+    },
+    {
+      value: uniqueDonors,
+      label: ui?.transparency?.stats?.donorCount || 'Bağışçı Sayısı',
+      color: 'var(--trust)',
+      colorFg: 'var(--trust-foreground)',
+    },
+    {
+      value: reports.length,
+      label: ui?.transparency?.stats?.reportCount || 'Rapor Sayısı',
+      color: 'var(--adoption)',
+      colorFg: 'var(--adoption-foreground)',
+    },
+  ]
+
+  return (
+    <Container>
+      <div className="my-8 space-y-6">
+        <PageBreadcrumb
+          items={[
+            { label: ui?.layout?.breadcrumb?.home || 'Ana Sayfa', href: '/' },
+            { label: ui?.transparency?.title || 'Şeffaflık Raporları' },
+          ]}
+        />
+
+        {/* Header — like BlogPageHeader */}
+        <div className="py-2">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <AnimatedMegaHeading
+                text={ui?.transparency?.title || 'Şeffaflık Raporları'}
+                tag="h1"
+                enableColorFlash
+              />
+              {ui?.transparency?.subtitle && (
+                <p className="t-body text-muted-foreground mt-2">
+                  {ui.transparency.subtitle}
+                </p>
+              )}
+            </div>
+            <span className="t-meta shrink-0 text-muted-foreground tabular-nums">
+              {reports.length} rapor
+            </span>
+          </div>
+        </div>
+
+        {/* Aggregate Stats */}
+        {reports.length > 0 && <TransparencyStats stats={statsData} />}
+
+        {/* Reports Section */}
+        <AnimatedSectionHeader
+          title={ui?.transparency?.reportsHeading || 'Aylık Raporlar'}
+          accentColor="trust"
+        />
+
+        {reports.length > 0 ? (
+          <ReportList reports={reports} labels={reportLabels} currency={ui?.transparency?.currency || '₺'} />
+        ) : (
+          <div className="py-16 text-center t-body">
+            {ui?.transparency?.empty || 'Henüz rapor bulunmuyor.'}
+          </div>
+        )}
+      </div>
+    </Container>
   )
 }
 
@@ -77,7 +139,6 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
   return {
     title: ui?.transparency?.meta?.title || 'Şeffaflık — Paws of Hope',

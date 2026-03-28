@@ -26,7 +26,6 @@ const generateURL: GenerateURL<Post | Page | Animal | EmergencyCase | Event> = (
 
   if (!doc?.slug) return url
 
-  // Detect collection by unique fields — use locale-prefixed Turkish routes
   if (doc && 'type' in doc && 'gender' in doc) {
     return `${url}/tr/canlarimiz/${doc.slug}`
   }

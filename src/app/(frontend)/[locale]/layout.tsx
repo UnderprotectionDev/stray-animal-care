@@ -35,6 +35,7 @@ import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { MobileDonateBar } from '@/components/shared/MobileDonateBar'
 import { CustomCursor } from '@/components/CustomCursor'
+import { ClickSparkWrapper } from '@/components/ClickSparkWrapper'
 import { Providers } from '@/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
@@ -71,12 +72,10 @@ export default async function RootLayout({ children, params }: Props) {
   try {
     siteSettings = (await getCachedGlobal('site-settings', 1, locale)()) as SiteSetting
   } catch {
-    // site-settings fetch failed — continue with null
   }
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed — continue with null
   }
 
   const layoutLabels = ui?.layout
@@ -98,6 +97,7 @@ export default async function RootLayout({ children, params }: Props) {
         <Providers>
           <NextIntlClientProvider messages={{}}>
             <NuqsAdapter>
+            <ClickSparkWrapper>
             <CustomCursor>
             <div className="content-above-footer">
               <a
@@ -119,6 +119,7 @@ export default async function RootLayout({ children, params }: Props) {
             <Footer siteSettings={siteSettings} labels={footerLabels} headerLabels={headerLabels} />
             <MobileDonateBar label={mobileDonateLabel} />
             </CustomCursor>
+            </ClickSparkWrapper>
             </NuqsAdapter>
           </NextIntlClientProvider>
         </Providers>
@@ -133,7 +134,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
 
   return {

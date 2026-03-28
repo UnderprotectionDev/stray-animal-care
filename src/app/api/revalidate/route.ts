@@ -9,7 +9,6 @@ const GLOBAL_TAGS = [
 ]
 
 export async function POST(request: Request) {
-  // In production, require a secret
   if (process.env.NODE_ENV === 'production') {
     const { searchParams } = new URL(request.url)
     const secret = searchParams.get('secret')

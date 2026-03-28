@@ -24,7 +24,6 @@ export const NeedsListBlock: Block = {
         { name: 'unitKutu', type: 'text', localized: true, defaultValue: 'kutu', label: 'Birim: Kutu' },
         { name: 'unitKg', type: 'text', localized: true, defaultValue: 'kg', label: 'Birim: Kg' },
         { name: 'unitAdet', type: 'text', localized: true, defaultValue: 'adet', label: 'Birim: Adet' },
-        // Expanded content labels
         { name: 'ctaButton', type: 'text', localized: true, defaultValue: 'Bu İhtiyacı Karşıla', label: 'CTA Düğme Metni' },
         { name: 'ctaLink', type: 'text', defaultValue: '/destek-ol', label: 'CTA Link' },
         { name: 'shippingCargo', type: 'text', localized: true, defaultValue: 'Kargo ile gönderin', label: 'Kargo Bilgisi' },

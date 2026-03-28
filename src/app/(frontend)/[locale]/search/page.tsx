@@ -36,7 +36,6 @@ export default async function Page({ params: paramsPromise, searchParams: search
       categories: true,
       meta: true,
     },
-    // pagination: false reduces overhead if you don't need totalDocs
     pagination: false,
     ...(query
       ? {

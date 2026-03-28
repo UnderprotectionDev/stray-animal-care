@@ -30,7 +30,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayload({ config: configPromise })
   const now = new Date()
 
-  // Static pages
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${baseUrl}/tr${route === '/' ? '' : route}`,
     lastModified: now,
@@ -39,7 +38,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: buildAlternates(route),
   }))
 
-  // Posts
   const posts = await payload.find({
     collection: 'posts',
     where: { _status: { equals: 'published' } },
@@ -55,7 +53,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: buildAlternates(`/gunluk/${post.slug}`),
   }))
 
-  // Animals
   const animals = await payload.find({
     collection: 'animals',
     where: { _status: { equals: 'published' } },
@@ -71,7 +68,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: buildAlternates(`/canlarimiz/${animal.slug}`),
   }))
 
-  // Emergency Cases
   const emergencyCases = await payload.find({
     collection: 'emergency-cases',
     where: { _status: { equals: 'published' } },

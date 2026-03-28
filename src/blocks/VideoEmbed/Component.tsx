@@ -8,13 +8,11 @@ type Props = {
 } & VideoEmbedBlockProps
 
 function getEmbedUrl(url: string): string | null {
-  // YouTube: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID
   const ytMatch = url.match(
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/,
   )
   if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`
 
-  // Vimeo: vimeo.com/ID
   const vimeoMatch = url.match(/vimeo\.com\/(\d+)/)
   if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`
 

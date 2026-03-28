@@ -26,7 +26,6 @@ export default async function AnimalDetailPage({ params }: Args) {
   try {
     siteSettings = (await getCachedGlobal('site-settings', 1)()) as SiteSetting
   } catch {
-    // site-settings fetch failed
   }
 
   return <AnimalDetail animal={animal} siteSettings={siteSettings} locale={locale} />

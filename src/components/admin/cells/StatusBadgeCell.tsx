@@ -7,26 +7,21 @@ import './cell-styles.scss'
 type BadgeVariant = 'danger' | 'warning' | 'success' | 'info' | 'neutral'
 
 const STATUS_CONFIG: Record<string, { variant: BadgeVariant; label: string }> = {
-  // Animals — animalStatus
   tedavide: { variant: 'warning', label: 'Tedavide' },
   'kalici-bakim': { variant: 'info', label: 'Kalıcı Bakım' },
   acil: { variant: 'danger', label: 'Acil' },
 
-  // EmergencyCases — caseStatus
   aktif: { variant: 'danger', label: 'Aktif' },
   tamamlandi: { variant: 'success', label: 'Tamamlandı' },
 
-  // Volunteers — applicationStatus
   beklemede: { variant: 'warning', label: 'Beklemede' },
   onaylandi: { variant: 'success', label: 'Onaylandı' },
   reddedildi: { variant: 'danger', label: 'Reddedildi' },
 
-  // Events — eventStatus
   yaklasan: { variant: 'info', label: 'Yaklaşan' },
   'devam-ediyor': { variant: 'warning', label: 'Devam Ediyor' },
   iptal: { variant: 'neutral', label: 'İptal' },
 
-  // NeedsList — urgency
   orta: { variant: 'warning', label: 'Orta' },
   yeterli: { variant: 'success', label: 'Yeterli' },
 }

@@ -109,7 +109,6 @@ export function SupportCards({ block, siteSettings }: Props) {
     setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   }, [])
 
-  // Staggered scroll reveal for bank cards
   useEffect(() => {
     if (reducedMotion || !cardsRef.current) return
     const cards = cardsRef.current.querySelectorAll<HTMLElement>('[data-bank-card]')
@@ -142,7 +141,7 @@ export function SupportCards({ block, siteSettings }: Props) {
         {/* Effect 5: Floating paw prints (replaces heart watermark) */}
         <FloatingPaws />
 
-        <span className="t-comment block mb-1 relative z-10">{'// DESTEK'}</span>
+        <span className="t-comment block mb-1 relative z-10">{'DESTEK'}</span>
         {/* Effect 3: Color flash on heading */}
         <AnimatedMegaHeading text={block.slogan} enableColorFlash />
         <div className="w-24 h-1 bg-warm mt-2 relative z-10" />
@@ -161,19 +160,18 @@ export function SupportCards({ block, siteSettings }: Props) {
         {bankAccounts.length > 0 ? (
           <div
             ref={cardsRef}
-            className="grid grid-cols-1 md:grid-cols-2 p-6 gap-4"
+            className="g-1 md:g-2 overflow-visible"
           >
             {bankAccounts.map((account, index) => (
               <div
                 key={account.id || index}
                 data-bank-card
-                className={
+                className={`h-full ${
                   bankAccounts.length % 2 !== 0 && index === bankAccounts.length - 1
                     ? 'md:col-span-2'
                     : ''
-                }
+                }`}
               >
-                {/* Effect 1: Flip bank cards */}
                 <FlipBankCard
                   account={account}
                   colorIndex={index}

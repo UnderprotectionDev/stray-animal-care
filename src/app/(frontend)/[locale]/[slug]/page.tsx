@@ -55,7 +55,6 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = 'home', locale } = await paramsPromise
   setRequestLocale(locale)
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const url = '/' + decodedSlug
   let page: RequiredDataFromCollectionSlug<'pages'> | null
@@ -65,7 +64,6 @@ export default async function Page({ params: paramsPromise }: Args) {
     locale: locale as Locale,
   })
 
-  // Remove this code once your website is seeded
   if (!page && slug === 'home') {
     page = homeStatic
   }
@@ -92,14 +90,12 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = 'home', locale } = await paramsPromise
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
   const page = await queryPageBySlug({
     slug: decodedSlug,
     locale: locale as Locale,
   })
 
-  // Remove this code once your website is seeded
   if (!page && decodedSlug === 'home') {
     return generateMeta({ doc: homeStatic })
   }

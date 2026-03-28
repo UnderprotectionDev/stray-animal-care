@@ -13,7 +13,6 @@ import { Post } from '@/payload-types'
 export const formatAuthors = (
   authors: NonNullable<NonNullable<Post['populatedAuthors']>[number]>[],
 ) => {
-  // Ensure we don't have any authors without a name
   const authorNames = authors.map((author) => author.name).filter(Boolean)
 
   if (authorNames.length === 0) return ''

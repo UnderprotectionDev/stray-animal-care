@@ -15,9 +15,10 @@ type SocialShareProps = {
     copied: string
   }
   className?: string
+  semanticToken?: string
 }
 
-export function SocialShare({ url, title, labels, className }: SocialShareProps) {
+export function SocialShare({ url, title, labels, className, semanticToken }: SocialShareProps) {
   const [copied, setCopied] = useState(false)
 
   const encodedUrl = encodeURIComponent(url)
@@ -33,16 +34,16 @@ export function SocialShare({ url, title, labels, className }: SocialShareProps)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // silently fail
     }
   }, [url])
 
-  const linkClass = 'inline-flex items-center gap-1.5 border border-border px-3 py-1.5 text-xs font-medium uppercase tracking-wide hover:bg-foreground hover:text-background transition-colors'
+  const accentColor = semanticToken && semanticToken !== 'palette-black' ? `var(--${semanticToken})` : undefined
+  const linkClass = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-muted/40 text-xs font-mono tracking-wide text-foreground/80 transition-colors hover:bg-muted'
 
   return (
     <div className={className}>
-      <div className="flex items-center gap-2 t-meta font-medium mb-3">
-        <Share2 className="size-4" />
+      <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wider font-medium mb-3">
+        <Share2 className="size-3.5" style={accentColor ? { color: accentColor } : undefined} />
         {labels.title}
       </div>
       <div className="flex flex-wrap gap-2">

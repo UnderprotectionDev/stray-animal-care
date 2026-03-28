@@ -7,7 +7,6 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
 
   const { slug, id, categories, title, name, meta } = originalDoc
 
-  // Animals use 'name' as title field, Posts use 'title'
   const docTitle = title || name
 
   const modifiedDoc: DocToSync = {
@@ -22,7 +21,6 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
     categories: [],
   }
 
-  // Only posts have categories — skip for animals and other collections
   if (categories && Array.isArray(categories) && categories.length > 0) {
     const populatedCategories: { id: string | number; title: string }[] = []
     for (const category of categories) {

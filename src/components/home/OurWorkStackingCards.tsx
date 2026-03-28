@@ -103,7 +103,7 @@ export default function OurWorkStackingCards({ activities, photoCountTemplate }:
                       {number}
                     </span>
                     <span className="t-comment">
-                      {'// '}{activity.key?.toUpperCase()}
+                      {activity.key?.toUpperCase()}
                     </span>
                   </div>
 

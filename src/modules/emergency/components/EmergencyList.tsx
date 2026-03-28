@@ -1,5 +1,8 @@
+'use client'
+
 import React from 'react'
 import { EmergencyCard } from './EmergencyCard'
+import { AnimatedSectionHeader } from '@/components/home/AnimatedSectionHeader'
 import type { EmergencyCase } from '@/payload-types'
 
 type EmergencyListProps = {
@@ -8,6 +11,7 @@ type EmergencyListProps = {
     activeCases: string
     noActive: string
     completedCases: string
+    donateButton: string
   }
 }
 
@@ -16,39 +20,51 @@ export function EmergencyList({ cases, labels }: EmergencyListProps) {
   const completed = cases.filter((c) => c.caseStatus === 'tamamlandi')
 
   return (
-    <div className="space-y-16">
-      {/* Active cases */}
-      <div>
-        <h2 className="font-bold text-xl uppercase tracking-widest text-foreground mb-6 pb-2 border-b border-border">
-          {labels.activeCases}
-        </h2>
-        {active.length === 0 ? (
-          <p className="text-sm text-muted-foreground font-mono">{labels.noActive}</p>
-        ) : (
-          <div className="grid gap-px bg-foreground sm:grid-cols-2 lg:grid-cols-3 border border-border">
-            {active.map((ec) => (
-              <div key={ec.id} className="bg-background">
-                <EmergencyCard ec={ec} />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+    <div>
+      {/* Active cases section */}
+      <AnimatedSectionHeader
+        title={labels.activeCases}
+        accentColor="emergency"
+      />
 
-      {/* Completed cases */}
-      {completed.length > 0 && (
-        <div>
-          <h2 className="font-bold text-xl uppercase tracking-widest text-foreground mb-6 pb-2 border-b border-border">
-            {labels.completedCases}
-          </h2>
-          <div className="grid gap-px bg-foreground sm:grid-cols-2 lg:grid-cols-3 border border-border">
-            {completed.map((ec) => (
-              <div key={ec.id} className="bg-background">
-                <EmergencyCard ec={ec} />
-              </div>
+      {active.length === 0 ? (
+        <div className="panel py-12 text-center">
+          <p className="t-body text-muted-foreground font-mono">{labels.noActive}</p>
+        </div>
+      ) : (
+        <div className="panel px-4 py-6 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+            {active.map((ec, index) => (
+              <EmergencyCard
+                key={ec.id}
+                ec={ec}
+                index={index}
+                donateLabel={labels.donateButton}
+              />
             ))}
           </div>
         </div>
+      )}
+
+      {/* Completed cases section */}
+      {completed.length > 0 && (
+        <>
+          <AnimatedSectionHeader
+            title={labels.completedCases}
+            accentColor="health"
+          />
+          <div className="panel px-4 py-6 md:px-6 lg:px-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+              {completed.map((ec, index) => (
+                <EmergencyCard
+                  key={ec.id}
+                  ec={ec}
+                  index={index}
+                />
+              ))}
+            </div>
+          </div>
+        </>
       )}
     </div>
   )

@@ -96,7 +96,7 @@ export function CustomCursor({
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           >
             <PawSVG
-              className="h-10 w-10 -translate-x-5 -translate-y-5 -rotate-[15deg]"
+              className="h-7 w-7 -translate-x-3.5 -translate-y-3.5 -rotate-[15deg]"
             />
           </motion.div>
         )}

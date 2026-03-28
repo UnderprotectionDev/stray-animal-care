@@ -27,6 +27,7 @@
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    overflow-x: clip;
   }
   html {
     @apply font-sans;
@@ -812,7 +813,8 @@
 
   /* ── Blog Prose ── */
   .prose-blog {
-    line-height: 1.75;
+    line-height: 1.8;
+    font-size: 1.0625rem;
   }
   .prose-blog p {
     margin-bottom: 1.5em;
@@ -839,6 +841,17 @@
   }
   .prose-blog img {
     border: 1.5px solid var(--border);
+    max-width: none;
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+  @media (min-width: 768px) {
+    .prose-blog img {
+      width: calc(100% + 4rem);
+      margin-left: -2rem;
+      margin-right: -2rem;
+    }
   }
   .prose-blog ul,
   .prose-blog ol {
@@ -848,6 +861,34 @@
   .prose-blog li {
     line-height: 1.75;
     margin-bottom: 0.5em;
+  }
+
+  /* ── Clean Blog Prose (no borders, softer feel) ── */
+  .prose-blog--clean h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .prose-blog--clean img {
+    border: none;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  @media (min-width: 768px) {
+    .prose-blog--clean img {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+  .prose-blog--clean blockquote {
+    border-left-color: var(--muted);
+    color: var(--muted-foreground);
+    padding: 1rem 1.25rem;
+    background: color-mix(in srgb, var(--muted) 20%, transparent);
+    border-radius: 0 0.5rem 0.5rem 0;
   }
 
   /* ── Ticker ── (keep inside @layer utilities — no responsive variants needed) */
@@ -867,6 +908,67 @@
   @keyframes ticker {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
+  }
+
+  /* ── Scroll Progress Bar ── */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 50;
+    transform-origin: left;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-sidebar {
+    position: sticky;
+    top: 120px;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+  }
+  .toc-item {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.375rem 0;
+    opacity: 0.4;
+    transition: opacity 0.2s, color 0.2s;
+    cursor: pointer;
+    display: block;
+    text-align: left;
+    border: none;
+    background: none;
+  }
+  .toc-item.active {
+    opacity: 1;
+  }
+  .toc-item-h3 {
+    padding-left: 1rem;
+    font-size: 0.6875rem;
+  }
+
+  /* ── Back to Top ── */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--palette-black);
+    color: var(--palette-cream);
+    border: 1.5px solid var(--palette-black);
+    cursor: pointer;
+    z-index: 40;
+  }
+  .back-to-top:hover {
+    background: var(--palette-cream);
+    color: var(--palette-black);
   }
 }
 

@@ -4,9 +4,10 @@ import { Link } from '@/i18n/navigation'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { CATEGORY_LABELS_FALLBACK } from '@/utilities/categoryLabels'
 import { ArrowUp, ArrowDown, Users } from 'lucide-react'
-import BlogCardsBento from './BlogCardsBento'
-import type { BentoCardData } from './BlogCardsBento'
+import BlogCardsCarousel from './BlogCardsCarousel'
+import type { BlogCarouselCardData } from './BlogCardsCarousel'
 import { AnimatedMegaHeading } from './AnimatedMegaHeading'
+import { SectionDividerBand } from './SectionDividerBand'
 import { CountUpCurrency } from './CountUpCurrency'
 import { CountUpNumber } from './CountUpNumber'
 
@@ -38,7 +39,7 @@ function getPostImage(post: Post): { url: string; alt: string } {
   return { url: '', alt: post.title }
 }
 
-function serializeBlogCards(posts: Post[]): BentoCardData[] {
+function serializeBlogCards(posts: Post[]): BlogCarouselCardData[] {
   return posts.map((post) => {
     const image = getPostImage(post)
     return {
@@ -69,12 +70,12 @@ export function PostsAndTransparency({
   return (
     <>
       {/* ═══════════ BLOG SECTION ═══════════ */}
-      <section>
+      <section className="bg-background">
         {/* Header bar */}
         <div className="panel py-5 px-6 lg:px-8 flex flex-col gap-1 border-b-[1.5px] border-border">
           <div className="flex items-start justify-between">
             <div>
-              <p className="t-comment mb-1">{'// BLOG & HABERLER'}</p>
+              <p className="t-comment mb-1">{'BLOG & HABERLER'}</p>
               <AnimatedMegaHeading text={postsBlock.sectionTitle} enableColorFlash />
             </div>
             {postsBlock.viewAllLabel && postsBlock.viewAllLink && (
@@ -85,9 +86,21 @@ export function PostsAndTransparency({
           </div>
         </div>
 
-        {/* Bento blog cards */}
-        <BlogCardsBento cards={serializedCards} locale={locale} />
+        {/* Blog carousel */}
+        <BlogCardsCarousel
+          cards={serializedCards}
+          locale={locale}
+          readMoreLabel={locale === 'en' ? 'Read More' : 'Devamını Oku'}
+        />
       </section>
+
+      {/* ═══════════ DIVIDER ═══════════ */}
+      <SectionDividerBand
+        texts={['GÜNLÜK', 'HABERLER', 'HİKAYELER', 'DUYURULAR', 'ETKİNLİKLER']}
+        bgColor="var(--palette-forest)"
+        textColor="var(--palette-cream)"
+        velocity={45}
+      />
 
       {/* ═══════════ TRANSPARENCY SECTION ═══════════ */}
       <section>
@@ -97,7 +110,7 @@ export function PostsAndTransparency({
           style={{ gap: '1.5px', background: 'var(--palette-black)' }}
         >
           <div className="bg-foreground text-background px-6 py-5 lg:px-8 lg:py-6">
-            <p className="t-comment mb-1">{'// AÇIK DEFTER'}</p>
+            <p className="t-comment mb-1">{'AÇIK DEFTER'}</p>
             <AnimatedMegaHeading text={transparencyBlock.title} style={{ color: 'var(--background)' }} />
           </div>
           {transparencyBlock.ctaLabel && transparencyBlock.ctaLink && (

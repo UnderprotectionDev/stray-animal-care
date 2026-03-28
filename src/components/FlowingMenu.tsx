@@ -46,7 +46,6 @@ const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActi
   const animationRef = useRef<gsap.core.Tween | null>(null)
   const [reps, setReps] = useState(4)
 
-  // Calculate repetitions needed to fill viewport width
   useEffect(() => {
     const calculateReps = () => {
       const vw = window.innerWidth
@@ -60,7 +59,6 @@ const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActi
     return () => window.removeEventListener('resize', calculateReps)
   }, [])
 
-  // Cleanup animation on unmount
   useEffect(() => {
     return () => {
       animationRef.current?.kill()
@@ -83,7 +81,6 @@ const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActi
         overwrite: true,
       })
 
-      // Hide static label
       if (linkRef.current) {
         gsap.to(linkRef.current, { opacity: 0, duration: 0.2, overwrite: true })
       }
@@ -116,7 +113,6 @@ const FlowingMenuItemComponent: React.FC<FlowingMenuItemProps> = ({ item, isActi
         overwrite: true,
       })
 
-      // Show static label
       if (linkRef.current) {
         gsap.to(linkRef.current, { opacity: 1, duration: 0.2, overwrite: true })
       }
@@ -198,7 +194,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
   const busyRef = useRef(false)
   const wasOpenRef = useRef(false)
 
-  // Initialize off-screen positions
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const panel = panelRef.current
@@ -211,7 +206,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
       }
       preLayerElsRef.current = preLayers
 
-      // Panel slides from right, pre-layers slide from top
       gsap.set(panel, { xPercent: 100 })
       gsap.set(preLayers, { yPercent: -100 })
     })
@@ -233,7 +227,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
 
     const tl = gsap.timeline({ paused: true })
 
-    // Pre-layers slide down from top
     layers.forEach((el, i) => {
       tl.fromTo(
         el,
@@ -243,7 +236,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
       )
     })
 
-    // Main panel slides in from right after pre-layers
     const lastTime = layers.length ? (layers.length - 1) * 0.12 : 0
     const panelInsertTime = lastTime + (layers.length ? 0.25 : 0)
     const panelDuration = 0.65
@@ -255,7 +247,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
       panelInsertTime,
     )
 
-    // Menu items stagger in
     if (itemEls.length) {
       const itemsStart = panelInsertTime + panelDuration * 0.15
       tl.to(
@@ -299,7 +290,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
 
     closeTweenRef.current?.kill()
 
-    // Panel slides out right, pre-layers slide out top
     const tl = gsap.timeline({
       onComplete: () => {
         const itemEls = Array.from(panel.querySelectorAll('.fm-itemLabel')) as HTMLElement[]
@@ -327,7 +317,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
     closeTweenRef.current = tl as unknown as gsap.core.Tween
   }, [])
 
-  // React to isOpen changes
   useEffect(() => {
     if (isOpen && !wasOpenRef.current) {
       wasOpenRef.current = true
@@ -338,7 +327,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
     }
   }, [isOpen, playOpen, playClose])
 
-  // Body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -348,7 +336,6 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
     }
   }, [isOpen])
 
-  // Escape key handler
   useEffect(() => {
     if (!isOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {

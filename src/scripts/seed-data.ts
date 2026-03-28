@@ -14,7 +14,6 @@ import { getPayload } from 'payload'
 import config from '../payload.config'
 import { banner, bold, boldItalic, callout, heading, hr, inlineCode, italic, lexicalRoot, link, ol, paragraph, quote, strikethrough, subscriptText, superscript, text, ul, underline } from './lexical-builders'
 
-// Fetch remote image and return Payload File object
 async function fetchFileByURL(url: string): Promise<File & { data: Buffer }> {
   const res = await fetch(url, {
     credentials: 'include',
@@ -38,9 +37,6 @@ async function fetchFileByURL(url: string): Promise<File & { data: Buffer }> {
 async function seed() {
   const payload = await getPayload({ config: await config })
 
-  // ──────────────────────────────────────────────
-  // 1. Clean existing data
-  // ──────────────────────────────────────────────
   console.log('Cleaning existing data...')
 
   const collectionsToClean = [
@@ -64,7 +60,6 @@ async function seed() {
     console.log(`  Cleaned ${slug} (${existing.docs.length} docs)`)
   }
 
-  // Clear local media directory
   const mediaDir = path.resolve(process.cwd(), 'public/media')
   if (fs.existsSync(mediaDir)) {
     const files = fs.readdirSync(mediaDir)
@@ -77,9 +72,6 @@ async function seed() {
     console.log(`  Cleared public/media/ (${files.length} files)`)
   }
 
-  // ──────────────────────────────────────────────
-  // 2. Categories
-  // ──────────────────────────────────────────────
   console.log('\nSeeding categories...')
 
   const categoryData = [
@@ -101,9 +93,6 @@ async function seed() {
     console.log(`  Created category: ${cat.title}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 3. Seed Media (images from Unsplash)
-  // ──────────────────────────────────────────────
   console.log('\nSeeding media...')
 
   const imageUrls: Record<string, { url: string; alt: string }> = {
@@ -124,11 +113,12 @@ async function seed() {
     'post-hero-4': { url: 'https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?w=1200&q=80&fm=webp', alt: 'Gönüllü çalışması' },
     'event-cover-1': { url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
     'event-cover-2': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
-    // Homepage section images
     'story-founder': { url: 'https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=1200&q=80&fm=webp', alt: 'Hayvan barınağında gönüllü' },
     'activity-feeding': { url: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=1200&q=80&fm=webp', alt: 'Sokak hayvanlarını besleme' },
     'activity-treatment': { url: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1200&q=80&fm=webp', alt: 'Veteriner hayvan tedavisi' },
     'activity-spaying': { url: 'https://images.unsplash.com/photo-1551717743-49959800-b1db?w=1200&q=80&fm=webp', alt: 'Veteriner ameliyat' },
+    'activity-spaying-2': { url: 'https://images.unsplash.com/photo-1629740067905-bd3f515aa739?w=1200&q=80&fm=webp', alt: 'Kısırlaştırma operasyonu hazırlık' },
+    'activity-spaying-3': { url: 'https://images.unsplash.com/photo-1583337130417-13104dec14a3?w=1200&q=80&fm=webp', alt: 'Veteriner kliniğinde kedi bakımı' },
     'activity-emergency': { url: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&q=80&fm=webp', alt: 'Acil hayvan kurtarma' },
     'activity-vaccination': { url: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=1200&q=80&fm=webp', alt: 'Hayvana aşı uygulaması' },
     'activity-shelter': { url: 'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=1200&q=80&fm=webp', alt: 'Hayvan barınağı' },
@@ -137,7 +127,6 @@ async function seed() {
   const mediaIds: Record<string, number> = {}
   const imageKeys = Object.keys(imageUrls)
 
-  // Fetch in batches of 4 to avoid rate limiting
   for (let i = 0; i < imageKeys.length; i += 4) {
     const batch = imageKeys.slice(i, i + 4)
     const results = await Promise.allSettled(
@@ -158,7 +147,6 @@ async function seed() {
         }
       }),
     )
-    // Brief pause between batches
     if (i + 4 < imageKeys.length) {
       await new Promise((r) => setTimeout(r, 500))
     }
@@ -166,9 +154,6 @@ async function seed() {
 
   console.log(`  Total media created: ${Object.keys(mediaIds).length}/${imageKeys.length}`)
 
-  // ──────────────────────────────────────────────
-  // 4. Animals
-  // ──────────────────────────────────────────────
   console.log('\nSeeding animals...')
 
   const animalsData = [
@@ -490,9 +475,6 @@ async function seed() {
     console.log(`  Created animal: ${animal.name}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 5. Emergency Cases
-  // ──────────────────────────────────────────────
   console.log('\nSeeding emergency cases...')
 
   const emergencyCasesData = [
@@ -747,9 +729,6 @@ async function seed() {
     console.log(`  Created emergency case: ${ec.title}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 6. Vet Records
-  // ──────────────────────────────────────────────
   console.log('\nSeeding vet records...')
 
   const vetRecordsData = [
@@ -867,12 +846,8 @@ async function seed() {
     console.log(`  Created vet record: ${vr.recordType} for animal #${vr.animal}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 7. Posts (Blog)
-  // ──────────────────────────────────────────────
   console.log('\nSeeding posts...')
 
-  // Get the first user as author
   const users = await payload.find({ collection: 'users', limit: 1 })
   const authorId = users.docs[0]?.id
 
@@ -1037,9 +1012,6 @@ async function seed() {
     console.log(`  Created post: ${post.title}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 8. Events
-  // ──────────────────────────────────────────────
   console.log('\nSeeding events...')
 
   const eventsData = [
@@ -1160,9 +1132,6 @@ async function seed() {
     console.log(`  Created event: ${event.title}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 9. Volunteers
-  // ──────────────────────────────────────────────
   console.log('\nSeeding volunteers...')
 
   const volunteersData = [
@@ -1234,9 +1203,6 @@ async function seed() {
     console.log(`  Created volunteer: ${vol.name}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 10. Needs List
-  // ──────────────────────────────────────────────
   console.log('\nSeeding needs list...')
 
   const needsData = [
@@ -1352,9 +1318,6 @@ async function seed() {
     console.log(`  Created need: ${need.productName}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 11. Transparency Reports
-  // ──────────────────────────────────────────────
   console.log('\nSeeding transparency reports...')
 
   const reportsData = [
@@ -1431,12 +1394,8 @@ async function seed() {
     console.log(`  Created report: ${report.title}`)
   }
 
-  // ──────────────────────────────────────────────
-  // 12. Globals — SiteSettings (with bank accounts + statistics)
-  // ──────────────────────────────────────────────
   console.log('\nSeeding globals...')
 
-  // Homepage blocks + bank accounts + statistics
   await payload.updateGlobal({
     slug: 'site-settings',
     locale: 'tr',
@@ -1562,7 +1521,7 @@ async function seed() {
           activities: [
             { key: 'feeding', title: 'Besleme', description: 'Her gün 40+ noktada düzenli besleme yapıyoruz.', ...(mediaIds['activity-feeding'] ? { images: [mediaIds['activity-feeding']] } : {}) },
             { key: 'treatment', title: 'Tedavi', description: 'Hasta ve yaralı hayvanların tedavilerini karşılıyoruz.', ...(mediaIds['activity-treatment'] ? { images: [mediaIds['activity-treatment']] } : {}) },
-            { key: 'spaying', title: 'Kısırlaştırma', description: 'Popülasyon kontrolü için kampanyalar düzenliyoruz.', ...(mediaIds['activity-spaying'] ? { images: [mediaIds['activity-spaying']] } : {}) },
+            { key: 'spaying', title: 'Kısırlaştırma', description: 'Popülasyon kontrolü için kampanyalar düzenliyoruz.', images: [mediaIds['activity-spaying'], mediaIds['activity-spaying-2'], mediaIds['activity-spaying-3']].filter(Boolean) },
             { key: 'emergency', title: 'Acil Müdahale', description: 'Acil durumlarda 7/24 müdahale ediyoruz.', ...(mediaIds['activity-emergency'] ? { images: [mediaIds['activity-emergency']] } : {}) },
             { key: 'vaccination', title: 'Aşılama', description: 'Düzenli aşılama programı uyguluyoruz.', ...(mediaIds['activity-vaccination'] ? { images: [mediaIds['activity-vaccination']] } : {}) },
             { key: 'shelter', title: 'Barınma', description: 'Tedavi sürecinde geçici barınma sağlıyoruz.', ...(mediaIds['activity-shelter'] ? { images: [mediaIds['activity-shelter']] } : {}) },
@@ -1632,7 +1591,7 @@ async function seed() {
           sectionTitle: 'Son Yazılar',
           viewAllLabel: 'Tüm Yazılar',
           viewAllLink: '/gunluk',
-          limit: 3,
+          limit: 6,
         },
         {
           blockType: 'homeTransparencyBanner',
@@ -1647,7 +1606,6 @@ async function seed() {
   })
   console.log('  SiteSettings seeded (homepage blocks + bank accounts + statistics).')
 
-  // Header
   await payload.updateGlobal({
     slug: 'header',
     locale: 'tr',
@@ -1666,13 +1624,9 @@ async function seed() {
   })
   console.log('  Header seeded.')
 
-  // ──────────────────────────────────────────────
-  // 13. UIStrings — batched to stay under PostgreSQL 100-arg limit
-  // ──────────────────────────────────────────────
   console.log('\nSeeding UIStrings (TR)...')
 
   const uiStringsBatches: Array<{ label: string; data: Record<string, unknown> }> = [
-    // Batch 1: common + layout (top-level + header + languageSwitcher + mobileMenu)
     {
       label: 'common + layout (header)',
       data: {
@@ -1711,7 +1665,6 @@ async function seed() {
         },
       },
     },
-    // Batch 2: layout (footer + breadcrumb + mobileDonate)
     {
       label: 'layout (footer, breadcrumb, mobileDonate)',
       data: {
@@ -1739,7 +1692,6 @@ async function seed() {
         },
       },
     },
-    // Batch 3: search + posts
     {
       label: 'search + posts',
       data: {
@@ -1760,7 +1712,6 @@ async function seed() {
         },
       },
     },
-    // Batch 4: animals (meta + top-level + filter)
     {
       label: 'animals (meta, filter)',
       data: {
@@ -1783,7 +1734,6 @@ async function seed() {
         },
       },
     },
-    // Batch 5: animals (detail + lightbox)
     {
       label: 'animals (detail, lightbox)',
       data: {
@@ -1813,7 +1763,6 @@ async function seed() {
         },
       },
     },
-    // Batch 6: emergency
     {
       label: 'emergency',
       data: {
@@ -1842,7 +1791,6 @@ async function seed() {
         },
       },
     },
-    // Batch 7: donate (meta + hero + iban + international + volunteer)
     {
       label: 'donate (part 1)',
       data: {
@@ -1879,7 +1827,6 @@ async function seed() {
         },
       },
     },
-    // Batch 8: donate (ticker + cards + faq + transparency)
     {
       label: 'donate (part 2)',
       data: {
@@ -1922,7 +1869,6 @@ async function seed() {
         },
       },
     },
-    // Batch 9: supplies
     {
       label: 'supplies',
       data: {
@@ -1960,7 +1906,6 @@ async function seed() {
         },
       },
     },
-    // Batch 10: transparency
     {
       label: 'transparency',
       data: {
@@ -1986,7 +1931,6 @@ async function seed() {
         },
       },
     },
-    // Batch 11: blog
     {
       label: 'blog',
       data: {
@@ -2020,7 +1964,6 @@ async function seed() {
         },
       },
     },
-    // Batch 12: volunteer
     {
       label: 'volunteer',
       data: {
@@ -2051,7 +1994,6 @@ async function seed() {
         },
       },
     },
-    // Batch 13: volunteer (faq + cta)
     {
       label: 'volunteer (faq, cta)',
       data: {
@@ -2075,7 +2017,6 @@ async function seed() {
         },
       },
     },
-    // Batch 14: vision (meta + top-level + association + shortTerm)
     {
       label: 'vision (part 1)',
       data: {
@@ -2104,7 +2045,6 @@ async function seed() {
         },
       },
     },
-    // Batch 15: vision (longTerm + network + cta)
     {
       label: 'vision (part 2)',
       data: {
@@ -2133,7 +2073,6 @@ async function seed() {
         },
       },
     },
-    // Batch 16: contact + notFound
     {
       label: 'contact + notFound',
       data: {
@@ -2171,7 +2110,6 @@ async function seed() {
         },
       },
     },
-    // Batch 17: home + ourWork
     {
       label: 'home + ourWork',
       data: {
@@ -2202,7 +2140,6 @@ async function seed() {
     },
   ]
 
-  // Merge all 17 TR batches into a single object
   function deepMerge(
     target: Record<string, unknown>,
     source: Record<string, unknown>,
@@ -2229,7 +2166,6 @@ async function seed() {
     mergedTR = deepMerge(mergedTR, batch.data)
   }
 
-  // Wrap leaf string values with locale key for the DB adapter layer
   function wrapWithLocale(
     obj: Record<string, unknown>,
     locale: string,
@@ -2249,7 +2185,6 @@ async function seed() {
 
   const localizedData = wrapWithLocale(mergedTR, 'tr')
 
-  // Merge EN blog data (locale-wrapped)
   const enBlogData = wrapWithLocale(
     {
       blog: {
@@ -2284,8 +2219,6 @@ async function seed() {
   )
   deepMerge(localizedData, enBlogData)
 
-  // Use payload.db.updateGlobal() directly — bypasses getLatestGlobalVersion
-  // which runs a locale-aware SELECT exceeding PostgreSQL's 100-arg limit.
   await payload.db.updateGlobal({
     slug: 'ui-strings',
     data: localizedData,
@@ -2294,9 +2227,6 @@ async function seed() {
   })
   console.log('  UIStrings seeded (TR + EN blog) via direct DB call.')
 
-  // ──────────────────────────────────────────────
-  // Done!
-  // ──────────────────────────────────────────────
   console.log('\n========================================')
   console.log('Seed complete!')
   console.log('========================================')
@@ -2312,7 +2242,6 @@ async function seed() {
   console.log(`  Transparency Reports: ${reportsData.length}`)
   console.log(`  Globals: Header, SiteSettings (bank accounts + statistics), UIStrings (TR + EN blog)`)
 
-  // Revalidate Next.js cache (if dev server is running)
   try {
     const res = await fetch('http://localhost:3000/api/revalidate', { method: 'POST' })
     if (res.ok) {

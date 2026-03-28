@@ -25,7 +25,6 @@ export function MovingBorder({
   useEffect(() => {
     if (reducedMotion || !borderRef.current) return
 
-    // Set initial custom property
     borderRef.current.style.setProperty('--border-angle', '0deg')
 
     const proxy = { angle: 0 }

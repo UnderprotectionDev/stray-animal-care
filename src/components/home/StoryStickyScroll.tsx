@@ -46,7 +46,7 @@ export function StoryStickyScroll({ steps }: Props) {
     description: (
       <div>
         <span className="t-comment block mb-2" aria-hidden="true">
-          {'// ADIM ' + padNumber(i + 1)}
+          {'ADIM ' + padNumber(i + 1)}
         </span>
         {step.description && (
           <RevealOnScroll>
@@ -75,7 +75,7 @@ export function StoryStickyScroll({ steps }: Props) {
         ) : (
           <div className="absolute inset-0 bg-[var(--palette-dark-cream)] flex items-center justify-center">
             <span className="t-comment text-[var(--palette-warm-gray)]">
-              {'// GÖRSEL ' + padNumber(i + 1)}
+              {'GÖRSEL ' + padNumber(i + 1)}
             </span>
           </div>
         )}
@@ -107,13 +107,13 @@ export function StoryStickyScroll({ steps }: Props) {
             ) : (
               <div className="aspect-[4/3] bg-[var(--palette-dark-cream)] flex items-center justify-center">
                 <span className="t-comment text-[var(--palette-warm-gray)]">
-                  {'// GÖRSEL ' + padNumber(i + 1)}
+                  {'GÖRSEL ' + padNumber(i + 1)}
                 </span>
               </div>
             )}
             <div className="p-6 bg-[var(--background)]">
               <span className="t-comment block mb-2" aria-hidden="true">
-                {'// ADIM ' + padNumber(i + 1)}
+                {'ADIM ' + padNumber(i + 1)}
               </span>
               <SplitText
                 text={step.title}

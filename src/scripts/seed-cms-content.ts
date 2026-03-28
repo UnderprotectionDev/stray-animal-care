@@ -17,9 +17,6 @@ import { bold, boldItalic, heading, italic, lexicalRoot, link, paragraph, quote,
 async function seed() {
   const payload = await getPayload({ config: await config })
 
-  // ═══════════════════════════════════════════════════════════
-  // 1. SiteSettings — homepage blocks, social links, bank accounts, stats
-  // ═══════════════════════════════════════════════════════════
   console.log('Seeding SiteSettings...')
   await payload.updateGlobal({
     slug: 'site-settings',
@@ -229,9 +226,6 @@ async function seed() {
   })
   console.log('SiteSettings seeded.')
 
-  // ═══════════════════════════════════════════════════════════
-  // 2. Header navigation
-  // ═══════════════════════════════════════════════════════════
   console.log('Seeding Header...')
   await payload.updateGlobal({
     slug: 'header',
@@ -275,14 +269,8 @@ async function seed() {
   })
   console.log('Header seeded.')
 
-  // ═══════════════════════════════════════════════════════════
-  // 3. UIStrings — uses payload.db.updateGlobal() directly to bypass
-  //    the locale-aware SELECT in getLatestGlobalVersion, which exceeds
-  //    PostgreSQL's FUNC_MAX_ARGS (100) with 274+ localized fields.
-  // ═══════════════════════════════════════════════════════════
   console.log('Seeding UIStrings (TR)...')
 
-  // All UIStrings data — all leaf text fields are localized
   const uiStringsData: Record<string, unknown> = {
     common: {
       siteName: 'Paws of Hope',
@@ -662,9 +650,6 @@ async function seed() {
     },
   }
 
-  // Wrap all leaf string values with locale key for the DB adapter layer.
-  // The high-level payload.updateGlobal() wraps locale data internally via
-  // beforeChange hooks, but we bypass it to avoid the problematic SELECT.
   function wrapWithLocale(obj: Record<string, unknown>, locale: string): Record<string, unknown> {
     const result: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(obj)) {
@@ -681,10 +666,6 @@ async function seed() {
 
   const localizedData = wrapWithLocale(uiStringsData, 'tr')
 
-  // Use payload.db.updateGlobal() directly — bypasses getLatestGlobalVersion
-  // which runs a locale-aware SELECT exceeding PostgreSQL's 100-arg limit.
-  // The DB adapter's updateGlobal only does a simple findFirst on the main table
-  // (which has no localized columns), then upsertRow handles the _locales table.
   await payload.db.updateGlobal({
     slug: 'ui-strings',
     data: localizedData,

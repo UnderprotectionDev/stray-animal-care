@@ -49,7 +49,6 @@ const StatCard: React.FC<{
       const glare = glareRef.current
       if (!el) return
 
-      // GSAP color change
       gsap.to(el, {
         backgroundColor: color.bg,
         color: color.fg,
@@ -57,7 +56,6 @@ const StatCard: React.FC<{
         ease: 'power2.out',
       })
 
-      // Wobble translate
       const rect = el.getBoundingClientRect()
       const mx = (e.clientX - (rect.left + rect.width / 2)) / 20
       const my = (e.clientY - (rect.top + rect.height / 2)) / 20
@@ -66,7 +64,6 @@ const StatCard: React.FC<{
         content.style.transform = `translate3d(${-mx}px, ${-my}px, 0) scale3d(1.03, 1.03, 1)`
       }
 
-      // Glare
       if (glare) {
         const gx = ((e.clientX - rect.left) / rect.width) * 100
         const gy = ((e.clientY - rect.top) / rect.height) * 100
@@ -85,7 +82,6 @@ const StatCard: React.FC<{
     if (!el) return
     const rect = el.getBoundingClientRect()
 
-    // Wobble translate
     const mx = (e.clientX - (rect.left + rect.width / 2)) / 20
     const my = (e.clientY - (rect.top + rect.height / 2)) / 20
     el.style.transform = `translate3d(${mx}px, ${my}px, 0)`
@@ -93,7 +89,6 @@ const StatCard: React.FC<{
       content.style.transform = `translate3d(${-mx}px, ${-my}px, 0) scale3d(1.03, 1.03, 1)`
     }
 
-    // Glare position
     if (glare) {
       const gx = ((e.clientX - rect.left) / rect.width) * 100
       const gy = ((e.clientY - rect.top) / rect.height) * 100
@@ -108,7 +103,6 @@ const StatCard: React.FC<{
     const glare = glareRef.current
     if (!el) return
 
-    // GSAP color reset
     gsap.to(el, {
       backgroundColor: 'var(--stats)',
       color: 'var(--stats-foreground)',
@@ -116,13 +110,11 @@ const StatCard: React.FC<{
       ease: 'power2.in',
     })
 
-    // Wobble reset
     el.style.transform = 'translate3d(0px, 0px, 0)'
     if (content) {
       content.style.transform = 'translate3d(0px, 0px, 0) scale3d(1, 1, 1)'
     }
 
-    // Glare fade out
     if (glare) {
       glare.style.opacity = '0'
     }

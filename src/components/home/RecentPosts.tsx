@@ -3,8 +3,8 @@ import type { Post, SiteSetting } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { CATEGORY_LABELS_FALLBACK } from '@/utilities/categoryLabels'
 import { AnimatedSectionHeader } from './AnimatedSectionHeader'
-import BlogCardsBento from './BlogCardsBento'
-import type { BentoCardData } from './BlogCardsBento'
+import BlogCardsCarousel from './BlogCardsCarousel'
+import type { BlogCarouselCardData } from './BlogCardsCarousel'
 
 type RecentPostsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeRecentPosts' }>
 
@@ -14,7 +14,7 @@ type Props = {
   locale: string
 }
 
-function serializePosts(posts: Post[]): BentoCardData[] {
+function serializePosts(posts: Post[]): BlogCarouselCardData[] {
   return posts.map((post) => {
     const img = post.heroImage ?? post.meta?.image
     const imageUrl = img && typeof img !== 'number' ? getMediaUrl(img.url) : ''
@@ -43,7 +43,11 @@ export function RecentPosts({ block, posts, locale }: Props) {
   return (
     <section>
       <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} accentColor="stats" />
-      <BlogCardsBento cards={cards} locale={locale} />
+      <BlogCardsCarousel
+        cards={cards}
+        locale={locale}
+        readMoreLabel={locale === 'en' ? 'Read More' : 'Devamını Oku'}
+      />
     </section>
   )
 }

@@ -1,6 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 type FAQItem = { q: string; a: string }
 
@@ -11,28 +15,115 @@ type DonateFAQProps = {
 
 export function DonateFAQ({ title, items }: DonateFAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const answerRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [reducedMotion, setReducedMotion] = useState(false)
+
+  useEffect(() => {
+    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  }, [])
+
+  // Scroll-triggered stagger entrance
+  useEffect(() => {
+    if (reducedMotion || !containerRef.current) return
+    const faqItems = containerRef.current.querySelectorAll<HTMLElement>('[data-faq-item]')
+    const tween = gsap.fromTo(
+      faqItems,
+      { y: 20, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: containerRef.current, start: 'top 75%', once: true },
+      },
+    )
+    return () => {
+      tween.scrollTrigger?.kill()
+      tween.kill()
+    }
+  }, [reducedMotion])
+
+  // Animated expand/collapse
+  useEffect(() => {
+    answerRefs.current.forEach((el, i) => {
+      if (!el) return
+      if (i === openIndex) {
+        el.style.display = 'block'
+        if (!reducedMotion) {
+          gsap.fromTo(
+            el,
+            { height: 0, opacity: 0 },
+            { height: 'auto', opacity: 1, duration: 0.3, ease: 'power2.out' },
+          )
+        } else {
+          el.style.height = 'auto'
+          el.style.opacity = '1'
+        }
+      } else {
+        if (!reducedMotion) {
+          gsap.to(el, {
+            height: 0,
+            opacity: 0,
+            duration: 0.2,
+            ease: 'power2.in',
+            onComplete: () => {
+              el.style.display = 'none'
+            },
+          })
+        } else {
+          el.style.display = 'none'
+        }
+      }
+    })
+  }, [openIndex, reducedMotion])
 
   return (
-    <div className="space-y-4">
+    <div ref={containerRef} className="space-y-4">
       <h2 className="t-h2 uppercase">{title}</h2>
-      <div className="border border-border">
-        {items.map((item, index) => (
-          <div key={index} className={index > 0 ? 'border-t border-border' : ''}>
-            <button
-              type="button"
-              onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              className="flex w-full items-center justify-between p-4 text-left t-body font-medium hover:bg-muted transition-colors"
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="hidden lg:flex lg:w-1/3 flex-col justify-center items-center relative">
+          <span
+            className="text-[12rem] leading-none font-heading select-none pointer-events-none opacity-[0.06]"
+            aria-hidden="true"
+          >
+            ?
+          </span>
+          <div className="absolute bottom-8 left-8 right-8">
+            <div className="w-full h-[1.5px] bg-cta mb-2" />
+          </div>
+        </div>
+        <div className="lg:w-2/3 border border-border">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              data-faq-item
+              className={index > 0 ? 'border-t border-border' : ''}
             >
-              {item.q}
-              <span className="ml-4 shrink-0 text-lg">{openIndex === index ? '−' : '+'}</span>
-            </button>
-            {openIndex === index && (
-              <div className="border-t border-border px-4 py-3 t-meta">
+              <button
+                type="button"
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                aria-expanded={openIndex === index}
+                className="flex w-full items-center justify-between p-4 lg:p-5 text-left t-body font-medium hover:bg-muted transition-colors"
+              >
+                <span className="pr-4">{item.q}</span>
+                <span className="ml-4 shrink-0 text-lg font-heading" aria-hidden="true">
+                  {openIndex === index ? '−' : '+'}
+                </span>
+              </button>
+              <div
+                ref={(el) => {
+                  answerRefs.current[index] = el
+                }}
+                className="border-t border-border px-4 py-4 lg:px-5 t-meta leading-relaxed overflow-hidden"
+                style={{ display: 'none', height: 0 }}
+              >
                 {item.a}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

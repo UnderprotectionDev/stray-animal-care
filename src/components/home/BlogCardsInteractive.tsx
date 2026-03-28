@@ -28,7 +28,6 @@ export default function BlogCardsInteractive({ cards, locale }: Props) {
   const modalRef = useRef<HTMLDivElement>(null)
   const uniqueId = useId()
 
-  // Escape key handler
   useEffect(() => {
     if (!active) return
     function onKeyDown(e: KeyboardEvent) {
@@ -38,7 +37,6 @@ export default function BlogCardsInteractive({ cards, locale }: Props) {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [active])
 
-  // Body overflow lock
   useEffect(() => {
     if (active) {
       document.body.style.overflow = 'hidden'
@@ -50,7 +48,6 @@ export default function BlogCardsInteractive({ cards, locale }: Props) {
     }
   }, [active])
 
-  // Outside click
   useOutsideClick(modalRef, useCallback(() => setActive(null), []))
 
   const formatDate = (dateStr: string | null) => {

@@ -38,7 +38,6 @@ export function SearchModal({ open, onOpenChange, labels }: SearchModalProps) {
   const modalNoResults = labels?.modal?.noResults || 'No results found.'
   const modalShortcut = labels?.modal?.shortcut || 'Open search'
 
-  // Keyboard shortcut: Cmd+K / Ctrl+K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -51,7 +50,6 @@ export function SearchModal({ open, onOpenChange, labels }: SearchModalProps) {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [open, onOpenChange])
 
-  // Fetch search results via Server Action
   useEffect(() => {
     if (!debouncedQuery || debouncedQuery.length < 2) {
       setResults([])
@@ -80,7 +78,6 @@ export function SearchModal({ open, onOpenChange, labels }: SearchModalProps) {
     fetchResults()
   }, [debouncedQuery])
 
-  // Reset state when modal closes
   useEffect(() => {
     if (!open) {
       setQuery('')

@@ -2721,6 +2721,27 @@ export interface UiString {
     };
     title?: string | null;
     subtitle?: string | null;
+    hero?: {
+      rotatingWord1?: string | null;
+      rotatingWord2?: string | null;
+      rotatingWord3?: string | null;
+      badgeLabel?: string | null;
+    };
+    stats?: {
+      title?: string | null;
+      totalItems?: string | null;
+      urgentItems?: string | null;
+      coverage?: string | null;
+    };
+    divider?: {
+      text1?: string | null;
+      text2?: string | null;
+      text3?: string | null;
+      text4?: string | null;
+    };
+    needsSection?: {
+      title?: string | null;
+    };
     table?: {
       product?: string | null;
       brand?: string | null;
@@ -2753,6 +2774,18 @@ export interface UiString {
     };
     title?: string | null;
     subtitle?: string | null;
+    hero?: {
+      rotatingWord1?: string | null;
+      rotatingWord2?: string | null;
+      rotatingWord3?: string | null;
+      badgeLabel?: string | null;
+    };
+    stats?: {
+      totalIncome?: string | null;
+      totalExpenses?: string | null;
+      donorCount?: string | null;
+      reportCount?: string | null;
+    };
     report?: {
       expenses?: string | null;
       totalExpense?: string | null;
@@ -2762,7 +2795,10 @@ export interface UiString {
       amount?: string | null;
       comparison?: string | null;
       documents?: string | null;
+      surplus?: string | null;
+      deficit?: string | null;
     };
+    reportsHeading?: string | null;
     empty?: string | null;
     currency?: string | null;
   };
@@ -2829,10 +2865,38 @@ export interface UiString {
       q4?: string | null;
       a4?: string | null;
     };
+    timeline?: {
+      title?: string | null;
+      step1Title?: string | null;
+      step1Desc?: string | null;
+      step2Title?: string | null;
+      step2Desc?: string | null;
+      step3Title?: string | null;
+      step3Desc?: string | null;
+    };
+    testimonials?: {
+      title?: string | null;
+      t1Quote?: string | null;
+      t1Name?: string | null;
+      t1Role?: string | null;
+      t2Quote?: string | null;
+      t2Name?: string | null;
+      t2Role?: string | null;
+      t3Quote?: string | null;
+      t3Name?: string | null;
+      t3Role?: string | null;
+    };
+    divider?: {
+      text1?: string | null;
+      text2?: string | null;
+      text3?: string | null;
+      text4?: string | null;
+    };
     cta?: {
       title?: string | null;
       description?: string | null;
       whatsappMessage?: string | null;
+      buttonLabel?: string | null;
     };
   };
   vision?: {
@@ -2933,6 +2997,49 @@ export interface UiString {
     };
     title?: string | null;
     subtitle?: string | null;
+    stats?: {
+      title?: string | null;
+      treated?: string | null;
+      spayed?: string | null;
+      vaccinated?: string | null;
+      feedingPoints?: string | null;
+      cats?: string | null;
+      dogs?: string | null;
+    };
+    process?: {
+      title?: string | null;
+      step1Title?: string | null;
+      step1Desc?: string | null;
+      step2Title?: string | null;
+      step2Desc?: string | null;
+      step3Title?: string | null;
+      step3Desc?: string | null;
+      step4Title?: string | null;
+      step4Desc?: string | null;
+    };
+    faq?: {
+      title?: string | null;
+      q1?: string | null;
+      a1?: string | null;
+      q2?: string | null;
+      a2?: string | null;
+      q3?: string | null;
+      a3?: string | null;
+      q4?: string | null;
+      a4?: string | null;
+    };
+    divider?: {
+      text1?: string | null;
+      text2?: string | null;
+      text3?: string | null;
+      text4?: string | null;
+    };
+    cta?: {
+      title?: string | null;
+      description?: string | null;
+      donateLabel?: string | null;
+      volunteerLabel?: string | null;
+    };
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -3474,6 +3581,35 @@ export interface UiStringsSelect<T extends boolean = true> {
             };
         title?: T;
         subtitle?: T;
+        hero?:
+          | T
+          | {
+              rotatingWord1?: T;
+              rotatingWord2?: T;
+              rotatingWord3?: T;
+              badgeLabel?: T;
+            };
+        stats?:
+          | T
+          | {
+              title?: T;
+              totalItems?: T;
+              urgentItems?: T;
+              coverage?: T;
+            };
+        divider?:
+          | T
+          | {
+              text1?: T;
+              text2?: T;
+              text3?: T;
+              text4?: T;
+            };
+        needsSection?:
+          | T
+          | {
+              title?: T;
+            };
         table?:
           | T
           | {
@@ -3518,6 +3654,22 @@ export interface UiStringsSelect<T extends boolean = true> {
             };
         title?: T;
         subtitle?: T;
+        hero?:
+          | T
+          | {
+              rotatingWord1?: T;
+              rotatingWord2?: T;
+              rotatingWord3?: T;
+              badgeLabel?: T;
+            };
+        stats?:
+          | T
+          | {
+              totalIncome?: T;
+              totalExpenses?: T;
+              donorCount?: T;
+              reportCount?: T;
+            };
         report?:
           | T
           | {
@@ -3529,7 +3681,10 @@ export interface UiStringsSelect<T extends boolean = true> {
               amount?: T;
               comparison?: T;
               documents?: T;
+              surplus?: T;
+              deficit?: T;
             };
+        reportsHeading?: T;
         empty?: T;
         currency?: T;
       };
@@ -3614,12 +3769,46 @@ export interface UiStringsSelect<T extends boolean = true> {
               q4?: T;
               a4?: T;
             };
+        timeline?:
+          | T
+          | {
+              title?: T;
+              step1Title?: T;
+              step1Desc?: T;
+              step2Title?: T;
+              step2Desc?: T;
+              step3Title?: T;
+              step3Desc?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              title?: T;
+              t1Quote?: T;
+              t1Name?: T;
+              t1Role?: T;
+              t2Quote?: T;
+              t2Name?: T;
+              t2Role?: T;
+              t3Quote?: T;
+              t3Name?: T;
+              t3Role?: T;
+            };
+        divider?:
+          | T
+          | {
+              text1?: T;
+              text2?: T;
+              text3?: T;
+              text4?: T;
+            };
         cta?:
           | T
           | {
               title?: T;
               description?: T;
               whatsappMessage?: T;
+              buttonLabel?: T;
             };
       };
   vision?:
@@ -3760,6 +3949,59 @@ export interface UiStringsSelect<T extends boolean = true> {
             };
         title?: T;
         subtitle?: T;
+        stats?:
+          | T
+          | {
+              title?: T;
+              treated?: T;
+              spayed?: T;
+              vaccinated?: T;
+              feedingPoints?: T;
+              cats?: T;
+              dogs?: T;
+            };
+        process?:
+          | T
+          | {
+              title?: T;
+              step1Title?: T;
+              step1Desc?: T;
+              step2Title?: T;
+              step2Desc?: T;
+              step3Title?: T;
+              step3Desc?: T;
+              step4Title?: T;
+              step4Desc?: T;
+            };
+        faq?:
+          | T
+          | {
+              title?: T;
+              q1?: T;
+              a1?: T;
+              q2?: T;
+              a2?: T;
+              q3?: T;
+              a3?: T;
+              q4?: T;
+              a4?: T;
+            };
+        divider?:
+          | T
+          | {
+              text1?: T;
+              text2?: T;
+              text3?: T;
+              text4?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              donateLabel?: T;
+              volunteerLabel?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

@@ -30,7 +30,6 @@ export const AdminChartContainer: React.FC<AdminChartContainerProps> = ({
   const uniqueId = React.useId()
   const chartId = `chart-${uniqueId.replace(/:/g, '')}`
 
-  // Generate CSS variables for chart colors
   const colorVars = Object.entries(config).reduce(
     (acc, [key, value]) => {
       if (value.color) {

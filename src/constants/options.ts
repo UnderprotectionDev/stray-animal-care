@@ -1,6 +1,5 @@
 import type { Option } from 'payload'
 
-// ── Animals ──────────────────────────────────────────────
 export const ANIMAL_TYPE_OPTIONS: Option[] = [
   { label: 'Kedi', value: 'kedi' },
   { label: 'Köpek', value: 'kopek' },
@@ -18,7 +17,6 @@ export const ANIMAL_STATUS_OPTIONS: Option[] = [
   { label: 'Acil', value: 'acil' },
 ]
 
-// ── Events ───────────────────────────────────────────────
 export const EVENT_TYPE_OPTIONS: Option[] = [
   { label: 'Sahiplendirme', value: 'sahiplendirme' },
   { label: 'Mama Toplama', value: 'mama-toplama' },
@@ -34,7 +32,6 @@ export const EVENT_STATUS_OPTIONS: Option[] = [
   { label: 'İptal', value: 'iptal' },
 ]
 
-// ── Volunteers ───────────────────────────────────────────
 export const VOLUNTEER_AREA_OPTIONS: Option[] = [
   { label: 'Besleme', value: 'besleme' },
   { label: 'Tedavi', value: 'tedavi' },
@@ -49,7 +46,6 @@ export const APPLICATION_STATUS_OPTIONS: Option[] = [
   { label: 'Reddedildi', value: 'reddedildi' },
 ]
 
-// ── Social Platforms ─────────────────────────────────────
 export const SOCIAL_PLATFORM_OPTIONS: Option[] = [
   { label: 'Instagram', value: 'instagram' },
   { label: 'X (Twitter)', value: 'x-twitter' },

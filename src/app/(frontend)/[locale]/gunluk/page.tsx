@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { Container } from '@/components/shared/Container'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
-import { BlogFilter, BlogList } from '@/modules/blog'
+import { BlogFilter, BlogListAnimated, BlogPageHeader } from '@/modules/blog'
 import { getBlogPosts } from '@/modules/blog/lib/queries'
 import { locales, defaultLocale, type Locale } from '@/i18n/config'
 import type { UiString } from '@/payload-types'
@@ -43,25 +43,31 @@ export default async function BlogPage({ params }: Args) {
     etkinlik: ui?.blog?.filter?.etkinlik ?? 'Etkinlik',
   }
 
+  const postCounts: Record<string, number> = {}
+  for (const post of posts) {
+    if (post.postCategory) {
+      postCounts[post.postCategory] = (postCounts[post.postCategory] || 0) + 1
+    }
+  }
+
   return (
     <Container>
-      <div className="sys-wrap my-8">
-        <div className="panel p-6">
-          <PageBreadcrumb
-            items={[
-              { label: ui?.layout?.breadcrumb?.home ?? 'Ana Sayfa', href: '/' },
-              { label: ui?.blog?.title ?? 'Günlük' },
-            ]}
-          />
+      <div className="my-8 space-y-6">
+        <PageBreadcrumb
+          items={[
+            { label: ui?.layout?.breadcrumb?.home ?? 'Ana Sayfa', href: '/' },
+            { label: ui?.blog?.title ?? 'Günlük' },
+          ]}
+        />
+        <BlogPageHeader
+          title={ui?.blog?.title ?? 'Günlük'}
+          subtitle={ui?.blog?.subtitle ?? ''}
+          postCount={posts.length}
+        />
+        <div className="border-b border-border/20 pb-4">
+          <BlogFilter labels={filterLabels} postCounts={postCounts} />
         </div>
-        <div className="panel p-8 text-center">
-          <h1 className="t-mega">{ui?.blog?.title ?? 'Günlük'}</h1>
-          <p className="t-meta text-lg mt-2">{ui?.blog?.subtitle ?? ''}</p>
-        </div>
-        <div className="panel p-4 flex justify-center">
-          <BlogFilter labels={filterLabels} />
-        </div>
-        <BlogList
+        <BlogListAnimated
           posts={posts}
           categoryLabels={categoryLabels}
           readMoreLabel={ui?.blog?.readMore ?? 'Devamını Oku'}

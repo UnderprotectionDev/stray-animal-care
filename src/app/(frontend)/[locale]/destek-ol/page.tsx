@@ -9,6 +9,10 @@ import { DonateTicker } from '@/modules/donate/components/DonateTicker'
 import { DonationCards } from '@/modules/donate/components/DonationCards'
 import { DonateFAQ } from '@/modules/donate/components/DonateFAQ'
 import { TransparencyNote } from '@/modules/donate/components/TransparencyNote'
+import { DonateHero } from '@/modules/donate/components/DonateHero'
+import { SectionDividerBand } from '@/components/home/SectionDividerBand'
+import { ScrollAnimationTrigger } from '@/components/ui/scroll-animation-trigger'
+import { BlurFade } from '@/components/BlurFade'
 import type { SiteSetting, UiString } from '@/payload-types'
 
 export const revalidate = 60
@@ -55,17 +59,14 @@ export default async function DonatePage({ params }: Args) {
   try {
     siteSettings = await getCachedGlobal('site-settings', 1)() as SiteSetting
   } catch {
-    // DB unreachable — fall through to mock data
   }
 
   let ui: UiString | null = null
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
 
-  // Use CMS data if available, otherwise fall back to mock data
   const bankAccounts =
     siteSettings?.bankAccounts && siteSettings.bankAccounts.length > 0
       ? siteSettings.bankAccounts
@@ -85,57 +86,79 @@ export default async function DonatePage({ params }: Args) {
     { q: ui?.donate?.faq?.q5 ?? '', a: ui?.donate?.faq?.a5 ?? '' },
   ].filter(item => item.q && item.a)
 
+  const rotatingTexts = [
+    ui?.donate?.cards?.foodTitle ?? 'Mama Desteği',
+    ui?.donate?.cards?.vetTitle ?? 'Veteriner',
+    ui?.donate?.cards?.surgeryTitle ?? 'Cerrahi Destek',
+    ui?.donate?.volunteer?.title ?? 'Gönüllü Ol',
+  ]
+
   return (
     <Container>
       <div className="sys-wrap my-8">
         {/* Hero */}
-        <div className="panel p-8 md:p-12 relative overflow-hidden">
-          <span className="badge-sys cta absolute top-6 right-6 rotate-3">
-            {ui?.donate?.hero?.badge ?? 'HAYAT KURTAR'}
-          </span>
-          <h1 className="t-mega">{ui?.donate?.hero?.title ?? 'BİR CAN KURTAR'}</h1>
-          <p className="t-body mt-4 max-w-xl">{ui?.donate?.hero?.subtitle ?? ''}</p>
-        </div>
+        <DonateHero
+          title={ui?.donate?.hero?.title ?? 'BİR CAN KURTAR'}
+          subtitle={ui?.donate?.hero?.subtitle ?? ''}
+          badge={ui?.donate?.hero?.badge ?? 'HAYAT KURTAR'}
+          treatedCount={stats.treatedCount}
+          treatedLabel={ui?.donate?.ticker?.treated ?? 'TEDAVİ EDİLEN'}
+          rotatingTexts={rotatingTexts}
+          rotatingLabel="Nasıl Destek?"
+        />
 
-        {/* Cards Grid */}
-        <div className="donate-grid">
-          {/* IBAN — spans left column, rows 1-2 on desktop */}
-          <div className="md:row-span-2">
-            <IBANCopy
-              bankAccounts={bankAccounts}
-              labels={{
-                title: ui?.donate?.iban?.title ?? 'IBAN İLE BAĞIŞ',
-                bank: ui?.donate?.iban?.bank ?? 'Banka',
-                accountHolder: ui?.donate?.iban?.accountHolder ?? 'Hesap Sahibi',
-                iban: ui?.donate?.iban?.iban ?? 'IBAN',
-                copy: ui?.donate?.iban?.copy ?? "IBAN'ı Kopyala",
-                placeholder: ui?.donate?.iban?.placeholder ?? 'Banka hesap bilgileri yakında eklenecek.',
-              }}
-            />
-          </div>
+        {/* Divider Band 1 */}
+        <SectionDividerBand
+          texts={[
+            ui?.donate?.ticker?.slogan1 ?? 'YAŞAM HAKKINA SAYGI',
+            ui?.donate?.ticker?.slogan2 ?? 'DESTEK OL HAYAT KURTAR',
+            ui?.donate?.ticker?.slogan3 ?? 'HER CAN DEĞERLİ',
+          ]}
+          bgColor="var(--palette-black)"
+          textColor="var(--background)"
+        />
 
-          {/* International — right column, row 1 */}
-          <div>
-            <InternationalPayment
-              labels={{
-                title: ui?.donate?.international?.title ?? 'Uluslararası Destek',
-                comingSoon: ui?.donate?.international?.comingSoon ?? 'YAKINDA',
-                placeholder: ui?.donate?.international?.placeholder ?? 'Yurtdışı ödeme seçenekleri hazırlanıyor.',
-              }}
-            />
-          </div>
+        {/* Cards Grid — BlurFade stagger */}
+        <ScrollAnimationTrigger effect="slide" direction="up" duration={0.6} threshold={0.1} once>
+          <div className="donate-grid">
+            {/* IBAN — spans left column, rows 1-2 on desktop */}
+            <BlurFade delay={0} direction="up" className="md:row-span-2">
+              <IBANCopy
+                bankAccounts={bankAccounts}
+                labels={{
+                  title: ui?.donate?.iban?.title ?? 'IBAN İLE BAĞIŞ',
+                  bank: ui?.donate?.iban?.bank ?? 'Banka',
+                  accountHolder: ui?.donate?.iban?.accountHolder ?? 'Hesap Sahibi',
+                  iban: ui?.donate?.iban?.iban ?? 'IBAN',
+                  copy: ui?.donate?.iban?.copy ?? "IBAN'ı Kopyala",
+                  placeholder: ui?.donate?.iban?.placeholder ?? 'Banka hesap bilgileri yakında eklenecek.',
+                }}
+              />
+            </BlurFade>
 
-          {/* Volunteer — right column, row 2 */}
-          <div>
-            <VolunteerCard
-              labels={{
-                title: ui?.donate?.volunteer?.title ?? 'GÖNÜLLÜ OL',
-                description: ui?.donate?.volunteer?.description ?? '',
-                cta: ui?.donate?.volunteer?.cta ?? 'BAŞVURU FORMU →',
-              }}
-            />
+            {/* International — right column, row 1 */}
+            <BlurFade delay={0.1} direction="up">
+              <InternationalPayment
+                labels={{
+                  title: ui?.donate?.international?.title ?? 'Uluslararası Destek',
+                  comingSoon: ui?.donate?.international?.comingSoon ?? 'YAKINDA',
+                  placeholder: ui?.donate?.international?.placeholder ?? 'Yurtdışı ödeme seçenekleri hazırlanıyor.',
+                }}
+              />
+            </BlurFade>
+
+            {/* Volunteer — right column, row 2 */}
+            <BlurFade delay={0.2} direction="up">
+              <VolunteerCard
+                labels={{
+                  title: ui?.donate?.volunteer?.title ?? 'GÖNÜLLÜ OL',
+                  description: ui?.donate?.volunteer?.description ?? '',
+                  cta: ui?.donate?.volunteer?.cta ?? 'BAŞVURU FORMU →',
+                }}
+              />
+            </BlurFade>
           </div>
-        </div>
+        </ScrollAnimationTrigger>
 
         {/* Ticker */}
         <DonateTicker
@@ -151,41 +174,59 @@ export default async function DonatePage({ params }: Args) {
         />
 
         {/* Impact Cards */}
-        <div className="bg-background p-6">
-          <DonationCards
-            labels={{
-              title: ui?.donate?.cards?.title ?? 'Bağışınız Neye Yarar?',
-              food: {
-                title: ui?.donate?.cards?.foodTitle ?? 'Mama Desteği',
-                description: ui?.donate?.cards?.foodDescription ?? '',
-              },
-              vet: {
-                title: ui?.donate?.cards?.vetTitle ?? 'Veteriner Ziyareti',
-                description: ui?.donate?.cards?.vetDescription ?? '',
-              },
-              surgery: {
-                title: ui?.donate?.cards?.surgeryTitle ?? 'Cerrahi Destek',
-                description: ui?.donate?.cards?.surgeryDescription ?? '',
-              },
-            }}
-          />
-        </div>
+        <ScrollAnimationTrigger effect="slide" direction="up" duration={0.6} threshold={0.1} once>
+          <div className="bg-background p-6">
+            <DonationCards
+              labels={{
+                title: ui?.donate?.cards?.title ?? 'Bağışınız Neye Yarar?',
+                food: {
+                  title: ui?.donate?.cards?.foodTitle ?? 'Mama Desteği',
+                  description: ui?.donate?.cards?.foodDescription ?? '',
+                },
+                vet: {
+                  title: ui?.donate?.cards?.vetTitle ?? 'Veteriner Ziyareti',
+                  description: ui?.donate?.cards?.vetDescription ?? '',
+                },
+                surgery: {
+                  title: ui?.donate?.cards?.surgeryTitle ?? 'Cerrahi Destek',
+                  description: ui?.donate?.cards?.surgeryDescription ?? '',
+                },
+              }}
+            />
+          </div>
+        </ScrollAnimationTrigger>
+
+        {/* Divider Band 2 */}
+        <SectionDividerBand
+          texts={[
+            `${stats.catsCount}+ ${ui?.donate?.ticker?.cats ?? 'KEDİ'}`,
+            `${stats.dogsCount}+ ${ui?.donate?.ticker?.dogs ?? 'KÖPEK'}`,
+            `${stats.treatedCount}+ ${ui?.donate?.ticker?.treated ?? 'TEDAVİ EDİLEN'}`,
+          ]}
+          bgColor="var(--palette-red)"
+          textColor="var(--background)"
+          velocity={40}
+        />
 
         {/* FAQ */}
-        <div className="bg-background p-6">
-          <DonateFAQ title={ui?.donate?.faq?.title ?? 'Sık Sorulan Sorular'} items={faqItems} />
-        </div>
+        <ScrollAnimationTrigger effect="slide" direction="up" duration={0.6} threshold={0.1} once>
+          <div className="bg-background p-6">
+            <DonateFAQ title={ui?.donate?.faq?.title ?? 'Sık Sorulan Sorular'} items={faqItems} />
+          </div>
+        </ScrollAnimationTrigger>
 
         {/* Transparency */}
-        <div className="bg-background">
-          <TransparencyNote
-            labels={{
-              title: ui?.donate?.transparency?.title ?? 'Şeffaf Yönetim',
-              description: ui?.donate?.transparency?.description ?? '',
-              reports: ui?.donate?.transparency?.reports ?? 'Şeffaflık Raporları',
-            }}
-          />
-        </div>
+        <ScrollAnimationTrigger effect="slide" direction="up" duration={0.6} threshold={0.1} once>
+          <div className="bg-background">
+            <TransparencyNote
+              labels={{
+                title: ui?.donate?.transparency?.title ?? 'Şeffaf Yönetim',
+                description: ui?.donate?.transparency?.description ?? '',
+                reports: ui?.donate?.transparency?.reports ?? 'Şeffaflık Raporları',
+              }}
+            />
+          </div>
+        </ScrollAnimationTrigger>
       </div>
     </Container>
   )
@@ -201,7 +242,6 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
   return {
     title: ui?.donate?.meta?.title ?? 'Destek Ol — Paws of Hope',

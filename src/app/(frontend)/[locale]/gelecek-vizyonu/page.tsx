@@ -50,7 +50,6 @@ export default async function VisionPage({ params }: Args) {
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
 
   return (
@@ -307,7 +306,6 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
   } catch {
-    // ui-strings fetch failed
   }
   return {
     title: ui?.vision?.meta?.title || 'Gelecek Vizyonu — Paws of Hope',

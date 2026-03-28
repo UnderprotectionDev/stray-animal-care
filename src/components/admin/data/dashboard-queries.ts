@@ -42,8 +42,6 @@ function countByField<T>(docs: T[], field: keyof T): Record<string, number> {
   return counts
 }
 
-// --- Alert types ---
-
 export interface AlertItem {
   type: 'warning' | 'danger'
   icon: string
@@ -102,8 +100,6 @@ export async function getAlerts(payload: Payload): Promise<AlertItem[]> {
 
   return alerts
 }
-
-// --- Individual data fetchers for each widget ---
 
 export async function getAnimalChartData(payload: Payload): Promise<{
   animalTypes: AnimalTypeDistribution[]
