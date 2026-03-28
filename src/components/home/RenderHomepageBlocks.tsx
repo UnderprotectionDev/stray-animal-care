@@ -33,10 +33,10 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
 
   // Pre-scan: can we combine posts + transparency into one section?
   const postsBlock = blocks.find(
-    (b) => b.blockType === 'homeRecentPosts' && b.enabled !== false,
+    (b) => b.blockType === 'homeRecentPosts' && b.enabled,
   )
   const transpBlock = blocks.find(
-    (b) => b.blockType === 'homeTransparencyBanner' && b.enabled !== false,
+    (b) => b.blockType === 'homeTransparencyBanner' && b.enabled,
   )
   const shouldCombine = !!(postsBlock && transpBlock)
   let combinedRendered = false
@@ -46,7 +46,7 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
   const bandIndices = new Set<number>()
 
   for (const block of blocks) {
-    if (block.enabled === false) continue
+    if (!block.enabled) continue
 
     // Combined layout: render once, skip the second block
     if (

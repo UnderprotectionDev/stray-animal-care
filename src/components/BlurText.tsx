@@ -49,7 +49,7 @@ const BlurText: React.FC<BlurTextProps> = ({
 }) => {
   const elements = animateBy === 'words' ? text.split(' ') : text.split('');
   const [inView, setInView] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -91,7 +91,7 @@ const BlurText: React.FC<BlurTextProps> = ({
   const totalDuration = stepDuration * (stepCount - 1);
   const times = Array.from({ length: stepCount }, (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)));
 
-  const Tag = (tag || 'p') as React.ElementType;
+  const Tag = (tag || 'p') as 'div';
 
   return (
     <Tag ref={ref} className={`blur-text ${className} flex flex-wrap`}>

@@ -1,69 +1,49 @@
 import React from 'react'
 import type { SiteSetting, Media as MediaType } from '@/payload-types'
-import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
-import { AnimatedMegaHeading } from './AnimatedMegaHeading'
-import BlurText from '@/components/BlurText'
+import SplitText from '@/components/SplitText'
+import { StoryStickyScroll } from './StoryStickyScroll'
 
-type StoryBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeStory' }>
+type StoryBlock = Extract<
+  NonNullable<SiteSetting['homepageBlocks']>[number],
+  { blockType: 'homeStory' }
+>
 
 type Props = {
   block: StoryBlock
 }
 
 export function StorySection({ block }: Props) {
-  const founderImage = block.founderImage && typeof block.founderImage !== 'number' ? block.founderImage as MediaType : null
+  const steps = (block.steps ?? []).map((step) => ({
+    ...step,
+    image:
+      step.image && typeof step.image !== 'number' ? (step.image as MediaType) : null,
+  }))
+
+  if (!steps.length) return null
 
   return (
-    <section>
+    <section aria-label={block.sectionTitle ?? 'Hikayemiz'}>
       {block.sectionTitle && (
         <div className="bg-[var(--background)] border-b border-border py-6 px-6 md:px-8">
-          <AnimatedMegaHeading
+          <SplitText
             text={block.sectionTitle}
             tag="h2"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1 }}
+            className="t-mega uppercase leading-none"
+            splitType="chars"
+            delay={30}
+            duration={0.8}
+            ease="power3.out"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.2}
+            rootMargin="-50px"
+            textAlign="left"
           />
           <div className="w-24 h-1 mt-3" style={{ background: 'var(--trust)' }} />
         </div>
       )}
 
-      <div
-        className="grid grid-cols-1 md:grid-cols-[2fr_3fr]"
-        style={{ gap: '1px', background: 'var(--foreground)' }}
-      >
-        <div className="bg-[var(--background)] relative overflow-hidden min-h-[350px] md:min-h-[500px]">
-          {founderImage && (
-            <Media
-              resource={founderImage}
-              fill
-              imgClassName="object-cover transition-all duration-500"
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            {block.founderCaption && (
-              <BlurText
-                text={block.founderCaption}
-                tag="span"
-                className="t-meta text-white block mt-2"
-                animateBy="words"
-                delay={60}
-                stepDuration={0.3}
-                direction="bottom"
-                threshold={0.2}
-                animationFrom={{ filter: 'blur(6px)', opacity: 0, y: 15 }}
-                animationTo={[{ filter: 'blur(0px)', opacity: 1, y: 0 }]}
-              />
-            )}
-          </div>
-        </div>
-
-        <div className="bg-[var(--background)] p-6 md:p-10 flex flex-col justify-center gap-6">
-          {block.content && (
-            <RichText data={block.content} enableGutter={false} enableProse={true} />
-          )}
-        </div>
-      </div>
+      <StoryStickyScroll steps={steps} />
     </section>
   )
 }

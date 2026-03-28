@@ -220,8 +220,8 @@ export const seed = async ({
             isCta: false,
           },
           {
-            link: { type: 'custom', url: '/canlarimiz' },
-            label: 'Canlarımız',
+            link: { type: 'custom', url: '/calismalarimiz' },
+            label: 'Çalışmalarımız',
             isCta: false,
           },
           {

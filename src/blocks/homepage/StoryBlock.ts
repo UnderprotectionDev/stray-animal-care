@@ -7,8 +7,23 @@ export const StoryBlock: Block = {
   fields: [
     { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
     { name: 'sectionTitle', type: 'text', localized: true, label: 'Bölüm Başlığı', defaultValue: 'HİKAYEMİZ & MİSYON' },
-    { name: 'founderImage', type: 'upload', relationTo: 'media', label: 'Kurucu Görseli' },
-    { name: 'founderCaption', type: 'text', localized: true, label: 'Kurucu Alt Yazı', defaultValue: 'AYŞE KAYA, 2019' },
-    { name: 'content', type: 'richText', editor: defaultLexical, localized: true, label: 'İçerik' },
+    {
+      name: 'steps',
+      type: 'array',
+      label: 'Hikaye Adımları',
+      minRows: 1,
+      maxRows: 8,
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: '@/components/admin/RowLabels#StoryStepRowLabel',
+        },
+      },
+      fields: [
+        { name: 'title', type: 'text', localized: true, required: true, label: 'Adım Başlığı' },
+        { name: 'description', type: 'richText', editor: defaultLexical, localized: true, label: 'Açıklama' },
+        { name: 'image', type: 'upload', relationTo: 'media', label: 'Adım Görseli' },
+      ],
+    },
   ],
 }

@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
-import { cn } from '@/utilities/ui'
-import StackingCards, { StackingCardItem } from '@/components/fancy/blocks/stacking-cards'
+import ElectricBorder from '@/components/ElectricBorder'
+import ScrollStack, { ScrollStackItem } from '@/components/ScrollStack'
 
 export type EmergencyCardData = {
   id: number
@@ -14,94 +14,115 @@ export type EmergencyCardData = {
   collectedAmount: number
   imageUrl: string
   imageAlt: string
+  description: string
+  caseStatus: string
 }
 
 type Props = {
   cards: EmergencyCardData[]
 }
 
-const CARD_COLORS = [
-  'bg-[#f97316]',
-  'bg-[#0015ff]',
-  'bg-[#ff5941]',
-  'bg-[#1f464d]',
-  'bg-[#0015ff]',
-]
+function CardContent({ card, percentage }: { card: EmergencyCardData; percentage: number }) {
+  return (
+    <Link
+      href={`/acil-vakalar/${card.slug}`}
+      className="flex flex-col sm:flex-row border-[1.5px] border-[var(--border)] bg-white overflow-hidden min-h-[320px] sm:min-h-[380px]"
+    >
+      <div className="flex-1 flex flex-col justify-center p-6 sm:p-10 gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 flex-wrap">
+          <h3 className="font-heading font-bold text-xl sm:text-3xl text-foreground">
+            {card.title}
+          </h3>
+          <span className="badge-sys critical text-xs font-mono uppercase">
+            {card.caseStatus === 'aktif' ? 'AKTİF' : 'TAMAMLANDI'}
+          </span>
+        </div>
+
+        {card.description && (
+          <p className="t-body text-sm sm:text-base text-muted-foreground line-clamp-2">
+            {card.description}
+          </p>
+        )}
+
+        {card.targetAmount > 0 && (
+          <div className="space-y-2 mt-2 sm:mt-3">
+            <span className="text-3xl sm:text-5xl font-black tabular-nums text-foreground">
+              %{percentage}
+            </span>
+            <div
+              className="h-3 sm:h-4 w-full bg-[var(--border)]"
+              role="progressbar"
+              aria-valuenow={card.collectedAmount}
+              aria-valuemin={0}
+              aria-valuemax={card.targetAmount}
+            >
+              <div
+                className="h-full bg-emergency transition-all duration-500"
+                style={{ width: `${percentage}%` }}
+              />
+            </div>
+            <p className="text-xs sm:text-sm font-mono text-muted-foreground">
+              {card.collectedAmount.toLocaleString('tr-TR')} /{' '}
+              {card.targetAmount.toLocaleString('tr-TR')} TL
+            </p>
+          </div>
+        )}
+      </div>
+
+      {card.imageUrl && (
+        <div className="w-full sm:w-1/2 h-48 sm:h-auto relative overflow-hidden min-h-[200px] sm:min-h-[240px]">
+          <Image
+            src={card.imageUrl}
+            alt={card.imageAlt}
+            className="object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, 50vw"
+          />
+        </div>
+      )}
+    </Link>
+  )
+}
 
 export default function EmergencyStackingCards({ cards }: Props) {
-  const container = useRef<HTMLDivElement>(null)
-
   if (cards.length === 0) return null
 
   return (
-    <div
-      className="h-[620px] bg-palette-cream overflow-auto text-white"
-      ref={container}
-    >
-      <StackingCards
-        totalCards={cards.length}
-        scrollOptions={{ container: container }}
-        stickyTop="40px"
+    <div className="h-[620px] overflow-hidden">
+      <ScrollStack
+        itemDistance={450}
+        baseScale={0.92}
+        itemScale={0.02}
+        itemStackDistance={20}
+        innerClassName="scroll-stack-inner pt-6 px-4 sm:px-8 pb-[30rem]"
       >
-        {cards.map((card, index) => {
-          const bgColor = CARD_COLORS[index % CARD_COLORS.length]
+        {cards.map((card) => {
           const percentage =
             card.targetAmount > 0
               ? Math.min(Math.round((card.collectedAmount / card.targetAmount) * 100), 100)
               : 0
 
           return (
-            <StackingCardItem key={card.id} index={index} className="h-[620px]">
-              <Link
-                href={`/acil-vakalar/${card.slug}`}
-                className={cn(
-                  bgColor,
-                  'h-[80%] sm:h-[70%] flex-col sm:flex-row pl-8 pr-0 py-10 flex w-11/12 rounded-3xl mx-auto relative overflow-hidden',
-                )}
-              >
-                <div className="flex-1 flex flex-col justify-center pr-6 sm:pr-8">
-                  <h3 className="font-bold text-2xl mb-5">{card.title}</h3>
-
-                  {card.targetAmount > 0 && (
-                    <div className="space-y-3">
-                      <span className="text-4xl sm:text-5xl font-black tabular-nums">
-                        %{percentage}
-                      </span>
-                      <div
-                        className="h-4 w-full bg-white/20"
-                        role="progressbar"
-                        aria-valuenow={card.collectedAmount}
-                        aria-valuemin={0}
-                        aria-valuemax={card.targetAmount}
-                      >
-                        <div
-                          className="h-full bg-white transition-all duration-500"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                      <p className="text-sm font-mono text-white/80">
-                        {card.collectedAmount.toLocaleString('tr-TR')} / {card.targetAmount.toLocaleString('tr-TR')} TL
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {card.imageUrl && (
-                  <div className="w-full -ml-8 -mb-10 sm:ml-0 sm:mb-0 sm:w-1/2 sm:h-auto h-48 relative overflow-hidden">
-                    <Image
-                      src={card.imageUrl}
-                      alt={card.imageAlt}
-                      className="object-cover"
-                      fill
-                      sizes="(max-width: 640px) 100vw, 50vw"
-                    />
-                  </div>
-                )}
-              </Link>
-            </StackingCardItem>
+            <ScrollStackItem key={card.id}>
+              {/* ElectricBorder only on desktop */}
+              <div className="hidden sm:block">
+                <ElectricBorder
+                  color="#F5B62A"
+                  borderRadius={0}
+                  chaos={0.02}
+                  speed={0.7}
+                  className="w-full"
+                >
+                  <CardContent card={card} percentage={percentage} />
+                </ElectricBorder>
+              </div>
+              <div className="sm:hidden">
+                <CardContent card={card} percentage={percentage} />
+              </div>
+            </ScrollStackItem>
           )
         })}
-      </StackingCards>
+      </ScrollStack>
     </div>
   )
 }

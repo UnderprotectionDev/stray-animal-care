@@ -72,6 +72,7 @@ import { QueryPresetsColumnField as QueryPresetsColumnField_2b8867833a34864a02dd
 import { QueryPresetsGroupByCell as QueryPresetsGroupByCell_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { QueryPresetsGroupByField as QueryPresetsGroupByField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { HeaderRowLabel as HeaderRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
+import { StoryStepRowLabel as StoryStepRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { ActivityRowLabel as ActivityRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { BankAccountRowLabel as BankAccountRowLabel_602181e9d445b98d48bce238807017cb } from '@/components/admin/RowLabels'
 import { SocialLinkRowLabel as SocialLinkRowLabel_cd4fb962e83ced418ca45390924744c4 } from '@/SiteSettings/SocialLinkRowLabel'
@@ -160,6 +161,7 @@ export const importMap = {
   "@payloadcms/next/client#QueryPresetsGroupByCell": QueryPresetsGroupByCell_2b8867833a34864a02ddf429b0728a40,
   "@payloadcms/next/client#QueryPresetsGroupByField": QueryPresetsGroupByField_2b8867833a34864a02ddf429b0728a40,
   "@/components/admin/RowLabels#HeaderRowLabel": HeaderRowLabel_602181e9d445b98d48bce238807017cb,
+  "@/components/admin/RowLabels#StoryStepRowLabel": StoryStepRowLabel_602181e9d445b98d48bce238807017cb,
   "@/components/admin/RowLabels#ActivityRowLabel": ActivityRowLabel_602181e9d445b98d48bce238807017cb,
   "@/components/admin/RowLabels#BankAccountRowLabel": BankAccountRowLabel_602181e9d445b98d48bce238807017cb,
   "@/SiteSettings/SocialLinkRowLabel#SocialLinkRowLabel": SocialLinkRowLabel_cd4fb962e83ced418ca45390924744c4,

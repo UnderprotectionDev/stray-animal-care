@@ -12,7 +12,7 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
 import config from '../payload.config'
-import { bold, boldItalic, heading, hr, italic, lexicalRoot, link, paragraph, quote, ul, underline } from './lexical-builders'
+import { bold, boldItalic, heading, italic, lexicalRoot, link, paragraph, quote, ul, underline } from './lexical-builders'
 
 async function seed() {
   const payload = await getPayload({ config: await config })
@@ -58,35 +58,13 @@ async function seed() {
           blockType: 'homeHero',
           enabled: true,
           sectionTitle: 'ANA SAYFA',
-          content: lexicalRoot(
-            heading('h2', 'Sokak Hayvanlarına ', boldItalic('Umut'), ' Oluyoruz'),
-            paragraph(
-              bold('Paws of Hope'), ', İstanbul sokaklarında yaşam mücadelesi veren ',
-              italic('kediler'), ', ', italic('köpekler'),
-              ' ve tüm sokak canlıları için kurulmuş bir gönüllü hareketidir. ',
-              bold('2019'), '\'dan bu yana ', underline('yüzlerce hayvanın'),
-              ' hayatına dokunduk.',
-            ),
-            heading('h3', 'Neler Yapıyoruz?'),
-            ul(
-              [bold('Kurtarma & Tedavi'), ' — Yaralı ve hasta sokak hayvanlarını bulup veteriner bakımı sağlıyoruz.'],
-              [bold('Kısırlaştırma'), ' — Kontrolsüz popülasyon artışını önlemek için düzenli kısırlaştırma kampanyaları yürütüyoruz.'],
-              [bold('Besleme Noktaları'), ' — Şehir genelinde ', italic('düzenli besleme noktaları'), ' kurarak hiçbir canın aç kalmamasını hedefliyoruz.'],
-              [bold('Yuva Bul'), ' — Sağlığına kavuşan hayvanları sevgi dolu ailelerle buluşturuyoruz.'],
-            ),
-            quote(
-              italic('"Her sokak hayvanı bir '),
-              boldItalic('umut'),
-              italic(' hak eder. Biz o umudu gerçeğe dönüştürmek için buradayız."'),
-            ),
-            paragraph(
-              '🐾 ', link('/tr/canlarimiz', [bold('Canlarımızı Tanıyın')]),
-              ' · ',
-              link('/tr/gonullu-ol', [bold('Gönüllü Olun')]),
-              ' · ',
-              link('/tr/destek-ol', [bold('Destek Olun')]),
-            ),
-          ),
+          tagline: "2019'dan bu yana yüzlerce hayvanın hayatına dokunduk.",
+          rotatingWords: [
+            { word: 'Umut' },
+            { word: 'Sevgi' },
+            { word: 'Şefkat' },
+            { word: 'Yuva' },
+          ],
         },
         {
           blockType: 'homeStats',
@@ -102,44 +80,59 @@ async function seed() {
           blockType: 'homeStory',
           enabled: true,
           sectionTitle: 'HİKAYEMİZ & MİSYON',
-          founderCaption: 'AYŞE KAYA, 2019',
-          content: lexicalRoot(
-            heading('h3', 'Ne Yapıyoruz?'),
-            paragraph(
-              'Her gün sahada aktif çalışıyoruz. Faaliyetlerimiz yalnızca besleme ile sınırlı değil — ',
-              bold('kapsamlı bir bakım ağı'),
-              ' oluşturduk:',
-            ),
-            ul(
-              [bold('Günlük Besleme'), ' — İstanbul genelinde ', bold('40+'), ' noktada düzenli mama ve su bırakıyoruz'],
-              [bold('Acil Kurtarma'), ' — Yaralı, hasta veya tehlike altındaki hayvanları ', bold('7/24'), ' müdahaleyle kurtarıyoruz'],
-              [bold('Veteriner Tedavi'), ' — Ameliyatlar, aşılar ve kronik tedavi masraflarını karşılıyoruz'],
-              [bold('Kısırlaştırma'), ' — İnsancıl popülasyon kontrolü için kampanyalar düzenliyoruz'],
-              [bold('Sahiplendirme'), ' — Tedavisi tamamlanan canlarımıza kalıcı yuva buluyoruz'],
-            ),
-            hr(),
-            heading('h3', 'Rakamlarla Etkimiz'),
-            paragraph(
-              'Bugüne kadar ', bold('347 hayvan'), ' kurtardık, ', bold('89 sahiplendirme'), ' gerçekleştirdik ve ',
-              bold('2.400+'), ' cana düzenli beslenme sağladık. Ama bu sadece başlangıç.',
-            ),
-            ul(
-              ['Her hafta ortalama ', bold('12 yeni vaka'), ' ile ilgileniyoruz'],
-              ['Gönüllü ağımız her ay büyüyor — şu an ', bold('200+'), ' aktif gönüllümüz var'],
-              [bold('4 aktif besleme noktası'), ' 7 gün 24 saat erişilebilir durumda'],
-            ),
-            hr(),
-            quote(
-              italic('"Her canlı sevgiyi, bakımı ve güvenli bir yaşamı hak eder."'),
-              ' — Bu inançla yola çıktık, bu inançla devam ediyoruz.',
-            ),
-            paragraph(
-              'Siz de bu harekete katılın: ', bold('bağış yapın'), ', ',
-              bold('gönüllü olun'), ' veya sadece ',
-              italic('bu sayfayı paylaşarak'),
-              ' sokak hayvanlarının sesini duyurun. ', bold('Birlikte daha güçlüyüz.'),
-            ),
-          ),
+          steps: [
+            {
+              title: 'KURULUŞ',
+              description: lexicalRoot(
+                paragraph(
+                  '2019 yılında, İstanbul sokaklarında yaşayan sahipsiz hayvanların sesini duyurmak ve onlara ',
+                  bold('insanca bir yaşam'),
+                  ' sunmak amacıyla yola çıktık. Bir avuç gönüllüyle başlayan bu hareket, binlerce cana umut oldu.',
+                ),
+              ),
+            },
+            {
+              title: 'İLK KURTARMA',
+              description: lexicalRoot(
+                paragraph(
+                  'İlk kurtarma operasyonumuz bir kış gecesi gerçekleşti. Yaralı bir kedi, ',
+                  bold('soğukta titrerken'),
+                  ' bulundu ve tedavi edildi. Bu deneyim bizi daha büyük adımlar atmaya teşvik etti.',
+                ),
+                paragraph(
+                  'O günden bu yana ', bold('7/24'), ' acil müdahale ekibimiz sahada aktif çalışıyor.',
+                ),
+              ),
+            },
+            {
+              title: 'BÜYÜME',
+              description: lexicalRoot(
+                paragraph(
+                  'Gönüllü ağımız hızla büyüdü. Bugün ', bold('200+'), ' aktif gönüllümüz, ',
+                  bold('40+'), ' besleme noktamız ve düzenli veteriner işbirliklerimiz var.',
+                ),
+                ul(
+                  [bold('347 hayvan'), ' kurtarıldı'],
+                  [bold('89 sahiplendirme'), ' gerçekleştirildi'],
+                  [bold('2.400+'), ' cana düzenli beslenme sağlandı'],
+                ),
+              ),
+            },
+            {
+              title: 'BUGÜNKİ MİSYON',
+              description: lexicalRoot(
+                paragraph(
+                  'Her canlının sevgiyi, bakımı ve güvenli bir yaşamı hak ettiğine inanıyoruz. ',
+                  bold('Besleme, tedavi, kısırlaştırma ve sahiplendirme'),
+                  ' — kapsamlı bir bakım ağı oluşturuyoruz.',
+                ),
+                quote(
+                  italic('"Her canlı sevgiyi, bakımı ve güvenli bir yaşamı hak eder."'),
+                  ' — Bu inançla yola çıktık, bu inançla devam ediyoruz.',
+                ),
+              ),
+            },
+          ],
         },
         {
           blockType: 'homeOurWork',
@@ -159,7 +152,7 @@ async function seed() {
         },
         {
           blockType: 'homeFeaturedAnimals',
-          enabled: true,
+          enabled: false,
           sectionTitle: 'Canlarımız',
           viewAllLabel: 'Tümünü Gör',
           viewAllLink: '/canlarimiz',
@@ -253,8 +246,8 @@ async function seed() {
           isCta: false,
         },
         {
-          link: { type: 'custom', url: '/canlarimiz' },
-          label: 'Canlarımız',
+          link: { type: 'custom', url: '/calismalarimiz' },
+          label: 'Çalışmalarımız',
           isCta: false,
         },
         {

@@ -1,13 +1,19 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { Archivo_Black, Space_Mono } from 'next/font/google'
+import { Archivo, Archivo_Black, Space_Mono } from 'next/font/google'
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { locales } from '@/i18n/config'
+
+const archivo = Archivo({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-hero-variable',
+  display: 'swap',
+})
 
 const archivoBlack = Archivo_Black({
   subsets: ['latin', 'latin-ext'],
@@ -28,6 +34,7 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { MobileDonateBar } from '@/components/shared/MobileDonateBar'
+import { CustomCursor } from '@/components/CustomCursor'
 import { Providers } from '@/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
@@ -80,7 +87,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html
-      className={cn(archivoBlack.variable, spaceMono.variable)}
+      className={cn(archivo.variable, archivoBlack.variable, spaceMono.variable)}
       lang={locale}
     >
       <head>
@@ -91,6 +98,7 @@ export default async function RootLayout({ children, params }: Props) {
         <Providers>
           <NextIntlClientProvider messages={{}}>
             <NuqsAdapter>
+            <CustomCursor>
             <div className="content-above-footer">
               <a
                 href="#main-content"
@@ -110,6 +118,7 @@ export default async function RootLayout({ children, params }: Props) {
             </div>
             <Footer siteSettings={siteSettings} labels={footerLabels} headerLabels={headerLabels} />
             <MobileDonateBar label={mobileDonateLabel} />
+            </CustomCursor>
             </NuqsAdapter>
           </NextIntlClientProvider>
         </Providers>

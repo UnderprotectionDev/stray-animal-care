@@ -2269,29 +2269,13 @@ export interface SiteSetting {
         | {
             enabled?: boolean | null;
             sectionTitle?: string | null;
-            content?: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
+            tagline?: string | null;
             rotatingWords?:
               | {
                   word: string;
                   id?: string | null;
                 }[]
               | null;
-            leftImage?: (number | null) | Media;
-            rightImage?: (number | null) | Media;
             id?: string | null;
             blockName?: string | null;
             blockType: 'homeHero';
@@ -2313,23 +2297,28 @@ export interface SiteSetting {
         | {
             enabled?: boolean | null;
             sectionTitle?: string | null;
-            founderImage?: (number | null) | Media;
-            founderCaption?: string | null;
-            content?: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
+            steps?:
+              | {
+                  title: string;
+                  description?: {
+                    root: {
+                      type: string;
+                      children: {
+                        type: any;
+                        version: number;
+                        [k: string]: unknown;
+                      }[];
+                      direction: ('ltr' | 'rtl') | null;
+                      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                      indent: number;
+                      version: number;
+                    };
+                    [k: string]: unknown;
+                  } | null;
+                  image?: (number | null) | Media;
+                  id?: string | null;
+                }[]
+              | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'homeStory';
@@ -2438,6 +2427,16 @@ export interface SiteSetting {
               unitKutu?: string | null;
               unitKg?: string | null;
               unitAdet?: string | null;
+              ctaButton?: string | null;
+              ctaLink?: string | null;
+              shippingCargo?: string | null;
+              shippingInPerson?: string | null;
+              shippingOnline?: string | null;
+              priorityDescAcil?: string | null;
+              priorityDescYuksek?: string | null;
+              priorityDescOrta?: string | null;
+              priorityDescDusuk?: string | null;
+              lastUpdated?: string | null;
             };
             id?: string | null;
             blockName?: string | null;
@@ -2978,15 +2977,13 @@ export interface SiteSettingsSelect<T extends boolean = true> {
           | {
               enabled?: T;
               sectionTitle?: T;
-              content?: T;
+              tagline?: T;
               rotatingWords?:
                 | T
                 | {
                     word?: T;
                     id?: T;
                   };
-              leftImage?: T;
-              rightImage?: T;
               id?: T;
               blockName?: T;
             };
@@ -3010,9 +3007,14 @@ export interface SiteSettingsSelect<T extends boolean = true> {
           | {
               enabled?: T;
               sectionTitle?: T;
-              founderImage?: T;
-              founderCaption?: T;
-              content?: T;
+              steps?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    image?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };
@@ -3137,6 +3139,16 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     unitKutu?: T;
                     unitKg?: T;
                     unitAdet?: T;
+                    ctaButton?: T;
+                    ctaLink?: T;
+                    shippingCargo?: T;
+                    shippingInPerson?: T;
+                    shippingOnline?: T;
+                    priorityDescAcil?: T;
+                    priorityDescYuksek?: T;
+                    priorityDescOrta?: T;
+                    priorityDescDusuk?: T;
+                    lastUpdated?: T;
                   };
               id?: T;
               blockName?: T;

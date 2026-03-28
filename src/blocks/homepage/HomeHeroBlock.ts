@@ -1,5 +1,4 @@
 import type { Block } from 'payload'
-import { defaultLexical } from '@/fields/defaultLexical'
 
 export const HomeHeroBlock: Block = {
   slug: 'homeHero',
@@ -7,7 +6,7 @@ export const HomeHeroBlock: Block = {
   fields: [
     { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
     { name: 'sectionTitle', type: 'text', localized: true, label: 'Bölüm Başlığı', defaultValue: 'ANA SAYFA' },
-    { name: 'content', type: 'richText', editor: defaultLexical, localized: true, label: 'İçerik' },
+    { name: 'tagline', type: 'text', localized: true, label: 'Kısa Açıklama', defaultValue: "2019'dan bu yana yüzlerce hayvanın hayatına dokunduk." },
     {
       name: 'rotatingWords',
       type: 'array',
@@ -18,7 +17,5 @@ export const HomeHeroBlock: Block = {
         { name: 'word', type: 'text', localized: true, required: true },
       ],
     },
-    { name: 'leftImage', type: 'upload', relationTo: 'media', label: 'Sol Görsel' },
-    { name: 'rightImage', type: 'upload', relationTo: 'media', label: 'Sağ Görsel' },
   ],
 }

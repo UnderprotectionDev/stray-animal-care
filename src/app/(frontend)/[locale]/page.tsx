@@ -29,7 +29,7 @@ export default async function HomePage({ params }: Args) {
   const blocks = siteSettings?.homepageBlocks ?? []
 
   // Determine which collections to query based on active blocks
-  const blockTypes = new Set(blocks.filter((b) => b.enabled !== false).map((b) => b.blockType))
+  const blockTypes = new Set(blocks.filter((b) => b.enabled).map((b) => b.blockType))
   const payload = await getPayload({ config: configPromise })
 
   const [animals, cases, posts, needsItems, latestReport] = await Promise.all([
@@ -50,14 +50,14 @@ export default async function HomePage({ params }: Args) {
           limit: 5,
           locale: payloadLocale,
           depth: 1,
-          select: { title: true, slug: true, targetAmount: true, collectedAmount: true, photos: true, caseStatus: true },
+          select: { title: true, slug: true, targetAmount: true, collectedAmount: true, photos: true, caseStatus: true, description: true },
         })
       : Promise.resolve({ docs: [] }),
     blockTypes.has('homeRecentPosts')
       ? payload.find({
           collection: 'posts',
           where: { _status: { equals: 'published' } },
-          limit: (blocks.find(b => b.blockType === 'homeRecentPosts' && b.enabled !== false) as { limit?: number } | undefined)?.limit ?? 6,
+          limit: (blocks.find(b => b.blockType === 'homeRecentPosts' && b.enabled) as { limit?: number } | undefined)?.limit ?? 6,
           sort: '-publishedAt',
           locale: payloadLocale,
           depth: 1,
@@ -71,7 +71,7 @@ export default async function HomePage({ params }: Args) {
           sort: '_order',
           locale: payloadLocale,
           depth: 0,
-          select: { productName: true, brandDetail: true, urgency: true, currentStock: true, targetStock: true, unit: true },
+          select: { productName: true, brandDetail: true, urgency: true, currentStock: true, targetStock: true, unit: true, priority: true, stockStatus: true, updatedAt: true },
         })
       : Promise.resolve({ docs: [] }),
     blockTypes.has('homeTransparencyBanner')
