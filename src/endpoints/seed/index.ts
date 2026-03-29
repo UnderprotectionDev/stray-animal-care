@@ -1,12 +1,45 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
 
 import { home } from './home'
-import { image1 } from './image-1'
-import { image2 } from './image-2'
-import { imageHero1 } from './image-hero-1'
+import {
+  allImages,
+  imgPortakal,
+  imgFindik,
+  imgCesur,
+  imgZeytin,
+  imgHeroHome,
+  imgHeroGeneral,
+  imgPostDeprem,
+  imgPostPortakal,
+  imgPostKis,
+  imgPostCesur,
+  imgPostKisir,
+  imgPostFindik,
+  imgPostBesleme,
+  imgPostEtkinlik,
+  imgPostZeytin,
+  imgEmergencyVet,
+  imgEmergencyStreet,
+  imgBeforeZeytin,
+  imgAfterZeytin,
+  imgBeforeFindik,
+  imgAfterFindik,
+  imgStoryDeprem,
+  imgStoryFeeding,
+  imgStoryVet,
+  imgStoryCommunity,
+  imgActivityFeeding,
+} from './images'
+import { simpleLexicalContent } from './factories'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { post4 } from './post-4'
+import { post5 } from './post-5'
+import { post6 } from './post-6'
+import { post7 } from './post-7'
+import { post8 } from './post-8'
+import { post9 } from './post-9'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -22,7 +55,7 @@ const collections: CollectionSlug[] = [
 
 const _globals: GlobalSlug[] = ['header', 'site-settings']
 
-const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
+const categories = ['Kurtarma', 'Tedavi', 'Günlük', 'Duyuru', 'Etkinlik', 'Kısırlaştırma']
 
 export const seed = async ({
   payload,
@@ -78,52 +111,35 @@ export const seed = async ({
     },
   })
 
-  payload.logger.info(`— Seeding media...`)
+  payload.logger.info(`— Fetching all 26 images in parallel...`)
 
-  const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post2.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post3.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
-    ),
-  ])
+  const imageBuffers = await Promise.all(allImages.map((ref) => fetchFileByURL(ref.url)))
 
-  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
+  payload.logger.info(`— Creating media docs and demo author...`)
+
+  const [demoAuthor, ...mediaDocs] = await Promise.all([
     payload.create({
       collection: 'users',
       data: {
-        name: 'Demo Author',
+        name: 'Paws of Hope',
         email: 'demo-author@example.com',
         password: 'password',
       },
     }),
-    payload.create({
-      collection: 'media',
-      data: image1,
-      file: image1Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: image2,
-      file: image2Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: image2,
-      file: image3Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: imageHero1,
-      file: hero1Buffer,
-    }),
+    ...allImages.map((ref, i) =>
+      payload.create({
+        collection: 'media',
+        data: ref.meta,
+        file: imageBuffers[i],
+      }),
+    ),
+  ])
+
+  // Build a Map from image reference → created Media document
+  const img = new Map(allImages.map((ref, i) => [ref, mediaDocs[i]]))
+
+  // Seed categories
+  await Promise.all(
     categories.map((category) =>
       payload.create({
         collection: 'categories',
@@ -133,7 +149,7 @@ export const seed = async ({
         },
       }),
     ),
-  ])
+  )
 
   payload.logger.info(`— Seeding posts...`)
 
@@ -143,7 +159,11 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
+    data: post1({
+      heroImage: img.get(imgPostDeprem)!,
+      blockImage: img.get(imgActivityFeeding)!,
+      author: demoAuthor,
+    }),
   })
 
   const post2Doc = await payload.create({
@@ -152,7 +172,11 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
+    data: post2({
+      heroImage: img.get(imgPostPortakal)!,
+      blockImage: img.get(imgPortakal)!,
+      author: demoAuthor,
+    }),
   })
 
   const post3Doc = await payload.create({
@@ -161,37 +185,146 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
+    data: post3({
+      heroImage: img.get(imgPostKis)!,
+      blockImage: img.get(imgEmergencyStreet)!,
+      author: demoAuthor,
+    }),
   })
 
-  await payload.update({
-    id: post1Doc.id,
+  const post4Doc = await payload.create({
     collection: 'posts',
-    data: {
-      relatedPosts: [post2Doc.id, post3Doc.id],
+    depth: 0,
+    context: {
+      disableRevalidate: true,
     },
+    data: post4({
+      heroImage: img.get(imgPostCesur)!,
+      blockImage: img.get(imgCesur)!,
+      author: demoAuthor,
+    }),
   })
-  await payload.update({
-    id: post2Doc.id,
+
+  const post5Doc = await payload.create({
     collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post3Doc.id],
+    depth: 0,
+    context: {
+      disableRevalidate: true,
     },
+    data: post5({
+      heroImage: img.get(imgPostKisir)!,
+      blockImage: img.get(imgEmergencyVet)!,
+      author: demoAuthor,
+    }),
   })
-  await payload.update({
-    id: post3Doc.id,
+
+  const post6Doc = await payload.create({
     collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post2Doc.id],
+    depth: 0,
+    context: {
+      disableRevalidate: true,
     },
+    data: post6({
+      heroImage: img.get(imgPostFindik)!,
+      blockImage: img.get(imgFindik)!,
+      author: demoAuthor,
+    }),
   })
+
+  const post7Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post7({
+      heroImage: img.get(imgPostBesleme)!,
+      blockImage: img.get(imgActivityFeeding)!,
+      author: demoAuthor,
+    }),
+  })
+
+  const post8Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post8({
+      heroImage: img.get(imgPostEtkinlik)!,
+      blockImage: img.get(imgPostBesleme)!,
+      author: demoAuthor,
+    }),
+  })
+
+  const post9Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post9({
+      heroImage: img.get(imgPostZeytin)!,
+      blockImage: img.get(imgZeytin)!,
+      author: demoAuthor,
+    }),
+  })
+
+  // Link related posts — each post gets 2 thematically related posts
+  await Promise.all([
+    payload.update({
+      id: post1Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post2Doc.id, post4Doc.id] }, // deprem → kurtarma hikayeleri
+    }),
+    payload.update({
+      id: post2Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post6Doc.id, post4Doc.id] }, // portakal → fındık, cesur
+    }),
+    payload.update({
+      id: post3Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post7Doc.id, post8Doc.id] }, // kış → besleme turu, etkinlik
+    }),
+    payload.update({
+      id: post4Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post2Doc.id, post6Doc.id] }, // cesur → portakal, fındık
+    }),
+    payload.update({
+      id: post5Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post9Doc.id, post1Doc.id] }, // kısırlaştırma → tedavi, deprem
+    }),
+    payload.update({
+      id: post6Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post2Doc.id, post9Doc.id] }, // fındık → portakal, zeytin
+    }),
+    payload.update({
+      id: post7Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post3Doc.id, post8Doc.id] }, // besleme turu → kış, etkinlik
+    }),
+    payload.update({
+      id: post8Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post7Doc.id, post5Doc.id] }, // etkinlik → besleme turu, kısırlaştırma
+    }),
+    payload.update({
+      id: post9Doc.id,
+      collection: 'posts',
+      data: { relatedPosts: [post6Doc.id, post5Doc.id] }, // zeytin → fındık, kısırlaştırma
+    }),
+  ])
 
   payload.logger.info(`— Seeding pages...`)
 
   await payload.create({
     collection: 'pages',
     depth: 0,
-    data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
+    data: home({ heroImage: img.get(imgHeroHome)!, metaImage: img.get(imgHeroGeneral)! }),
   })
 
   payload.logger.info(`— Seeding globals...`)
@@ -200,7 +333,7 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'header',
       data: {
-        brandName: 'UMUT PATİLERİ',
+        brandName: 'PAWS OF HOPE',
         navItems: [
           {
             link: { type: 'custom', url: '/' },
@@ -244,15 +377,16 @@ export const seed = async ({
     depth: 0,
     context: { disableRevalidate: true },
     data: {
-      name: 'Pamuk',
+      name: 'Portakal',
       type: 'kedi',
-      age: '2 yas',
+      age: '3 yaş',
       gender: 'disi',
       animalStatus: 'kalici-bakim',
       featured: true,
-      slug: 'pamuk',
+      slug: 'portakal',
       _status: 'published',
       publishedAt: new Date().toISOString(),
+      photos: [img.get(imgPortakal)!.id],
     },
   })
 
@@ -261,15 +395,16 @@ export const seed = async ({
     depth: 0,
     context: { disableRevalidate: true },
     data: {
-      name: 'Karamel',
+      name: 'Fındık',
       type: 'kedi',
-      age: '1 yas',
+      age: '1 yaş',
       gender: 'erkek',
-      animalStatus: 'tedavide',
+      animalStatus: 'kalici-bakim',
       featured: false,
-      slug: 'karamel',
+      slug: 'findik',
       _status: 'published',
       publishedAt: new Date().toISOString(),
+      photos: [img.get(imgFindik)!.id],
     },
   })
 
@@ -278,15 +413,16 @@ export const seed = async ({
     depth: 0,
     context: { disableRevalidate: true },
     data: {
-      name: 'Boncuk',
+      name: 'Cesur',
       type: 'kopek',
-      age: '3 yas',
-      gender: 'disi',
+      age: '4 yaş',
+      gender: 'erkek',
       animalStatus: 'kalici-bakim',
       featured: true,
-      slug: 'boncuk',
+      slug: 'cesur',
       _status: 'published',
       publishedAt: new Date().toISOString(),
+      photos: [img.get(imgCesur)!.id],
     },
   })
 
@@ -295,15 +431,16 @@ export const seed = async ({
     depth: 0,
     context: { disableRevalidate: true },
     data: {
-      name: 'Karabas',
+      name: 'Zeytin',
       type: 'kopek',
-      age: '5 yas',
-      gender: 'erkek',
+      age: '2 yaş',
+      gender: 'disi',
       animalStatus: 'acil',
       featured: false,
-      slug: 'karabas',
+      slug: 'zeytin',
       _status: 'published',
       publishedAt: new Date().toISOString(),
+      photos: [img.get(imgZeytin)!.id],
     },
   })
 
@@ -314,14 +451,17 @@ export const seed = async ({
     depth: 0,
     context: { disableRevalidate: true },
     data: {
-      title: 'Karabas Acil Ameliyat',
+      title: 'Zeytin Trafik Kazası Tedavisi',
       animal: animal4.id,
-      targetAmount: 5000,
-      collectedAmount: 1200,
+      targetAmount: 3000,
+      collectedAmount: 800,
       caseStatus: 'aktif',
-      slug: 'karabas-acil-ameliyat',
+      slug: 'zeytin-trafik-kazasi-tedavisi',
       _status: 'published',
       publishedAt: new Date().toISOString(),
+      photos: [img.get(imgEmergencyVet)!.id],
+      beforePhoto: img.get(imgBeforeZeytin)!.id,
+      afterPhoto: img.get(imgAfterZeytin)!.id,
     },
   })
 
@@ -330,14 +470,17 @@ export const seed = async ({
     depth: 0,
     context: { disableRevalidate: true },
     data: {
-      title: 'Karamel Goz Tedavisi',
+      title: 'Fındık Üst Solunum Yolu Enfeksiyonu',
       animal: animal2.id,
-      targetAmount: 2000,
-      collectedAmount: 2000,
+      targetAmount: 1500,
+      collectedAmount: 1500,
       caseStatus: 'tamamlandi',
-      slug: 'karamel-goz-tedavisi',
+      slug: 'findik-ust-solunum-yolu-enfeksiyonu',
       _status: 'published',
       publishedAt: new Date().toISOString(),
+      photos: [img.get(imgPostFindik)!.id],
+      beforePhoto: img.get(imgBeforeFindik)!.id,
+      afterPhoto: img.get(imgAfterFindik)!.id,
     },
   })
 
@@ -350,8 +493,8 @@ export const seed = async ({
         productName: 'Kuru Mama (Kedi)',
         brandDetail: 'ProPlan / Royal Canin',
         urgency: 'acil',
-        stockStatus: 'Tukenmek uzere',
-        targetStock: 50,
+        stockStatus: 'Tükenmek üzere',
+        targetStock: 30,
         currentStock: 3,
         unit: 'kg',
         priority: 'acil',
@@ -360,12 +503,12 @@ export const seed = async ({
     payload.create({
       collection: 'needs-list',
       data: {
-        productName: 'Kuru Mama (Kopek)',
+        productName: 'Kuru Mama (Köpek)',
         brandDetail: 'ProPlan Adult',
         urgency: 'acil',
-        stockStatus: '2 torba kaldi',
-        targetStock: 40,
-        currentStock: 5,
+        stockStatus: '1 torba kaldı',
+        targetStock: 25,
+        currentStock: 4,
         unit: 'kg',
         priority: 'acil',
       },
@@ -376,9 +519,9 @@ export const seed = async ({
         productName: 'Kedi Kumu',
         brandDetail: 'Ever Clean',
         urgency: 'orta',
-        stockStatus: '5 kutu mevcut',
-        targetStock: 20,
-        currentStock: 5,
+        stockStatus: '3 kutu mevcut',
+        targetStock: 10,
+        currentStock: 3,
         unit: 'kutu',
         priority: 'orta',
       },
@@ -390,8 +533,8 @@ export const seed = async ({
         brandDetail: 'Bandaj, antiseptik',
         urgency: 'yeterli',
         stockStatus: 'Stokta yeterli',
-        targetStock: 10,
-        currentStock: 8,
+        targetStock: 5,
+        currentStock: 4,
         unit: 'adet',
         priority: 'dusuk',
       },
@@ -403,19 +546,19 @@ export const seed = async ({
   await payload.create({
     collection: 'transparency-reports',
     data: {
-      title: 'Subat 2026 Raporu',
+      title: 'Şubat 2026 Raporu',
       month: '2026-02-01T00:00:00.000Z',
       expenses: [
-        { category: 'Veteriner', amount: 8500 },
-        { category: 'Mama', amount: 4200 },
-        { category: 'Barinma', amount: 2000 },
+        { category: 'Veteriner', amount: 3500 },
+        { category: 'Mama', amount: 2000 },
+        { category: 'Malzeme', amount: 500 },
       ],
-      totalExpense: 14700,
-      totalDonation: 16000,
+      totalExpense: 6000,
+      totalDonation: 6500,
       donorList: [
-        { name: 'Ayse Y.', amount: 5000 },
-        { name: 'Mehmet K.', amount: 3000 },
-        { name: 'Anonim', amount: 8000 },
+        { name: 'Anonim', amount: 2500 },
+        { name: 'Ayşe H.', amount: 2000 },
+        { name: 'Instagram Takipçileri', amount: 2000 },
       ],
     },
   })
@@ -427,8 +570,8 @@ export const seed = async ({
     data: {
       bankAccounts: [
         {
-          bankName: 'Ziraat Bankasi',
-          accountHolder: 'Paws of Hope Dernegi',
+          bankName: 'Ziraat Bankası',
+          accountHolder: 'Paws of Hope',
           iban: 'TR00 0000 0000 0000 0000 0000 00',
           currency: 'TRY',
         },
@@ -439,11 +582,48 @@ export const seed = async ({
         { type: 'phone', url: '+905551234567' },
         { type: 'email', url: 'info@pawsofhope.org' },
       ],
-      catsCount: 45,
-      dogsCount: 30,
-      treatedCount: 120,
-      spayedCount: 85,
-      vaccinatedCount: 200,
+      catsCount: 60,
+      dogsCount: 40,
+      treatedCount: 30,
+      spayedCount: 15,
+      vaccinatedCount: 55,
+      homepageBlocks: [
+        {
+          blockType: 'homeStory',
+          enabled: true,
+          sectionTitle: 'HİKAYEMİZ & MİSYON',
+          steps: [
+            {
+              title: 'Deprem ve Başlangıç',
+              description: simpleLexicalContent([
+                '6 Şubat 2023 depremi binlerce sokak hayvanının hayatını alt üst etti. Sahipleri kaybeden, besleme noktaları yıkılan hayvanlar sokaklarda kaldı. İşte o günden sonra harekete geçtik.',
+              ]),
+              image: img.get(imgStoryDeprem)!.id,
+            },
+            {
+              title: 'İlk Adımlar',
+              description: simpleLexicalContent([
+                'Birkaç noktaya mama bırakarak başladık. Zamanla bu birkaç nokta düzenli besleme turlarına dönüştü. Her gün yaklaşık 100 kedi ve köpeğin beslenmesine katkı sağlar hale geldik.',
+              ]),
+              image: img.get(imgStoryFeeding)!.id,
+            },
+            {
+              title: 'Tedavi & Kısırlaştırma',
+              description: simpleLexicalContent([
+                'Sadece mama değil — kısırlaştırma çalışmalarına destek veriyor, hasta ve yaralı hayvanların veterinere ulaşmasına yardımcı oluyoruz.',
+              ]),
+              image: img.get(imgStoryVet)!.id,
+            },
+            {
+              title: 'Topluluk & Gelecek',
+              description: simpleLexicalContent([
+                'Tüm bu çalışmaları büyük ölçüde bireysel imkanlarla yürütüyoruz. Hedefimiz sizlerin desteğiyle daha sürdürülebilir hale getirmek ve daha fazla hayvana ulaşabilmek.',
+              ]),
+              image: img.get(imgStoryCommunity)!.id,
+            },
+          ],
+        },
+      ],
     },
     context: { disableRevalidate: true },
   })
@@ -462,11 +642,12 @@ async function fetchFileByURL(url: string): Promise<File> {
   }
 
   const data = await res.arrayBuffer()
+  const filename = url.split('/').pop()?.split('?')[0] || `file-${Date.now()}`
 
   return {
-    name: url.split('/').pop() || `file-${Date.now()}`,
+    name: filename,
     data: Buffer.from(data),
-    mimetype: `image/${url.split('.').pop()}`,
+    mimetype: 'image/jpeg',
     size: data.byteLength,
   }
 }
