@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState, type PropsWithChildren } from 'react'
+import { useRef, type PropsWithChildren } from 'react'
 import { motion, useMotionValue, useSpring } from 'motion/react'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 type Props = PropsWithChildren<{
   maxRotation?: number
@@ -16,16 +17,12 @@ export function MagneticTilt({
   className,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const reducedMotion = useReducedMotion()
 
   const rawX = useMotionValue(0)
   const rawY = useMotionValue(0)
   const rotateX = useSpring(rawX, { stiffness: 150, damping: 20 })
   const rotateY = useSpring(rawY, { stiffness: 150, damping: 20 })
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
 
   if (reducedMotion) {
     return <div className={className}>{children}</div>

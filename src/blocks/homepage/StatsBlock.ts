@@ -1,10 +1,11 @@
 import type { Block } from 'payload'
+import { enabledField } from '@/fields/homepageFields'
 
 export const StatsBlock: Block = {
   slug: 'homeStats',
   labels: { singular: 'İstatistikler', plural: 'İstatistikler' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
+    enabledField(),
     {
       name: 'metrics',
       label: 'Metrikler',

@@ -3,7 +3,7 @@
 import React from 'react'
 import { motion } from 'motion/react'
 import { useQueryState } from 'nuqs'
-import { CATEGORY_SEMANTIC_TOKENS } from '@/utilities/categoryTokens'
+import { CATEGORY_CONFIG } from '@/utilities/categoryTokens'
 
 type BlogFilterProps = {
   labels: {
@@ -30,7 +30,7 @@ export function BlogFilter({ labels, postCounts }: BlogFilterProps) {
   const [current, setCurrent] = useQueryState('category', { defaultValue: '' })
 
   const activeToken = current
-    ? CATEGORY_SEMANTIC_TOKENS[current] || 'palette-black'
+    ? CATEGORY_CONFIG[current]?.token || 'palette-black'
     : 'palette-black'
 
   return (

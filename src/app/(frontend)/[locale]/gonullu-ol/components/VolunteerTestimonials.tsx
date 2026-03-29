@@ -1,9 +1,12 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import BlurText from '@/components/BlurText'
+
+const BlurText = dynamic(() => import('@/components/BlurText'), { ssr: false })
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -22,11 +25,7 @@ const ACCENT_COLORS = ['var(--warm)', 'var(--trust)', 'var(--health)']
 
 export function VolunteerTestimonials({ testimonials }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (reducedMotion || !containerRef.current) return

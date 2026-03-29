@@ -1,9 +1,12 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import gsap from 'gsap'
-import CountUp from '@/components/CountUp'
-import BlurText from '@/components/BlurText'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+
+const CountUp = dynamic(() => import('@/components/CountUp'), { ssr: false })
+const BlurText = dynamic(() => import('@/components/BlurText'), { ssr: false })
 import { GlareOverlay } from '@/components/fancy/blocks/GlareOverlay'
 
 type StatItem = {
@@ -28,11 +31,7 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
   const contentRef = useRef<HTMLDivElement>(null)
   const glareRef = useRef<HTMLDivElement>(null)
   const color = HOVER_COLORS[index % HOVER_COLORS.length]
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {

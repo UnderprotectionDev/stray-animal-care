@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { GlareOverlay } from '@/components/fancy/blocks/GlareOverlay'
 import { ScrollAnimationTrigger } from '@/components/ui/scroll-animation-trigger'
 import type { NeedsList } from '@/payload-types'
@@ -62,13 +63,9 @@ function NeedCard({ item, index, urgencyLabels, unitLabels }: { item: NeedsList;
   const cardRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const glareRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const reducedMotion = useReducedMotion()
 
   const colors = URGENCY_COLOR[item.urgency] ?? URGENCY_COLOR.orta
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
 
   const accentBarRef = useRef<HTMLDivElement>(null)
 

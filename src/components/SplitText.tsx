@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
@@ -31,8 +31,8 @@ const SplitText: React.FC<SplitTextProps> = ({
   duration = 1.25,
   ease = 'power3.out',
   splitType = 'chars',
-  from = { opacity: 0, y: 40 },
-  to = { opacity: 1, y: 0 },
+  from: fromProp,
+  to: toProp,
   threshold = 0.1,
   rootMargin = '-100px',
   tag = 'p',
@@ -43,6 +43,9 @@ const SplitText: React.FC<SplitTextProps> = ({
   const animationCompletedRef = useRef(false);
   const onCompleteRef = useRef(onLetterAnimationComplete);
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
+
+  const from = useMemo(() => fromProp ?? { opacity: 0, y: 40 }, [fromProp]);
+  const to = useMemo(() => toProp ?? { opacity: 1, y: 0 }, [toProp]);
 
   useEffect(() => {
     onCompleteRef.current = onLetterAnimationComplete;
@@ -145,8 +148,8 @@ const SplitText: React.FC<SplitTextProps> = ({
         duration,
         ease,
         splitType,
-        JSON.stringify(from),
-        JSON.stringify(to),
+        from,
+        to,
         threshold,
         rootMargin,
         fontsLoaded

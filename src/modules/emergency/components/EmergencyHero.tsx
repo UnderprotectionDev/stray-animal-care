@@ -1,12 +1,4 @@
-'use client'
-
-import React from 'react'
-import { AnimatedMegaHeading } from '@/components/home/AnimatedMegaHeading'
-import BlurText from '@/components/BlurText'
-import RotatingText from '@/components/RotatingText'
-import CountUp from '@/components/CountUp'
-import { DotGridBackground } from '@/components/home/DotGridBackground'
-import { FloatingPaws } from '@/components/shared/FloatingPaws'
+import { BaseHero } from '@/components/shared/BaseHero'
 
 const HERO_PAWS = [
   { top: '10%', left: '5%', size: '2.2rem', opacity: 0.08, rotation: -15 },
@@ -28,7 +20,11 @@ type Props = {
 }
 
 const fmt = (n: number) =>
-  new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(n)
+  new Intl.NumberFormat('tr-TR', {
+    style: 'currency',
+    currency: 'TRY',
+    maximumFractionDigits: 0,
+  }).format(n)
 
 export function EmergencyHero({
   title,
@@ -41,64 +37,23 @@ export function EmergencyHero({
   rotatingNames,
   rotatingLabel,
 }: Props) {
+  const statBadges: Array<{ value: number; label: string; prefix?: string; isCurrency?: boolean }> = [
+    { value: activeCaseCount, label: activeCaseLabel, prefix: '' },
+  ]
+  if (totalRaised > 0) {
+    statBadges.push({ value: totalRaised, label: totalRaisedLabel, isCurrency: true })
+  }
+
   return (
-    <div className="relative overflow-hidden bg-emergency text-emergency-foreground p-6 py-8 lg:py-12 lg:px-8">
-      <DotGridBackground />
-      <FloatingPaws paws={HERO_PAWS} color="var(--emergency-foreground)" />
-
-      <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-        {/* Left: Badge + Title + Subtitle */}
-        <div className="flex-1 min-w-0">
-          <span className="badge-sys !bg-background !text-foreground !border-foreground inline-block mb-4 rotate-[-2deg]">
-            {badge}
-          </span>
-          <AnimatedMegaHeading text={title} tag="h1" enableColorFlash />
-          <div className="mt-4 max-w-xl">
-            <BlurText
-              text={subtitle}
-              tag="p"
-              className="t-body text-lg text-emergency-foreground/80"
-              animateBy="words"
-              delay={60}
-              stepDuration={0.3}
-              direction="bottom"
-              threshold={0.15}
-            />
-          </div>
-        </div>
-
-        {/* Right: Rotating names + stats */}
-        <div className="flex flex-col items-start lg:items-end gap-4 shrink-0">
-          {rotatingNames.length > 0 && (
-            <div className="hidden lg:flex items-center gap-2">
-              <span className="t-meta text-emergency-foreground/60 uppercase">
-                {rotatingLabel}
-              </span>
-              <RotatingText
-                texts={rotatingNames}
-                mainClassName="t-h2 text-emergency-foreground font-heading uppercase overflow-hidden h-[1.2em]"
-                staggerFrom="last"
-                staggerDuration={0.025}
-                rotationInterval={2500}
-                transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-              />
-            </div>
-          )}
-          <div className="badge-sys !bg-background !text-foreground !border-foreground inline-flex items-center gap-2 text-sm font-bold">
-            <CountUp to={activeCaseCount} from={0} duration={1.5} />
-            <span>{activeCaseLabel}</span>
-          </div>
-          {totalRaised > 0 && (
-            <div className="badge-sys !bg-background !text-foreground !border-foreground inline-flex items-center gap-2 text-sm font-bold">
-              <span>{fmt(totalRaised)}</span>
-              <span>{totalRaisedLabel}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Decorative bar */}
-      <div className="relative z-10 w-24 h-1 bg-background mt-4" />
-    </div>
+    <BaseHero
+      title={title}
+      subtitle={subtitle}
+      colorScheme="emergency"
+      badge={badge}
+      rotatingTexts={rotatingNames}
+      rotatingLabel={rotatingLabel}
+      statBadges={statBadges}
+      floatingPaws={{ paws: HERO_PAWS, color: 'var(--emergency-foreground)' }}
+    />
   )
 }

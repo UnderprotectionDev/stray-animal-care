@@ -2,7 +2,7 @@
 
 import React from 'react'
 import type { Animal, Media as MediaType, SiteSetting } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getFirstPhotoUrl } from '@/utilities/getMediaUrl'
 import { AnimatedSectionHeader } from './AnimatedSectionHeader'
 import { AnimalCarouselCardContent } from './AnimalCarouselCardContent'
 import { Carousel, Card } from '@/components/fancy/apple-cards-carousel'
@@ -26,9 +26,7 @@ export function FeaturedAnimals({ block, animals }: Props) {
   }
 
   const carouselCards = cards.map((animal, index) => {
-    const firstPhoto = animal.photos && animal.photos.length > 0 ? animal.photos[0] : null
-    const photo = firstPhoto && typeof firstPhoto !== 'number' ? firstPhoto : null
-    const photoUrl = photo ? getMediaUrl((photo as MediaType).url) : '/placeholder.svg'
+    const photoUrl = getFirstPhotoUrl(animal.photos)
     const animalStatus = animal.animalStatus ?? 'tedavide'
 
     return (

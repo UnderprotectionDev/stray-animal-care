@@ -6,6 +6,7 @@ import { revalidateAnimal, revalidateAnimalDelete } from './hooks/revalidateAnim
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { contentRichText } from '../../fields/lexical'
 import { seoTab } from '../../fields/seoTab'
+import { relaxedVersions } from '../../fields/versionsConfig'
 import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
@@ -180,13 +181,5 @@ export const Animals: CollectionConfig<'animals'> = {
     afterChange: [revalidateAnimal],
     afterDelete: [revalidateAnimalDelete],
   },
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 3000,
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  versions: relaxedVersions,
 }

@@ -235,7 +235,7 @@ export function NeedsListClient({ items, block }: Props) {
   }, [])
 
   return (
-    <div className="needs-grid">
+    <div className="needs-grid" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
       {items.map((item, i) => {
         const cardKey = CARD_KEYS[i] || 'low'
         return (

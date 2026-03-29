@@ -20,6 +20,7 @@ export async function searchAction(query: string): Promise<SearchResult[]> {
 
   const { docs } = await payload.find({
     collection: 'search',
+    overrideAccess: false,
     where: {
       or: [{ title: { like: query } }, { slug: { like: query } }],
     },

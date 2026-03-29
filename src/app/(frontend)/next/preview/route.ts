@@ -7,6 +7,8 @@ import { NextRequest } from 'next/server'
 
 import configPromise from '@payload-config'
 
+const VALID_COLLECTIONS: CollectionSlug[] = ['pages', 'posts', 'animals', 'emergency-cases']
+
 export async function GET(req: NextRequest): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
 
@@ -27,6 +29,18 @@ export async function GET(req: NextRequest): Promise<Response> {
 
   if (!path.startsWith('/')) {
     return new Response('This endpoint can only be used for relative previews', { status: 500 })
+  }
+
+  if (path.includes('..') || path.includes('//')) {
+    return new Response('Invalid path', { status: 400 })
+  }
+
+  if (!VALID_COLLECTIONS.includes(collection)) {
+    return new Response('Invalid collection', { status: 400 })
+  }
+
+  if (!/^[a-z0-9\u00C0-\u024F-]+$/i.test(slug)) {
+    return new Response('Invalid slug', { status: 400 })
   }
 
   let user

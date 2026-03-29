@@ -1,15 +1,15 @@
 import type { Block } from 'payload'
+import { enabledField, sectionTitleField, viewAllFields } from '@/fields/homepageFields'
 
 export const FeaturedAnimalsBlock: Block = {
   slug: 'homeFeaturedAnimals',
   labels: { singular: 'Öne Çıkan Hayvanlar', plural: 'Öne Çıkan Hayvanlar' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
-    { name: 'sectionTitle', type: 'text', localized: true, defaultValue: 'Canlarımız', label: 'Bölüm Başlığı' },
-    { name: 'viewAllLabel', type: 'text', localized: true, defaultValue: 'Tümünü Gör', label: 'Tümünü Gör Etiketi' },
-    { name: 'viewAllLink', type: 'text', defaultValue: '/canlarimiz', label: 'Tümünü Gör Linki' },
+    enabledField(),
+    sectionTitleField('Canlarımız'),
+    ...viewAllFields('Tümünü Gör', '/canlarimiz'),
     { name: 'limit', type: 'number', defaultValue: 6, min: 1, max: 12, label: 'Gösterilecek Sayı' },
-{ name: 'adoptCta', type: 'text', localized: true, defaultValue: 'YUVA OLUN', label: 'Sahiplen CTA Metni' },
+    { name: 'adoptCta', type: 'text', localized: true, defaultValue: 'YUVA OLUN', label: 'Sahiplen CTA Metni' },
     { name: 'adoptCtaSecondaryLabel', type: 'text', localized: true, defaultValue: 'TÜM LİSTEYİ GÖR →', label: 'Sahiplen İkincil CTA' },
     {
       name: 'typeLabels',

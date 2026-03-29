@@ -75,20 +75,3 @@ export function getSocialLabel(link: SocialLinkItem): string {
   return link.label || TYPE_LABELS[link.type] || link.type
 }
 
-/** Get the Lucide icon name for a type */
-export function getSocialIconName(type: string): string {
-  const map: Record<string, string> = {
-    instagram: 'instagram',
-    'x-twitter': 'x-twitter',
-    facebook: 'facebook',
-    youtube: 'youtube',
-    tiktok: 'tiktok',
-    linkedin: 'linkedin',
-    github: 'github',
-    whatsapp: 'message-circle',
-    phone: 'phone',
-    email: 'mail',
-    website: 'globe',
-  }
-  return map[type] || 'globe'
-}

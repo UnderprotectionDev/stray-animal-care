@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 import { getCachedGlobal } from '@/utilities/getGlobals'
@@ -6,12 +7,13 @@ import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { AnimatedSectionHeader } from '@/components/home/AnimatedSectionHeader'
 import { SectionDividerBand } from '@/components/home/SectionDividerBand'
 import { SuppliesHero } from '@/modules/supplies/components/SuppliesHero'
+import { SuppliesCTA } from '@/modules/supplies/components/SuppliesCTA'
 import { SuppliesStats } from '@/modules/supplies/components/SuppliesStats'
 import { SuppliesNeedsGrid } from '@/modules/supplies/components/SuppliesNeedsGrid'
 import { SuppliesShipping } from '@/modules/supplies/components/SuppliesShipping'
-import { SuppliesCTA } from '@/modules/supplies/components/SuppliesCTA'
 import { getNeedsList } from '@/modules/supplies/lib/queries'
-import { locales, defaultLocale, type Locale } from '@/i18n/config'
+import { locales, type Locale } from '@/i18n/config'
+import { generatePageMetadata, normalizeLocale } from '@/utilities/pageHelpers'
 
 export const revalidate = 60
 
@@ -19,19 +21,23 @@ type Args = {
   params: Promise<{ locale: string }>
 }
 
-export default async function SuppliesPage({ params }: Args) {
-  const { locale } = await params
-  setRequestLocale(locale)
+function SuppliesSkeleton() {
+  return (
+    <div className="py-16 text-center t-body animate-pulse">
+      Yükleniyor...
+    </div>
+  )
+}
 
-  const payloadLocale: Locale = locales.includes(locale as Locale)
-    ? (locale as Locale)
-    : defaultLocale
-  const [items, ui] = await Promise.all([
-    getNeedsList(payloadLocale),
-    getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>,
-  ])
+async function SuppliesDataSection({
+  locale,
+  ui,
+}: {
+  locale: Locale
+  ui: UiString | null
+}) {
+  const items = await getNeedsList(locale)
 
-  // Aggregate stats
   const totalItems = items.length
   const urgentItems = items.filter((i) => i.urgency === 'acil').length
   const avgCoverage =
@@ -82,18 +88,67 @@ export default async function SuppliesPage({ params }: Args) {
     online: ui?.supplies?.shipping?.online || '',
   }
 
-  const rotatingWords = [
-    ui?.supplies?.hero?.rotatingWord1,
-    ui?.supplies?.hero?.rotatingWord2,
-    ui?.supplies?.hero?.rotatingWord3,
-  ].filter(Boolean) as string[]
-
   const dividerTexts = [
     ui?.supplies?.divider?.text1 || 'MAMA',
     ui?.supplies?.divider?.text2 || 'İLAÇ',
     ui?.supplies?.divider?.text3 || 'KEDİ KUMU',
     ui?.supplies?.divider?.text4 || 'DESTEK OL',
   ]
+
+  return (
+    <>
+      {/* 2. Stats */}
+      <section>
+        <AnimatedSectionHeader
+          title={ui?.supplies?.stats?.title || 'Stok Durumu'}
+          accentColor="stats"
+        />
+        <SuppliesStats stats={stats} />
+      </section>
+
+      {/* 3. Divider */}
+      <SectionDividerBand texts={dividerTexts} />
+
+      {/* 4. Needs Grid */}
+      <section>
+        <AnimatedSectionHeader
+          title={ui?.supplies?.needsSection?.title || 'İhtiyaç Listesi'}
+          accentColor="emergency"
+        />
+        {items.length > 0 ? (
+          <SuppliesNeedsGrid items={items} urgencyLabels={urgencyLabels} />
+        ) : (
+          <div className="panel py-16 text-center t-body bg-background">
+            {ui?.supplies?.empty || 'Şu anda ihtiyaç listesi bulunmuyor.'}
+          </div>
+        )}
+      </section>
+
+      {/* 5. Shipping */}
+      <section>
+        <AnimatedSectionHeader
+          title={shippingLabels.title}
+          accentColor="trust"
+        />
+        <SuppliesShipping labels={shippingLabels} />
+      </section>
+    </>
+  )
+}
+
+export default async function SuppliesPage({ params }: Args) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  const payloadLocale = normalizeLocale(locale)
+
+  const ui = await (getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>)
+
+  const rotatingWords = [
+    ui?.supplies?.hero?.rotatingWord1,
+    ui?.supplies?.hero?.rotatingWord2,
+    ui?.supplies?.hero?.rotatingWord3,
+  ].filter(Boolean) as string[]
 
   return (
     <>
@@ -114,46 +169,14 @@ export default async function SuppliesPage({ params }: Args) {
         <SuppliesHero
           title={ui?.supplies?.title || 'Mama & Malzeme İhtiyaçları'}
           subtitle={ui?.supplies?.subtitle || 'Hayvanlarımızın güncel ihtiyaç listesini burada bulabilirsiniz.'}
-          totalItemCount={totalItems}
+          totalItemCount={0}
           totalItemLabel={ui?.supplies?.hero?.badgeLabel || 'Aktif İhtiyaç'}
           rotatingWords={rotatingWords}
         />
 
-        {/* 2. Stats */}
-        <section>
-          <AnimatedSectionHeader
-            title={ui?.supplies?.stats?.title || 'Stok Durumu'}
-            accentColor="stats"
-          />
-          <SuppliesStats stats={stats} />
-        </section>
-
-        {/* 3. Divider */}
-        <SectionDividerBand texts={dividerTexts} />
-
-        {/* 4. Needs Grid */}
-        <section>
-          <AnimatedSectionHeader
-            title={ui?.supplies?.needsSection?.title || 'İhtiyaç Listesi'}
-            accentColor="emergency"
-          />
-          {items.length > 0 ? (
-            <SuppliesNeedsGrid items={items} urgencyLabels={urgencyLabels} />
-          ) : (
-            <div className="panel py-16 text-center t-body bg-background">
-              {ui?.supplies?.empty || 'Şu anda ihtiyaç listesi bulunmuyor.'}
-            </div>
-          )}
-        </section>
-
-        {/* 5. Shipping */}
-        <section>
-          <AnimatedSectionHeader
-            title={shippingLabels.title}
-            accentColor="trust"
-          />
-          <SuppliesShipping labels={shippingLabels} />
-        </section>
+        <Suspense fallback={<SuppliesSkeleton />}>
+          <SuppliesDataSection locale={payloadLocale} ui={ui} />
+        </Suspense>
 
         {/* 6. CTA */}
         <SuppliesCTA
@@ -172,9 +195,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  return {
-    title: ui?.supplies?.meta?.title || 'Mama & Malzeme — Paws of Hope',
-    description: ui?.supplies?.meta?.description || '',
-  }
+  return generatePageMetadata(locale, 'supplies', 'Mama & Malzeme — Paws of Hope')
 }

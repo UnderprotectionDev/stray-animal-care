@@ -1,10 +1,11 @@
 'use client'
 
 import React from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Calendar } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { Carousel, Card } from '@/components/fancy/apple-cards-carousel'
 import { getCategoryStyle, getCategorySemanticToken } from '@/utilities/categoryTokens'
+import { formatDate } from '@/utilities/formatDate'
 
 export type BlogCarouselCardData = {
   id: number
@@ -36,32 +37,37 @@ function BlogCardContent({
   const semanticToken = getCategorySemanticToken(card.category)
 
   return (
-    <div className="px-8 pb-8 flex flex-col gap-4">
-      {/* Accent bar */}
-      <div
-        className="w-10 h-[3px]"
-        style={{ background: `var(--${semanticToken})` }}
-      />
+    <div className="flex flex-col gap-5">
+      {/* Accent divider + date row */}
+      <div className="flex items-center gap-3">
+        <div
+          className="w-8 h-[3px] shrink-0"
+          style={{ background: `var(--${semanticToken})` }}
+        />
+        {card.publishedAt && (
+          <span className="font-mono text-xs text-[var(--muted-foreground)] flex items-center gap-1.5">
+            <Calendar className="w-3 h-3" />
+            {formatDate(card.publishedAt, locale)}
+          </span>
+        )}
+      </div>
 
+      {/* Excerpt as editorial pull-quote */}
       {card.excerpt && (
-        <p className="font-mono text-sm leading-relaxed text-[var(--muted-foreground)]">
-          {card.excerpt}
-        </p>
+        <div
+          className="border-l-[3px] pl-4 md:pl-5 py-1"
+          style={{ borderColor: `var(--${semanticToken})` }}
+        >
+          <p className="font-mono text-sm md:text-[0.938rem] leading-relaxed text-[var(--muted-foreground)]">
+            {card.excerpt}
+          </p>
+        </div>
       )}
 
-      {card.publishedAt && (
-        <span className="font-mono text-xs text-[var(--muted-foreground)]">
-          {new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'tr-TR', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          }).format(new Date(card.publishedAt))}
-        </span>
-      )}
-
+      {/* CTA */}
       <Link
         href={`/gunluk/${card.slug}`}
-        className="inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-wider hover:underline underline-offset-4 mt-2"
+        className="btn-cta inline-flex items-center gap-2 text-sm py-3 px-6 w-fit"
       >
         {readMoreLabel}
         <ArrowRight className="w-4 h-4" />
@@ -82,6 +88,7 @@ export default function BlogCardsCarousel({ cards, locale, readMoreLabel = 'Deva
         src: card.imageUrl || '/placeholder.svg',
         title: card.title,
         category: card.categoryLabel,
+        badgeStyle: getCategoryStyle(card.category),
         content: (
           <BlogCardContent
             card={card}

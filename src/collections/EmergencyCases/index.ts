@@ -8,6 +8,7 @@ import {
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { contentRichText } from '../../fields/lexical'
 import { seoTab } from '../../fields/seoTab'
+import { relaxedVersions } from '../../fields/versionsConfig'
 import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
@@ -169,13 +170,5 @@ export const EmergencyCases: CollectionConfig<'emergency-cases'> = {
     afterDelete: [revalidateEmergencyCaseDelete],
   },
   trash: true,
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 3000,
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  versions: relaxedVersions,
 }

@@ -6,15 +6,20 @@ import { IBANCopy } from '@/modules/donate/components/IBANCopy'
 import { InternationalPayment } from '@/modules/donate/components/InternationalPayment'
 import { VolunteerCard } from '@/modules/donate/components/VolunteerCard'
 import { DonateTicker } from '@/modules/donate/components/DonateTicker'
-import { DonationCards } from '@/modules/donate/components/DonationCards'
-import { DonateFAQ } from '@/modules/donate/components/DonateFAQ'
 import { TransparencyNote } from '@/modules/donate/components/TransparencyNote'
 import { DonateHero } from '@/modules/donate/components/DonateHero'
+import { DonationCards } from '@/modules/donate/components/DonationCards'
+import { DonateFAQ } from '@/modules/donate/components/DonateFAQ'
 import { SectionDividerBand } from '@/components/home/SectionDividerBand'
 import { ScrollAnimationTrigger } from '@/components/ui/scroll-animation-trigger'
 import { BlurFade } from '@/components/BlurFade'
+import { generatePageMetadata } from '@/utilities/pageHelpers'
 import type { SiteSetting, UiString } from '@/payload-types'
 
+// Suspense streaming not needed here: this page only fetches cached globals
+// (site-settings, ui-strings) with no collection queries. The data is fast
+// and already ISR-cached, so adding a Suspense boundary would add complexity
+// without meaningful streaming benefit.
 export const revalidate = 60
 
 const MOCK_BANK_ACCOUNTS: NonNullable<SiteSetting['bankAccounts']> = [
@@ -55,17 +60,12 @@ export default async function DonatePage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  let siteSettings: SiteSetting | null = null
-  try {
-    siteSettings = await getCachedGlobal('site-settings', 1)() as SiteSetting
-  } catch {
-  }
-
-  let ui: UiString | null = null
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
+  const [siteSettingsResult, uiResult] = await Promise.allSettled([
+    getCachedGlobal('site-settings', 1)(),
+    getCachedGlobal('ui-strings', 0, locale)(),
+  ])
+  const siteSettings = siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
+  const ui = uiResult.status === 'fulfilled' ? (uiResult.value as UiString | null) : null
 
   const bankAccounts =
     siteSettings?.bankAccounts && siteSettings.bankAccounts.length > 0
@@ -238,13 +238,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  let ui: UiString | null = null
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
-  return {
-    title: ui?.donate?.meta?.title ?? 'Destek Ol — Paws of Hope',
-    description: ui?.donate?.meta?.description ?? '',
-  }
+  return generatePageMetadata(locale, 'donate', 'Destek Ol — Paws of Hope')
 }

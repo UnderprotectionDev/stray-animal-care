@@ -1,12 +1,13 @@
 import type { Block } from 'payload'
 import { defaultLexical } from '@/fields/defaultLexical'
+import { enabledField, sectionTitleField } from '@/fields/homepageFields'
 
 export const StoryBlock: Block = {
   slug: 'homeStory',
   labels: { singular: 'Hikaye', plural: 'Hikaye' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
-    { name: 'sectionTitle', type: 'text', localized: true, label: 'Bölüm Başlığı', defaultValue: 'HİKAYEMİZ & MİSYON' },
+    enabledField(),
+    sectionTitleField('HİKAYEMİZ & MİSYON'),
     {
       name: 'steps',
       type: 'array',

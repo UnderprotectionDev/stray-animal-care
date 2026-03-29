@@ -6,6 +6,10 @@ import { unstable_cache } from 'next/cache'
 
 type Global = keyof Config['globals']
 
+// Simple in-memory cache for development to avoid 14+ DB queries per page load
+const devCache = new Map<string, { data: unknown; timestamp: number }>()
+const DEV_CACHE_TTL = 30_000 // 30 seconds
+
 const UI_STRINGS_BATCHES: string[][] = [
   ['common', 'layout', 'search', 'posts', 'home', 'notFound', 'contact'],
   ['animals', 'emergency', 'blog'],
@@ -57,11 +61,20 @@ async function getGlobal(slug: Global, depth = 0, locale?: string) {
 
 /**
  * Returns a unstable_cache function mapped with the cache tag for the slug.
- * In development, bypasses unstable_cache so DB changes are reflected immediately.
+ * In development, uses a short-lived in-memory cache to avoid excessive DB queries.
  */
 export const getCachedGlobal = (slug: Global, depth = 0, locale?: string) => {
   if (process.env.NODE_ENV !== 'production') {
-    return () => getGlobal(slug, depth, locale)
+    return async () => {
+      const key = `${slug}:${depth}:${locale ?? 'default'}`
+      const cached = devCache.get(key)
+      if (cached && Date.now() - cached.timestamp < DEV_CACHE_TTL) {
+        return cached.data
+      }
+      const data = await getGlobal(slug, depth, locale)
+      devCache.set(key, { data, timestamp: Date.now() })
+      return data
+    }
   }
   return unstable_cache(async () => getGlobal(slug, depth, locale), [slug, String(depth), locale ?? 'default'], {
     tags: [`global_${slug}`],

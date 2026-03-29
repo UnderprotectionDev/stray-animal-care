@@ -12,7 +12,7 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
 import config from '../payload.config'
-import { bold, boldItalic, heading, italic, lexicalRoot, link, paragraph, quote, ul, underline } from './lexical-builders'
+import { bold, italic, lexicalRoot, paragraph, quote, ul } from './lexical-builders'
 
 async function seed() {
   const payload = await getPayload({ config: await config })
@@ -24,53 +24,46 @@ async function seed() {
     context: { disableRevalidate: true },
     data: {
       socialLinks: [
-        { type: 'instagram', url: 'https://instagram.com/umutpatileri' },
-        { type: 'x-twitter', url: 'https://twitter.com/umutpatileri' },
+        { type: 'instagram', url: 'https://instagram.com/pawsofhope' },
         { type: 'whatsapp', url: '+905551234567' },
         { type: 'phone', url: '+905551234567' },
-        { type: 'email', url: 'info@umutpatileri.org' },
+        { type: 'email', url: 'info@pawsofhope.org' },
       ],
       bankAccounts: [
         {
           bankName: 'Ziraat Bankası',
-          accountHolder: 'Umut Patileri Derneği',
-          iban: 'TR00 0001 0000 0000 0000 0000 00',
+          accountHolder: 'Paws of Hope',
+          iban: 'TR00 0000 0000 0000 0000 0000 00',
           currency: 'TRY',
         },
-        {
-          bankName: 'İş Bankası',
-          accountHolder: 'Umut Patileri Derneği',
-          iban: 'TR00 0006 4000 0000 0000 0000 00',
-          currency: 'EUR',
-        },
       ],
-      catsCount: 42,
-      dogsCount: 28,
-      treatedCount: 347,
-      spayedCount: 89,
-      vaccinatedCount: 156,
-      feedingPointsCount: 4,
+      catsCount: 60,
+      dogsCount: 40,
+      treatedCount: 30,
+      spayedCount: 15,
+      vaccinatedCount: 55,
+      feedingPointsCount: 3,
       homepageBlocks: [
         {
           blockType: 'homeHero',
           enabled: true,
-          sectionTitle: 'ANA SAYFA',
-          tagline: "2019'dan bu yana yüzlerce hayvanın hayatına dokunduk.",
+          sectionTitle: 'HER CAN DEĞERLİ',
+          tagline: 'Her gün yaklaşık 100 kedi ve köpeğin beslenmesine, tedavisine ve bakımına katkı sağlıyoruz.',
           rotatingWords: [
-            { word: 'Umut' },
-            { word: 'Sevgi' },
-            { word: 'Şefkat' },
-            { word: 'Yuva' },
+            { word: 'Besliyoruz' },
+            { word: 'Tedavi Ediyoruz' },
+            { word: 'Koruyoruz' },
+            { word: 'Umut Oluyoruz' },
           ],
         },
         {
           blockType: 'homeStats',
           enabled: true,
           metrics: [
-            { label: 'METRİK 01 // OPERASYONEL', value: '347', name: 'KURTARILAN' },
-            { label: 'METRİK 02 // TRANSFER', value: '89', name: 'YENİ BULDU' },
-            { label: 'METRİK 03 // LOJİSTİK', value: '2.4K', name: 'BESLENDİ' },
-            { label: 'METRİK 04 // SÜREKLİLİK', value: '04', name: 'AKTİF YUVA' },
+            { label: 'METRİK 01 // BESLEME', value: '~100', name: 'GÜNLÜK BESLENEN' },
+            { label: 'METRİK 02 // TEDAVİ', value: '30', name: 'TEDAVİ EDİLEN' },
+            { label: 'METRİK 03 // KISIRLAŞTIRMA', value: '15', name: 'KISIRLAŞTIRILAN' },
+            { label: 'METRİK 04 // NOKTA', value: '03', name: 'BESLEME NOKTASI' },
           ],
         },
         {
@@ -79,53 +72,52 @@ async function seed() {
           sectionTitle: 'HİKAYEMİZ & MİSYON',
           steps: [
             {
-              title: 'KURULUŞ',
+              title: 'ÇOCUKLUK',
               description: lexicalRoot(
                 paragraph(
-                  '2019 yılında, İstanbul sokaklarında yaşayan sahipsiz hayvanların sesini duyurmak ve onlara ',
-                  bold('insanca bir yaşam'),
-                  ' sunmak amacıyla yola çıktık. Bir avuç gönüllüyle başlayan bu hareket, binlerce cana umut oldu.',
+                  'Türkiye\'nin en güney illerinden biri olan ',
+                  bold('Hatay\'da'),
+                  ' doğdum. Ailenin ve şehrin kozmopolit yapısı sayesinde farklı kültürlerle iç içe büyürken ',
+                  bold('doğaya ve hayvanlara'),
+                  ' karşı güçlü bir sevgi ve duyarlılık geliştirdim.',
                 ),
               ),
             },
             {
-              title: 'İLK KURTARMA',
+              title: 'DEPREM',
               description: lexicalRoot(
                 paragraph(
-                  'İlk kurtarma operasyonumuz bir kış gecesi gerçekleşti. Yaralı bir kedi, ',
-                  bold('soğukta titrerken'),
-                  ' bulundu ve tedavi edildi. Bu deneyim bizi daha büyük adımlar atmaya teşvik etti.',
-                ),
-                paragraph(
-                  'O günden bu yana ', bold('7/24'), ' acil müdahale ekibimiz sahada aktif çalışıyor.',
+                  '2023 yılında yaşanan büyük deprem hayatımda ',
+                  bold('derin izler'),
+                  ' bıraktı. Yakın ailemden, akrabalarımdan ve arkadaşlarımdan kayıplar yaşadım. Doğduğum ve uzun yıllar yaşadığım şehir büyük ölçüde yıkıma uğradı.',
                 ),
               ),
             },
             {
-              title: 'BÜYÜME',
+              title: 'YENİDEN BAŞLANGIÇ',
               description: lexicalRoot(
                 paragraph(
-                  'Gönüllü ağımız hızla büyüdü. Bugün ', bold('200+'), ' aktif gönüllümüz, ',
-                  bold('40+'), ' besleme noktamız ve düzenli veteriner işbirliklerimiz var.',
+                  'Bu zor süreçte yaşadığım psikolojik travmaları aşabilmek ve hayata yeniden tutunabilmek için ',
+                  bold('sokak hayvanlarına'),
+                  ' daha fazla yardım etmeyi kendime bir amaç edindim. Küçüklüğümden beri sevdiğim ve destek olduğum bu canlılara yöneldim.',
+                ),
+              ),
+            },
+            {
+              title: 'BUGÜN',
+              description: lexicalRoot(
+                paragraph(
+                  'Bireysel bir gönüllü olarak her gün yaklaşık ',
+                  bold('100 kedi ve köpeğin'),
+                  ' beslenmesine katkı sağlıyorum. Kısırlaştırma çalışmalarına destek veriyor, sağlık sorunları yaşayan hayvanların veteriner desteğine ulaşmasına yardımcı oluyorum.',
                 ),
                 ul(
-                  [bold('347 hayvan'), ' kurtarıldı'],
-                  [bold('89 sahiplendirme'), ' gerçekleştirildi'],
-                  [bold('2.400+'), ' cana düzenli beslenme sağlandı'],
-                ),
-              ),
-            },
-            {
-              title: 'BUGÜNKİ MİSYON',
-              description: lexicalRoot(
-                paragraph(
-                  'Her canlının sevgiyi, bakımı ve güvenli bir yaşamı hak ettiğine inanıyoruz. ',
-                  bold('Besleme, tedavi, kısırlaştırma ve sahiplendirme'),
-                  ' — kapsamlı bir bakım ağı oluşturuyoruz.',
+                  [bold('Günlük besleme'), ' — ~100 kedi ve köpek'],
+                  [bold('Kısırlaştırma'), ' — kontrollü çoğalma için destek'],
+                  [bold('Veteriner'), ' — tedavi ve sağlık desteği'],
                 ),
                 quote(
-                  italic('"Her canlı sevgiyi, bakımı ve güvenli bir yaşamı hak eder."'),
-                  ' — Bu inançla yola çıktık, bu inançla devam ediyoruz.',
+                  italic('"Sizlerin desteğiyle bu çalışmaları daha sürdürülebilir hale getirmeyi hedefliyoruz."'),
                 ),
               ),
             },
@@ -139,12 +131,12 @@ async function seed() {
           viewAllLink: '/calismalarimiz',
           photoCountTemplate: '{count} fotoğraf',
           activities: [
-            { key: 'feeding', title: 'Besleme', description: 'Her gün 40+ noktada düzenli besleme yapıyoruz.' },
+            { key: 'feeding', title: 'Besleme', description: 'Her gün 3 noktada düzenli besleme yapıyoruz.' },
             { key: 'treatment', title: 'Tedavi', description: 'Hasta ve yaralı hayvanların tedavilerini karşılıyoruz.' },
-            { key: 'spaying', title: 'Kısırlaştırma', description: 'Popülasyon kontrolü için kampanyalar düzenliyoruz.' },
-            { key: 'emergency', title: 'Acil Müdahale', description: 'Acil durumlarda 7/24 müdahale ediyoruz.' },
-            { key: 'vaccination', title: 'Aşılama', description: 'Düzenli aşılama programı uyguluyoruz.' },
-            { key: 'shelter', title: 'Barınma', description: 'Tedavi sürecinde geçici barınma sağlıyoruz.' },
+            { key: 'spaying', title: 'Kısırlaştırma', description: 'Kontrollü çoğalma için kısırlaştırma desteği sağlıyoruz.' },
+            { key: 'emergency', title: 'Acil Müdahale', description: 'Acil durumlarda müdahale ediyoruz.' },
+            { key: 'vaccination', title: 'Aşılama', description: 'Hayvanların aşılama ihtiyaçlarını karşılıyoruz.' },
+            { key: 'shelter', title: 'Barınma', description: 'Tedavi sürecinde geçici barınma desteği sağlıyoruz.' },
           ],
         },
         {
@@ -177,7 +169,7 @@ async function seed() {
           ibanTitle: 'IBAN ile Bağış',
           internationalTitle: 'Uluslararası Destek',
           volunteerTitle: 'Gönüllü Ol',
-          volunteerDescription: 'Zamanınızı verin, saha ekibimize katılın.',
+          volunteerDescription: 'Zamanınızı verin, besleme çalışmalarına katılın.',
           internationalPlaceholder: 'Yurtdışı ödeme seçenekleri hazırlanıyor.',
           labels: {
             copy: 'Kopyala',
@@ -232,7 +224,7 @@ async function seed() {
     locale: 'tr',
     context: { disableRevalidate: true },
     data: {
-      brandName: 'UMUT PATİLERİ',
+      brandName: 'PAWS OF HOPE',
       navItems: [
         {
           link: { type: 'custom', url: '/' },
@@ -283,7 +275,7 @@ async function seed() {
     layout: {
       skipToContent: 'İçeriğe geç',
       siteTitle: 'Paws of Hope — Sokak Hayvanları Bakımı',
-      siteDescription: 'Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz.',
+      siteDescription: 'Deprem sonrası sokak hayvanlarının beslenmesine, tedavisine ve bakımına destek sağlıyoruz.',
       header: {
         home: 'Ana Sayfa',
         posts: 'Yazılar',
@@ -306,13 +298,13 @@ async function seed() {
         explore: 'Keşfet',
         support: 'Destek',
         followUs: 'Bizi Takip Edin',
-        description: 'Sokak hayvanlarına umut oluyoruz.',
+        description: 'Deprem sonrası sokak hayvanlarına umut oluyoruz.',
         missionTitle: 'Hayata Değer Kat',
-        missionText: 'Her patili can bir yuva, her destek bir umut.',
+        missionText: 'Sokakta yaşam mücadelesi veren hayvanların temel ihtiyaçlarına ulaşmalarını sağlamak için çalışıyoruz.',
         donateButton: 'Destek Ol',
         volunteerButton: 'Gönüllü Ol',
         emergencyLine: 'Acil Hat',
-        madeWithLove: 'Sokak hayvanları için sevgiyle yapıldı 🐾',
+        madeWithLove: 'Sokak hayvanları için sevgiyle yapıldı',
       },
       breadcrumb: { home: 'Ana Sayfa' },
       mobileDonate: { cta: 'Destek Ol' },
@@ -335,7 +327,7 @@ async function seed() {
     animals: {
       meta: {
         title: 'Canlarımız — Paws of Hope',
-        description: 'Sokak hayvanlarımızı tanıyın. Tedavi, bakım ve yuva arayan kediler ve köpekler.',
+        description: 'Bakımımız altındaki sokak hayvanlarını tanıyın. Tedavi, bakım ve desteğe ihtiyaç duyan kediler ve köpekler.',
       },
       title: 'Canlarımız',
       subtitle: 'Tedavi ve bakımımız altındaki tüm dostlarımızla tanışın.',
@@ -404,7 +396,7 @@ async function seed() {
       hero: {
         title: 'BİR CAN KURTAR',
         badge: 'HAYAT KURTAR',
-        subtitle: 'Her katkınız bir cana umut olur. Bağışlarınız doğrudan tedavi, mama ve barınma masraflarına harcanır.',
+        subtitle: 'Sokak hayvanlarının mama, tedavi ve bakım ihtiyaçları bireysel çabalarla karşılanmaya çalışılmaktadır. Sizin desteğinizle daha fazla hayvana ulaşabiliriz.',
       },
       iban: {
         title: 'IBAN İLE BAĞIŞ',
@@ -417,11 +409,11 @@ async function seed() {
       international: {
         title: 'Uluslararası Destek',
         comingSoon: 'YAKINDA',
-        placeholder: 'Yurtdışı ödeme seçenekleri hazırlanıyor.',
+        placeholder: 'Yurtdışı ödeme seçenekleri (PayPal, Wise) hazırlanıyor.',
       },
       volunteer: {
         title: 'GÖNÜLLÜ OL',
-        description: 'Zamanınızı verin, saha ekibimize katılın. Besleme, tedavi ve kurtarma operasyonlarında destek olun.',
+        description: 'Zamanınızı verin, besleme çalışmalarına katılın. Hatay ve Malatya\'da saha desteği sağlayın.',
         cta: 'BAŞVURU FORMU →',
       },
       ticker: {
@@ -435,28 +427,28 @@ async function seed() {
       cards: {
         title: 'Bağışınız Neye Yarar?',
         foodTitle: 'Mama Desteği',
-        foodDescription: '1 aylık mama masrafını karşılar.',
+        foodDescription: '1 haftalık mama masrafını karşılar.',
         vetTitle: 'Veteriner Ziyareti',
         vetDescription: 'Rutin muayene ve aşı masrafını karşılar.',
         surgeryTitle: 'Cerrahi Destek',
-        surgeryDescription: 'Küçük bir operasyon masrafını karşılar.',
+        surgeryDescription: 'Kısırlaştırma veya acil müdahale masrafını karşılar.',
       },
       faq: {
         title: 'Sık Sorulan Sorular',
         q1: 'Bağışım nereye gidiyor?',
         a1: 'Tüm bağışlar doğrudan hayvan bakım, tedavi ve mama masraflarına harcanmaktadır. Şeffaflık raporlarımızda detaylı harcama bilgisini görebilirsiniz.',
-        q2: 'Bağış makbuzu alabilir miyim?',
-        a2: 'Vergi makbuzu için lütfen e-posta veya WhatsApp üzerinden bizimle iletişime geçin.',
+        q2: 'Bu bir dernek mi?',
+        a2: 'Şu anda bireysel gönüllü olarak çalışıyoruz. İlerleyen süreçte bir dernek çatısı altında daha profesyonel bir şekilde çalışmayı hedefliyoruz.',
         q3: 'Düzenli bağış yapabilir miyim?',
         a3: 'Evet! Aylık sabit bağış yapmak için banka otomatik ödeme talimatı verebilirsiniz.',
         q4: 'Yurt dışından bağış kabul ediyor musunuz?',
-        a4: 'Evet, uluslararası bağış seçenekleri yakında aktif olacak. Lütfen bizimle iletişime geçin.',
+        a4: 'Evet, uluslararası bağış seçenekleri (PayPal, Wise) yakında aktif olacak. Lütfen bizimle iletişime geçin.',
         q5: 'Bağış yerine malzeme gönderebilir miyim?',
-        a5: 'Evet! İhtiyaç listesi için bize ulaşın. Mama, kedi kumu, ilaç ve battaniye gibi malzemeler kabul ediyoruz.',
+        a5: 'Evet! İhtiyaç listesini inceleyerek mama, kedi kumu, ilaç ve battaniye gibi malzemeler gönderebilirsiniz.',
       },
       transparency: {
         title: 'Şeffaf Yönetim',
-        description: 'Tüm gelir ve giderleri düzenli olarak yayınlıyoruz. Bağışlarınızın nereye gittiğini her zaman görebilirsiniz.',
+        description: 'Yapılan tüm destekleri şeffaf bir şekilde paylaşıyoruz. Katkılarınızın gerçekten ihtiyaç sahibi hayvanlara ulaştığını gösterebilmek en önemli hedeflerimizden biri.',
         reports: 'Şeffaflık Raporları',
       },
     },
@@ -478,7 +470,7 @@ async function seed() {
       },
       sponsor: {
         title: 'Mama Sponsoru Ol',
-        description: 'Aylık düzenli mama desteği sağlayarak hayvanlarımızın beslenmesine katkıda bulunun.',
+        description: 'Düzenli mama desteği sağlayarak hayvanlarımızın beslenmesine katkıda bulunun.',
         cta: 'Destek Ol',
       },
       empty: 'Şu anda ihtiyaç listesi bulunmuyor.',
@@ -489,7 +481,7 @@ async function seed() {
         description: 'Gelir ve gider raporlarımızı inceleyin. Bağışlarınızın nereye gittiğini şeffaf olarak paylaşıyoruz.',
       },
       title: 'Şeffaflık Raporları',
-      subtitle: 'Tüm gelir ve giderleri düzenli olarak yayınlıyoruz.',
+      subtitle: 'Yapılan tüm destekleri ve harcamaları açık ve düzenli şekilde paylaşıyoruz.',
       report: {
         expenses: 'Giderler',
         totalExpense: 'Toplam Gider',
@@ -506,7 +498,7 @@ async function seed() {
     blog: {
       meta: {
         title: 'Günlük — Paws of Hope',
-        description: 'Kurtarma hikayeleri, tedavi süreçleri, duyurular ve etkinliklerimizi takip edin.',
+        description: 'Kurtarma hikayeleri, tedavi süreçleri, duyurular ve günlük çalışmalarımızı takip edin.',
       },
       title: 'Günlük',
       subtitle: 'Hikayelerimizi, duyurularımızı ve güncel gelişmeleri takip edin.',
@@ -527,7 +519,7 @@ async function seed() {
     volunteer: {
       meta: {
         title: 'Gönüllü Ol — Paws of Hope',
-        description: 'Sokak hayvanları için gönüllü olun. Geçici bakım, sağlık desteği, besleme ve daha fazlası.',
+        description: 'Sokak hayvanları için gönüllü olun. Besleme, tedavi desteği ve daha fazlası.',
       },
       title: 'Gönüllü Ol',
       subtitle: 'Sokak hayvanlarına yardım etmek için aramıza katılın.',
@@ -553,11 +545,11 @@ async function seed() {
         q1: 'Gönüllü olmak için ne yapmalıyım?',
         a1: 'WhatsApp üzerinden bizimle iletişime geçmeniz yeterli. Size uygun alanları birlikte belirleyelim.',
         q2: 'Gönüllülük için deneyim gerekli mi?',
-        a2: 'Hayır, herhangi bir deneyim gerekmez. Hayvanseverliğiniz yeterli! Gerekli eğitimi biz sağlıyoruz.',
+        a2: 'Hayır, herhangi bir deneyim gerekmez. Hayvanseverliğiniz yeterli!',
         q3: 'Ne kadar zaman ayırmalıyım?',
         a3: 'Tamamen size bağlı. Haftada birkaç saat bile büyük fark yaratır.',
-        q4: 'Geçici bakım için evimde ne gerekli?',
-        a4: 'Temel ihtiyaçları (mama, kum, ilaç) biz karşılıyoruz. Sizden sadece sevgi ve ilgi bekliyoruz.',
+        q4: 'Hangi şehirlerde gönüllü olabilirim?',
+        a4: 'Şu anda Hatay ve Malatya\'da aktif çalışıyoruz. Bu şehirlerdeyseniz sahada destek olabilirsiniz.',
       },
       cta: {
         title: 'Aramıza Katılın!',
@@ -568,39 +560,39 @@ async function seed() {
     vision: {
       meta: {
         title: 'Gelecek Vizyonu — Paws of Hope',
-        description: 'Sokak hayvanları için geleceğe dair hedeflerimizi ve vizyonumuzu keşfedin.',
+        description: 'Sokak hayvanları için sürdürülebilir bir destek ağı oluşturma hedefimizi keşfedin.',
       },
       title: 'Gelecek Vizyonu',
-      subtitle: 'Her adımda daha güzel bir gelecek inşa ediyoruz.',
+      subtitle: 'Daha fazla hayvana ulaşmak için birlikte çalışıyoruz.',
       association: {
         title: 'Dernek Kurma Hedefimiz',
-        description: 'Resmi bir dernek kurarak çalışmalarımızı yasal bir çatı altında sürdürmeyi, bağış toplama kapasitemizi artırmayı ve daha fazla hayvana ulaşmayı hedefliyoruz.',
+        description: 'Gönüllülerin bir araya gelerek daha güçlü bir yapı oluşturmasını ve ilerleyen süreçte bir dernek çatısı altında daha profesyonel, şeffaf ve etkili çalışmalar yürütmeyi hedefliyoruz.',
       },
       shortTerm: {
-        title: 'Kısa Vadeli Hedefler (1 Yıl)',
-        shelterTitle: 'Tam Donanımlı Barınak',
-        shelterDescription: 'Tedavi sürecindeki hayvanlar için güvenli ve donanımlı bir barınak kurmak.',
-        spayTitle: '200+ Kısırlaştırma',
-        spayDescription: 'Popülasyon kontrolü için yılda en az 200 hayvanı kısırlaştırmak.',
-        volunteersTitle: '50 Aktif Gönüllü',
-        volunteersDescription: 'Gönüllü ağımızı genişleterek 50 aktif gönüllüye ulaşmak.',
-        clinicTitle: 'Veteriner Kliniği Ortaklığı',
-        clinicDescription: 'İndirimli tedavi için veteriner klinikleriyle kalıcı ortaklıklar kurmak.',
+        title: 'Kısa Vadeli Hedefler',
+        shelterTitle: 'Daha Fazla Hayvana Ulaşmak',
+        shelterDescription: 'Besleme noktası sayısını artırarak daha fazla sokak hayvanına düzenli beslenme sağlamak.',
+        spayTitle: 'Kısırlaştırma Desteği',
+        spayDescription: 'Kontrollü çoğalmayı sağlamak için kısırlaştırma çalışmalarını sürdürmek.',
+        volunteersTitle: 'Gönüllü Ağını Genişletmek',
+        volunteersDescription: 'Bireysel çabaları topluluk dayanışmasına dönüştürmek.',
+        clinicTitle: 'Veteriner İşbirliği',
+        clinicDescription: 'Düzenli veteriner desteği için kalıcı işbirlikleri kurmak.',
       },
       longTerm: {
-        title: 'Uzun Vadeli Hedefler (3-5 Yıl)',
+        title: 'Uzun Vadeli Hedefler',
         ngoTitle: 'Resmi Dernek Statüsü',
-        ngoDescription: 'Yasal bir dernek kurarak şeffaf ve sürdürülebilir bir yapı oluşturmak.',
-        vetClinicTitle: 'Toplum Destekli Klinik',
-        vetClinicDescription: 'Bağışçılarımızın desteğiyle sokak hayvanlarına özel bir veteriner kliniği açmak.',
-        fosterTitle: 'Şehir Genelinde Geçici Bakım Ağı',
-        fosterDescription: 'Her mahallede geçici bakım gönüllüleri ile kapsamlı bir ağ oluşturmak.',
-        awarenessTitle: 'Ulusal Farkındalık Kampanyası',
-        awarenessDescription: 'Sokak hayvanları hakları için ulusal çapta farkındalık kampanyaları düzenlemek.',
+        ngoDescription: 'Yasal bir dernek kurarak çalışmaları kurumsal bir yapı altında sürdürmek.',
+        vetClinicTitle: 'Şeffaf ve Etkili Yapı',
+        vetClinicDescription: 'Tüm desteklerin nasıl kullanıldığını gösterecek profesyonel bir şeffaflık sistemi kurmak.',
+        fosterTitle: 'Sürdürülebilir Destek Ağı',
+        fosterDescription: 'Türkiye genelinde sokak hayvanlarının yaşam koşullarını iyileştirmeye yönelik sürdürülebilir bir destek ağı oluşturmak.',
+        awarenessTitle: 'Farkındalık Kampanyaları',
+        awarenessDescription: 'Toplumda hayvan refahı konusunda farkındalık oluşturmak.',
       },
       network: {
-        title: 'Büyüyen Gönüllü Ağımız',
-        description: 'Her gün büyüyen gönüllü ailemizle daha fazla hayvana ulaşıyoruz. Siz de bu değişimin parçası olun.',
+        title: 'Değerlerimiz',
+        description: 'Şeffaflık, Merhamet ve Saygı, Sürdürülebilirlik, Topluluk Dayanışması — bu dört değer çalışmalarımızın temelini oluşturuyor.',
       },
       cta: {
         title: 'Bu Vizyonu Birlikte Gerçekleştirelim',
@@ -631,19 +623,19 @@ async function seed() {
     home: {
       meta: {
         title: 'Paws of Hope — Sokak Hayvanlarına Umut',
-        description: 'Sokak hayvanlarının bakım, tedavi ve sıcak bir yuva bulmasına yardımcı oluyoruz.',
+        description: 'Deprem sonrası sokak hayvanlarının beslenmesine, tedavisine ve bakımına destek sağlıyoruz.',
       },
       instagram: { title: "Instagram'da Biz", followUs: 'Takip Et' },
       volunteerCta: {
         title: 'Gönüllü Ol',
-        description: 'Sokak hayvanları için bir fark yaratmak ister misiniz? Besleme, tedavi, geçici bakım veya farkındalık çalışmalarımıza katılın.',
+        description: 'Sokak hayvanları için bir fark yaratmak ister misiniz? Besleme çalışmalarımıza katılın, tedavi süreçlerinde destek olun.',
         cta: 'Gönüllü Ol →',
       },
     },
     ourWork: {
       meta: {
         title: 'Çalışmalarımız — Paws of Hope',
-        description: 'Besleme, tedavi, kısırlaştırma, acil müdahale, aşılama ve barınma çalışmalarımızı keşfedin.',
+        description: 'Günlük besleme, tedavi, kısırlaştırma ve acil müdahale çalışmalarımızı keşfedin.',
       },
       title: 'Çalışmalarımız',
       subtitle: 'Sokak hayvanları için yaptığımız çalışmaları keşfedin.',

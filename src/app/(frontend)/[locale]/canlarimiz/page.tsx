@@ -4,7 +4,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { AnimalFilter } from '@/modules/animals/components/AnimalFilter'
 import { AnimalList } from '@/modules/animals/components/AnimalList'
 import { getAnimals } from '@/modules/animals/lib/queries'
-import { locales, defaultLocale, type Locale } from '@/i18n/config'
+import { generatePageMetadata, normalizeLocale } from '@/utilities/pageHelpers'
 import type { UiString } from '@/payload-types'
 
 export const revalidate = 60
@@ -17,7 +17,7 @@ export default async function AnimalsPage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const payloadLocale: Locale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
+  const payloadLocale = normalizeLocale(locale)
   const [animals, ui] = await Promise.all([
     getAnimals(payloadLocale),
     getCachedGlobal('ui-strings', 0, payloadLocale)() as Promise<UiString | null>,
@@ -69,14 +69,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const payloadLocale: Locale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
-  let ui: UiString | null = null
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, payloadLocale)()) as UiString | null
-  } catch {
-  }
-  return {
-    title: ui?.animals?.meta?.title ?? 'Canlarımız — Paws of Hope',
-    description: ui?.animals?.meta?.description ?? '',
-  }
+  return generatePageMetadata(locale, 'animals', 'Canlarımız — Paws of Hope')
 }

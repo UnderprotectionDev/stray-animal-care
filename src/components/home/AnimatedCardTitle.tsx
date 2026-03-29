@@ -1,7 +1,9 @@
 'use client'
 
 import React from 'react'
-import SplitText from '@/components/SplitText'
+import dynamic from 'next/dynamic'
+
+const SplitText = dynamic(() => import('@/components/SplitText'), { ssr: false })
 
 type Props = {
   text: string | null | undefined

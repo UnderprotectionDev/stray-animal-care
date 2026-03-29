@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation'
 import BlurText from '@/components/BlurText'
 import { CountUpCurrency } from './CountUpCurrency'
 import { CountUpNumber } from './CountUpNumber'
+import { formatMonth } from '@/utilities/formatDate'
 
 type TransparencyBannerBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeTransparencyBanner' }>
 
@@ -11,11 +12,6 @@ type Props = {
   block: TransparencyBannerBlock
   report: TransparencyReport | null
   locale: string
-}
-
-function formatMonth(month: string, locale: string): string {
-  const date = new Date(month + '-01')
-  return date.toLocaleDateString(locale === 'en' ? 'en-US' : 'tr-TR', { month: 'long', year: 'numeric' })
 }
 
 export function TransparencyBanner({ block, report, locale }: Props) {

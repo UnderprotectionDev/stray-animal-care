@@ -68,7 +68,7 @@ export function ElasticLine({
     }
     x.set(dimensions.width / 2)
     y.set(dimensions.height / 2)
-  }, [dimensions, hasAnimatedIn]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dimensions.width, dimensions.height, hasAnimatedIn]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!isGrabbed && hasAnimatedIn) {

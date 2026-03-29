@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { AnimatedMegaHeading } from '@/components/home/AnimatedMegaHeading'
+import dynamic from 'next/dynamic'
+const AnimatedMegaHeading = dynamic(() => import('@/components/home/AnimatedMegaHeading').then(mod => mod.AnimatedMegaHeading), { ssr: false })
 
 type BlogPageHeaderProps = {
   title: string

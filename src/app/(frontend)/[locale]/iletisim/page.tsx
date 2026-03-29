@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { setRequestLocale } from 'next-intl/server'
+import { generatePageMetadata } from '@/utilities/pageHelpers'
 import type { SiteSetting, UiString } from '@/payload-types'
 import { Section } from '@/components/shared/Section'
 import { Container } from '@/components/shared/Container'
@@ -21,18 +22,12 @@ export default async function ContactPage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  let siteSettings: SiteSetting | null = null
-  let ui: UiString | null = null
-  try {
-    siteSettings = (await getCachedGlobal('site-settings', 1)()) as SiteSetting
-  } catch (e) {
-    console.error('Failed to fetch site-settings:', e)
-  }
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch (e) {
-    console.error('Failed to fetch ui-strings:', e)
-  }
+  const [siteSettingsResult, uiResult] = await Promise.allSettled([
+    getCachedGlobal('site-settings', 1)(),
+    getCachedGlobal('ui-strings', 0, locale)(),
+  ])
+  const siteSettings = siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
+  const ui = uiResult.status === 'fulfilled' ? (uiResult.value as UiString | null) : null
 
   return (
     <>
@@ -121,13 +116,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  let ui: UiString | null = null
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
-  return {
-    title: ui?.contact?.meta?.title ?? 'İletişim — Paws of Hope',
-    description: ui?.contact?.meta?.description ?? '',
-  }
+  return generatePageMetadata(locale, 'contact', 'İletişim — Paws of Hope')
 }

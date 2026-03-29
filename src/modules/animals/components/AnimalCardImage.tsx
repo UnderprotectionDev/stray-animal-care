@@ -1,9 +1,11 @@
 'use client'
 
 import React from 'react'
-import PixelTransition from '@/components/PixelTransition'
+import dynamic from 'next/dynamic'
 import { Media } from '@/components/Media'
 import type { Media as MediaType } from '@/payload-types'
+
+const PixelTransition = dynamic(() => import('@/components/PixelTransition'), { ssr: false })
 
 type AnimalCardImageProps = {
   photo: MediaType | null

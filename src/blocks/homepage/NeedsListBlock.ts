@@ -1,13 +1,13 @@
 import type { Block } from 'payload'
+import { enabledField, sectionTitleField, viewAllFields } from '@/fields/homepageFields'
 
 export const NeedsListBlock: Block = {
   slug: 'homeNeedsList',
   labels: { singular: 'İhtiyaç Listesi', plural: 'İhtiyaç Listesi' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
-    { name: 'sectionTitle', type: 'text', localized: true, defaultValue: 'Güncel İhtiyaçlar', label: 'Bölüm Başlığı' },
-    { name: 'viewAllLabel', type: 'text', localized: true, defaultValue: 'Tüm Liste', label: 'Tümünü Gör Etiketi' },
-    { name: 'viewAllLink', type: 'text', defaultValue: '/mama-malzeme', label: 'Tümünü Gör Linki' },
+    enabledField(),
+    sectionTitleField('Güncel İhtiyaçlar'),
+    ...viewAllFields('Tüm Liste', '/mama-malzeme'),
     { name: 'limit', type: 'number', defaultValue: 5, min: 1, max: 10, label: 'Gösterilecek Sayı' },
     {
       name: 'labels',

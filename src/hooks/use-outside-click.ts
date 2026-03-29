@@ -11,7 +11,7 @@ export function useOutsideClick(
     }
 
     document.addEventListener('mousedown', handler)
-    document.addEventListener('touchstart', handler)
+    document.addEventListener('touchstart', handler, { passive: true })
 
     return () => {
       document.removeEventListener('mousedown', handler)

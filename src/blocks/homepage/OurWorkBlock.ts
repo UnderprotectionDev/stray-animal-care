@@ -1,13 +1,13 @@
 import type { Block } from 'payload'
+import { enabledField, sectionTitleField, viewAllFields } from '@/fields/homepageFields'
 
 export const OurWorkBlock: Block = {
   slug: 'homeOurWork',
   labels: { singular: 'Çalışmalarımız', plural: 'Çalışmalarımız' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
-    { name: 'sectionTitle', type: 'text', localized: true, defaultValue: 'Çalışmalarımız', label: 'Bölüm Başlığı' },
-    { name: 'viewAllLabel', type: 'text', localized: true, defaultValue: 'Tümünü Gör', label: 'Tümünü Gör Etiketi' },
-    { name: 'viewAllLink', type: 'text', defaultValue: '/calismalarimiz', label: 'Tümünü Gör Linki' },
+    enabledField(),
+    sectionTitleField('Çalışmalarımız'),
+    ...viewAllFields('Tümünü Gör', '/calismalarimiz'),
     { name: 'photoCountTemplate', type: 'text', localized: true, defaultValue: '{count} fotoğraf', label: 'Fotoğraf Sayısı Şablonu' },
     {
       name: 'galleryVariant',

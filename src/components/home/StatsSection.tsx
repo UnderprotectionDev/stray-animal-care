@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useCallback, useRef } from 'react'
-import gsap from 'gsap'
+import dynamic from 'next/dynamic'
 import type { SiteSetting } from '@/payload-types'
-import CountUp from '@/components/CountUp'
-import BlurText from '@/components/BlurText'
+
+const CountUp = dynamic(() => import('@/components/CountUp'), { ssr: false })
+const BlurText = dynamic(() => import('@/components/BlurText'), { ssr: false })
 import { GlareOverlay } from '@/components/fancy/blocks/GlareOverlay'
 
 type StatsBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeStats' }>
@@ -41,6 +42,7 @@ const StatCard: React.FC<{
   const contentRef = useRef<HTMLDivElement>(null)
   const glareRef = useRef<HTMLDivElement>(null)
   const color = STAT_HOVER_COLORS[colorIndex % STAT_HOVER_COLORS.length]
+  const ticking = useRef(false)
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {
@@ -49,12 +51,8 @@ const StatCard: React.FC<{
       const glare = glareRef.current
       if (!el) return
 
-      gsap.to(el, {
-        backgroundColor: color.bg,
-        color: color.fg,
-        duration: 0.3,
-        ease: 'power2.out',
-      })
+      el.style.backgroundColor = color.bg
+      el.style.color = color.fg
 
       const rect = el.getBoundingClientRect()
       const mx = (e.clientX - (rect.left + rect.width / 2)) / 20
@@ -76,25 +74,32 @@ const StatCard: React.FC<{
   )
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const el = cardRef.current
-    const content = contentRef.current
-    const glare = glareRef.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
+    if (ticking.current) return
+    ticking.current = true
+    const clientX = e.clientX
+    const clientY = e.clientY
+    requestAnimationFrame(() => {
+      ticking.current = false
+      const el = cardRef.current
+      const content = contentRef.current
+      const glare = glareRef.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
 
-    const mx = (e.clientX - (rect.left + rect.width / 2)) / 20
-    const my = (e.clientY - (rect.top + rect.height / 2)) / 20
-    el.style.transform = `translate3d(${mx}px, ${my}px, 0)`
-    if (content) {
-      content.style.transform = `translate3d(${-mx}px, ${-my}px, 0) scale3d(1.03, 1.03, 1)`
-    }
+      const mx = (clientX - (rect.left + rect.width / 2)) / 20
+      const my = (clientY - (rect.top + rect.height / 2)) / 20
+      el.style.transform = `translate3d(${mx}px, ${my}px, 0)`
+      if (content) {
+        content.style.transform = `translate3d(${-mx}px, ${-my}px, 0) scale3d(1.03, 1.03, 1)`
+      }
 
-    if (glare) {
-      const gx = ((e.clientX - rect.left) / rect.width) * 100
-      const gy = ((e.clientY - rect.top) / rect.height) * 100
-      glare.style.setProperty('--glare-x', `${gx}%`)
-      glare.style.setProperty('--glare-y', `${gy}%`)
-    }
+      if (glare) {
+        const gx = ((clientX - rect.left) / rect.width) * 100
+        const gy = ((clientY - rect.top) / rect.height) * 100
+        glare.style.setProperty('--glare-x', `${gx}%`)
+        glare.style.setProperty('--glare-y', `${gy}%`)
+      }
+    })
   }, [])
 
   const handleMouseLeave = useCallback(() => {
@@ -103,12 +108,8 @@ const StatCard: React.FC<{
     const glare = glareRef.current
     if (!el) return
 
-    gsap.to(el, {
-      backgroundColor: 'var(--stats)',
-      color: 'var(--stats-foreground)',
-      duration: 0.25,
-      ease: 'power2.in',
-    })
+    el.style.backgroundColor = ''
+    el.style.color = ''
 
     el.style.transform = 'translate3d(0px, 0px, 0)'
     if (content) {
@@ -124,7 +125,7 @@ const StatCard: React.FC<{
     <div
       ref={cardRef}
       className="relative overflow-hidden bg-stats text-stats-foreground cursor-default h-56 md:h-64"
-      style={{ transition: 'transform 0.1s ease-out' }}
+      style={{ transition: 'transform 0.1s ease-out, background-color 0.3s ease-out, color 0.3s ease-out' }}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -147,9 +148,9 @@ const StatCard: React.FC<{
               letterSpacing: '-0.03em',
             }}
           >
-            {prefix && <span>{prefix}</span>}
+            {prefix ? <span>{prefix}</span> : null}
             <CountUp to={numericValue} from={0} duration={2} />
-            {suffix && <span>{suffix}</span>}
+            {suffix ? <span>{suffix}</span> : null}
           </span>
           {metric.name && (
             <BlurText
@@ -177,7 +178,7 @@ export function StatsSection({ block }: Props) {
   if (metrics.length === 0) return null
 
   return (
-    <section>
+    <section style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
       <div
         className="grid grid-cols-2 md:grid-cols-4"
         style={{ gap: '1.5px', background: 'var(--foreground)' }}

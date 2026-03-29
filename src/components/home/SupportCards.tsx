@@ -1,18 +1,20 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import dynamic from 'next/dynamic'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { SiteSetting } from '@/payload-types'
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 import { Link } from '@/i18n/navigation'
 import { getSocialLink } from '@/utilities/socialLinks'
-import { AnimatedMegaHeading } from '@/components/home/AnimatedMegaHeading'
+const AnimatedMegaHeading = dynamic(() => import('@/components/home/AnimatedMegaHeading').then(mod => mod.AnimatedMegaHeading), { ssr: false })
 import { VerticalCutReveal } from '@/components/fancy/text/VerticalCutReveal'
 import { MagneticTilt } from '@/components/fancy/blocks/MagneticTilt'
-import { MovingBorder } from '@/components/fancy/blocks/MovingBorder'
-import { FlipBankCard } from '@/components/home/FlipBankCard'
-import { DotGridBackground } from '@/components/home/DotGridBackground'
+const MovingBorder = dynamic(() => import('@/components/fancy/blocks/MovingBorder').then(mod => mod.MovingBorder), { ssr: false })
+const FlipBankCard = dynamic(() => import('@/components/home/FlipBankCard').then(mod => mod.FlipBankCard), { ssr: false })
+const DotGridBackground = dynamic(() => import('@/components/home/DotGridBackground').then(mod => mod.DotGridBackground), { ssr: false })
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -47,11 +49,7 @@ const PAWS: { top: string; left?: string; right?: string; size: string; opacity:
 
 function FloatingPaws() {
   const pawRefs = useRef<(HTMLDivElement | null)[]>([])
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (reducedMotion) return
@@ -103,11 +101,7 @@ export function SupportCards({ block, siteSettings }: Props) {
   const labels = block.labels ?? {}
   const bankAccounts = siteSettings?.bankAccounts ?? []
   const cardsRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (reducedMotion || !cardsRef.current) return
@@ -133,7 +127,7 @@ export function SupportCards({ block, siteSettings }: Props) {
   }, [reducedMotion, bankAccounts.length])
 
   return (
-    <section>
+    <section style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
       {/* ── Zone A: Hero heading ── */}
       <div className="panel py-4 px-6 border-b border-border relative overflow-hidden">
         {/* Effect 2: Dot grid background */}
@@ -141,7 +135,7 @@ export function SupportCards({ block, siteSettings }: Props) {
         {/* Effect 5: Floating paw prints (replaces heart watermark) */}
         <FloatingPaws />
 
-        <span className="t-comment block mb-1 relative z-10">{'DESTEK'}</span>
+        {/* label removed */}
         {/* Effect 3: Color flash on heading */}
         <AnimatedMegaHeading text={block.slogan} enableColorFlash />
         <div className="w-24 h-1 bg-warm mt-2 relative z-10" />

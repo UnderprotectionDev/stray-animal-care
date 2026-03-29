@@ -4,7 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import type { Animal, Media as MediaType, SiteSetting } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getFirstPhotoUrl } from '@/utilities/getMediaUrl'
 
 type FeaturedAnimalsBlock = Extract<
   NonNullable<SiteSetting['homepageBlocks']>[number],
@@ -23,10 +23,7 @@ const statusColorMap: Record<string, string> = {
 }
 
 export function AnimalCarouselCardContent({ animal, block }: Props) {
-  const firstPhoto =
-    animal.photos && animal.photos.length > 0 ? animal.photos[0] : null
-  const photo = firstPhoto && typeof firstPhoto !== 'number' ? firstPhoto : null
-  const photoUrl = photo ? getMediaUrl((photo as MediaType).url) : null
+  const photoUrl = getFirstPhotoUrl(animal.photos, '')
 
   const animalStatus = animal.animalStatus ?? 'tedavide'
 
@@ -76,10 +73,10 @@ export function AnimalCarouselCardContent({ animal, block }: Props) {
 
       {/* Info row */}
       <div className="flex flex-wrap gap-4 font-mono text-sm text-[var(--muted-foreground)]">
-        {animal.type && <span>{typeMap[animal.type] || animal.type}</span>}
-        {animal.age && <span>{animal.age}</span>}
-        {animal.gender && <span>{genderMap[animal.gender] || animal.gender}</span>}
-        {animal.location && <span>{animal.location}</span>}
+        {animal.type ? <span>{typeMap[animal.type] || animal.type}</span> : null}
+        {animal.age ? <span>{animal.age}</span> : null}
+        {animal.gender ? <span>{genderMap[animal.gender] || animal.gender}</span> : null}
+        {animal.location ? <span>{animal.location}</span> : null}
       </div>
 
       {/* CTA */}

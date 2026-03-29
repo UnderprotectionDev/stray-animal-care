@@ -1,9 +1,12 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { Media } from '@/components/Media'
-import { BlurFade } from '@/components/BlurFade'
+
+const BlurFade = dynamic(() => import('@/components/BlurFade').then(mod => mod.BlurFade), { ssr: false })
 import { VerticalCutReveal } from '@/components/fancy/text/VerticalCutReveal'
 import { GlareOverlay } from '@/components/fancy/blocks/GlareOverlay'
 import {
@@ -29,17 +32,13 @@ function ShowcaseCard({ activity }: { activity: Activity }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const glareRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const reducedMotion = useReducedMotion()
 
   const { key, title, description, images } = activity
   const accentColor = ACTIVITY_COLORS[key] ?? 'var(--cta)'
   const accentForeground = ACTIVITY_FOREGROUNDS[key] ?? 'var(--cta-foreground)'
   const ghostNumber = ACTIVITY_NUMBERS[key] ?? '01'
   const Icon = ACTIVITY_ICONS[key]
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {

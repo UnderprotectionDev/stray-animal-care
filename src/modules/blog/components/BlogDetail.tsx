@@ -8,6 +8,7 @@ import { BlogDetailHero } from './BlogDetailHero'
 import { RelatedPostsSection } from './RelatedPostsSection'
 import { getCategorySemanticToken } from '@/utilities/categoryTokens'
 import { calculateReadingTime } from '../lib/readingTime'
+import { formatDate } from '@/utilities/formatDate'
 import type { Post, Media as MediaType } from '@/payload-types'
 
 type BlogDetailProps = {
@@ -42,13 +43,7 @@ export function BlogDetail({
   const semanticToken = getCategorySemanticToken(post.postCategory ?? null)
   const readingTime = post.content ? calculateReadingTime(post.content) : null
 
-  const publishedDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString(locale === 'en' ? 'en-US' : 'tr-TR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : null
+  const publishedDate = post.publishedAt ? formatDate(post.publishedAt, locale) : null
 
   const authorNames =
     post.populatedAuthors

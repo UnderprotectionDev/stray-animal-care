@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { setRequestLocale } from 'next-intl/server'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -7,15 +8,16 @@ import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { AnimatedSectionHeader } from '@/components/home/AnimatedSectionHeader'
 import { SectionDividerBand } from '@/components/home/SectionDividerBand'
 import { getSocialLink } from '@/utilities/socialLinks'
+import { generatePageMetadata } from '@/utilities/pageHelpers'
 import type { SiteSetting, UiString } from '@/payload-types'
 
 import { VolunteerHero } from './components/VolunteerHero'
+import { VolunteerCTA } from './components/VolunteerCTA'
 import { VolunteerAreaCard } from './components/VolunteerAreaCard'
 import { VolunteerTimeline } from './components/VolunteerTimeline'
 import { VolunteerStats } from './components/VolunteerStats'
 import { VolunteerTestimonials } from './components/VolunteerTestimonials'
 import { VolunteerFAQ } from './components/VolunteerFAQ'
-import { VolunteerCTA } from './components/VolunteerCTA'
 
 export const revalidate = 3600
 
@@ -30,39 +32,51 @@ const volunteerAreas = [
   { key: 'shelter' as const, color: 'var(--trust)', fg: 'var(--trust-foreground)' },
 ] as const
 
-export default async function VolunteerPage({ params }: Args) {
-  const { locale } = await params
-  setRequestLocale(locale)
+function VolunteerSkeleton() {
+  return (
+    <div className="sys-wrap">
+      {/* Hero skeleton */}
+      <div className="panel p-8 md:p-12">
+        <div className="animate-pulse space-y-4">
+          <div className="h-12 w-3/4 bg-dark-cream rounded" />
+          <div className="h-6 w-1/2 bg-dark-cream rounded" />
+          <div className="h-10 w-40 bg-dark-cream rounded mt-6" />
+        </div>
+      </div>
+      {/* Areas skeleton */}
+      <div className="panel p-8">
+        <div className="animate-pulse">
+          <div className="h-8 w-56 bg-dark-cream rounded mb-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-40 bg-dark-cream rounded" />
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Timeline skeleton */}
+      <div className="panel p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 w-48 bg-dark-cream rounded" />
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="h-20 bg-dark-cream rounded" />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
-  let siteSettings: SiteSetting | null = null
-  let ui: UiString | null = null
-  try {
-    siteSettings = (await getCachedGlobal('site-settings', 1, locale)()) as SiteSetting
-  } catch {
-  }
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
-
-  let volunteerCount = 0
-  let animalsHelpedCount = 0
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const [volunteers, animals] = await Promise.all([
-      payload.count({
-        collection: 'volunteers',
-        where: { applicationStatus: { equals: 'onaylandi' } },
-      }),
-      payload.count({
-        collection: 'animals',
-        where: { _status: { equals: 'published' } },
-      }),
-    ])
-    volunteerCount = volunteers.totalDocs
-    animalsHelpedCount = animals.totalDocs
-  } catch {
-  }
+async function VolunteerDataSection({ locale, ui }: { locale: string; ui: UiString | null }) {
+  const payloadPromise = getPayload({ config: configPromise })
+  const [siteSettingsResult, volunteersResult, animalsResult] = await Promise.allSettled([
+    getCachedGlobal('site-settings', 1, locale)(),
+    payloadPromise.then((p) => p.count({ collection: 'volunteers', where: { applicationStatus: { equals: 'onaylandi' } } })),
+    payloadPromise.then((p) => p.count({ collection: 'animals', where: { _status: { equals: 'published' } } })),
+  ])
+  const siteSettings = siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
+  const volunteerCount = volunteersResult.status === 'fulfilled' ? volunteersResult.value.totalDocs : 0
+  const animalsHelpedCount = animalsResult.status === 'fulfilled' ? animalsResult.value.totalDocs : 0
 
   const feedingPointsCount = siteSettings?.feedingPointsCount ?? 0
 
@@ -135,8 +149,111 @@ export default async function VolunteerPage({ params }: Args) {
   const wa = getSocialLink(siteSettings?.socialLinks, 'whatsapp')
 
   return (
+    <div className="sys-wrap">
+      {/* 1. Hero */}
+      <VolunteerHero
+        title={ui?.volunteer?.title || 'Gönüllü Ol'}
+        subtitle={ui?.volunteer?.subtitle || 'Sokak hayvanlarına yardım etmek için aramıza katılın.'}
+        volunteerCount={volunteerCount}
+        volunteerCountLabel={ui?.volunteer?.stats?.volunteers || 'Aktif Gönüllü'}
+        rotatingAreaNames={rotatingAreaNames}
+      />
+
+      {/* 2. Volunteer Areas */}
+      <section>
+        <AnimatedSectionHeader
+          title={ui?.volunteer?.areas?.title || 'Gönüllülük Alanları'}
+          accentColor="warm"
+          comment=""
+        />
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+          style={{ gap: '1.5px', background: 'var(--palette-black)' }}
+        >
+          {volunteerAreas.map(({ key, color, fg }) => (
+            <VolunteerAreaCard
+              key={key}
+              iconKey={key}
+              title={ui?.volunteer?.areas?.[`${key}Title`] || ''}
+              description={ui?.volunteer?.areas?.[`${key}Description`] || ''}
+              accentColor={color}
+              accentForeground={fg}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* 3. Timeline */}
+      <section>
+        <AnimatedSectionHeader
+          title={ui?.volunteer?.timeline?.title || 'Gönüllü Süreci'}
+          accentColor="trust"
+          comment=""
+        />
+        <VolunteerTimeline steps={timelineSteps} />
+      </section>
+
+      {/* 4. Divider Band */}
+      <SectionDividerBand texts={dividerTexts} />
+
+      {/* 5. Stats */}
+      <section>
+        <AnimatedSectionHeader
+          title={ui?.volunteer?.stats?.title || 'Gönüllü Ailemiz'}
+          accentColor="stats"
+          comment=""
+        />
+        <VolunteerStats stats={stats} />
+      </section>
+
+      {/* 6. Testimonials */}
+      {testimonials.length > 0 && (
+        <section>
+          <AnimatedSectionHeader
+            title={ui?.volunteer?.testimonials?.title || 'Gönüllü Hikayeleri'}
+            accentColor="trust"
+            comment=""
+          />
+          <VolunteerTestimonials testimonials={testimonials} />
+        </section>
+      )}
+
+      {/* 7. FAQ */}
+      {faqItems.length > 0 && (
+        <section>
+          <AnimatedSectionHeader
+            title={ui?.volunteer?.faq?.title || 'Sık Sorulan Sorular'}
+            accentColor="warm"
+            comment=""
+          />
+          <VolunteerFAQ items={faqItems} />
+        </section>
+      )}
+
+      {/* 8. CTA */}
+      {wa && (
+        <VolunteerCTA
+          title={ui?.volunteer?.cta?.title || 'Aramıza Katılın!'}
+          description={ui?.volunteer?.cta?.description || 'Gönüllü olmak için WhatsApp üzerinden bizimle iletişime geçin.'}
+          phone={wa.url}
+          whatsappMessage={ui?.volunteer?.cta?.whatsappMessage || 'Merhaba, gönüllü olmak istiyorum.'}
+          buttonLabel={ui?.volunteer?.cta?.buttonLabel || 'WHATSAPP İLE BAŞVUR'}
+        />
+      )}
+    </div>
+  )
+}
+
+export default async function VolunteerPage({ params }: Args) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  const uiResult = await getCachedGlobal('ui-strings', 0, locale)()
+  const ui = (uiResult as UiString | null) ?? null
+
+  return (
     <>
-      {/* Breadcrumb */}
+      {/* Breadcrumb — renders immediately */}
       <div className="panel px-4 md:px-8 py-3">
         <PageBreadcrumb
           items={[
@@ -147,99 +264,10 @@ export default async function VolunteerPage({ params }: Args) {
         />
       </div>
 
-      {/* ── Main content in sys-wrap ── */}
-      <div className="sys-wrap">
-        {/* 1. Hero */}
-        <VolunteerHero
-          title={ui?.volunteer?.title || 'Gönüllü Ol'}
-          subtitle={ui?.volunteer?.subtitle || 'Sokak hayvanlarına yardım etmek için aramıza katılın.'}
-          volunteerCount={volunteerCount}
-          volunteerCountLabel={ui?.volunteer?.stats?.volunteers || 'Aktif Gönüllü'}
-          rotatingAreaNames={rotatingAreaNames}
-        />
-
-        {/* 2. Volunteer Areas */}
-        <section>
-          <AnimatedSectionHeader
-            title={ui?.volunteer?.areas?.title || 'Gönüllülük Alanları'}
-            accentColor="warm"
-            comment=""
-          />
-          <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
-            style={{ gap: '1.5px', background: 'var(--palette-black)' }}
-          >
-            {volunteerAreas.map(({ key, color, fg }) => (
-              <VolunteerAreaCard
-                key={key}
-                iconKey={key}
-                title={ui?.volunteer?.areas?.[`${key}Title`] || ''}
-                description={ui?.volunteer?.areas?.[`${key}Description`] || ''}
-                accentColor={color}
-                accentForeground={fg}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* 3. Timeline */}
-        <section>
-          <AnimatedSectionHeader
-            title={ui?.volunteer?.timeline?.title || 'Gönüllü Süreci'}
-            accentColor="trust"
-            comment=""
-          />
-          <VolunteerTimeline steps={timelineSteps} />
-        </section>
-
-        {/* 4. Divider Band */}
-        <SectionDividerBand texts={dividerTexts} />
-
-        {/* 5. Stats */}
-        <section>
-          <AnimatedSectionHeader
-            title={ui?.volunteer?.stats?.title || 'Gönüllü Ailemiz'}
-            accentColor="stats"
-            comment=""
-          />
-          <VolunteerStats stats={stats} />
-        </section>
-
-        {/* 6. Testimonials */}
-        {testimonials.length > 0 && (
-          <section>
-            <AnimatedSectionHeader
-              title={ui?.volunteer?.testimonials?.title || 'Gönüllü Hikayeleri'}
-              accentColor="trust"
-              comment=""
-            />
-            <VolunteerTestimonials testimonials={testimonials} />
-          </section>
-        )}
-
-        {/* 7. FAQ */}
-        {faqItems.length > 0 && (
-          <section>
-            <AnimatedSectionHeader
-              title={ui?.volunteer?.faq?.title || 'Sık Sorulan Sorular'}
-              accentColor="warm"
-              comment=""
-            />
-            <VolunteerFAQ items={faqItems} />
-          </section>
-        )}
-
-        {/* 8. CTA */}
-        {wa && (
-          <VolunteerCTA
-            title={ui?.volunteer?.cta?.title || 'Aramıza Katılın!'}
-            description={ui?.volunteer?.cta?.description || 'Gönüllü olmak için WhatsApp üzerinden bizimle iletişime geçin.'}
-            phone={wa.url}
-            whatsappMessage={ui?.volunteer?.cta?.whatsappMessage || 'Merhaba, gönüllü olmak istiyorum.'}
-            buttonLabel={ui?.volunteer?.cta?.buttonLabel || 'WHATSAPP İLE BAŞVUR'}
-          />
-        )}
-      </div>
+      {/* Main content streams in */}
+      <Suspense fallback={<VolunteerSkeleton />}>
+        <VolunteerDataSection locale={locale} ui={ui} />
+      </Suspense>
     </>
   )
 }
@@ -250,13 +278,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  let ui: UiString | null = null
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
-  return {
-    title: ui?.volunteer?.meta?.title || 'Gönüllü Ol — Paws of Hope',
-    description: ui?.volunteer?.meta?.description || '',
-  }
+  return generatePageMetadata(locale, 'volunteer', 'Gönüllü Ol — Paws of Hope')
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import type { SiteSetting, Media as MediaType } from '@/payload-types'
-import SplitText from '@/components/SplitText'
 import { StoryStickyScroll } from './StoryStickyScroll'
+import SplitText from '@/components/SplitText'
 
 type StoryBlock = Extract<
   NonNullable<SiteSetting['homepageBlocks']>[number],

@@ -1,7 +1,9 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import { useIsTouchDevice } from '@/hooks/use-touch-device'
 
 const ACCENT_COLORS = [
   { bg: 'var(--cta)', fg: 'var(--cta-foreground)' },
@@ -30,15 +32,11 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
   const tlRef = useRef<gsap.core.Timeline | null>(null)
   const [flipped, setFlipped] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const reducedMotion = useReducedMotion()
   const flippedRef = useRef(false)
 
   const color = ACCENT_COLORS[colorIndex % ACCENT_COLORS.length]
   const initial = account.bankName.charAt(0).toUpperCase()
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
 
   const flipTo = useCallback(
     (show: boolean) => {
@@ -105,20 +103,17 @@ export function FlipBankCard({ account, colorIndex, copyLabel }: Props) {
     [account.iban],
   )
 
-  const isTouchRef = useRef(false)
-  useEffect(() => {
-    isTouchRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-  }, [])
+  const isTouch = useIsTouchDevice()
 
   const hoverProps = {
     onMouseEnter: () => {
-      if (!isTouchRef.current) handleMouseEnter()
+      if (!isTouch) handleMouseEnter()
     },
     onMouseLeave: () => {
-      if (!isTouchRef.current) handleMouseLeave()
+      if (!isTouch) handleMouseLeave()
     },
     onClick: () => {
-      if (isTouchRef.current) handleClick()
+      if (isTouch) handleClick()
     },
   }
 

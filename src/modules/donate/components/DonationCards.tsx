@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { UtensilsCrossed, Stethoscope, Scissors } from 'lucide-react'
 import { GlareOverlay } from '@/components/fancy/blocks/GlareOverlay'
 
@@ -40,11 +41,7 @@ function DonationCard({
   const cardRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const glareRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {

@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
 import { getCategoryStyle } from '@/utilities/categoryTokens'
+import { formatDate } from '@/utilities/formatDate'
 import type { Post, Media as MediaType } from '@/payload-types'
 
 type RelatedPostsSectionProps = {
@@ -38,10 +39,7 @@ export function RelatedPostsSection({
           {resolvedPosts.slice(0, 3).map((post) => {
             const heroImage = post.heroImage as MediaType | null
             const publishedDate = post.publishedAt
-              ? new Date(post.publishedAt).toLocaleDateString(
-                  locale === 'en' ? 'en-GB' : 'tr-TR',
-                  { day: 'numeric', month: 'long', year: 'numeric' },
-                )
+              ? formatDate(post.publishedAt, locale ?? 'tr')
               : null
 
             return (

@@ -1,10 +1,11 @@
 import type { Block } from 'payload'
+import { enabledField } from '@/fields/homepageFields'
 
 export const SupportCardsBlock: Block = {
   slug: 'homeSupportCards',
   labels: { singular: 'Destek Kartları', plural: 'Destek Kartları' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
+    enabledField(),
     { name: 'slogan', type: 'text', localized: true, defaultValue: 'Bir Can Kurtar', label: 'Slogan' },
     { name: 'ibanTitle', type: 'text', localized: true, defaultValue: 'IBAN ile Bağış', label: 'IBAN Başlığı' },
     { name: 'internationalTitle', type: 'text', localized: true, defaultValue: 'Uluslararası Destek', label: 'Uluslararası Başlık' },

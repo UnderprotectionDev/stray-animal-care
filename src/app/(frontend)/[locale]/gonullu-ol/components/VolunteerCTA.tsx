@@ -1,11 +1,12 @@
 'use client'
 
 import React from 'react'
-import { AnimatedMegaHeading } from '@/components/home/AnimatedMegaHeading'
-import BlurText from '@/components/BlurText'
-import { DotGridBackground } from '@/components/home/DotGridBackground'
+import dynamic from 'next/dynamic'
+const AnimatedMegaHeading = dynamic(() => import('@/components/home/AnimatedMegaHeading').then(mod => mod.AnimatedMegaHeading), { ssr: false })
+const BlurText = dynamic(() => import('@/components/BlurText'), { ssr: false })
+const DotGridBackground = dynamic(() => import('@/components/home/DotGridBackground').then(mod => mod.DotGridBackground), { ssr: false })
 import { MagneticTilt } from '@/components/fancy/blocks/MagneticTilt'
-import { MovingBorder } from '@/components/fancy/blocks/MovingBorder'
+const MovingBorder = dynamic(() => import('@/components/fancy/blocks/MovingBorder').then(mod => mod.MovingBorder), { ssr: false })
 import { WhatsAppButton } from '@/components/shared/WhatsAppButton'
 import ElectricBorder from '@/components/ElectricBorder'
 import { FloatingPaws } from '@/components/shared/FloatingPaws'

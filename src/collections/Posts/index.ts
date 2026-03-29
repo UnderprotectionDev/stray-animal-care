@@ -17,6 +17,7 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 import { seoTab } from '../../fields/seoTab'
+import { livePreviewVersions } from '../../fields/versionsConfig'
 import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
@@ -210,13 +211,5 @@ export const Posts: CollectionConfig<'posts'> = {
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
   },
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  versions: livePreviewVersions,
 }

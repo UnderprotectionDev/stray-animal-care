@@ -19,6 +19,7 @@ type Card = {
   title: string
   category: string
   content: React.ReactNode
+  badgeStyle?: React.CSSProperties
 }
 
 const CarouselContext = createContext<{
@@ -99,7 +100,7 @@ export function Carousel({ items, initialScroll = 0 }: { items: React.JSX.Elemen
             ))}
           </div>
         </div>
-        <div className="flex justify-end gap-2 mr-6 mt-2">
+        <div className="flex justify-end gap-2 mr-6 mt-4">
           <button
             className={cn(
               'relative z-40 h-10 w-10 flex items-center justify-center border-[1.5px] border-[var(--border)] bg-[var(--surface)]',
@@ -168,34 +169,57 @@ export function Card({ card, index, layout = false }: { card: Card; index: numbe
               className="bg-black/80 backdrop-blur-sm h-full w-full fixed inset-0"
             />
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               ref={containerRef}
               layoutId={layout ? `card-${card.title}-${index}` : undefined}
-              className="max-w-5xl mx-auto bg-background border-[1.5px] border-[var(--border)] z-[60] my-10 p-0 relative overflow-hidden"
+              className="max-w-3xl mx-auto bg-background border-[1.5px] border-[var(--border)] z-[60] my-10 p-0 relative overflow-hidden"
             >
-              {/* Solid background overlay to prevent image bleed from layoutId animation */}
               <div className="relative z-10 bg-background">
+                {/* Close button */}
                 <button
-                  className="sticky top-4 right-0 ml-auto h-10 w-10 flex items-center justify-center border-[1.5px] border-[var(--border)] bg-background z-10 mr-4 mt-4"
+                  className="absolute top-4 right-4 h-10 w-10 flex items-center justify-center border-[1.5px] border-[var(--border)] bg-background/90 backdrop-blur-sm z-20 transition-colors hover:bg-[var(--foreground)] hover:text-[var(--background)] group"
                   onClick={handleClose}
                 >
-                  <X className="h-5 w-5 text-[var(--foreground)]" />
+                  <X className="h-5 w-5" />
                 </button>
-                <motion.p
-                  layoutId={layout ? `category-${card.title}-${index}` : undefined}
-                  className="font-mono text-xs uppercase tracking-widest text-[var(--muted-foreground)] px-8 -mt-4"
-                >
-                  {card.category}
-                </motion.p>
-                <motion.p
-                  layoutId={layout ? `title-${card.title}-${index}` : undefined}
-                  className="font-heading text-2xl md:text-4xl font-bold text-[var(--foreground)] mt-2 px-8"
-                >
-                  {card.title}
-                </motion.p>
-                <div className="py-8">{card.content}</div>
+
+                {/* Hero image with gradient overlay */}
+                <div className="relative w-full h-56 sm:h-72 md:h-80 overflow-hidden">
+                  <Image
+                    src={card.src}
+                    alt={card.title}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <motion.span
+                    layoutId={layout ? `category-${card.title}-${index}` : undefined}
+                    className="badge-sys absolute bottom-4 left-6 z-10"
+                    style={card.badgeStyle}
+                  >
+                    {card.category}
+                  </motion.span>
+                </div>
+
+                {/* Content area */}
+                <div className="p-6 md:p-8 flex flex-col gap-5">
+                  <motion.h3
+                    layoutId={layout ? `title-${card.title}-${index}` : undefined}
+                    className="font-heading text-2xl md:text-3xl font-bold text-[var(--foreground)] uppercase leading-tight"
+                  >
+                    {card.title}
+                  </motion.h3>
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.4, ease: 'easeOut' }}
+                  >
+                    {card.content}
+                  </motion.div>
+                </div>
               </div>
             </motion.div>
           </div>

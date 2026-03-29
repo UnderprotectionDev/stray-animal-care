@@ -13,6 +13,7 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { seoTab } from '../../fields/seoTab'
+import { livePreviewVersions } from '../../fields/versionsConfig'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -88,13 +89,5 @@ export const Pages: CollectionConfig<'pages'> = {
     beforeChange: [populatePublishedAt],
     afterDelete: [revalidateDelete],
   },
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  versions: livePreviewVersions,
 }

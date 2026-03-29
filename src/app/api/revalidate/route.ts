@@ -9,12 +9,10 @@ const GLOBAL_TAGS = [
 ]
 
 export async function POST(request: Request) {
-  if (process.env.NODE_ENV === 'production') {
-    const { searchParams } = new URL(request.url)
-    const secret = searchParams.get('secret')
-    if (secret !== process.env.REVALIDATION_SECRET) {
-      return NextResponse.json({ error: 'Invalid secret' }, { status: 401 })
-    }
+  const { searchParams } = new URL(request.url)
+  const secret = searchParams.get('secret')
+  if (!secret || secret !== process.env.REVALIDATION_SECRET) {
+    return NextResponse.json({ error: 'Invalid secret' }, { status: 401 })
   }
 
   for (const tag of GLOBAL_TAGS) {

@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { VerticalCutReveal } from '@/components/fancy/text/VerticalCutReveal'
 import { GlareOverlay } from '@/components/fancy/blocks/GlareOverlay'
 import { Heart, Stethoscope, UtensilsCrossed, Home } from 'lucide-react'
@@ -31,11 +32,7 @@ export function VolunteerAreaCard({
   const cardRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const glareRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {

@@ -67,16 +67,12 @@ export default async function RootLayout({ children, params }: Props) {
 
   const { isEnabled } = await draftMode()
 
-  let siteSettings: SiteSetting | null = null
-  let ui: UiString | null = null
-  try {
-    siteSettings = (await getCachedGlobal('site-settings', 1, locale)()) as SiteSetting
-  } catch {
-  }
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
+  const [siteSettingsResult, uiResult] = await Promise.allSettled([
+    getCachedGlobal('site-settings', 1, locale)(),
+    getCachedGlobal('ui-strings', 0, locale)(),
+  ])
+  const siteSettings = siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
+  const ui = uiResult.status === 'fulfilled' ? (uiResult.value as UiString | null) : null
 
   const layoutLabels = ui?.layout
   const headerLabels = layoutLabels?.header

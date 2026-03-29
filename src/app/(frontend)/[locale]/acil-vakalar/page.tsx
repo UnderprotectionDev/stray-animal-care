@@ -7,7 +7,7 @@ import { EmergencyHero } from '@/modules/emergency/components/EmergencyHero'
 import { EmergencyList } from '@/modules/emergency/components/EmergencyList'
 import { EmergencyCTA } from '@/modules/emergency/components/EmergencyCTA'
 import { getEmergencyCases } from '@/modules/emergency/lib/queries'
-import { locales, defaultLocale, type Locale } from '@/i18n/config'
+import { generatePageMetadata, normalizeLocale } from '@/utilities/pageHelpers'
 import type { Animal, UiString } from '@/payload-types'
 
 export const revalidate = 30
@@ -20,7 +20,7 @@ export default async function EmergencyPage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const payloadLocale: Locale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
+  const payloadLocale = normalizeLocale(locale)
   const [cases, ui] = await Promise.all([
     getEmergencyCases(payloadLocale),
     getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>,
@@ -93,9 +93,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  return {
-    title: ui?.emergency?.meta?.title ?? 'Acil Vakalar — Paws of Hope',
-    description: ui?.emergency?.meta?.description ?? '',
-  }
+  return generatePageMetadata(locale, 'emergency', 'Acil Vakalar — Paws of Hope')
 }

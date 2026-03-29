@@ -1,8 +1,10 @@
 'use client'
 
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react'
 import { cn } from '@/utilities/ui'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import { useIsTouchDevice } from '@/hooks/use-touch-device'
 
 const PawSVG = ({ className }: { className?: string }) => (
   <svg
@@ -43,13 +45,9 @@ export function CustomCursor({
   const containerRef = React.useRef<HTMLDivElement>(null)
   const rectRef = React.useRef<DOMRect | null>(null)
   const [mouseInside, setMouseInside] = useState(false)
-  const [isDisabled, setIsDisabled] = useState(false)
-
-  useEffect(() => {
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    setIsDisabled(isTouchDevice || prefersReducedMotion)
-  }, [])
+  const isTouchDevice = useIsTouchDevice()
+  const prefersReducedMotion = useReducedMotion()
+  const isDisabled = isTouchDevice || prefersReducedMotion
 
   const cacheRect = useCallback(() => {
     if (containerRef.current) {

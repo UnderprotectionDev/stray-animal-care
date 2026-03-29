@@ -1,15 +1,17 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'motion/react'
 import { useQueryState } from 'nuqs'
-import { X, ArrowRight, FilterX } from 'lucide-react'
+import { X, ArrowRight, FilterX, Calendar } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { Media } from '@/components/Media'
-import { BlurFade } from '@/components/BlurFade'
+
+const BlurFade = dynamic(() => import('@/components/BlurFade').then(mod => mod.BlurFade), { ssr: false })
 import { BlogCardEnhanced } from './BlogCardEnhanced'
 import { useOutsideClick } from '@/hooks/use-outside-click'
-import { getCategoryStyle } from '@/utilities/categoryTokens'
+import { getCategoryStyle, getCategorySemanticToken } from '@/utilities/categoryTokens'
 import { formatDate } from '@/utilities/formatDate'
 import type { Post, Media as MediaType } from '@/payload-types'
 
@@ -80,6 +82,7 @@ export function BlogListAnimated({
 
   const activeHeroImage = active ? (active.heroImage as MediaType | null) : null
   const activeDate = active?.publishedAt ? formatDate(active.publishedAt, locale) : null
+  const activeSemanticToken = active?.postCategory ? getCategorySemanticToken(active.postCategory) : 'palette-black'
 
   const featuredPost = showFeatured ? filtered[0] : null
   const gridPosts = showFeatured ? filtered.slice(1) : filtered
@@ -93,7 +96,7 @@ export function BlogListAnimated({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/40 z-[100]"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
           />
         )}
       </AnimatePresence>
@@ -104,17 +107,19 @@ export function BlogListAnimated({
             <motion.div
               layoutId={`card-${active.id}`}
               ref={expandedRef}
-              className="w-full max-w-2xl bg-background border border-border/30 overflow-hidden max-h-[90vh] flex flex-col"
+              className="w-full max-w-3xl bg-background border-[1.5px] border-[var(--border)] overflow-hidden max-h-[90vh] flex flex-col"
             >
+              {/* Close button */}
               <button
                 onClick={() => setActive(null)}
-                className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center bg-background border border-border/30 hover:bg-muted transition-colors"
+                className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center bg-background/90 backdrop-blur-sm border-[1.5px] border-[var(--border)] transition-colors hover:bg-[var(--foreground)] hover:text-[var(--background)]"
                 aria-label="Close"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
 
-              <motion.div layoutId={`image-${active.id}`} className="relative h-72 sm:h-80 bg-muted shrink-0">
+              {/* Hero image */}
+              <motion.div layoutId={`image-${active.id}`} className="relative h-56 sm:h-72 md:h-80 bg-muted shrink-0">
                 {activeHeroImage && typeof activeHeroImage === 'object' && (
                   <Media
                     resource={activeHeroImage}
@@ -122,9 +127,10 @@ export function BlogListAnimated({
                     imgClassName="object-cover"
                   />
                 )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 {active.postCategory && (
                   <span
-                    className="badge-sys absolute bottom-3 left-3 z-10"
+                    className="badge-sys absolute bottom-4 left-6 z-10"
                     style={getCategoryStyle(active.postCategory)}
                   >
                     {categoryLabels[active.postCategory] ?? active.postCategory}
@@ -132,36 +138,59 @@ export function BlogListAnimated({
                 )}
               </motion.div>
 
-              <div className="p-6 flex flex-col gap-3 overflow-y-auto">
+              {/* Content */}
+              <div className="p-6 md:p-8 flex flex-col gap-5 overflow-y-auto">
                 <motion.h3
                   layoutId={`title-${active.id}`}
-                  className="font-heading text-xl sm:text-2xl font-bold uppercase"
+                  className="font-heading text-xl sm:text-2xl md:text-3xl font-bold uppercase leading-tight"
                 >
                   {active.title}
                 </motion.h3>
 
-                {activeDate && (
-                  <span className="text-xs text-muted-foreground font-mono">
-                    {activeDate}
-                  </span>
-                )}
-
-                {active.excerpt && (
-                  <motion.p
-                    layoutId={`excerpt-${active.id}`}
-                    className="text-sm text-muted-foreground font-mono leading-relaxed"
-                  >
-                    {active.excerpt}
-                  </motion.p>
-                )}
-
-                <Link
-                  href={`/gunluk/${active.slug}`}
-                  className="inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-wider mt-2 hover:underline underline-offset-4"
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.4, ease: 'easeOut' }}
+                  className="flex flex-col gap-5"
                 >
-                  {readMoreLabel}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                  {/* Accent bar + date */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-8 h-[3px] shrink-0"
+                      style={{ background: `var(--${activeSemanticToken})` }}
+                    />
+                    {activeDate && (
+                      <span className="text-xs text-muted-foreground font-mono flex items-center gap-1.5">
+                        <Calendar className="w-3 h-3" />
+                        {activeDate}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Excerpt as pull-quote */}
+                  {active.excerpt && (
+                    <div
+                      className="border-l-[3px] pl-4 md:pl-5 py-1"
+                      style={{ borderColor: `var(--${activeSemanticToken})` }}
+                    >
+                      <motion.p
+                        layoutId={`excerpt-${active.id}`}
+                        className="text-sm md:text-[0.938rem] text-muted-foreground font-mono leading-relaxed"
+                      >
+                        {active.excerpt}
+                      </motion.p>
+                    </div>
+                  )}
+
+                  {/* CTA */}
+                  <Link
+                    href={`/gunluk/${active.slug}`}
+                    className="btn-cta inline-flex items-center gap-2 text-sm py-3 px-6 w-fit"
+                  >
+                    {readMoreLabel}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </motion.div>
               </div>
             </motion.div>
           </div>

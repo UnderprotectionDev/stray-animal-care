@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 import { ChevronDown, FileText, Download } from 'lucide-react'
 import type { Media, TransparencyReport } from '@/payload-types'
 import { GlareOverlay } from '@/components/fancy/blocks/GlareOverlay'
@@ -42,13 +43,9 @@ export function ReportCard({ report, labels, currency, index }: ReportCardProps)
   const glareRef = useRef<HTMLDivElement>(null)
   const expandRef = useRef<HTMLDivElement>(null)
   const chevronRef = useRef<SVGSVGElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const reducedMotion = useReducedMotion()
 
   const accent = ACCENT_COLORS[index % ACCENT_COLORS.length]
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
 
   // Animate expand/collapse
   useEffect(() => {

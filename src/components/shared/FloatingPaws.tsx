@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
-import gsap from 'gsap'
+import React from 'react'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 const PAW_SVG = (
   <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -36,37 +36,13 @@ type Props = {
 }
 
 export function FloatingPaws({ paws = DEFAULT_PAWS, color = 'var(--warm-foreground)' }: Props) {
-  const pawRefs = useRef<(HTMLDivElement | null)[]>([])
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
-
-  useEffect(() => {
-    if (reducedMotion) return
-    const tweens = pawRefs.current
-      .filter(Boolean)
-      .map((el) =>
-        gsap.to(el!, {
-          y: '+=15',
-          x: '+=8',
-          rotation: '+=10',
-          yoyo: true,
-          repeat: -1,
-          duration: 3 + Math.random() * 2,
-          ease: 'sine.inOut',
-        }),
-      )
-    return () => tweens.forEach((t) => t.kill())
-  }, [reducedMotion])
+  const reducedMotion = useReducedMotion()
 
   return (
     <>
       {paws.map((paw, i) => (
         <div
           key={i}
-          ref={(el) => { pawRefs.current[i] = el }}
           className="absolute pointer-events-none select-none"
           style={{
             top: paw.top,
@@ -76,8 +52,11 @@ export function FloatingPaws({ paws = DEFAULT_PAWS, color = 'var(--warm-foregrou
             height: paw.size,
             opacity: paw.opacity,
             color,
-            transform: `rotate(${paw.rotation}deg)`,
-          }}
+            '--paw-rotate': `${paw.rotation}deg`,
+            animation: reducedMotion
+              ? 'none'
+              : `floating-paw ${3 + i * 0.7}s ease-in-out infinite alternate`,
+          } as React.CSSProperties}
           aria-hidden="true"
         >
           {PAW_SVG}

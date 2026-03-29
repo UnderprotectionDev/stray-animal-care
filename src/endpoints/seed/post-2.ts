@@ -1,5 +1,6 @@
 import { RequiredDataFromCollectionSlug } from 'payload'
 import type { PostArgs } from './post-1'
+import { heading, paragraph, mediaBlock, lexicalRoot } from './factories'
 
 export const post2: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> = ({
   heroImage,
@@ -7,226 +8,30 @@ export const post2: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
   author,
 }) => {
   return {
-    slug: 'global-gaze',
+    slug: 'portakalin-kurtarilis-hikayesi',
     _status: 'published',
     authors: [author],
-    content: {
-      root: {
-        type: 'root',
-        children: [
-          {
-            type: 'heading',
-            children: [
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: 'Explore the untold and overlooked. A magnified view into the corners of the world, where every story deserves its spotlight.',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            tag: 'h2',
-            version: 1,
-          },
-          {
-            type: 'block',
-            fields: {
-              blockName: 'Disclaimer',
-              blockType: 'banner',
-              content: {
-                root: {
-                  type: 'root',
-                  children: [
-                    {
-                      type: 'paragraph',
-                      children: [
-                        {
-                          type: 'text',
-                          detail: 0,
-                          format: 1,
-                          mode: 'normal',
-                          style: '',
-                          text: 'Disclaimer:',
-                          version: 1,
-                        },
-                        {
-                          type: 'text',
-                          detail: 0,
-                          format: 0,
-                          mode: 'normal',
-                          style: '',
-                          text: ' This content is fabricated and for demonstration purposes only. To edit this post, ',
-                          version: 1,
-                        },
-                        {
-                          type: 'link',
-                          children: [
-                            {
-                              type: 'text',
-                              detail: 0,
-                              format: 0,
-                              mode: 'normal',
-                              style: '',
-                              text: 'navigate to the admin dashboard.',
-                              version: 1,
-                            },
-                          ],
-                          direction: 'ltr',
-                          fields: {
-                            linkType: 'custom',
-                            newTab: true,
-                            url: '/admin',
-                          },
-                          format: '',
-                          indent: 0,
-                          version: 3,
-                        },
-                      ],
-                      direction: 'ltr',
-                      format: '',
-                      indent: 0,
-                      textFormat: 1,
-                      version: 1,
-                    },
-                  ],
-                  direction: 'ltr',
-                  format: '',
-                  indent: 0,
-                  version: 1,
-                },
-              },
-              style: 'info',
-            },
-            format: '',
-            version: 2,
-          },
-          {
-            type: 'heading',
-            children: [
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: 'The Power of Resilience: Stories of Recovery and Hope',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            tag: 'h2',
-            version: 1,
-          },
-          {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: "Throughout history, regions across the globe have faced the devastating impact of natural disasters, the turbulence of political unrest, and the challenging ripples of economic downturns. In these moments of profound crisis, an often-underestimated force emerges: the indomitable resilience of the human spirit. These aren't just tales of mere survival, but stories of communities forging bonds, uniting with a collective purpose, and demonstrating an innate ability to overcome.",
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            textFormat: 0,
-            version: 1,
-          },
-          {
-            type: 'block',
-            fields: {
-              blockName: '',
-              blockType: 'mediaBlock',
-              media: blockImage.id,
-            },
-            format: '',
-            version: 2,
-          },
-          {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'text',
-                detail: 0,
-                format: 0,
-                mode: 'normal',
-                style: '',
-                text: 'From neighbors forming makeshift rescue teams during floods to entire cities rallying to rebuild after economic collapse, the essence of humanity is most evident in these acts of solidarity. As we delve into these narratives, we witness the transformative power of community spirit, where adversity becomes a catalyst for growth, unity, and a brighter, rebuilt future.',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            textFormat: 0,
-            version: 1,
-          },
-          {
-            type: 'block',
-            fields: {
-              blockName: 'Dynamic components',
-              blockType: 'banner',
-              content: {
-                root: {
-                  type: 'root',
-                  children: [
-                    {
-                      type: 'paragraph',
-                      children: [
-                        {
-                          type: 'text',
-                          detail: 0,
-                          format: 0,
-                          mode: 'normal',
-                          style: '',
-                          text: "This content above is completely dynamic using custom layout building blocks configured in the CMS. This can be anything you'd like from rich text and images, to highly designed, complex components.",
-                          version: 1,
-                        },
-                      ],
-                      direction: 'ltr',
-                      format: '',
-                      indent: 0,
-                      textFormat: 0,
-                      version: 1,
-                    },
-                  ],
-                  direction: 'ltr',
-                  format: '',
-                  indent: 0,
-                  version: 1,
-                },
-              },
-              style: 'info',
-            },
-            format: '',
-            version: 2,
-          },
-        ],
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1,
-      },
-    },
+    content: lexicalRoot([
+      heading('Hatay\'da yıkılmış bir binanın kenarında bulunan turuncu kedimiz Portakal\'ın tedavi süreci ve yeni hayatı.'),
+      heading('Yıkıntıların Arasından Gelen Ses'),
+      paragraph('Deprem sonrası Hatay\'da besleme turu yapıyorduk. En çok zarar gören mahallelerden birinde, yarı yıkık bir binanın kenarından zayıf bir miyavlama sesi geldi. Yaklaştığımızda molozların arasına sığınmış, bitkin ama gözleri hâlâ ışıl ışıl parlayan turuncu bir kedi bulduk.'),
+      paragraph('Muhtemelen sahiplerinin terk ettiği ya da kaybettiği bir evde yaşamış, deprem sonrası sokakta kalmıştı. Titreyen küçük bedeni kucağımıza aldığımızda hâlâ mırıldanıyordu. O andan itibaren adı Portakal oldu.'),
+      mediaBlock(blockImage.id),
+      heading('Zor Bir Tedavi Süreci'),
+      paragraph('Portakal\'ı hemen veterinere götürdük. Ciddi dehidrasyon, üst solunum yolu enfeksiyonu ve uyuz tespit edildi. İlk günler kritikti — damar yoluyla sıvı desteği, antibiyotik ve uyuz tedavisi birlikte başlatıldı. Yemek yemiyordu, enjektörle mama veriyorduk.'),
+      paragraph('Üçüncü günde ilk kez kendi başına mama yedi. O anı unutamıyoruz — küçük bir zafer gibi hissettik. İki hafta süren yoğun tedavinin ardından tüyleri parlamaya, kilosu artmaya başladı. Artık pencere kenarında güneşlenip mırıldanan, oyun oynamak isteyen bir kedi vardı karşımızda.'),
+      heading('Şimdi Nerede?'),
+      paragraph('Bugün Portakal kalıcı bakımımız altında sağlıklı ve mutlu bir şekilde yaşıyor. Kısırlaştırıldı, aşıları tamamlandı. Her sabah mama saatini bilen bir rutini var artık — kapı açılır açılmaz koşarak geliyor.'),
+      paragraph('Portakal\'ın hikayesi, deprem sonrası sokaklarda hayata tutunan yüzlerce hayvanın sadece biri. Her birinin bir ismi, bir hikayesi ve yardıma ihtiyacı var. Sizin desteğinizle daha fazla Portakal\'a ulaşabiliriz.'),
+    ]),
     heroImage: heroImage.id,
     meta: {
       description:
-        'Explore the untold and overlooked. A magnified view into the corners of the world, where every story deserves its spotlight.',
+        'Hatay\'da deprem sonrası bulunan Portakal\'ın tedavi süreci ve yeni hayatının hikayesi.',
       image: heroImage.id,
-      title: 'Global Gaze: Beyond the Headlines',
+      title: 'Portakal\'ın Kurtuluş Hikayesi',
     },
     relatedPosts: [], // this is populated by the seed script
-    title: 'Global Gaze: Beyond the Headlines',
+    title: 'Portakal\'ın Kurtuluş Hikayesi',
   }
 }

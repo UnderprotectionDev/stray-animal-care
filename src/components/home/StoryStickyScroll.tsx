@@ -1,12 +1,14 @@
 'use client'
 
 import React, { useRef, type ReactNode } from 'react'
+import dynamic from 'next/dynamic'
 import { motion, useInView } from 'motion/react'
 import type { Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
-import SplitText from '@/components/SplitText'
 import { StickyScroll } from '@/components/ui/sticky-scroll-reveal'
+
+const SplitText = dynamic(() => import('@/components/SplitText'), { ssr: false })
 
 type StoryStep = {
   title: string

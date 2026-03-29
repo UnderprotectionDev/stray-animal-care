@@ -70,13 +70,13 @@ export function PostsAndTransparency({
   return (
     <>
       {/* ═══════════ BLOG SECTION ═══════════ */}
-      <section className="bg-background">
+      <section className="bg-background pb-6">
         {/* Header bar */}
         <div className="panel py-5 px-6 lg:px-8 flex flex-col gap-1 border-b-[1.5px] border-border">
-          <div className="flex items-start justify-between">
+          <div className="flex items-center justify-between">
             <div>
-              <p className="t-comment mb-1">{'BLOG & HABERLER'}</p>
               <AnimatedMegaHeading text={postsBlock.sectionTitle} enableColorFlash />
+              <div className="w-24 h-1 mt-3" style={{ background: 'var(--stats)' }} />
             </div>
             {postsBlock.viewAllLabel && postsBlock.viewAllLink && (
               <Link href={postsBlock.viewAllLink} className="btn-stats text-xs py-2 px-5 shrink-0">
@@ -104,23 +104,19 @@ export function PostsAndTransparency({
 
       {/* ═══════════ TRANSPARENCY SECTION ═══════════ */}
       <section>
-        {/* Header bar */}
-        <div
-          className="grid grid-cols-1 lg:grid-cols-[1fr_auto]"
-          style={{ gap: '1.5px', background: 'var(--palette-black)' }}
-        >
-          <div className="bg-foreground text-background px-6 py-5 lg:px-8 lg:py-6">
-            <p className="t-comment mb-1">{'AÇIK DEFTER'}</p>
-            <AnimatedMegaHeading text={transparencyBlock.title} style={{ color: 'var(--background)' }} />
+        {/* Header bar — matches blog section layout (inverted colors) */}
+        <div className="bg-foreground py-5 px-6 lg:px-8 border-b-[1.5px] border-background/20">
+          <div className="flex items-center justify-between">
+            <div>
+              <AnimatedMegaHeading text={transparencyBlock.title} style={{ color: 'var(--background)' }} />
+              <div className="w-24 h-1 mt-3" style={{ background: 'var(--trust)' }} />
+            </div>
+            {transparencyBlock.ctaLabel && transparencyBlock.ctaLink && (
+              <Link href={transparencyBlock.ctaLink} className="btn-stats text-xs py-2 px-5 shrink-0">
+                {transparencyBlock.ctaLabel}
+              </Link>
+            )}
           </div>
-          {transparencyBlock.ctaLabel && transparencyBlock.ctaLink && (
-            <Link
-              href={transparencyBlock.ctaLink}
-              className="flex items-center justify-center bg-foreground text-background px-8 py-4 font-bold uppercase tracking-wider text-sm hover:opacity-90 transition-opacity"
-            >
-              {transparencyBlock.ctaLabel}
-            </Link>
-          )}
         </div>
 
         {/* Stat grid */}

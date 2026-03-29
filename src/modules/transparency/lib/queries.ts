@@ -1,26 +1,10 @@
 import 'server-only'
 
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
-import { unstable_cache } from 'next/cache'
-import type { Locale } from '@/i18n/config'
+import type { TransparencyReport } from '@/payload-types'
+import { createListQuery } from '@/utilities/payloadQueries'
 
-async function fetchReports(locale: Locale) {
-  const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({
-    collection: 'transparency-reports',
-    depth: 1,
-    limit: 100,
-    sort: '-month',
-    locale,
-  })
-  return result.docs
-}
-
-export function getReports(locale: Locale) {
-  return unstable_cache(
-    () => fetchReports(locale),
-    ['transparency-reports', locale],
-    { tags: ['transparency-reports', locale], revalidate: 3600 },
-  )()
-}
+export const getReports = createListQuery<TransparencyReport>('transparency-reports', {
+  cacheTag: 'transparency-reports',
+  sort: '-month',
+  revalidate: 3600,
+})

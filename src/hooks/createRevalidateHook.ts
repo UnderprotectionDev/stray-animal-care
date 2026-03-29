@@ -5,6 +5,7 @@ import type {
 } from 'payload'
 
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { after } from 'next/server'
 import { locales } from '@/i18n/config'
 
 type CollectionRevalidateConfig = {
@@ -55,28 +56,34 @@ export function createCollectionRevalidateHooks({
     if (checkStatus) {
       if (doc._status === 'published') {
         payload.logger.info(`Revalidating ${entityName}: ${doc.slug ?? doc.title}`)
+        after(() => {
+          try {
+            revalidateAll(doc)
+          } catch (err) {
+            payload.logger.error({ msg: `Failed to revalidate ${entityName}`, err })
+          }
+        })
+      }
+
+      if (previousDoc?._status === 'published' && doc._status !== 'published') {
+        payload.logger.info(`Revalidating old ${entityName}: ${previousDoc.slug ?? previousDoc.title}`)
+        after(() => {
+          try {
+            revalidateAll(previousDoc)
+          } catch (err) {
+            payload.logger.error({ msg: `Failed to revalidate old ${entityName}`, err })
+          }
+        })
+      }
+    } else {
+      payload.logger.info(`Revalidating ${entityName}: ${doc.title ?? doc.slug}`)
+      after(() => {
         try {
           revalidateAll(doc)
         } catch (err) {
           payload.logger.error({ msg: `Failed to revalidate ${entityName}`, err })
         }
-      }
-
-      if (previousDoc?._status === 'published' && doc._status !== 'published') {
-        payload.logger.info(`Revalidating old ${entityName}: ${previousDoc.slug ?? previousDoc.title}`)
-        try {
-          revalidateAll(previousDoc)
-        } catch (err) {
-          payload.logger.error({ msg: `Failed to revalidate old ${entityName}`, err })
-        }
-      }
-    } else {
-      payload.logger.info(`Revalidating ${entityName}: ${doc.title ?? doc.slug}`)
-      try {
-        revalidateAll(doc)
-      } catch (err) {
-        payload.logger.error({ msg: `Failed to revalidate ${entityName}`, err })
-      }
+      })
     }
 
     return doc
@@ -88,11 +95,13 @@ export function createCollectionRevalidateHooks({
   }) => {
     if (context.disableRevalidate) return doc
 
-    try {
-      revalidateAll(doc as Record<string, unknown>)
-    } catch (err) {
-      payload.logger.error({ msg: `Failed to revalidate deleted ${entityName}`, err })
-    }
+    after(() => {
+      try {
+        revalidateAll(doc as Record<string, unknown>)
+      } catch (err) {
+        payload.logger.error({ msg: `Failed to revalidate deleted ${entityName}`, err })
+      }
+    })
 
     return doc
   }
@@ -112,9 +121,11 @@ export function createGlobalRevalidateHook({
   return ({ doc, req: { payload, context } }) => {
     if (!context.disableRevalidate) {
       payload.logger.info(`Revalidating ${entityName}`)
-      for (const tag of tags) {
-        revalidateTag(tag)
-      }
+      after(() => {
+        for (const tag of tags) {
+          revalidateTag(tag)
+        }
+      })
     }
     return doc
   }

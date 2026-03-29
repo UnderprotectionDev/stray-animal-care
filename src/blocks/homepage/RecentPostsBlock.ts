@@ -1,13 +1,13 @@
 import type { Block } from 'payload'
+import { enabledField, sectionTitleField, viewAllFields } from '@/fields/homepageFields'
 
 export const RecentPostsBlock: Block = {
   slug: 'homeRecentPosts',
   labels: { singular: 'Son Yazılar', plural: 'Son Yazılar' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
-    { name: 'sectionTitle', type: 'text', localized: true, defaultValue: 'Son Yazılar', label: 'Bölüm Başlığı' },
-    { name: 'viewAllLabel', type: 'text', localized: true, defaultValue: 'Tüm Yazılar', label: 'Tümünü Gör Etiketi' },
-    { name: 'viewAllLink', type: 'text', defaultValue: '/gunluk', label: 'Tümünü Gör Linki' },
+    enabledField(),
+    sectionTitleField('Son Yazılar'),
+    ...viewAllFields('Tüm Yazılar', '/gunluk'),
     { name: 'limit', type: 'number', defaultValue: 6, min: 1, max: 6, label: 'Gösterilecek Sayı' },
   ],
 }

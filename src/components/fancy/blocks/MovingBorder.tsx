@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useEffect, useRef, useState, type PropsWithChildren } from 'react'
+import React, { useEffect, useRef, type PropsWithChildren } from 'react'
 import gsap from 'gsap'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 type Props = PropsWithChildren<{
   color?: string
@@ -16,11 +17,7 @@ export function MovingBorder({
   className,
 }: Props) {
   const borderRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (reducedMotion || !borderRef.current) return

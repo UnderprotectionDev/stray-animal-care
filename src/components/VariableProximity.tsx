@@ -1,20 +1,12 @@
-import { forwardRef, useMemo, useRef, useEffect, MutableRefObject, CSSProperties, HTMLAttributes } from 'react';
-import { motion } from 'motion/react';
+import { forwardRef, useMemo, useRef, useEffect, useCallback, MutableRefObject, CSSProperties, HTMLAttributes } from 'react';
 
-function useAnimationFrame(callback: () => void) {
-  useEffect(() => {
-    let frameId: number;
-    const loop = () => {
-      callback();
-      frameId = requestAnimationFrame(loop);
-    };
-    frameId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback]);
-}
-
-function useMousePositionRef(containerRef: MutableRefObject<HTMLElement | null>) {
+/** Tracks mouse position and schedules a single RAF per move instead of running every frame */
+function useMousePositionRef(
+  containerRef: MutableRefObject<HTMLElement | null>,
+  onMove: () => void,
+) {
   const positionRef = useRef({ x: 0, y: 0 });
+  const frameRef = useRef<number>(0);
 
   useEffect(() => {
     const updatePosition = (x: number, y: number) => {
@@ -23,6 +15,12 @@ function useMousePositionRef(containerRef: MutableRefObject<HTMLElement | null>)
         positionRef.current = { x: x - rect.left, y: y - rect.top };
       } else {
         positionRef.current = { x, y };
+      }
+      if (!frameRef.current) {
+        frameRef.current = requestAnimationFrame(() => {
+          frameRef.current = 0;
+          onMove();
+        });
       }
     };
 
@@ -33,12 +31,13 @@ function useMousePositionRef(containerRef: MutableRefObject<HTMLElement | null>)
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
-  }, [containerRef]);
+  }, [containerRef, onMove]);
 
   return positionRef;
 }
@@ -71,8 +70,6 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
 
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const interpolatedSettingsRef = useRef<string[]>([]);
-  const mousePositionRef = useMousePositionRef(containerRef);
-  const lastPositionRef = useRef<{ x: number | null; y: number | null }>({ x: null, y: null });
 
   const parsedSettings = useMemo(() => {
     const parseSettings = (settingsStr: string) =>
@@ -112,13 +109,8 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     }
   };
 
-  useAnimationFrame(() => {
+  const updateLetters = useCallback(() => {
     if (!containerRef?.current) return;
-    const { x, y } = mousePositionRef.current;
-    if (lastPositionRef.current.x === x && lastPositionRef.current.y === y) {
-      return;
-    }
-    lastPositionRef.current = { x, y };
     const containerRect = containerRef.current.getBoundingClientRect();
 
     letterRefs.current.forEach((letterRef, index) => {
@@ -132,7 +124,7 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
         mousePositionRef.current.x,
         mousePositionRef.current.y,
         letterCenterX,
-        letterCenterY
+        letterCenterY,
       );
 
       if (distance >= radius) {
@@ -151,7 +143,9 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
       interpolatedSettingsRef.current[index] = newSettings;
       letterRef.style.fontVariationSettings = newSettings;
     });
-  });
+  }, [containerRef, radius, falloff, parsedSettings, fromFontVariationSettings]);
+
+  const mousePositionRef = useMousePositionRef(containerRef, updateLetters);
 
   const words = label.split(' ');
   let letterIndex = 0;
@@ -172,7 +166,7 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
           {word.split('').map(letter => {
             const currentLetterIndex = letterIndex++;
             return (
-              <motion.span
+              <span
                 key={currentLetterIndex}
                 ref={el => {
                   letterRefs.current[currentLetterIndex] = el;
@@ -184,7 +178,7 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
                 aria-hidden="true"
               >
                 {letter}
-              </motion.span>
+              </span>
             );
           })}
           {wordIndex < words.length - 1 && <span className="inline-block">&nbsp;</span>}

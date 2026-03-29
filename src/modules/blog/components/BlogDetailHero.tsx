@@ -1,8 +1,9 @@
 'use client'
 
 import React from 'react'
-import BlurText from '@/components/BlurText'
-import { DotGridBackground } from '@/components/home/DotGridBackground'
+import dynamic from 'next/dynamic'
+const BlurText = dynamic(() => import('@/components/BlurText'), { ssr: false })
+const DotGridBackground = dynamic(() => import('@/components/home/DotGridBackground').then(mod => mod.DotGridBackground), { ssr: false })
 import { FloatingPaws } from '@/components/shared/FloatingPaws'
 
 type BlogDetailHeroProps = {

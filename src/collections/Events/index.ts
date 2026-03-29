@@ -5,6 +5,7 @@ import { EVENT_TYPE_OPTIONS, EVENT_STATUS_OPTIONS } from '../../constants/option
 import { revalidateEvent, revalidateEventDelete } from './hooks/revalidateEvent'
 import { contentRichText } from '../../fields/lexical'
 import { seoTab } from '../../fields/seoTab'
+import { standardVersions } from '../../fields/versionsConfig'
 import { publishedAtField } from '../../fields/publishedAt'
 import { slugField } from 'payload'
 
@@ -120,13 +121,5 @@ export const Events: CollectionConfig<'events'> = {
     afterDelete: [revalidateEventDelete],
   },
   trash: true,
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 500,
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+  versions: standardVersions,
 }

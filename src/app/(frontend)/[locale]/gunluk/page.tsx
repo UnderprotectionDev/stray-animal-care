@@ -5,7 +5,8 @@ import { Container } from '@/components/shared/Container'
 import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { BlogFilter, BlogListAnimated, BlogPageHeader } from '@/modules/blog'
 import { getBlogPosts } from '@/modules/blog/lib/queries'
-import { locales, defaultLocale, type Locale } from '@/i18n/config'
+import { locales } from '@/i18n/config'
+import { generatePageMetadata, normalizeLocale } from '@/utilities/pageHelpers'
 import type { UiString } from '@/payload-types'
 
 export const revalidate = 60
@@ -18,9 +19,7 @@ export default async function BlogPage({ params }: Args) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const payloadLocale: Locale = locales.includes(locale as Locale)
-    ? (locale as Locale)
-    : defaultLocale
+  const payloadLocale = normalizeLocale(locale)
   const [posts, ui] = await Promise.all([
     getBlogPosts(payloadLocale),
     getCachedGlobal('ui-strings', 0, locale)() as Promise<UiString | null>,
@@ -85,9 +84,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  const ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  return {
-    title: ui?.blog?.meta?.title ?? 'Günlük — Paws of Hope',
-    description: ui?.blog?.meta?.description ?? 'Paws of Hope günlük yazıları ve haberler.',
-  }
+  return generatePageMetadata(locale, 'blog', 'Günlük — Paws of Hope', 'Paws of Hope günlük yazıları ve haberler.')
 }

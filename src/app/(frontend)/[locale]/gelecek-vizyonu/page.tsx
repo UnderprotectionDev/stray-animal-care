@@ -9,6 +9,7 @@ import { PageBreadcrumb } from '@/components/shared/Breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/navigation'
 import { locales } from '@/i18n/config'
+import { generatePageMetadata } from '@/utilities/pageHelpers'
 import {
   Building2,
   Scissors,
@@ -302,13 +303,5 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { locale } = await params
-  let ui: UiString | null = null
-  try {
-    ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
-  return {
-    title: ui?.vision?.meta?.title || 'Gelecek Vizyonu — Paws of Hope',
-    description: ui?.vision?.meta?.description || 'Derneğimizin gelecek vizyonu ve hedefleri.',
-  }
+  return generatePageMetadata(locale, 'vision', 'Gelecek Vizyonu — Paws of Hope', 'Derneğimizin gelecek vizyonu ve hedefleri.')
 }

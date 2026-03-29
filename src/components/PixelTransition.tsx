@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState, CSSProperties } from 'react';
 import { gsap } from 'gsap';
+import { useIsTouchDevice } from '@/hooks/use-touch-device';
 
 interface PixelTransitionProps {
   firstContent: React.ReactNode | string;
@@ -33,13 +34,7 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
 
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  useEffect(() => {
-    setIsTouchDevice(
-      'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches
-    );
-  }, []);
+  const isTouchDevice = useIsTouchDevice();
 
   useEffect(() => {
     const pixelGridEl = pixelGridRef.current;

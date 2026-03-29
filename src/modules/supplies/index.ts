@@ -1,6 +1,3 @@
-export { NeedsTable } from './components/NeedsTable'
-export { ShippingInfo } from './components/ShippingInfo'
-export { SponsorProgram } from './components/SponsorProgram'
 export { SuppliesHero } from './components/SuppliesHero'
 export { SuppliesStats } from './components/SuppliesStats'
 export { SuppliesNeedsGrid } from './components/SuppliesNeedsGrid'

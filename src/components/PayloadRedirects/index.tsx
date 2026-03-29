@@ -18,7 +18,10 @@ export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url }
 
   if (redirectItem) {
     if (redirectItem.to?.url) {
-      redirect(redirectItem.to.url)
+      const targetUrl = redirectItem.to.url
+      if (targetUrl.startsWith('/') && !targetUrl.startsWith('//') && !targetUrl.includes('..')) {
+        redirect(targetUrl)
+      }
     }
 
     let redirectUrl: string

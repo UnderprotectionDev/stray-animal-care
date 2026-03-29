@@ -1,11 +1,12 @@
 import type { Block } from 'payload'
+import { enabledField, sectionTitleField } from '@/fields/homepageFields'
 
 export const HomeHeroBlock: Block = {
   slug: 'homeHero',
   labels: { singular: 'Ana Görsel', plural: 'Ana Görsel' },
   fields: [
-    { name: 'enabled', type: 'checkbox', defaultValue: true, label: 'Aktif' },
-    { name: 'sectionTitle', type: 'text', localized: true, label: 'Bölüm Başlığı', defaultValue: 'ANA SAYFA' },
+    enabledField(),
+    sectionTitleField('HER CAN DEĞERLİ'),
     { name: 'tagline', type: 'text', localized: true, label: 'Kısa Açıklama', defaultValue: "2019'dan bu yana yüzlerce hayvanın hayatına dokunduk." },
     {
       name: 'rotatingWords',

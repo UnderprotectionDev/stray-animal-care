@@ -34,6 +34,7 @@ export const VideoEmbedBlock: React.FC<Props> = ({ className, url, caption }) =>
             allowFullScreen
             loading="lazy"
             title={caption || 'Video'}
+            sandbox="allow-scripts allow-same-origin allow-presentation"
           />
         </div>
       </div>

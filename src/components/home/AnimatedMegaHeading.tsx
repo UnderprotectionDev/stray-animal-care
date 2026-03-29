@@ -1,8 +1,11 @@
 'use client'
 
-import React, { useCallback, useRef, useState, useEffect } from 'react'
+import React, { useCallback, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import gsap from 'gsap'
-import SplitText from '@/components/SplitText'
+import { useReducedMotion } from '@/hooks/use-reduced-motion'
+
+const SplitText = dynamic(() => import('@/components/SplitText'), { ssr: false })
 
 const FLASH_COLORS = [
   'var(--cta)',
@@ -21,11 +24,7 @@ type Props = {
 
 export function AnimatedMegaHeading({ text, className, tag = 'h2', style, enableColorFlash = false }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  }, [])
+  const reducedMotion = useReducedMotion()
 
   const handleAnimationComplete = useCallback(() => {
     if (!enableColorFlash || reducedMotion || !wrapperRef.current) return
