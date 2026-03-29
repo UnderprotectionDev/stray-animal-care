@@ -21,7 +21,7 @@ export default async function NotFound() {
           4
         </span>
         {/* Corner label */}
-        <span className="t-comment absolute left-3 top-3 text-foreground/40">// ERROR</span>
+        <span className="t-comment absolute left-3 top-3 text-foreground/40">{'// ERROR'}</span>
       </div>
 
       {/* ── Cell 2: Giant "0" ── */}
@@ -86,7 +86,7 @@ export default async function NotFound() {
 
         {/* Bottom corner accent */}
         <span className="t-comment absolute bottom-3 right-4 text-foreground/30">
-          // {isEn ? 'PAGE_NOT_FOUND' : 'SAYFA_BULUNAMADI'}
+          {'// '}{isEn ? 'PAGE_NOT_FOUND' : 'SAYFA_BULUNAMADI'}
         </span>
       </div>
     </div>

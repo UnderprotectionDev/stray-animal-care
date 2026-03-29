@@ -19,13 +19,6 @@ type Props = {
   rotatingLabel: string
 }
 
-const fmt = (n: number) =>
-  new Intl.NumberFormat('tr-TR', {
-    style: 'currency',
-    currency: 'TRY',
-    maximumFractionDigits: 0,
-  }).format(n)
-
 export function EmergencyHero({
   title,
   subtitle,

@@ -12,7 +12,7 @@ import * as path from 'path'
 import type { File } from 'payload'
 import { getPayload } from 'payload'
 import config from '../payload.config'
-import { banner, bold, boldItalic, callout, heading, hr, inlineCode, italic, lexicalRoot, link, ol, paragraph, quote, strikethrough, subscriptText, superscript, text, ul, underline } from './lexical-builders'
+import { banner, bold, heading, hr, inlineCode, italic, lexicalRoot, link, ol, paragraph, quote, strikethrough, subscriptText, superscript, text, ul } from './lexical-builders'
 
 async function fetchFileByURL(url: string): Promise<File & { data: Buffer }> {
   const res = await fetch(url, {
@@ -134,7 +134,7 @@ async function seed() {
 
   for (let i = 0; i < imageKeys.length; i += 4) {
     const batch = imageKeys.slice(i, i + 4)
-    const results = await Promise.allSettled(
+    await Promise.allSettled(
       batch.map(async (key) => {
         const { url, alt } = imageUrls[key]
         try {
@@ -468,11 +468,11 @@ async function seed() {
     const created = await payload.create({
       collection: 'animals',
       locale: 'tr',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...animal,
         _status: 'published',
         publishedAt: new Date().toISOString(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       context: { disableRevalidate: true },
     })
@@ -722,11 +722,11 @@ async function seed() {
     const created = await payload.create({
       collection: 'emergency-cases',
       locale: 'tr',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...ec,
         _status: 'published',
         publishedAt: new Date().toISOString(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       context: { disableRevalidate: true },
     })
@@ -1005,12 +1005,12 @@ async function seed() {
     await payload.create({
       collection: 'posts',
       locale: 'tr',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...post,
         _status: 'published',
         publishedAt: new Date().toISOString(),
         ...(authorId ? { authors: [authorId] } : {}),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       context: { disableRevalidate: true },
     })
@@ -1126,11 +1126,11 @@ async function seed() {
     await payload.create({
       collection: 'events',
       locale: 'tr',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         ...event,
         _status: 'published',
         publishedAt: new Date().toISOString(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       context: { disableRevalidate: true },
     })

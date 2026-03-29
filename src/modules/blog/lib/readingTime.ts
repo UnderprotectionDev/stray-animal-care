@@ -2,6 +2,7 @@
  * Calculate estimated reading time from Lexical rich text JSON content.
  * Traverses the node tree recursively to extract all text.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractText(node: any): string {
   if (!node) return ''
 
@@ -22,6 +23,7 @@ function extractText(node: any): string {
 
 const WORDS_PER_MINUTE = 200
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function calculateReadingTime(content: any): number {
   const text = extractText(content)
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length
