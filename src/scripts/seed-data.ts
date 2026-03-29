@@ -111,6 +111,8 @@ async function seed() {
     'post-hero-2': { url: 'https://images.unsplash.com/photo-1415369629372-26f2fe60c467?w=1200&q=80&fm=webp', alt: 'Kış aylarında sokak hayvanları' },
     'post-hero-3': { url: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&q=80&fm=webp', alt: 'Veteriner muayenesi' },
     'post-hero-4': { url: 'https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?w=1200&q=80&fm=webp', alt: 'Gönüllü çalışması' },
+    'post-hero-5': { url: 'https://images.unsplash.com/photo-1606567595334-d39972c85dbe?w=1200&q=80&fm=webp', alt: 'Sahiplendirilen mutlu kedi' },
+    'post-hero-6': { url: 'https://images.unsplash.com/photo-1511044568932-338cba0ad803?w=1200&q=80&fm=webp', alt: 'Topluluk etkinliğinde hayvanlar' },
     'event-cover-1': { url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
     'event-cover-2': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
     'story-founder': { url: 'https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=1200&q=80&fm=webp', alt: 'Hayvan barınağında gönüllü' },
@@ -953,7 +955,7 @@ async function seed() {
       excerpt: 'Uzun süredir bakımımızda olan Pamuk, sonunda kalıcı yuvasını buldu.',
       postCategory: 'kurtarma' as const,
       categories: [categories['sahiplendirme'], categories['kurtarma-hikayeleri']],
-      heroImage: mediaIds['post-hero-1'] || undefined,
+      heroImage: mediaIds['post-hero-5'] || undefined,
       content: lexicalRoot(
         banner('success', lexicalRoot(
           paragraph(bold('Mutlu haber!'), ' Pamuk kalıcı yuvasını buldu! Sahiplendirme başarıyla tamamlandı.'),
@@ -977,7 +979,7 @@ async function seed() {
       excerpt: 'Nisan ayı mama toplama etkinliğimizin detayları ve katılım bilgileri.',
       postCategory: 'etkinlik' as const,
       categories: [categories['duyurular']],
-      heroImage: mediaIds['post-hero-2'] || undefined,
+      heroImage: mediaIds['post-hero-6'] || undefined,
       content: lexicalRoot(
         heading('h2', 'Büyük Mama Toplama Etkinliği'),
         paragraph('Nisan ayının ilk hafta sonu büyük mama toplama etkinliğimizi düzenliyoruz!'),
