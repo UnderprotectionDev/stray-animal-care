@@ -114,11 +114,14 @@ async function seed() {
     'event-cover-1': { url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
     'event-cover-2': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
     'story-founder': { url: 'https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=1200&q=80&fm=webp', alt: 'Hayvan barınağında gönüllü' },
+    'story-rescue': { url: 'https://images.unsplash.com/photo-1504006833117-8886a355efbf?w=1200&q=80&fm=webp', alt: 'Kış gecesi kurtarma operasyonu' },
+    'story-growth': { url: 'https://images.unsplash.com/photo-1570824104453-508955ab713e?w=1200&q=80&fm=webp', alt: 'Besleme noktasında sokak kedileri' },
+    'story-mission': { url: 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=1200&q=80&fm=webp', alt: 'Sıcak bir yuvada mutlu kedi' },
     'activity-feeding': { url: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=1200&q=80&fm=webp', alt: 'Sokak hayvanlarını besleme' },
     'activity-treatment': { url: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1200&q=80&fm=webp', alt: 'Veteriner hayvan tedavisi' },
-    'activity-spaying': { url: 'https://images.unsplash.com/photo-1551717743-49959800-b1db?w=1200&q=80&fm=webp', alt: 'Veteriner ameliyat' },
+    'activity-spaying': { url: 'https://images.unsplash.com/photo-1581888227599-779811939961?w=1200&q=80&fm=webp', alt: 'Veteriner ameliyat' },
     'activity-spaying-2': { url: 'https://images.unsplash.com/photo-1629740067905-bd3f515aa739?w=1200&q=80&fm=webp', alt: 'Kısırlaştırma operasyonu hazırlık' },
-    'activity-spaying-3': { url: 'https://images.unsplash.com/photo-1583337130417-13104dec14a3?w=1200&q=80&fm=webp', alt: 'Veteriner kliniğinde kedi bakımı' },
+    'activity-spaying-3': { url: 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=1200&q=80&fm=webp', alt: 'Veteriner kliniğinde kedi bakımı' },
     'activity-emergency': { url: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&q=80&fm=webp', alt: 'Acil hayvan kurtarma' },
     'activity-vaccination': { url: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=1200&q=80&fm=webp', alt: 'Hayvana aşı uygulaması' },
     'activity-shelter': { url: 'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=1200&q=80&fm=webp', alt: 'Hayvan barınağı' },
@@ -1432,7 +1435,7 @@ async function seed() {
         {
           blockType: 'homeHero',
           enabled: true,
-          sectionTitle: 'ANA SAYFA',
+          sectionTitle: 'HER CAN DEĞERLİ',
           tagline: "2019'dan bu yana yüzlerce hayvanın hayatına dokunduk.",
           rotatingWords: [
             { word: 'Besliyoruz' },
@@ -1469,6 +1472,7 @@ async function seed() {
             },
             {
               title: 'İLK KURTARMA',
+              ...(mediaIds['story-rescue'] ? { image: mediaIds['story-rescue'] } : {}),
               description: lexicalRoot(
                 paragraph(
                   'İlk kurtarma operasyonumuz bir kış gecesi gerçekleşti. Yaralı bir kedi, ',
@@ -1482,6 +1486,7 @@ async function seed() {
             },
             {
               title: 'BÜYÜME',
+              ...(mediaIds['story-growth'] ? { image: mediaIds['story-growth'] } : {}),
               description: lexicalRoot(
                 paragraph(
                   'Gönüllü ağımız hızla büyüdü. Bugün ', bold('200+'), ' aktif gönüllümüz, ',
@@ -1496,6 +1501,7 @@ async function seed() {
             },
             {
               title: 'BUGÜNKİ MİSYON',
+              ...(mediaIds['story-mission'] ? { image: mediaIds['story-mission'] } : {}),
               description: lexicalRoot(
                 paragraph(
                   'Her canlının sevgiyi, bakımı ve güvenli bir yaşamı hak ettiğine inanıyoruz. ',
