@@ -47,7 +47,7 @@ export const imgHeroGeneral: SeedImage = {
   meta: {
     alt: 'Sokak köpeği kentsel manzarada yürüyor',
   },
-  url: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1600&q=80',
+  url: 'https://images.unsplash.com/photo-1544568100-847a948585b9?w=1600&q=80',
 }
 
 // ── Blog Post Images ─────────────────────────────────────────────
@@ -120,7 +120,7 @@ export const imgPostZeytin: SeedImage = {
     alt: 'Tedavi gören yaralı köpek veterinerde',
     caption: simpleLexicalContent(["Zeytin'in tedavi günlüğünden bir görüntü."]),
   },
-  url: 'https://images.unsplash.com/photo-1612531386530-97d40e3bfbeb?w=1200&q=80',
+  url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80',
 }
 
 // ── Emergency / Emotional ────────────────────────────────────────
@@ -128,7 +128,7 @@ export const imgEmergencyVet: SeedImage = {
   meta: {
     alt: 'Veteriner kliniğinde tedavi edilen sokak köpeği',
   },
-  url: 'https://images.unsplash.com/photo-1583337130417-13104dec14a8?w=1200&q=80',
+  url: 'https://images.unsplash.com/photo-1581888227599-779811939961?w=1200&q=80',
 }
 
 export const imgEmergencyStreet: SeedImage = {
@@ -167,12 +167,41 @@ export const imgAfterFindik: SeedImage = {
   url: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=1200&q=80',
 }
 
+// ── Story Steps (Hikayemiz & Misyon) ─────────────────────────────
+export const imgStoryDeprem: SeedImage = {
+  meta: {
+    alt: 'Deprem sonrası yıkıntılar arasında yardım bekleyen sokak hayvanları',
+  },
+  url: 'https://images.unsplash.com/photo-1504006833117-8886a355efbf?w=1200&q=80',
+}
+
+export const imgStoryFeeding: SeedImage = {
+  meta: {
+    alt: 'İlk besleme noktasında mama bekleyen sokak kedileri',
+  },
+  url: 'https://images.unsplash.com/photo-1570824104453-508955ab713e?w=1200&q=80',
+}
+
+export const imgStoryVet: SeedImage = {
+  meta: {
+    alt: 'Veteriner kliniğinde tedavi gören sokak hayvanı',
+  },
+  url: 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=1200&q=80',
+}
+
+export const imgStoryCommunity: SeedImage = {
+  meta: {
+    alt: 'Gönüllüler ve topluluk bir arada sokak hayvanları için çalışıyor',
+  },
+  url: 'https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=1200&q=80',
+}
+
 // ── Activity ─────────────────────────────────────────────────────
 export const imgActivityFeeding: SeedImage = {
   meta: {
     alt: 'Gönüllüler sokak hayvanlarını besliyor',
   },
-  url: 'https://images.unsplash.com/photo-1450778869180-e77d3c79db18?w=1200&q=80',
+  url: 'https://images.unsplash.com/photo-1415369629372-26f2fe60c467?w=1200&q=80',
 }
 
 /** All images in fetch order */
@@ -183,5 +212,6 @@ export const allImages = [
   imgPostKisir, imgPostFindik, imgPostBesleme, imgPostEtkinlik, imgPostZeytin,
   imgEmergencyVet, imgEmergencyStreet,
   imgBeforeZeytin, imgAfterZeytin, imgBeforeFindik, imgAfterFindik,
+  imgStoryDeprem, imgStoryFeeding, imgStoryVet, imgStoryCommunity,
   imgActivityFeeding,
 ] as const
