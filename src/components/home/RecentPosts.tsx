@@ -23,7 +23,7 @@ function serializePosts(posts: Post[]): BlogCarouselCardData[] {
 
     const fullText = post.content ? extractText(post.content) : ''
     console.log('[RecentPosts] post:', post.title, 'hasContent:', !!post.content, 'fullTextLen:', fullText.length, 'fullText:', fullText.slice(0, 100))
-    const contentPreview = fullText.length > 300 ? fullText.slice(0, 300).trimEnd() + '…' : fullText || null
+    const contentPreview = fullText.length > 600 ? fullText.slice(0, 600).trimEnd() + '…' : fullText || null
     const readingTime = post.content ? calculateReadingTime(post.content) : null
 
     return {

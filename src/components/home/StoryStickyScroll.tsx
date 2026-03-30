@@ -47,9 +47,6 @@ export function StoryStickyScroll({ steps }: Props) {
     title: step.title,
     description: (
       <div>
-        <span className="t-comment block mb-2" aria-hidden="true">
-          {'ADIM ' + padNumber(i + 1)}
-        </span>
         {step.description && (
           <RevealOnScroll>
             <RichText
@@ -114,9 +111,6 @@ export function StoryStickyScroll({ steps }: Props) {
               </div>
             )}
             <div className="p-6 bg-[var(--background)]">
-              <span className="t-comment block mb-2" aria-hidden="true">
-                {'ADIM ' + padNumber(i + 1)}
-              </span>
               <SplitText
                 text={step.title}
                 tag="h3"

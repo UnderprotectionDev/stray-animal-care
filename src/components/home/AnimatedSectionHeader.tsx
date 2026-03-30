@@ -39,7 +39,7 @@ export function AnimatedSectionHeader({ title, viewAllLabel, viewAllLink, accent
 
   return (
     <div className="panel py-5 px-6 lg:px-8 flex flex-col gap-1 border-b-[1.5px] border-border">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           {comment ? <p className="t-comment mb-1">{comment}</p> : null}
           {title ? (
@@ -52,7 +52,7 @@ export function AnimatedSectionHeader({ title, viewAllLabel, viewAllLink, accent
           )}
         </div>
         {viewAllLabel && viewAllLink && (
-          <Link href={viewAllLink} className={`${accentButtonStyles[accentColor]} text-xs py-2 px-5 shrink-0`}>
+          <Link href={viewAllLink} className={`${accentButtonStyles[accentColor]} text-xs py-2 px-5 self-start sm:self-auto`}>
             {viewAllLabel}
           </Link>
         )}

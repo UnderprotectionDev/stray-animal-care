@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { ArrowRight, Calendar } from 'lucide-react'
+import { ArrowRight, Calendar, Clock } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { Carousel, Card } from '@/components/fancy/apple-cards-carousel'
 import { getCategoryStyle, getCategorySemanticToken } from '@/utilities/categoryTokens'
@@ -52,6 +52,12 @@ function BlogCardContent({
             {formatDate(card.publishedAt, locale)}
           </span>
         )}
+        {card.readingTime && (
+          <span className="font-mono text-xs text-[var(--muted-foreground)] flex items-center gap-1.5">
+            <Clock className="w-3 h-3" />
+            {card.readingTime} {locale === 'en' ? 'min read' : 'dk okuma'}
+          </span>
+        )}
       </div>
 
       {/* Excerpt as editorial pull-quote */}
@@ -68,10 +74,14 @@ function BlogCardContent({
 
       {/* Content preview */}
       {card.contentPreview && (
-        <div className="border-t border-[var(--border)] pt-4">
-          <p className="font-mono text-sm leading-relaxed text-[var(--foreground)]/80 line-clamp-5">
+        <div className="border-t border-[var(--border)] pt-4 relative">
+          <p className="font-mono text-sm leading-relaxed text-[var(--foreground)]/80">
             {card.contentPreview}
           </p>
+          <div
+            className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
+            style={{ background: 'linear-gradient(to bottom, transparent, var(--background))' }}
+          />
         </div>
       )}
 

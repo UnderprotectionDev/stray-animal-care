@@ -26,9 +26,9 @@ function CardContent({ card, percentage }: { card: EmergencyCardData; percentage
   return (
     <Link
       href={`/acil-vakalar/${card.slug}`}
-      className="flex flex-col sm:flex-row border-[1.5px] border-[var(--border)] bg-white overflow-hidden min-h-[320px] sm:min-h-[380px]"
+      className="grid grid-cols-1 sm:grid-cols-12 border-[1.5px] border-[var(--border)] bg-white overflow-hidden min-h-[320px] sm:min-h-[480px]"
     >
-      <div className="flex-1 flex flex-col justify-center p-6 sm:p-10 gap-3 sm:gap-4">
+      <div className={`flex flex-col justify-center p-6 sm:p-10 gap-3 sm:gap-4${!card.imageUrl ? ' sm:col-span-12' : ' sm:col-span-5'}`}>
         <div className="flex items-center gap-3 flex-wrap">
           <h3 className="font-heading font-bold text-xl sm:text-3xl text-foreground">
             {card.title}
@@ -70,7 +70,7 @@ function CardContent({ card, percentage }: { card: EmergencyCardData; percentage
       </div>
 
       {card.imageUrl && (
-        <div className="w-full sm:w-1/2 h-48 sm:h-auto relative overflow-hidden min-h-[200px] sm:min-h-[240px]">
+        <div className="h-[280px] sm:h-auto sm:col-span-7 relative overflow-hidden">
           <Image
             src={card.imageUrl}
             alt={card.imageAlt}
@@ -88,7 +88,7 @@ export default function EmergencyStackingCards({ cards }: Props) {
   if (cards.length === 0) return null
 
   return (
-    <div className="h-[620px] overflow-hidden">
+    <div className="h-[720px] overflow-hidden">
       <ScrollStack
         itemDistance={450}
         baseScale={0.92}

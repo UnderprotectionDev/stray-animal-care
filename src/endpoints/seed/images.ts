@@ -170,9 +170,9 @@ export const imgAfterFindik: SeedImage = {
 // ── Story Steps (Hikayemiz & Misyon) ─────────────────────────────
 export const imgStoryDeprem: SeedImage = {
   meta: {
-    alt: 'Deprem sonrası yıkıntılar arasında yardım bekleyen sokak hayvanları',
+    alt: 'Deprem sonrası yıkılmış binalar ve enkaz',
   },
-  url: 'https://images.unsplash.com/photo-1504006833117-8886a355efbf?w=1200&q=80',
+  url: 'https://images.unsplash.com/photo-1573108037329-37aa135a142e?w=1200&q=80',
 }
 
 export const imgStoryFeeding: SeedImage = {

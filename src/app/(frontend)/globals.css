@@ -837,14 +837,8 @@
   }
 
   /* ── Sticky Footer Reveal ── */
-  .content-above-footer {
-    position: relative;
-    z-index: 1;
-    background-color: var(--background);
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-  }
+  /* Content: relative z-10 bg-background (applied via Tailwind in layout) */
+  /* Footer: sticky z-0 bottom-0 (applied via Tailwind in Footer component) */
 
   /* ── Blog Prose ── */
   .prose-blog {

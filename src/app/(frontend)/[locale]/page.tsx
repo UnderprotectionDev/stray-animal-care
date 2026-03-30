@@ -55,7 +55,7 @@ async function HomepageContent({
           limit: 5,
           locale,
           depth: 1,
-          select: { title: true, slug: true, targetAmount: true, collectedAmount: true, photos: true, caseStatus: true, description: true },
+          select: { title: true, slug: true, targetAmount: true, collectedAmount: true, photos: true, beforePhoto: true, caseStatus: true, description: true },
         })
       : Promise.resolve({ docs: [] }),
     blockTypes.has('homeRecentPosts')
@@ -82,7 +82,7 @@ async function HomepageContent({
     blockTypes.has('homeTransparencyBanner')
       ? payload.find({
           collection: 'transparency-reports',
-          limit: 1,
+          limit: 100,
           sort: '-month',
           locale,
           depth: 0,
@@ -90,6 +90,16 @@ async function HomepageContent({
         })
       : Promise.resolve({ docs: [] }),
   ])
+
+  // Aggregate transparency stats across all reports
+  const allReports = latestReport.docs as TransparencyReport[]
+  const transparencyStats = {
+    totalIncome: allReports.reduce((sum, r) => sum + (r.totalDonation ?? 0), 0),
+    totalExpense: allReports.reduce((sum, r) => sum + (r.totalExpense ?? 0), 0),
+    totalDonors: allReports.reduce((sum, r) => sum + (r.donorList?.length ?? 0), 0),
+    latestMonth: allReports[0]?.month ?? null,
+    reportCount: allReports.length,
+  }
 
   return (
     <RenderHomepageBlocks
@@ -101,7 +111,8 @@ async function HomepageContent({
         needsItems: needsItems.docs as NeedsListType[],
         siteSettings,
         locale,
-        latestReport: (latestReport.docs[0] as TransparencyReport) ?? null,
+        latestReport: (allReports[0] as TransparencyReport) ?? null,
+        transparencyStats,
       }}
     />
   )

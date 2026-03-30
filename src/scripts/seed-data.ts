@@ -115,8 +115,8 @@ async function seed() {
     'post-hero-6': { url: 'https://images.unsplash.com/photo-1511044568932-338cba0ad803?w=1200&q=80&fm=webp', alt: 'Topluluk etkinliğinde hayvanlar' },
     'event-cover-1': { url: 'https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
     'event-cover-2': { url: 'https://images.unsplash.com/photo-1535930749574-1399327ce78f?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
-    'story-hatay': { url: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=80&fm=webp', alt: 'Hatay şehri panoramik görünüm' },
-    'story-earthquake': { url: 'https://images.unsplash.com/photo-1542621334-a254cf47733d?w=1200&q=80&fm=webp', alt: 'Deprem sonrası yıkılmış binalar' },
+    'story-hatay': { url: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80&fm=webp', alt: 'Hatay sokaklarında büyüyen çocuk — merhamet dolu bir çocukluk' },
+    'story-earthquake': { url: 'https://images.unsplash.com/photo-1677233861362-c3aa97f11638?w=1200&q=80&fm=webp', alt: 'Deprem sonrası yıkılmış binalar ve enkaz' },
     'story-first-feeding': { url: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=1200&q=80&fm=webp', alt: 'Sokak kedilerine mama veren kişi' },
     'story-daily': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Sokak hayvanlarını besleyen gönüllü' },
     'story-health': { url: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1200&q=80&fm=webp', alt: 'Veterinerde tedavi gören sokak hayvanı' },
@@ -606,6 +606,7 @@ async function seed() {
       caseStatus: 'tamamlandi' as const,
       targetAmount: 12000,
       collectedAmount: 12000,
+      photos: mediaIds['emergency-pasa-before'] ? [mediaIds['emergency-pasa-before']] : [],
       beforePhoto: mediaIds['emergency-pasa-before'] || undefined,
       afterPhoto: mediaIds['emergency-pasa-after'] || undefined,
       description: lexicalRoot(
@@ -647,6 +648,7 @@ async function seed() {
       caseStatus: 'tamamlandi' as const,
       targetAmount: 7000,
       collectedAmount: 7000,
+      photos: mediaIds['emergency-duman-before'] ? [mediaIds['emergency-duman-before']] : [],
       beforePhoto: mediaIds['emergency-duman-before'] || undefined,
       afterPhoto: mediaIds['emergency-duman-after'] || undefined,
       description: lexicalRoot(

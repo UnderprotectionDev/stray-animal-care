@@ -1,5 +1,6 @@
 import React from 'react'
 import type { SiteSetting, TransparencyReport } from '@/payload-types'
+import type { TransparencyStats } from './RenderHomepageBlocks'
 import { Link } from '@/i18n/navigation'
 import BlurText from '@/components/BlurText'
 import { CountUpCurrency } from './CountUpCurrency'
@@ -11,10 +12,11 @@ type TransparencyBannerBlock = Extract<NonNullable<SiteSetting['homepageBlocks']
 type Props = {
   block: TransparencyBannerBlock
   report: TransparencyReport | null
+  transparencyStats?: TransparencyStats
   locale: string
 }
 
-export function TransparencyBanner({ block, report, locale }: Props) {
+export function TransparencyBanner({ block, report, transparencyStats, locale }: Props) {
   return (
     <section>
       <div className="panel py-6 px-6 bg-trust text-trust-foreground">
@@ -32,7 +34,7 @@ export function TransparencyBanner({ block, report, locale }: Props) {
           )}
         </div>
 
-        {report && (
+        {(transparencyStats || report) && (
           <>
             <div className="g-1 md:g-3 mt-4">
               <div className="panel p-4 bg-background">
@@ -40,7 +42,7 @@ export function TransparencyBanner({ block, report, locale }: Props) {
                   {locale === 'en' ? 'Total Income' : 'Toplam Gelir'}
                 </p>
                 <p className="t-h2 mt-1">
-                  <CountUpCurrency value={report.totalDonation} />
+                  <CountUpCurrency value={transparencyStats?.totalIncome ?? report?.totalDonation ?? 0} />
                 </p>
               </div>
               <div className="panel p-4 bg-background">
@@ -48,22 +50,24 @@ export function TransparencyBanner({ block, report, locale }: Props) {
                   {locale === 'en' ? 'Total Expense' : 'Toplam Gider'}
                 </p>
                 <p className="t-h2 mt-1">
-                  <CountUpCurrency value={report.totalExpense} />
+                  <CountUpCurrency value={transparencyStats?.totalExpense ?? report?.totalExpense ?? 0} />
                 </p>
               </div>
               <div className="panel p-4 bg-background">
                 <p className="t-meta text-muted-foreground uppercase text-xs">
-                  {locale === 'en' ? 'Donor Count' : 'Bağışçı Sayısı'}
+                  {locale === 'en' ? 'Total Donors' : 'Toplam Bağışçı'}
                 </p>
                 <p className="t-h2 mt-1">
-                  <CountUpNumber target={report.donorList?.length ?? 0} />
+                  <CountUpNumber target={transparencyStats?.totalDonors ?? report?.donorList?.length ?? 0} />
                 </p>
               </div>
             </div>
-            <p className="t-meta text-muted-foreground mt-3 text-xs">
-              {locale === 'en' ? 'Latest report: ' : 'Son rapor: '}
-              {formatMonth(report.month, locale)}
-            </p>
+            {report && (
+              <p className="t-meta text-muted-foreground mt-3 text-xs">
+                {locale === 'en' ? 'Latest report: ' : 'Son rapor: '}
+                {formatMonth(report.month, locale)}
+              </p>
+            )}
           </>
         )}
       </div>

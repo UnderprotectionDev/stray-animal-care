@@ -16,6 +16,14 @@ import { SectionDividerBand } from './SectionDividerBand'
 import { ElasticDivider } from './ElasticDivider'
 import { ScrollAnimationTrigger } from '@/components/ui/scroll-animation-trigger'
 
+export type TransparencyStats = {
+  totalIncome: number
+  totalExpense: number
+  totalDonors: number
+  latestMonth: string | null
+  reportCount: number
+}
+
 type Props = {
   blocks: SiteSetting['homepageBlocks']
   data: {
@@ -26,6 +34,7 @@ type Props = {
     siteSettings: SiteSetting | null
     locale: string
     latestReport: TransparencyReport | null
+    transparencyStats?: TransparencyStats
   }
 }
 
@@ -60,6 +69,7 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
             transparencyBlock={transpBlock as Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeTransparencyBanner' }>}
             posts={data.posts}
             report={data.latestReport}
+            transparencyStats={data.transparencyStats}
             locale={data.locale}
           />
         </ScrollAnimationTrigger>,
@@ -146,7 +156,7 @@ export function RenderHomepageBlocks({ blocks, data }: Props) {
       case 'homeTransparencyBanner':
         rendered.push(
           <ScrollAnimationTrigger key={block.id} effect="slide" direction="up" duration={0.6} threshold={0.1} once={true}>
-            <TransparencyBanner block={block} report={data.latestReport} locale={data.locale} />
+            <TransparencyBanner block={block} report={data.latestReport} transparencyStats={data.transparencyStats} locale={data.locale} />
           </ScrollAnimationTrigger>,
         )
         break
