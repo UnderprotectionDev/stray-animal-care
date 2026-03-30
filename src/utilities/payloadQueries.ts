@@ -91,24 +91,28 @@ export function createSlugsQuery(
   const { where = { _status: { equals: 'published' } } } = options ?? {}
 
   return async function getSlugs(): Promise<string[]> {
-    const payload = await getPayload({ config: configPromise })
-    const slugs: string[] = []
-    let page = 1
-    let hasMore = true
+    try {
+      const payload = await getPayload({ config: configPromise })
+      const slugs: string[] = []
+      let page = 1
+      let hasMore = true
 
-    while (hasMore) {
-      const result = await payload.find({
-        collection,
-        where: where as never,
-        limit: 100,
-        page,
-        select: { slug: true } as never,
-      })
-      slugs.push(...result.docs.map((doc) => (doc as { slug: string }).slug))
-      hasMore = result.hasNextPage
-      page++
+      while (hasMore) {
+        const result = await payload.find({
+          collection,
+          where: where as never,
+          limit: 100,
+          page,
+          select: { slug: true } as never,
+        })
+        slugs.push(...result.docs.map((doc) => (doc as { slug: string }).slug))
+        hasMore = result.hasNextPage
+        page++
+      }
+
+      return slugs
+    } catch {
+      return []
     }
-
-    return slugs
   }
 }

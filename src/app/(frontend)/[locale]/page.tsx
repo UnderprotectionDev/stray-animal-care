@@ -37,29 +37,34 @@ async function HomepageContent({
   const blockTypes = new Set(blocks.filter((b) => b.enabled).map((b) => b.blockType))
   const payload = await getPayload({ config: configPromise })
 
+  const empty = { docs: [] }
+  async function safeQuery(fn: () => Promise<{ docs: unknown[] }>) {
+    try { return await fn() } catch { return empty }
+  }
+
   const [animals, cases, posts, needsItems, latestReport] = await Promise.all([
     blockTypes.has('homeFeaturedAnimals')
-      ? payload.find({
+      ? safeQuery(() => payload.find({
           collection: 'animals',
           where: { featured: { equals: true }, _status: { equals: 'published' } },
           limit: 10,
           locale,
           depth: 1,
           select: { name: true, slug: true, photos: true, type: true, animalStatus: true, featured: true, age: true, gender: true, isSpayed: true, isVaccinated: true, location: true },
-        })
-      : Promise.resolve({ docs: [] }),
+        }))
+      : Promise.resolve(empty),
     blockTypes.has('homeActiveEmergencies')
-      ? payload.find({
+      ? safeQuery(() => payload.find({
           collection: 'emergency-cases',
           where: { caseStatus: { equals: 'aktif' }, _status: { equals: 'published' } },
           limit: 5,
           locale,
           depth: 1,
           select: { title: true, slug: true, targetAmount: true, collectedAmount: true, photos: true, beforePhoto: true, caseStatus: true, description: true },
-        })
-      : Promise.resolve({ docs: [] }),
+        }))
+      : Promise.resolve(empty),
     blockTypes.has('homeRecentPosts')
-      ? payload.find({
+      ? safeQuery(() => payload.find({
           collection: 'posts',
           where: { _status: { equals: 'published' } },
           limit: (blocks.find(b => b.blockType === 'homeRecentPosts' && b.enabled) as { limit?: number } | undefined)?.limit ?? 6,
@@ -67,28 +72,28 @@ async function HomepageContent({
           locale,
           depth: 1,
           select: { title: true, slug: true, heroImage: true, publishedAt: true, meta: true, excerpt: true, postCategory: true, content: true },
-        })
-      : Promise.resolve({ docs: [] }),
+        }))
+      : Promise.resolve(empty),
     blockTypes.has('homeNeedsList')
-      ? payload.find({
+      ? safeQuery(() => payload.find({
           collection: 'needs-list',
           limit: 5,
           sort: '_order',
           locale,
           depth: 0,
           select: { productName: true, brandDetail: true, urgency: true, currentStock: true, targetStock: true, unit: true, priority: true, stockStatus: true, updatedAt: true },
-        })
-      : Promise.resolve({ docs: [] }),
+        }))
+      : Promise.resolve(empty),
     blockTypes.has('homeTransparencyBanner')
-      ? payload.find({
+      ? safeQuery(() => payload.find({
           collection: 'transparency-reports',
           limit: 100,
           sort: '-month',
           locale,
           depth: 0,
           select: { title: true, month: true, totalExpense: true, totalDonation: true, donorList: true },
-        })
-      : Promise.resolve({ docs: [] }),
+        }))
+      : Promise.resolve(empty),
   ])
 
   // Aggregate transparency stats across all reports

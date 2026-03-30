@@ -16,32 +16,36 @@ import { setRequestLocale } from 'next-intl/server'
 import { locales, type Locale } from '@/i18n/config'
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  })
-
-  const slugs = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const pages = await payload.find({
+      collection: 'pages',
+      draft: false,
+      limit: 1000,
+      overrideAccess: false,
+      pagination: false,
+      select: {
+        slug: true,
+      },
     })
-    .map(({ slug }) => slug)
 
-  const params: { locale: string; slug: string }[] = []
-  for (const locale of locales) {
-    for (const slug of slugs) {
-      if (slug) params.push({ locale, slug })
+    const slugs = pages.docs
+      ?.filter((doc) => {
+        return doc.slug !== 'home'
+      })
+      .map(({ slug }) => slug)
+
+    const params: { locale: string; slug: string }[] = []
+    for (const locale of locales) {
+      for (const slug of slugs) {
+        if (slug) params.push({ locale, slug })
+      }
     }
-  }
 
-  return params
+    return params
+  } catch {
+    return []
+  }
 }
 
 type Args = {

@@ -12,23 +12,28 @@ const getPostsSitemap = unstable_cache(
       process.env.VERCEL_PROJECT_PRODUCTION_URL ||
       'https://example.com'
 
-    const results = await payload.find({
-      collection: 'posts',
-      overrideAccess: false,
-      draft: false,
-      depth: 0,
-      limit: 1000,
-      pagination: false,
-      where: {
-        _status: {
-          equals: 'published',
+    let results
+    try {
+      results = await payload.find({
+        collection: 'posts',
+        overrideAccess: false,
+        draft: false,
+        depth: 0,
+        limit: 1000,
+        pagination: false,
+        where: {
+          _status: {
+            equals: 'published',
+          },
         },
-      },
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-    })
+        select: {
+          slug: true,
+          updatedAt: true,
+        },
+      })
+    } catch {
+      return []
+    }
 
     const dateFallback = new Date().toISOString()
 
