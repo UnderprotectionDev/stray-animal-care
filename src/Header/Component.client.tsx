@@ -190,7 +190,7 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
 
   return (
     <>
-      <header ref={headerRef} className="sticky top-0 z-50 w-full border-b-[1.5px] border-border bg-palette-cream">
+      <header ref={headerRef} className="fixed top-0 left-0 z-50 w-full border-b-[1.5px] border-border bg-palette-cream">
         {/* Desktop: grid nav */}
         {(() => {
           const barItems = items.filter((item) => {
@@ -287,6 +287,8 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
           </div>
         </div>
       </header>
+      {/* Spacer to offset fixed header height */}
+      <div style={{ height: 'var(--header-h, 49px)' }} />
 
       {/* Desktop FlowingMenu */}
       <div className="hidden lg:block">

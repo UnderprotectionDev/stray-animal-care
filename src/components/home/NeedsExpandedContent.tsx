@@ -143,7 +143,7 @@ export function NeedsExpandedContent({ item, labels, cardKey, isExpanded }: Prop
 
       {/* Last updated */}
       {item.updatedAt && (
-        <p className="needs-expanded-updated">
+        <p className="needs-expanded-updated" suppressHydrationWarning>
           {labels?.lastUpdated || 'Son güncelleme'}:{' '}
           {formatDistanceToNow(new Date(item.updatedAt), { addSuffix: true, locale: dateLocale })}
         </p>
