@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { setRequestLocale } from 'next-intl/server'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { EmergencyDetail } from '@/modules/emergency/components/EmergencyDetail'
 import { getEmergencyCaseBySlug, getEmergencyCaseSlugs } from '@/modules/emergency/lib/queries'
 import type { Locale } from '@/i18n/config'
 import { locales } from '@/i18n/config'
+import type { SiteSetting } from '@/payload-types'
 
 export const revalidate = 30
 export const dynamicParams = true
@@ -17,15 +19,14 @@ export default async function EmergencyCaseDetailPage({ params }: Args) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const ec = await getEmergencyCaseBySlug(slug, locale as Locale)
+  const [ec, siteSettings] = await Promise.all([
+    getEmergencyCaseBySlug(slug, locale as Locale),
+    getCachedGlobal('site-settings', 1, locale)() as Promise<SiteSetting>,
+  ])
 
   if (!ec) notFound()
 
-  return (
-    <div className="min-h-screen bg-background">
-      <EmergencyDetail ec={ec} locale={locale} />
-    </div>
-  )
+  return <EmergencyDetail ec={ec} locale={locale} siteSettings={siteSettings} />
 }
 
 export async function generateStaticParams() {

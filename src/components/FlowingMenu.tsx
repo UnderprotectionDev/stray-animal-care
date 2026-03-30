@@ -348,7 +348,7 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items, isOpen, onClose, activ
   return (
     <div
       className={cn(
-        'fixed inset-0 z-40 pointer-events-none',
+        'fixed inset-0 z-40 overflow-hidden pointer-events-none',
         isOpen && 'pointer-events-auto',
       )}
       style={{ top: 'var(--header-h, 49px)' }}

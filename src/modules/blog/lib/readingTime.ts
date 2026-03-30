@@ -3,7 +3,7 @@
  * Traverses the node tree recursively to extract all text.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function extractText(node: any): string {
+export function extractText(node: any): string {
   if (!node) return ''
 
   if (typeof node.text === 'string') {

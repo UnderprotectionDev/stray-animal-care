@@ -14,7 +14,7 @@ export function HomeHeroClient({ sectionTitle, tagline, rotatingWords }: Props) 
   const containerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div ref={containerRef} className="relative z-10 flex flex-col items-center justify-center px-6 py-14 md:px-12 md:py-20 lg:py-24">
+    <div ref={containerRef} className="relative z-10 flex flex-col items-center px-6 pt-6 pb-0 md:px-12 md:pt-10 lg:pt-12">
       {sectionTitle && (
         <VariableProximity
           label={sectionTitle}
@@ -23,23 +23,23 @@ export function HomeHeroClient({ sectionTitle, tagline, rotatingWords }: Props) 
           containerRef={containerRef}
           radius={120}
           falloff="gaussian"
-          className="text-center leading-[0.95] tracking-tight text-white drop-shadow-lg"
+          className="text-center leading-[0.95] tracking-tight text-foreground"
           style={{
             fontFamily: 'var(--font-hero-variable)',
-            fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+            fontSize: 'clamp(2rem, 5.5vw, 4rem)',
           }}
         />
       )}
 
       {rotatingWords && rotatingWords.length > 0 && (
-        <div className="mt-5" style={{ fontFamily: 'var(--font-hero-variable)' }}>
-          <HeroRotatingSubtitle texts={rotatingWords} className="text-center text-white/80" />
+        <div className="mt-3" style={{ fontFamily: 'var(--font-hero-variable)' }}>
+          <HeroRotatingSubtitle texts={rotatingWords} className="text-center text-cta" />
         </div>
       )}
 
       {tagline && (
         <p
-          className="mt-6 text-center text-white/70 max-w-xl text-sm md:text-base leading-relaxed tracking-wide"
+          className="mt-3 text-center text-warm-gray max-w-xl text-xs md:text-sm leading-relaxed tracking-wide"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           {tagline}

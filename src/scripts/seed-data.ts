@@ -113,20 +113,29 @@ async function seed() {
     'post-hero-4': { url: 'https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?w=1200&q=80&fm=webp', alt: 'Gönüllü çalışması' },
     'post-hero-5': { url: 'https://images.unsplash.com/photo-1606567595334-d39972c85dbe?w=1200&q=80&fm=webp', alt: 'Sahiplendirilen mutlu kedi' },
     'post-hero-6': { url: 'https://images.unsplash.com/photo-1511044568932-338cba0ad803?w=1200&q=80&fm=webp', alt: 'Topluluk etkinliğinde hayvanlar' },
-    'event-cover-1': { url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
-    'event-cover-2': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
-    'story-founder': { url: 'https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=1200&q=80&fm=webp', alt: 'Hayvan barınağında gönüllü' },
-    'story-rescue': { url: 'https://images.unsplash.com/photo-1504006833117-8886a355efbf?w=1200&q=80&fm=webp', alt: 'Kış gecesi kurtarma operasyonu' },
-    'story-growth': { url: 'https://images.unsplash.com/photo-1570824104453-508955ab713e?w=1200&q=80&fm=webp', alt: 'Besleme noktasında sokak kedileri' },
-    'story-mission': { url: 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=1200&q=80&fm=webp', alt: 'Sıcak bir yuvada mutlu kedi' },
-    'activity-feeding': { url: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=1200&q=80&fm=webp', alt: 'Sokak hayvanlarını besleme' },
-    'activity-treatment': { url: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1200&q=80&fm=webp', alt: 'Veteriner hayvan tedavisi' },
-    'activity-spaying': { url: 'https://images.unsplash.com/photo-1581888227599-779811939961?w=1200&q=80&fm=webp', alt: 'Veteriner ameliyat' },
-    'activity-spaying-2': { url: 'https://images.unsplash.com/photo-1629740067905-bd3f515aa739?w=1200&q=80&fm=webp', alt: 'Kısırlaştırma operasyonu hazırlık' },
-    'activity-spaying-3': { url: 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=1200&q=80&fm=webp', alt: 'Veteriner kliniğinde kedi bakımı' },
-    'activity-emergency': { url: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&q=80&fm=webp', alt: 'Acil hayvan kurtarma' },
-    'activity-vaccination': { url: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=1200&q=80&fm=webp', alt: 'Hayvana aşı uygulaması' },
-    'activity-shelter': { url: 'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=1200&q=80&fm=webp', alt: 'Hayvan barınağı' },
+    'event-cover-1': { url: 'https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?w=1200&q=80&fm=webp', alt: 'Sahiplendirme etkinliği' },
+    'event-cover-2': { url: 'https://images.unsplash.com/photo-1535930749574-1399327ce78f?w=1200&q=80&fm=webp', alt: 'Mama toplama kampanyası' },
+    'story-hatay': { url: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=80&fm=webp', alt: 'Hatay şehri panoramik görünüm' },
+    'story-earthquake': { url: 'https://images.unsplash.com/photo-1542621334-a254cf47733d?w=1200&q=80&fm=webp', alt: 'Deprem sonrası yıkılmış binalar' },
+    'story-first-feeding': { url: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=1200&q=80&fm=webp', alt: 'Sokak kedilerine mama veren kişi' },
+    'story-daily': { url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1200&q=80&fm=webp', alt: 'Sokak hayvanlarını besleyen gönüllü' },
+    'story-health': { url: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1200&q=80&fm=webp', alt: 'Veterinerde tedavi gören sokak hayvanı' },
+    'story-vision': { url: 'https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=1200&q=80&fm=webp', alt: 'Gönüllüler hayvanlarla birlikte' },
+    'activity-feeding': { url: 'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=1200&q=80&fm=webp', alt: 'Sokak kedilerine mama verme' },
+    'activity-treatment': { url: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=1200&q=80&fm=webp', alt: 'Veterinerde tedavi gören köpek' },
+    'activity-spaying': { url: 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1200&q=80&fm=webp', alt: 'Veteriner kliniğinde ameliyat hazırlığı' },
+    'activity-emergency': { url: 'https://plus.unsplash.com/premium_photo-1663133490553-eccfbb5c7ed9?w=1200&q=80&fm=webp', alt: 'Yaralı hayvana acil müdahale' },
+    'activity-vaccination': { url: 'https://images.unsplash.com/photo-1700665537604-412e89a285c3?w=1200&q=80&fm=webp', alt: 'Veteriner hekim hayvan aşılıyor' },
+    'activity-shelter': { url: 'https://images.unsplash.com/photo-1548366086-7f1b76106622?w=1200&q=80&fm=webp', alt: 'Barınakta bakılan yavru kediler' },
+    // Emergency case specific images (unique per case)
+    'emergency-tekir': { url: 'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?w=1200&q=80&fm=webp', alt: 'Veterinerde tedavi gören kedi' },
+    'emergency-mavis': { url: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=1200&q=80&fm=webp', alt: 'Hasta yavru kedi' },
+    'emergency-comar': { url: 'https://images.unsplash.com/photo-1530041539828-114de669390e?w=1200&q=80&fm=webp', alt: 'Veterinerde tedavi gören köpek' },
+    'emergency-boncuk': { url: 'https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?w=1200&q=80&fm=webp', alt: 'Cilt tedavisi gören köpek' },
+    'emergency-pasa-before': { url: 'https://images.unsplash.com/photo-1544568100-847a948585b9?w=1200&q=80&fm=webp', alt: 'Yaralı köpek tedavi öncesi' },
+    'emergency-pasa-after': { url: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=1200&q=80&fm=webp', alt: 'İyileşen köpek mutlu hali' },
+    'emergency-duman-before': { url: 'https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?w=1200&q=80&fm=webp', alt: 'Hasta kedi tedavi öncesi' },
+    'emergency-duman-after': { url: 'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=1200&q=80&fm=webp', alt: 'İyileşen kedi mutlu hali' },
   }
 
   const mediaIds: Record<string, number> = {}
@@ -489,7 +498,7 @@ async function seed() {
       caseStatus: 'aktif' as const,
       targetAmount: 15000,
       collectedAmount: 8750,
-      photos: mediaIds['cat-3'] ? [mediaIds['cat-3']] : [],
+      photos: mediaIds['emergency-tekir'] ? [mediaIds['emergency-tekir']] : [],
       description: lexicalRoot(
         heading('h3', 'Yüksekten Düşme — Pelvis Kırığı'),
         paragraph('Tekir, ', bold('5. kattan düşme'), ' sonucu pelvis kırığı ve iç kanama ile acil olarak getirildi. Durumu kritikti — bilinç bulanıklığı ve ', bold('iç kanama belirtileri'), ' vardı.'),
@@ -530,7 +539,7 @@ async function seed() {
       caseStatus: 'aktif' as const,
       targetAmount: 5000,
       collectedAmount: 2100,
-      photos: mediaIds['cat-3'] ? [mediaIds['cat-3']] : [],
+      photos: mediaIds['emergency-mavis'] ? [mediaIds['emergency-mavis']] : [],
       description: lexicalRoot(
         heading('h3', 'Ciddi Solunum Yolu Enfeksiyonu'),
         paragraph('Maviş, çöp konteynerinde ciddi ', bold('solunum yolu enfeksiyonu'), ' (rinotrakeitis) ile bulundu. Nefes almakta büyük güçlük çekiyordu. Gözleri ve burnu akıntılıydı.'),
@@ -558,7 +567,7 @@ async function seed() {
       caseStatus: 'aktif' as const,
       targetAmount: 8000,
       collectedAmount: 6500,
-      photos: mediaIds['dog-4'] ? [mediaIds['dog-4']] : [],
+      photos: mediaIds['emergency-comar'] ? [mediaIds['emergency-comar']] : [],
       description: lexicalRoot(
         heading('h3', 'Zehirlenme Vakası — Organofosfor Şüphesi'),
         paragraph('Çomar, orman kenarında ', bold('zehirlenmiş'), ' halde bulundu. Belirtiler: ağız köpüğü, titreme, bilinç bulanıklığı. ', bold('Organofosfor'), ' zehirlenmesi şüphesiyle acil müdahale başlatıldı.'),
@@ -597,8 +606,8 @@ async function seed() {
       caseStatus: 'tamamlandi' as const,
       targetAmount: 12000,
       collectedAmount: 12000,
-      beforePhoto: mediaIds['dog-5'] || undefined,
-      afterPhoto: mediaIds['dog-1'] || undefined,
+      beforePhoto: mediaIds['emergency-pasa-before'] || undefined,
+      afterPhoto: mediaIds['emergency-pasa-after'] || undefined,
       description: lexicalRoot(
         heading('h3', 'Trafik Kazası — Açık Kırık'),
         paragraph('Paşa, trafik kazası sonrası sağ ön bacağında ', bold('açık kırık'), ' tespit edildi. Acil ameliyata alındı ve bacağına platin takıldı.'),
@@ -638,8 +647,8 @@ async function seed() {
       caseStatus: 'tamamlandi' as const,
       targetAmount: 7000,
       collectedAmount: 7000,
-      beforePhoto: mediaIds['cat-5'] || undefined,
-      afterPhoto: mediaIds['cat-1'] || undefined,
+      beforePhoto: mediaIds['emergency-duman-before'] || undefined,
+      afterPhoto: mediaIds['emergency-duman-after'] || undefined,
       description: lexicalRoot(
         heading('h3', 'İleri Derece Göz Enfeksiyonu'),
         paragraph('Duman, her iki gözünde de ', bold('ileri derece enfeksiyon'), ' ile getirildi. Gözleri neredeyse tamamen kapanmıştı. Durumu acildi.'),
@@ -679,7 +688,7 @@ async function seed() {
       caseStatus: 'aktif' as const,
       targetAmount: 6000,
       collectedAmount: 1800,
-      photos: mediaIds['dog-2'] ? [mediaIds['dog-2']] : [],
+      photos: mediaIds['emergency-boncuk'] ? [mediaIds['emergency-boncuk']] : [],
       description: lexicalRoot(
         heading('h3', 'Yaygın Uyuz — Ciddi Cilt Hastalığı'),
         paragraph('Boncuk, Bakırköy sokaklarında ', bold('yaygın uyuz (demodikoz)'), ' nedeniyle tüyleri dökülmüş ve cildinde açık yaralar oluşmuş halde bulundu. Vücudunun %60\'ından fazlası etkilenmişti.'),
@@ -1598,57 +1607,103 @@ async function seed() {
           sectionTitle: 'HİKAYEMİZ & MİSYON',
           steps: [
             {
-              title: 'KURULUŞ',
-              ...(mediaIds['story-founder'] ? { image: mediaIds['story-founder'] } : {}),
+              title: 'HATAY\'DA BÜYÜMEK',
+              ...(mediaIds['story-hatay'] ? { image: mediaIds['story-hatay'] } : {}),
               description: lexicalRoot(
                 paragraph(
-                  '2019 yılında, İstanbul sokaklarında yaşayan sahipsiz hayvanların sesini duyurmak ve onlara ',
-                  bold('insanca bir yaşam'),
-                  ' sunmak amacıyla yola çıktık. Bir avuç gönüllüyle başlayan bu hareket, binlerce cana umut oldu.',
+                  '1981 yılında, Türkiye\'nin en ',
+                  bold('kozmopolit'),
+                  ' şehirlerinden biri olan Hatay\'da dünyaya geldi kurucumuz. Farklı kültürlerin bir arada yaşadığı bu şehirde büyümek, tüm canlılara karşı derin bir ',
+                  bold('merhamet ve saygı'),
+                  ' duygusu aşıladı.',
+                ),
+                paragraph(
+                  'Beden eğitimi alanında eğitim aldıktan sonra, 2007 yılından itibaren ',
+                  bold('yaşlı ve engelli bakım'),
+                  ' alanında çalışmaya başladı. Yaklaşık 11 yıldır bir bakım kurumunda yönetici olarak görev yapıyor.',
                 ),
               ),
             },
             {
-              title: 'İLK KURTARMA',
-              ...(mediaIds['story-rescue'] ? { image: mediaIds['story-rescue'] } : {}),
+              title: '6 ŞUBAT FELAKETİ',
+              ...(mediaIds['story-earthquake'] ? { image: mediaIds['story-earthquake'] } : {}),
               description: lexicalRoot(
                 paragraph(
-                  'İlk kurtarma operasyonumuz bir kış gecesi gerçekleşti. Yaralı bir kedi, ',
-                  bold('soğukta titrerken'),
-                  ' bulundu ve tedavi edildi. Bu deneyim bizi daha büyük adımlar atmaya teşvik etti.',
-                ),
-                paragraph(
-                  'O günden bu yana ', bold('7/24'), ' acil müdahale ekibimiz sahada aktif çalışıyor.',
-                ),
-              ),
-            },
-            {
-              title: 'BÜYÜME',
-              ...(mediaIds['story-growth'] ? { image: mediaIds['story-growth'] } : {}),
-              description: lexicalRoot(
-                paragraph(
-                  'Gönüllü ağımız hızla büyüdü. Bugün ', bold('200+'), ' aktif gönüllümüz, ',
-                  bold('40+'), ' besleme noktamız ve düzenli veteriner işbirliklerimiz var.',
-                ),
-                ul(
-                  [bold('347 hayvan'), ' kurtarıldı'],
-                  [bold('89 sahiplendirme'), ' gerçekleştirildi'],
-                  [bold('2.400+'), ' cana düzenli beslenme sağlandı'],
-                ),
-              ),
-            },
-            {
-              title: 'BUGÜNKİ MİSYON',
-              ...(mediaIds['story-mission'] ? { image: mediaIds['story-mission'] } : {}),
-              description: lexicalRoot(
-                paragraph(
-                  'Her canlının sevgiyi, bakımı ve güvenli bir yaşamı hak ettiğine inanıyoruz. ',
-                  bold('Besleme, tedavi, kısırlaştırma ve sahiplendirme'),
-                  ' — kapsamlı bir bakım ağı oluşturuyoruz.',
+                  '2023 yılında yaşanan ',
+                  bold('yıkıcı depremler'),
+                  ', Hatay\'ı yerle bir etti. Aile üyelerini, akrabalarını ve yakın arkadaşlarını kaybetti. Doğup büyüdüğü şehir büyük ölçüde yıkıma uğradı.',
                 ),
                 quote(
-                  italic('"Her canlı sevgiyi, bakımı ve güvenli bir yaşamı hak eder."'),
-                  ' — Bu inançla yola çıktık, bu inançla devam ediyoruz.',
+                  italic('"Deprem her şeyi aldı, ama içimdeki merhameti alamadı."'),
+                ),
+              ),
+            },
+            {
+              title: 'YENİDEN DOĞUŞ',
+              ...(mediaIds['story-first-feeding'] ? { image: mediaIds['story-first-feeding'] } : {}),
+              description: lexicalRoot(
+                paragraph(
+                  'Depremin bıraktığı derin travmaları aşabilmek ve hayata yeniden tutunabilmek için küçüklüğünden beri sevdiği ',
+                  bold('sokak hayvanlarına'),
+                  ' yardım etmeyi kendine amaç edindi. ',
+                  bold('Acı, amaca dönüştü.'),
+                ),
+                paragraph(
+                  'Hem Hatay\'da hem de şu anda yaşadığı Malatya\'da — iki deprem şehrinde — hem insanların hem hayvanların yaşam koşulları çok zorlaştı. Bireysel olarak sokaklardaki canlara ulaşmaya başladı.',
+                ),
+              ),
+            },
+            {
+              title: 'HER GÜN SAHADA',
+              ...(mediaIds['story-daily'] ? { image: mediaIds['story-daily'] } : {}),
+              description: lexicalRoot(
+                paragraph(
+                  'Bugün bireysel bir gönüllü olarak her gün yaklaşık ',
+                  bold('100 kedi ve köpeğin'),
+                  ' beslenmesine katkı sağlıyor. Büyük ölçüde kişisel imkanlarla yürütülen bu çalışma, adanmışlığın en somut örneği.',
+                ),
+                ul(
+                  [bold('~100 hayvan'), ' her gün düzenli besleniyor'],
+                  [bold('Kısırlaştırma'), ' çalışmalarına destek veriliyor'],
+                  [bold('Hasta hayvanlar'), ' için veteriner erişimi sağlanıyor'],
+                ),
+              ),
+            },
+            {
+              title: 'ŞEFFAFLIK İLKESİ',
+              ...(mediaIds['story-health'] ? { image: mediaIds['story-health'] } : {}),
+              description: lexicalRoot(
+                paragraph(
+                  'Bu platformu kurmasının en önemli nedeni, yapılan tüm desteklerin ',
+                  bold('şeffaf bir şekilde paylaşılması'),
+                  ' ve katkıların gerçekten ihtiyaç sahibi hayvanlara ulaştığının gösterilmesidir.',
+                ),
+                ul(
+                  [bold('Şeffaflık'), ' — Tüm destekler ve harcamalar açıkça paylaşılır'],
+                  [bold('Merhamet ve Saygı'), ' — Tüm canlıların yaşam hakkına saygı duyulur'],
+                  [bold('Sürdürülebilirlik'), ' — Uzun vadeli iyileştirmeler hedeflenir'],
+                  [bold('Topluluk Dayanışması'), ' — Birlikte daha güçlüyüz'],
+                ),
+              ),
+            },
+            {
+              title: 'GELECEK VİZYONU',
+              ...(mediaIds['story-vision'] ? { image: mediaIds['story-vision'] } : {}),
+              description: lexicalRoot(
+                paragraph(
+                  'Bireysel çabaları ',
+                  bold('dayanışma ağına'),
+                  ' dönüştürmek en büyük hedef. Türkiye genelinde sürdürülebilir bir destek ağı kurmak, gönüllü topluluğu oluşturmak ve ',
+                  bold('resmi bir dernek'),
+                  ' çatısı altında daha profesyonel çalışmalar yürütmek yolunda.',
+                ),
+                quote(
+                  italic('"Sokak hayvanlarının temel ihtiyaçlarına — mama, sağlık, güvenli yaşam — erişimini sağlamak için varız."'),
+                ),
+                paragraph(
+                  'Bireysel bir mücadeleden doğan bu hareket, toplumsal bir ',
+                  bold('farkındalık ve dayanışma'),
+                  ' hareketine dönüşüyor.',
                 ),
               ),
             },
@@ -1663,12 +1718,12 @@ async function seed() {
           photoCountTemplate: '{count} fotoğraf',
           galleryVariant: 'circular',
           activities: [
-            { key: 'feeding', title: 'Besleme', description: 'Her gün 40+ noktada düzenli besleme yapıyoruz.', ...(mediaIds['activity-feeding'] ? { images: [mediaIds['activity-feeding']] } : {}) },
-            { key: 'treatment', title: 'Tedavi', description: 'Hasta ve yaralı hayvanların tedavilerini karşılıyoruz.', ...(mediaIds['activity-treatment'] ? { images: [mediaIds['activity-treatment']] } : {}) },
-            { key: 'spaying', title: 'Kısırlaştırma', description: 'Popülasyon kontrolü için kampanyalar düzenliyoruz.', images: [mediaIds['activity-spaying'], mediaIds['activity-spaying-2'], mediaIds['activity-spaying-3']].filter(Boolean) },
-            { key: 'emergency', title: 'Acil Müdahale', description: 'Acil durumlarda 7/24 müdahale ediyoruz.', ...(mediaIds['activity-emergency'] ? { images: [mediaIds['activity-emergency']] } : {}) },
-            { key: 'vaccination', title: 'Aşılama', description: 'Düzenli aşılama programı uyguluyoruz.', ...(mediaIds['activity-vaccination'] ? { images: [mediaIds['activity-vaccination']] } : {}) },
-            { key: 'shelter', title: 'Barınma', description: 'Tedavi sürecinde geçici barınma sağlıyoruz.', ...(mediaIds['activity-shelter'] ? { images: [mediaIds['activity-shelter']] } : {}) },
+            { key: 'feeding', title: 'Besleme', description: 'Her gün 40+ noktada düzenli besleme yapıyoruz.', images: [mediaIds['activity-feeding']].filter(Boolean) },
+            { key: 'treatment', title: 'Tedavi', description: 'Hasta ve yaralı hayvanların tedavilerini karşılıyoruz.', images: [mediaIds['activity-treatment']].filter(Boolean) },
+            { key: 'spaying', title: 'Kısırlaştırma', description: 'Popülasyon kontrolü için kampanyalar düzenliyoruz.', images: [mediaIds['activity-spaying']].filter(Boolean) },
+            { key: 'emergency', title: 'Acil Müdahale', description: 'Acil durumlarda 7/24 müdahale ediyoruz.', images: [mediaIds['activity-emergency']].filter(Boolean) },
+            { key: 'vaccination', title: 'Aşılama', description: 'Düzenli aşılama programı uyguluyoruz.', images: [mediaIds['activity-vaccination']].filter(Boolean) },
+            { key: 'shelter', title: 'Barınma', description: 'Tedavi sürecinde geçici barınma sağlıyoruz.', images: [mediaIds['activity-shelter']].filter(Boolean) },
           ],
         },
         {

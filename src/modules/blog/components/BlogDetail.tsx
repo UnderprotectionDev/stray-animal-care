@@ -70,8 +70,8 @@ export function BlogDetail({
       {heroImage && typeof heroImage === 'object' && (
         <div className="px-4 md:px-6 lg:px-8 mt-6 mb-8">
           <div className="mx-auto max-w-3xl">
-            <div className="relative w-full overflow-hidden rounded-lg" style={{ aspectRatio: '2/1', maxHeight: '340px' }}>
-              <Media resource={heroImage} fill imgClassName="object-cover" />
+            <div className="relative w-full overflow-hidden rounded-lg" style={{ aspectRatio: `${heroImage.width ?? 16}/${heroImage.height ?? 9}` }}>
+              <Media resource={heroImage} fill imgClassName="object-cover" priority />
             </div>
           </div>
         </div>

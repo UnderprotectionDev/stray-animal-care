@@ -66,7 +66,7 @@ async function HomepageContent({
           sort: '-publishedAt',
           locale,
           depth: 1,
-          select: { title: true, slug: true, heroImage: true, publishedAt: true, meta: true, excerpt: true, postCategory: true },
+          select: { title: true, slug: true, heroImage: true, publishedAt: true, meta: true, excerpt: true, postCategory: true, content: true },
         })
       : Promise.resolve({ docs: [] }),
     blockTypes.has('homeNeedsList')

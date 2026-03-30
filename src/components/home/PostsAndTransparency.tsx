@@ -47,6 +47,8 @@ function serializeBlogCards(posts: Post[]): BlogCarouselCardData[] {
       title: post.title,
       slug: post.slug || '',
       excerpt: post.excerpt || null,
+      contentPreview: null,
+      readingTime: null,
       category: post.postCategory || null,
       categoryLabel: post.postCategory
         ? (CATEGORY_LABELS_FALLBACK[post.postCategory] ?? post.postCategory)

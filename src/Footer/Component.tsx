@@ -47,7 +47,7 @@ export async function Footer({ siteSettings, labels, headerLabels }: FooterProps
   const emergencyPhone = contactLinks.find((l) => l.type === 'phone')
 
   return (
-    <footer className="sticky bottom-0 border-t-[1.5px] border-palette-cream/20 bg-palette-black text-palette-cream">
+    <footer className="sticky bottom-0 left-0 z-0 w-full border-t-[1.5px] border-palette-cream/20 bg-palette-black text-palette-cream">
       <div className="grid grid-cols-1 gap-8 px-6 py-12 sm:grid-cols-2 md:grid-cols-4 md:px-8 md:py-16">
         {/* Column 1 — Brand + Contact */}
         <div className="space-y-5">

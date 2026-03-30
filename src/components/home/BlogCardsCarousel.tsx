@@ -12,6 +12,8 @@ export type BlogCarouselCardData = {
   title: string
   slug: string
   excerpt: string | null
+  contentPreview: string | null
+  readingTime: number | null
   category: string | null
   categoryLabel: string
   publishedAt: string | null
@@ -38,8 +40,8 @@ function BlogCardContent({
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Accent divider + date row */}
-      <div className="flex items-center gap-3">
+      {/* Meta row: date + reading time */}
+      <div className="flex items-center gap-4 flex-wrap">
         <div
           className="w-8 h-[3px] shrink-0"
           style={{ background: `var(--${semanticToken})` }}
@@ -60,6 +62,15 @@ function BlogCardContent({
         >
           <p className="font-mono text-sm md:text-[0.938rem] leading-relaxed text-[var(--muted-foreground)]">
             {card.excerpt}
+          </p>
+        </div>
+      )}
+
+      {/* Content preview */}
+      {card.contentPreview && (
+        <div className="border-t border-[var(--border)] pt-4">
+          <p className="font-mono text-sm leading-relaxed text-[var(--foreground)]/80 line-clamp-5">
+            {card.contentPreview}
           </p>
         </div>
       )}
