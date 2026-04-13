@@ -2240,7 +2240,10 @@ export interface Header {
               } | null);
           url?: string | null;
         };
-        label: string;
+        /**
+         * Opsiyonel. Boşsa menüde URL veya referans slug kullanılır.
+         */
+        label?: string | null;
         /**
          * Menü açıldığında gösterilecek görsel
          */
@@ -2272,7 +2275,7 @@ export interface SiteSetting {
             tagline?: string | null;
             rotatingWords?:
               | {
-                  word: string;
+                  word?: string | null;
                   id?: string | null;
                 }[]
               | null;
@@ -2284,9 +2287,9 @@ export interface SiteSetting {
             enabled?: boolean | null;
             metrics?:
               | {
-                  label: string;
-                  value: string;
-                  name: string;
+                  label?: string | null;
+                  value?: string | null;
+                  name?: string | null;
                   id?: string | null;
                 }[]
               | null;
@@ -2299,7 +2302,7 @@ export interface SiteSetting {
             sectionTitle?: string | null;
             steps?:
               | {
-                  title: string;
+                  title?: string | null;
                   description?: {
                     root: {
                       type: string;
@@ -2335,8 +2338,8 @@ export interface SiteSetting {
             galleryVariant?: ('grid' | 'circular' | 'stacking') | null;
             activities?:
               | {
-                  key: 'feeding' | 'treatment' | 'spaying' | 'emergency' | 'vaccination' | 'shelter';
-                  title: string;
+                  key?: ('feeding' | 'treatment' | 'spaying' | 'emergency' | 'vaccination' | 'shelter') | null;
+                  title?: string | null;
                   description?: string | null;
                   images?: (number | Media)[] | null;
                   id?: string | null;

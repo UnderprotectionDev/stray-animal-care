@@ -16,7 +16,8 @@ export const Header: GlobalConfig = {
       type: 'upload',
       relationTo: 'media',
       admin: {
-        description: 'Başlık çubuğunda gösterilecek logo (opsiyonel — yoksa marka adı metin olarak gösterilir)',
+        description:
+          'Başlık çubuğunda gösterilecek logo (opsiyonel — yoksa marka adı metin olarak gösterilir)',
       },
     },
     {
@@ -43,8 +44,10 @@ export const Header: GlobalConfig = {
           name: 'label',
           label: 'Etiket',
           type: 'text',
-          required: true,
           localized: true,
+          admin: {
+            description: 'Opsiyonel. Boşsa menüde URL veya referans slug kullanılır.',
+          },
         },
         {
           name: 'image',

@@ -11,12 +11,27 @@ export const StatsBlock: Block = {
       label: 'Metrikler',
       type: 'array',
       labels: { singular: 'Metrik', plural: 'Metrikler' },
-      minRows: 1,
+      minRows: 0,
       maxRows: 8,
       fields: [
-        { name: 'label', type: 'text', localized: true, required: true, label: 'Etiket' },
-        { name: 'value', type: 'text', localized: true, required: true, label: 'Değer' },
-        { name: 'name', type: 'text', localized: true, required: true, label: 'İsim' },
+        {
+          name: 'label',
+          type: 'text',
+          localized: true,
+          label: 'Etiket',
+        },
+        {
+          name: 'value',
+          type: 'text',
+          localized: true,
+          label: 'Değer',
+        },
+        {
+          name: 'name',
+          type: 'text',
+          localized: true,
+          label: 'İsim',
+        },
       ],
       defaultValue: [
         { label: 'METRİK 01 // OPERASYONEL', value: '347', name: 'KURTARILAN' },

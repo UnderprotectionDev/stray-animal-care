@@ -12,7 +12,7 @@ export const StoryBlock: Block = {
       name: 'steps',
       type: 'array',
       label: 'Hikaye Adımları',
-      minRows: 1,
+      minRows: 0,
       maxRows: 8,
       admin: {
         initCollapsed: true,
@@ -21,8 +21,19 @@ export const StoryBlock: Block = {
         },
       },
       fields: [
-        { name: 'title', type: 'text', localized: true, required: true, label: 'Adım Başlığı' },
-        { name: 'description', type: 'richText', editor: defaultLexical, localized: true, label: 'Açıklama' },
+        {
+          name: 'title',
+          type: 'text',
+          localized: true,
+          label: 'Adım Başlığı',
+        },
+        {
+          name: 'description',
+          type: 'richText',
+          editor: defaultLexical,
+          localized: true,
+          label: 'Açıklama',
+        },
         { name: 'image', type: 'upload', relationTo: 'media', label: 'Adım Görseli' },
       ],
     },

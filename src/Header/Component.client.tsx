@@ -46,14 +46,45 @@ function resolveNavImage(item: NavItem): string {
   return '/images/menu/placeholder.jpg'
 }
 
+function humanizePath(path: string): string {
+  const clean = path.split('/').filter(Boolean).at(-1) ?? ''
+  if (!clean) return 'Menü'
+
+  return clean.replace(/[-_]+/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+function resolveNavLabel(item: NavItem): string {
+  if (item.label && item.label.trim().length > 0) return item.label
+
+  const href = resolveNavHref(item)
+  if (href === '/') return 'Ana Sayfa'
+
+  if (
+    item.link?.type === 'reference' &&
+    item.link.reference &&
+    typeof item.link.reference.value === 'object'
+  ) {
+    const refValue = item.link.reference.value
+    if (
+      'title' in refValue &&
+      typeof refValue.title === 'string' &&
+      refValue.title.trim().length > 0
+    ) {
+      return refValue.title
+    }
+  }
+
+  return humanizePath(href)
+}
+
 const NAV_HOVER_COLORS = [
-  { bg: 'var(--cta)',       fg: 'var(--cta-foreground)' },
-  { bg: 'var(--stats)',     fg: 'var(--stats-foreground)' },
+  { bg: 'var(--cta)', fg: 'var(--cta-foreground)' },
+  { bg: 'var(--stats)', fg: 'var(--stats-foreground)' },
   { bg: 'var(--emergency)', fg: 'var(--emergency-foreground)' },
-  { bg: 'var(--adoption)',  fg: 'var(--adoption-foreground)' },
-  { bg: 'var(--trust)',     fg: 'var(--trust-foreground)' },
-  { bg: 'var(--health)',    fg: 'var(--health-foreground)' },
-  { bg: 'var(--warm)',      fg: 'var(--warm-foreground)' },
+  { bg: 'var(--adoption)', fg: 'var(--adoption-foreground)' },
+  { bg: 'var(--trust)', fg: 'var(--trust-foreground)' },
+  { bg: 'var(--health)', fg: 'var(--health-foreground)' },
+  { bg: 'var(--warm)', fg: 'var(--warm-foreground)' },
 ] as const
 
 const NavCellLink: React.FC<{
@@ -80,32 +111,43 @@ const NavCellLink: React.FC<{
     }
   }, [isActive, color.fg])
 
-  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
-    if (isActive) return
-    const el = containerRef.current
-    const overlay = overlayRef.current
-    const link = linkRef.current
-    if (!el || !overlay || !link) return
-    link.style.color = color.fg
-    const edge = findClosestEdge4(e, el)
-    const from = getEdgeTransform(edge)
-    gsap.killTweensOf(overlay)
-    gsap.fromTo(overlay, from, { xPercent: 0, yPercent: 0, duration: 0.3, ease: 'power2.out' })
-  }, [isActive, color.fg])
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent) => {
+      if (isActive) return
+      const el = containerRef.current
+      const overlay = overlayRef.current
+      const link = linkRef.current
+      if (!el || !overlay || !link) return
+      link.style.color = color.fg
+      const edge = findClosestEdge4(e, el)
+      const from = getEdgeTransform(edge)
+      gsap.killTweensOf(overlay)
+      gsap.fromTo(overlay, from, { xPercent: 0, yPercent: 0, duration: 0.3, ease: 'power2.out' })
+    },
+    [isActive, color.fg],
+  )
 
-  const handleMouseLeave = useCallback((e: React.MouseEvent) => {
-    if (isActive) return
-    const el = containerRef.current
-    const overlay = overlayRef.current
-    const link = linkRef.current
-    if (!el || !overlay || !link) return
-    const edge = findClosestEdge4(e, el)
-    const to = getEdgeTransform(edge)
-    gsap.killTweensOf(overlay)
-    gsap.to(overlay, { ...to, duration: 0.25, ease: 'power2.in', onComplete: () => {
-      link.style.color = ''
-    }})
-  }, [isActive, color.fg])
+  const handleMouseLeave = useCallback(
+    (e: React.MouseEvent) => {
+      if (isActive) return
+      const el = containerRef.current
+      const overlay = overlayRef.current
+      const link = linkRef.current
+      if (!el || !overlay || !link) return
+      const edge = findClosestEdge4(e, el)
+      const to = getEdgeTransform(edge)
+      gsap.killTweensOf(overlay)
+      gsap.to(overlay, {
+        ...to,
+        duration: 0.25,
+        ease: 'power2.in',
+        onComplete: () => {
+          link.style.color = ''
+        },
+      })
+    },
+    [isActive, color.fg],
+  )
 
   return (
     <div
@@ -144,7 +186,14 @@ type Props = {
   logo?: (number | null) | Media
 }
 
-export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navItems, socialLinks, brandName, logo }) => {
+export const HeaderClient: React.FC<Props> = ({
+  headerLabels,
+  searchLabels,
+  navItems,
+  socialLinks,
+  brandName,
+  logo,
+}) => {
   const pathname = usePathname()
 
   const headerRef = useRef<HTMLElement>(null)
@@ -171,14 +220,14 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
 
   const flowingItems: FlowingMenuItem[] = items.map((item) => ({
     href: resolveNavHref(item),
-    text: item.label || '',
+    text: resolveNavLabel(item),
     image: resolveNavImage(item),
     isCta: item.isCta || undefined,
   }))
 
   const staggeredItems: StaggeredMenuItem[] = items.map((item) => ({
     href: resolveNavHref(item),
-    label: item.label || '',
+    label: resolveNavLabel(item),
     image: resolveNavImage(item),
     isCta: item.isCta || undefined,
   }))
@@ -190,7 +239,10 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
 
   return (
     <>
-      <header ref={headerRef} className="fixed top-0 left-0 z-50 w-full border-b-[1.5px] border-border bg-palette-cream">
+      <header
+        ref={headerRef}
+        className="fixed top-0 left-0 z-50 w-full border-b-[1.5px] border-border bg-palette-cream"
+      >
         {/* Desktop: grid nav */}
         {(() => {
           const barItems = items.filter((item) => {
@@ -200,14 +252,23 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
           const ctaItem = items.find((item) => item.isCta)
           const colTemplate = `auto repeat(${barItems.length}, 1fr) auto${ctaItem ? ' auto' : ''} auto`
           return (
-            <div className="hidden lg:grid" style={{ gridTemplateColumns: colTemplate, gap: '1px', background: 'var(--foreground)' }}>
+            <div
+              className="hidden lg:grid"
+              style={{
+                gridTemplateColumns: colTemplate,
+                gap: '1px',
+                background: 'var(--foreground)',
+              }}
+            >
               {/* Brand */}
               <div className="panel flex items-center py-3 px-4">
                 <Link href="/" className="flex items-center gap-2">
                   {logoUrl ? (
                     <img src={logoUrl} alt={brand} className="h-6 w-auto" />
                   ) : (
-                    <span className="t-meta font-bold uppercase tracking-widest whitespace-nowrap">{brand}</span>
+                    <span className="t-meta font-bold uppercase tracking-widest whitespace-nowrap">
+                      {brand}
+                    </span>
                   )}
                 </Link>
               </div>
@@ -215,10 +276,16 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
               {/* Nav links (excluding home and CTA) */}
               {barItems.map((item, index) => {
                 const href = resolveNavHref(item)
-                const isActive = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
+                const isActive =
+                  pathname === href || (href !== '/' && pathname.startsWith(`${href}/`))
                 return (
-                  <NavCellLink key={item.id || href} href={href} isActive={isActive} colorIndex={index}>
-                    {item.label || ''}
+                  <NavCellLink
+                    key={item.id || href}
+                    href={href}
+                    isActive={isActive}
+                    colorIndex={index}
+                  >
+                    {resolveNavLabel(item)}
                   </NavCellLink>
                 )
               })}
@@ -242,7 +309,7 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
                   className="btn-cta flex items-center gap-2 whitespace-nowrap"
                 >
                   <Heart className="size-4" />
-                  {ctaItem.label || ''}
+                  {resolveNavLabel(ctaItem)}
                 </Link>
               )}
 
@@ -250,7 +317,11 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="panel flex items-center justify-center py-3 px-4 transition-colors hover:bg-accent"
-                aria-label={menuOpen ? getLabel(headerLabels, 'closeMenu') : getLabel(headerLabels, 'openMenu')}
+                aria-label={
+                  menuOpen
+                    ? getLabel(headerLabels, 'closeMenu')
+                    : getLabel(headerLabels, 'openMenu')
+                }
                 aria-expanded={menuOpen}
               >
                 {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -279,7 +350,9 @@ export const HeaderClient: React.FC<Props> = ({ headerLabels, searchLabels, navI
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="panel py-3 px-3 border-l border-border"
-              aria-label={menuOpen ? getLabel(headerLabels, 'closeMenu') : getLabel(headerLabels, 'openMenu')}
+              aria-label={
+                menuOpen ? getLabel(headerLabels, 'closeMenu') : getLabel(headerLabels, 'openMenu')
+              }
               aria-expanded={menuOpen}
             >
               {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}

@@ -13,7 +13,11 @@ import { OurWorkStats } from '@/modules/our-work/components/OurWorkStats'
 import { ActivityShowcase } from '@/modules/our-work/components/ActivityShowcase'
 import { OurWorkProcess } from '@/modules/our-work/components/OurWorkProcess'
 import { OurWorkFAQ } from '@/modules/our-work/components/OurWorkFAQ'
-import { ACTIVITY_KEYS, ACTIVITY_COLORS, ACTIVITY_FOREGROUNDS } from '@/modules/our-work/lib/constants'
+import {
+  ACTIVITY_KEYS,
+  ACTIVITY_COLORS,
+  ACTIVITY_FOREGROUNDS,
+} from '@/modules/our-work/lib/constants'
 import { locales } from '@/i18n/config'
 import { generatePageMetadata } from '@/utilities/pageHelpers'
 import type { Media as MediaType, UiString, SiteSetting } from '@/payload-types'
@@ -68,15 +72,22 @@ async function OurWorkDataSection({ locale, ui }: { locale: string; ui: UiString
       payload.count({ collection: 'animals', where: { _status: { equals: 'published' } } }),
     ),
   ])
-  const siteSettings = siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
-  const animalsHelpedCount = animalsResult.status === 'fulfilled' ? animalsResult.value.totalDocs : 0
+  const siteSettings =
+    siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
+  const animalsHelpedCount =
+    animalsResult.status === 'fulfilled' ? animalsResult.value.totalDocs : 0
 
   const ourWorkBlock = siteSettings?.homepageBlocks?.find(
     (block) => block.blockType === 'homeOurWork',
   )
-  const activities = ourWorkBlock && 'activities' in ourWorkBlock ? ourWorkBlock.activities ?? [] : []
+  const activities =
+    ourWorkBlock && 'activities' in ourWorkBlock ? (ourWorkBlock.activities ?? []) : []
 
-  const activityMap = new Map(activities.map((a) => [a.key, a]))
+  const activityMap = new Map(
+    activities
+      .filter((a): a is typeof a & { key: string } => typeof a.key === 'string' && a.key.length > 0)
+      .map((a) => [a.key, a]),
+  )
   const filteredActivities = ACTIVITY_KEYS.filter((key) => activityMap.has(key)).map((key) => {
     const a = activityMap.get(key)!
     return {
@@ -87,7 +98,9 @@ async function OurWorkDataSection({ locale, ui }: { locale: string; ui: UiString
     }
   })
 
-  const rotatingActivityNames = filteredActivities.map((a) => a.title).filter(Boolean)
+  const rotatingActivityNames = filteredActivities
+    .map((a) => a.title)
+    .filter((title): title is string => typeof title === 'string' && title.length > 0)
 
   const dividerTexts = [
     ui?.ourWork?.divider?.text1 || 'BESLEME',
@@ -97,19 +110,71 @@ async function OurWorkDataSection({ locale, ui }: { locale: string; ui: UiString
   ]
 
   const stats = [
-    { value: siteSettings?.treatedCount ?? 0, suffix: '+', label: ui?.ourWork?.stats?.treated || 'Tedavi Edilen', color: ACTIVITY_COLORS.treatment, colorFg: ACTIVITY_FOREGROUNDS.treatment },
-    { value: siteSettings?.spayedCount ?? 0, suffix: '+', label: ui?.ourWork?.stats?.spayed || 'Kısırlaştırılan', color: ACTIVITY_COLORS.spaying, colorFg: ACTIVITY_FOREGROUNDS.spaying },
-    { value: siteSettings?.vaccinatedCount ?? 0, suffix: '+', label: ui?.ourWork?.stats?.vaccinated || 'Aşılanan', color: ACTIVITY_COLORS.vaccination, colorFg: ACTIVITY_FOREGROUNDS.vaccination },
-    { value: siteSettings?.feedingPointsCount ?? 0, suffix: '+', label: ui?.ourWork?.stats?.feedingPoints || 'Besleme Noktası', color: ACTIVITY_COLORS.feeding, colorFg: ACTIVITY_FOREGROUNDS.feeding },
-    { value: siteSettings?.catsCount ?? 0, suffix: '+', label: ui?.ourWork?.stats?.cats || 'Kedi', color: ACTIVITY_COLORS.emergency, colorFg: ACTIVITY_FOREGROUNDS.emergency },
-    { value: siteSettings?.dogsCount ?? 0, suffix: '+', label: ui?.ourWork?.stats?.dogs || 'Köpek', color: ACTIVITY_COLORS.shelter, colorFg: ACTIVITY_FOREGROUNDS.shelter },
+    {
+      value: siteSettings?.treatedCount ?? 0,
+      suffix: '+',
+      label: ui?.ourWork?.stats?.treated || 'Tedavi Edilen',
+      color: ACTIVITY_COLORS.treatment,
+      colorFg: ACTIVITY_FOREGROUNDS.treatment,
+    },
+    {
+      value: siteSettings?.spayedCount ?? 0,
+      suffix: '+',
+      label: ui?.ourWork?.stats?.spayed || 'Kısırlaştırılan',
+      color: ACTIVITY_COLORS.spaying,
+      colorFg: ACTIVITY_FOREGROUNDS.spaying,
+    },
+    {
+      value: siteSettings?.vaccinatedCount ?? 0,
+      suffix: '+',
+      label: ui?.ourWork?.stats?.vaccinated || 'Aşılanan',
+      color: ACTIVITY_COLORS.vaccination,
+      colorFg: ACTIVITY_FOREGROUNDS.vaccination,
+    },
+    {
+      value: siteSettings?.feedingPointsCount ?? 0,
+      suffix: '+',
+      label: ui?.ourWork?.stats?.feedingPoints || 'Besleme Noktası',
+      color: ACTIVITY_COLORS.feeding,
+      colorFg: ACTIVITY_FOREGROUNDS.feeding,
+    },
+    {
+      value: siteSettings?.catsCount ?? 0,
+      suffix: '+',
+      label: ui?.ourWork?.stats?.cats || 'Kedi',
+      color: ACTIVITY_COLORS.emergency,
+      colorFg: ACTIVITY_FOREGROUNDS.emergency,
+    },
+    {
+      value: siteSettings?.dogsCount ?? 0,
+      suffix: '+',
+      label: ui?.ourWork?.stats?.dogs || 'Köpek',
+      color: ACTIVITY_COLORS.shelter,
+      colorFg: ACTIVITY_FOREGROUNDS.shelter,
+    },
   ]
 
   const processSteps = [
-    { number: '01', title: ui?.ourWork?.process?.step1Title || 'Bildirim', description: ui?.ourWork?.process?.step1Desc || '' },
-    { number: '02', title: ui?.ourWork?.process?.step2Title || 'Müdahale', description: ui?.ourWork?.process?.step2Desc || '' },
-    { number: '03', title: ui?.ourWork?.process?.step3Title || 'Tedavi', description: ui?.ourWork?.process?.step3Desc || '' },
-    { number: '04', title: ui?.ourWork?.process?.step4Title || 'Takip', description: ui?.ourWork?.process?.step4Desc || '' },
+    {
+      number: '01',
+      title: ui?.ourWork?.process?.step1Title || 'Bildirim',
+      description: ui?.ourWork?.process?.step1Desc || '',
+    },
+    {
+      number: '02',
+      title: ui?.ourWork?.process?.step2Title || 'Müdahale',
+      description: ui?.ourWork?.process?.step2Desc || '',
+    },
+    {
+      number: '03',
+      title: ui?.ourWork?.process?.step3Title || 'Tedavi',
+      description: ui?.ourWork?.process?.step3Desc || '',
+    },
+    {
+      number: '04',
+      title: ui?.ourWork?.process?.step4Title || 'Takip',
+      description: ui?.ourWork?.process?.step4Desc || '',
+    },
   ]
 
   const faqItems = [
@@ -132,10 +197,7 @@ async function OurWorkDataSection({ locale, ui }: { locale: string; ui: UiString
 
       {/* 2. Impact Stats */}
       <section>
-        <AnimatedSectionHeader
-          title={ui?.ourWork?.stats?.title || 'Etkimiz'}
-          accentColor="stats"
-        />
+        <AnimatedSectionHeader title={ui?.ourWork?.stats?.title || 'Etkimiz'} accentColor="stats" />
         <OurWorkStats stats={stats} />
       </section>
 
@@ -176,7 +238,10 @@ async function OurWorkDataSection({ locale, ui }: { locale: string; ui: UiString
       {/* 8. CTA */}
       <OurWorkCTA
         title={ui?.ourWork?.cta?.title || 'Birlikte Daha Güçlüyüz'}
-        description={ui?.ourWork?.cta?.description || 'Her katkı bir hayat kurtarır. Çalışmalarımıza destek olun.'}
+        description={
+          ui?.ourWork?.cta?.description ||
+          'Her katkı bir hayat kurtarır. Çalışmalarımıza destek olun.'
+        }
         donateLabel={ui?.ourWork?.cta?.donateLabel || 'DESTEK OL'}
         volunteerLabel={ui?.ourWork?.cta?.volunteerLabel || 'GÖNÜLLÜ OL'}
       />

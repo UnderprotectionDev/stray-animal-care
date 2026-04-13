@@ -53,6 +53,8 @@ export default function OurWorkStackingCards({ activities, photoCountTemplate }:
   return (
     <StackingCards totalCards={activities.length} className="relative">
       {activities.map((activity, index) => {
+        const activityKey = activity.key ?? 'feeding'
+        const activityTitle = activity.title ?? activityKey
         const images = activity.images ?? []
         const firstImage =
           images.length > 0
@@ -62,11 +64,15 @@ export default function OurWorkStackingCards({ activities, photoCountTemplate }:
             : null
         const imageUrl = firstImage ? getMediaUrl(firstImage.url) : ''
         const photoCount = images.length
-        const number = ACTIVITY_NUMBERS[activity.key] || '00'
-        const accentColor = ACTIVITY_COLORS[activity.key] || 'var(--health)'
+        const number = ACTIVITY_NUMBERS[activityKey] || '00'
+        const accentColor = ACTIVITY_COLORS[activityKey] || 'var(--health)'
 
         return (
-          <StackingCardItem key={activity.id || activity.key} index={index} className="h-[580px] md:h-[500px] group">
+          <StackingCardItem
+            key={activity.id || `${activityKey}-${index}`}
+            index={index}
+            className="h-[580px] md:h-[500px] group"
+          >
             <div
               className="border-[1.5px] border-[var(--border)] bg-palette-cream overflow-hidden transition-all duration-300 group-hover:border-l-[6px] group-hover:-translate-y-0.5"
               style={{ borderLeftWidth: 4, borderLeftColor: accentColor }}
@@ -77,7 +83,7 @@ export default function OurWorkStackingCards({ activities, photoCountTemplate }:
                   <div className="relative w-full md:w-[45%] min-h-[220px] md:min-h-full overflow-hidden">
                     <Image
                       src={imageUrl}
-                      alt={activity.title || ''}
+                      alt={activityTitle}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       sizes="(max-width: 768px) 100vw, 45vw"
@@ -89,7 +95,11 @@ export default function OurWorkStackingCards({ activities, photoCountTemplate }:
                 <div className="relative flex-1 p-5 md:p-8 flex flex-col justify-center gap-3 md:gap-4 overflow-hidden">
                   <span
                     className="absolute -right-4 -bottom-4 font-heading leading-none select-none pointer-events-none"
-                    style={{ fontSize: 'clamp(8rem, 15vw, 12rem)', color: accentColor, opacity: 0.06 }}
+                    style={{
+                      fontSize: 'clamp(8rem, 15vw, 12rem)',
+                      color: accentColor,
+                      opacity: 0.06,
+                    }}
                     aria-hidden="true"
                   >
                     {number}
@@ -102,13 +112,11 @@ export default function OurWorkStackingCards({ activities, photoCountTemplate }:
                     >
                       {number}
                     </span>
-                    <span className="t-comment">
-                      {activity.key?.toUpperCase()}
-                    </span>
+                    <span className="t-comment">{activityKey.toUpperCase()}</span>
                   </div>
 
                   <AnimatedCardTitle
-                    text={activity.title}
+                    text={activityTitle}
                     tag="h3"
                     className="font-heading text-2xl md:text-3xl font-bold text-[var(--palette-black)] uppercase leading-tight"
                   />
@@ -122,7 +130,10 @@ export default function OurWorkStackingCards({ activities, photoCountTemplate }:
                   {photoCount > 0 && photoCountTemplate && (
                     <span
                       className="inline-flex items-center gap-2 self-start border-[1.5px] border-[var(--border)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider"
-                      style={{ backgroundColor: accentColor, color: ACTIVITY_FOREGROUNDS[activity.key] || 'var(--palette-black)' }}
+                      style={{
+                        backgroundColor: accentColor,
+                        color: ACTIVITY_FOREGROUNDS[activityKey] || 'var(--palette-black)',
+                      }}
                     >
                       {interpolate(photoCountTemplate, { count: photoCount })}
                     </span>

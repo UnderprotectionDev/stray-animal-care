@@ -8,7 +8,13 @@ export const OurWorkBlock: Block = {
     enabledField(),
     sectionTitleField('Çalışmalarımız'),
     ...viewAllFields('Tümünü Gör', '/calismalarimiz'),
-    { name: 'photoCountTemplate', type: 'text', localized: true, defaultValue: '{count} fotoğraf', label: 'Fotoğraf Sayısı Şablonu' },
+    {
+      name: 'photoCountTemplate',
+      type: 'text',
+      localized: true,
+      defaultValue: '{count} fotoğraf',
+      label: 'Fotoğraf Sayısı Şablonu',
+    },
     {
       name: 'galleryVariant',
       label: 'Galeri Görünümü',
@@ -39,7 +45,6 @@ export const OurWorkBlock: Block = {
           name: 'key',
           label: 'Anahtar',
           type: 'select',
-          required: true,
           options: [
             { label: 'Besleme', value: 'feeding' },
             { label: 'Tedavi', value: 'treatment' },
@@ -49,7 +54,12 @@ export const OurWorkBlock: Block = {
             { label: 'Barınma', value: 'shelter' },
           ],
         },
-        { name: 'title', type: 'text', localized: true, required: true, label: 'Başlık' },
+        {
+          name: 'title',
+          type: 'text',
+          localized: true,
+          label: 'Başlık',
+        },
         { name: 'description', type: 'textarea', localized: true, label: 'Açıklama' },
         { name: 'images', type: 'upload', relationTo: 'media', hasMany: true, label: 'Görseller' },
       ],

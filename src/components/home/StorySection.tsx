@@ -13,11 +13,13 @@ type Props = {
 }
 
 export function StorySection({ block }: Props) {
-  const steps = (block.steps ?? []).map((step) => ({
-    ...step,
-    image:
-      step.image && typeof step.image !== 'number' ? (step.image as MediaType) : null,
-  }))
+  const steps = (block.steps ?? [])
+    .map((step) => ({
+      ...step,
+      title: step.title ?? '',
+      image: step.image && typeof step.image !== 'number' ? (step.image as MediaType) : null,
+    }))
+    .filter((step) => step.title.length > 0)
 
   if (!steps.length) return null
 

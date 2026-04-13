@@ -14,7 +14,10 @@ const OurWorkStackingCards = dynamic(() => import('./OurWorkStackingCards'), {
   loading: () => <div style={{ minHeight: '400px' }} />,
 })
 
-type OurWorkBlock = Extract<NonNullable<SiteSetting['homepageBlocks']>[number], { blockType: 'homeOurWork' }>
+type OurWorkBlock = Extract<
+  NonNullable<SiteSetting['homepageBlocks']>[number],
+  { blockType: 'homeOurWork' }
+>
 
 const ACTIVITY_NUMBERS: Record<string, string> = {
   feeding: '01',
@@ -46,57 +49,67 @@ export function OurWorkShowcase({ block }: Props) {
 
   return (
     <section>
-      <AnimatedSectionHeader title={block.sectionTitle} viewAllLabel={block.viewAllLabel} viewAllLink={block.viewAllLink} />
+      <AnimatedSectionHeader
+        title={block.sectionTitle}
+        viewAllLabel={block.viewAllLabel}
+        viewAllLink={block.viewAllLink}
+      />
       {variant === 'stacking' ? (
-        <OurWorkStackingCards activities={activities} photoCountTemplate={block.photoCountTemplate} />
+        <OurWorkStackingCards
+          activities={activities}
+          photoCountTemplate={block.photoCountTemplate}
+        />
       ) : variant === 'circular' ? (
         <OurWorkCircularGallery activities={activities} />
       ) : (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {activities.map((activity) => {
-          const images = activity.images
-          const firstImage =
-            images && images.length > 0
-              ? typeof images[0] === 'number'
-                ? null
-                : (images[0] as MediaType)
-              : null
-          const photoCount = images?.length ?? 0
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {activities.map((activity, index) => {
+            const activityKey = activity.key ?? 'feeding'
+            const activityTitle = activity.title ?? activityKey
+            const images = activity.images
+            const firstImage =
+              images && images.length > 0
+                ? typeof images[0] === 'number'
+                  ? null
+                  : (images[0] as MediaType)
+                : null
+            const photoCount = images?.length ?? 0
 
-          return (
-            <div
-              key={activity.id || activity.key}
-              className="relative group overflow-hidden bg-[var(--muted)] border-b border-r border-border h-[280px]"
-              style={{ borderLeftWidth: '4px', borderLeftColor: ACTIVITY_COLORS[activity.key] || 'var(--border)' }}
-            >
-              {firstImage && (
-                <Media
-                  resource={firstImage}
-                  fill
-                  imgClassName="object-cover transition-all duration-300"
-                />
-              )}
-              <div className="photo-overlay-gradient absolute inset-0" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-1">
-                <span className="t-meta text-white/50 font-mono">
-                  {ACTIVITY_NUMBERS[activity.key] || '00'} {activity.title?.toUpperCase() ?? ''}
-                </span>
-                <AnimatedCardTitle text={activity.title} className="t-h2 text-white" />
-                {activity.description && (
-                  <span className="t-meta text-white/70">
-                    {activity.description}
-                  </span>
+            return (
+              <div
+                key={activity.id || `${activityKey}-${index}`}
+                className="relative group overflow-hidden bg-[var(--muted)] border-b border-r border-border h-[280px]"
+                style={{
+                  borderLeftWidth: '4px',
+                  borderLeftColor: ACTIVITY_COLORS[activityKey] || 'var(--border)',
+                }}
+              >
+                {firstImage && (
+                  <Media
+                    resource={firstImage}
+                    fill
+                    imgClassName="object-cover transition-all duration-300"
+                  />
                 )}
-                {photoCount > 0 && block.photoCountTemplate && (
-                  <span className="badge-sys mt-1 self-start">
-                    {interpolate(block.photoCountTemplate, { count: photoCount })}
+                <div className="photo-overlay-gradient absolute inset-0" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-1">
+                  <span className="t-meta text-white/50 font-mono">
+                    {ACTIVITY_NUMBERS[activityKey] || '00'} {activityTitle.toUpperCase()}
                   </span>
-                )}
+                  <AnimatedCardTitle text={activityTitle} className="t-h2 text-white" />
+                  {activity.description && (
+                    <span className="t-meta text-white/70">{activity.description}</span>
+                  )}
+                  {photoCount > 0 && block.photoCountTemplate && (
+                    <span className="badge-sys mt-1 self-start">
+                      {interpolate(block.photoCountTemplate, { count: photoCount })}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
       )}
     </section>
   )
