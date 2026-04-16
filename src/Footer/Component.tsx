@@ -2,6 +2,7 @@ import { Link } from '@/i18n/navigation'
 import React from 'react'
 import { Phone, Mail } from 'lucide-react'
 
+import type { Locale } from '@/i18n/config'
 import type { SiteSetting, UiString } from '@/payload-types'
 
 import { SocialIcon } from '@/utilities/socialIcons'
@@ -16,9 +17,70 @@ type FooterLabels = NonNullable<UiString['layout']>['footer']
 type HeaderLabels = NonNullable<UiString['layout']>['header']
 
 type FooterProps = {
+  locale: Locale
   siteSettings: SiteSetting | null
   labels?: FooterLabels | null
   headerLabels?: HeaderLabels | null
+}
+
+const DEFAULT_BRAND_LINES: Record<Locale, [string, string]> = {
+  tr: ['PATİLERİN', 'UMUDU'],
+  en: ['PAWS OF', 'HOPE'],
+}
+
+const DEFAULT_FOOTER_LABELS: Record<Locale, Record<string, string>> = {
+  tr: {
+    copyright: 'Tum haklari saklidir.',
+    explore: 'Kesfet',
+    support: 'Destek',
+    description: 'Sokak hayvanlarina umut oluyoruz.',
+    missionTitle: 'Hayata Deger Kat',
+    missionText: 'Her patili can bir yuva, her destek bir umut.',
+    donateButton: 'Destek Ol',
+    volunteerButton: 'Gonullu Ol',
+    emergencyLine: 'Acil Hat',
+    madeWithLove: 'Sokak hayvanlari icin sevgiyle yapildi',
+  },
+  en: {
+    copyright: 'All rights reserved.',
+    explore: 'Explore',
+    support: 'Support',
+    description: 'We bring hope to stray animals.',
+    missionTitle: 'Make a Difference',
+    missionText: 'Every paw deserves a home, every support brings hope.',
+    donateButton: 'Donate',
+    volunteerButton: 'Volunteer',
+    emergencyLine: 'Emergency Hotline',
+    madeWithLove: 'Made with love for stray animals',
+  },
+}
+
+const isLikelyTurkish = (value: string) => {
+  const turkishChars = /[ÇçĞğİıÖöŞşÜü]/
+  const turkishWords =
+    /\b(ana sayfa|destek|gönüllü|gonullu|acil|ihtiyaç|ihtiyac|keşfet|kesfet|hayata değer kat|hayata deger kat)\b/i
+  return turkishChars.test(value) || turkishWords.test(value)
+}
+
+const DEFAULT_HEADER_LABELS: Record<Locale, Record<string, string>> = {
+  tr: {
+    home: 'Ana Sayfa',
+    blog: 'Blog',
+    vision: 'Gelecek Vizyonu',
+    donate: 'Destek Ol',
+    volunteer: 'Gonullu Ol',
+    emergency: 'Acil Durumlar',
+    supplies: 'Ihtiyac Listesi',
+  },
+  en: {
+    home: 'Home',
+    blog: 'Blog',
+    vision: 'Future Vision',
+    donate: 'Donate',
+    volunteer: 'Volunteer',
+    emergency: 'Emergencies',
+    supplies: 'Needs List',
+  },
 }
 
 const EXPLORE_ITEMS = [
@@ -34,11 +96,26 @@ const SUPPORT_ITEMS = [
   { href: '/ihtiyac-listesi', labelKey: 'supplies' },
 ] as const
 
-export async function Footer({ siteSettings, labels, headerLabels }: FooterProps) {
+export async function Footer({ locale, siteSettings, labels, headerLabels }: FooterProps) {
+  const fallbackFooterLabels = DEFAULT_FOOTER_LABELS[locale]
+  const fallbackHeaderLabels = DEFAULT_HEADER_LABELS[locale]
+  const [brandTop, brandBottom] = DEFAULT_BRAND_LINES[locale]
+
+  const getCMSLabel = (source: Record<string, string | null | undefined> | null, key: string) => {
+    const raw = source?.[key]
+    if (!raw) return undefined
+    if (locale === 'en' && isLikelyTurkish(raw)) return undefined
+    return raw
+  }
+
   const fl = (key: string) =>
-    (labels as Record<string, string | null | undefined> | null)?.[key] || key
+    getCMSLabel(labels as Record<string, string | null | undefined> | null, key) ||
+    fallbackFooterLabels[key] ||
+    key
   const hl = (key: string) =>
-    (headerLabels as Record<string, string | null | undefined> | null)?.[key] || key
+    getCMSLabel(headerLabels as Record<string, string | null | undefined> | null, key) ||
+    fallbackHeaderLabels[key] ||
+    key
 
   const socialLinks = getSocialLinks(siteSettings?.socialLinks)
   const contactLinks = getContactLinks(siteSettings?.socialLinks)
@@ -53,9 +130,9 @@ export async function Footer({ siteSettings, labels, headerLabels }: FooterProps
           <div className="space-y-5">
             <Link href="/" className="inline-block">
               <span className="font-heading font-bold text-[2rem] uppercase leading-tight">
-                PATİLERİN
+                {brandTop}
                 <br />
-                UMUDU
+                {brandBottom}
               </span>
             </Link>
             <p className="t-meta text-palette-cream/70">{fl('description')}</p>

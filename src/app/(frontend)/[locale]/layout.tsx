@@ -71,7 +71,8 @@ export default async function RootLayout({ children, params }: Props) {
     getCachedGlobal('site-settings', 1, locale)(),
     getCachedGlobal('ui-strings', 0, locale)(),
   ])
-  const siteSettings = siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
+  const siteSettings =
+    siteSettingsResult.status === 'fulfilled' ? (siteSettingsResult.value as SiteSetting) : null
   const ui = uiResult.status === 'fulfilled' ? (uiResult.value as UiString | null) : null
 
   const layoutLabels = ui?.layout
@@ -81,10 +82,7 @@ export default async function RootLayout({ children, params }: Props) {
   const mobileDonateLabel = layoutLabels?.mobileDonate?.cta
 
   return (
-    <html
-      className={cn(archivo.variable, archivoBlack.variable, spaceMono.variable)}
-      lang={locale}
-    >
+    <html className={cn(archivo.variable, archivoBlack.variable, spaceMono.variable)} lang={locale}>
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
@@ -93,31 +91,41 @@ export default async function RootLayout({ children, params }: Props) {
         <Providers>
           <NextIntlClientProvider messages={{}}>
             <NuqsAdapter>
-            {/* Main content — relative + z-10 so it covers the sticky footer */}
-            <div className="relative z-10 min-h-dvh bg-background">
-              <ClickSparkWrapper>
-              <CustomCursor>
-              <a
-                href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:border focus:border-border"
-              >
-                {layoutLabels?.skipToContent || 'İçeriğe geç'}
-              </a>
-              <AdminBar
-                adminBarProps={{
-                  preview: isEnabled,
-                }}
+              {/* Main content — relative + z-10 so it covers the sticky footer */}
+              <div className="relative z-10 min-h-dvh bg-background">
+                <ClickSparkWrapper>
+                  <CustomCursor>
+                    <a
+                      href="#main-content"
+                      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:border focus:border-border"
+                    >
+                      {layoutLabels?.skipToContent || 'İçeriğe geç'}
+                    </a>
+                    <AdminBar
+                      adminBarProps={{
+                        preview: isEnabled,
+                      }}
+                    />
+                    <Header
+                      locale={locale}
+                      headerLabels={headerLabels}
+                      searchLabels={searchLabels}
+                      siteSettings={siteSettings}
+                    />
+                    <main id="main-content" className="pb-20 md:pb-0">
+                      {children}
+                    </main>
+                  </CustomCursor>
+                </ClickSparkWrapper>
+              </div>
+              {/* Sticky footer — z-0 sits behind content, revealed on scroll */}
+              <Footer
+                locale={locale}
+                siteSettings={siteSettings}
+                labels={footerLabels}
+                headerLabels={headerLabels}
               />
-              <Header locale={locale} headerLabels={headerLabels} searchLabels={searchLabels} siteSettings={siteSettings} />
-              <main id="main-content" className="pb-20 md:pb-0">
-                {children}
-              </main>
-              </CustomCursor>
-              </ClickSparkWrapper>
-            </div>
-            {/* Sticky footer — z-0 sits behind content, revealed on scroll */}
-            <Footer siteSettings={siteSettings} labels={footerLabels} headerLabels={headerLabels} />
-            <MobileDonateBar label={mobileDonateLabel} />
+              <MobileDonateBar label={mobileDonateLabel} />
             </NuqsAdapter>
           </NextIntlClientProvider>
         </Providers>
@@ -131,8 +139,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let ui: UiString | null = null
   try {
     ui = (await getCachedGlobal('ui-strings', 0, locale)()) as UiString | null
-  } catch {
-  }
+  } catch {}
 
   return {
     metadataBase: new URL(getServerSideURL()),
