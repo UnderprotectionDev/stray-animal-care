@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { en } from '@payloadcms/translations/languages/en'
 import { tr } from '@payloadcms/translations/languages/tr'
 import sharp from 'sharp'
 import path from 'path'
@@ -30,7 +31,7 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   i18n: {
     fallbackLanguage: 'tr',
-    supportedLanguages: { tr },
+    supportedLanguages: { tr, en },
     translations: {
       tr: {
         'plugin-translator': {
@@ -108,7 +109,20 @@ export default buildConfig({
     },
     push: true,
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Animals, EmergencyCases, VetRecords, Events, Volunteers, NeedsList, TransparencyReports],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Animals,
+    EmergencyCases,
+    VetRecords,
+    Events,
+    Volunteers,
+    NeedsList,
+    TransparencyReports,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, SiteSettings, UIStrings],
   plugins,

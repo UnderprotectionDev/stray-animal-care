@@ -43,16 +43,9 @@ export const OurWorkBlock: Block = {
       fields: [
         {
           name: 'key',
-          label: 'Anahtar',
-          type: 'select',
-          options: [
-            { label: 'Besleme', value: 'feeding' },
-            { label: 'Tedavi', value: 'treatment' },
-            { label: 'Kısırlaştırma', value: 'spaying' },
-            { label: 'Acil Müdahale', value: 'emergency' },
-            { label: 'Aşılama', value: 'vaccination' },
-            { label: 'Barınma', value: 'shelter' },
-          ],
+          label: { tr: 'Anahtar', en: 'Key' },
+          type: 'text',
+          localized: true,
         },
         {
           name: 'title',

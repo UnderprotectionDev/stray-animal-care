@@ -2338,7 +2338,7 @@ export interface SiteSetting {
             galleryVariant?: ('grid' | 'circular' | 'stacking') | null;
             activities?:
               | {
-                  key?: ('feeding' | 'treatment' | 'spaying' | 'emergency' | 'vaccination' | 'shelter') | null;
+                  key?: string | null;
                   title?: string | null;
                   description?: string | null;
                   images?: (number | Media)[] | null;
